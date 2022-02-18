@@ -1,7 +1,7 @@
 <template>
   <div class="draw-container">
-    <Tool />
-    <Content />
+    <Tool @changeRa="selectBrush" />
+    <Content ref='Content' />
   </div>
 </template>
 
@@ -9,16 +9,48 @@
 import { mapGetters } from 'vuex'
 import Tool from './Tool'
 import Content from './Content'
+import paper from 'paper'
+
 export default {
   name: 'Dashboard',
   components: {
     Tool,
     Content
   },
+  data() {
+    return {
+      ra: 20
+    }
+  },
   computed: {
     ...mapGetters([
       'name'
     ])
+  },
+  mounted() {
+    this.ini()
+  },
+  methods: {
+    selectBrush(ra) {
+      this.ra = ra
+    },
+    ini() {
+      const canvas = this.$refs.Content.$refs.main_canvas
+      paper.setup(canvas)
+      const tool = new paper.Tool()
+      tool.onMouseDown = (e) => {
+        this.myPath = new paper.Path()
+        this.myPath.strokeColor = 'red'
+        this.myPath.strokeWidth = this.ra
+        this.myPath.add(e.point)
+      }
+      tool.onMouseUp = () => {
+        console.log('抬起')
+      }
+      tool.onMouseDrag = (e) => {
+        this.myPath.add(e.point)
+      }
+    }
   }
 }
 </script>

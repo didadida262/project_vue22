@@ -1,8 +1,8 @@
 <template>
   <div class="tool">
-    <div class="el-icon-brush icon" />
+    <div class="el-icon-brush icon" @click="brush" />
     <el-divider />
-    <div class="el-icon-edit icon" />
+    <div class="el-icon-edit icon" @click="brush_small"/>
     <el-divider />
   </div>
 </template>
@@ -10,7 +10,15 @@
 <script>
 
 export default {
-  name: 'Tool'
+  name: 'Tool',
+  methods: {
+    brush() {
+      this.$emit('changeRa', 20)
+    },
+    brush_small() {
+      this.$emit('changeRa', 5)
+    }
+  }
 }
 </script>
 
