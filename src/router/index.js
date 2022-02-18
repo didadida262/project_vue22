@@ -54,6 +54,17 @@ export const constantRoutes = [
       meta: { title: 'Dashboard', icon: 'dashboard' }
     }]
   },
+  {
+    path: '/draw',
+    component: Layout,
+    redirect: '/draw',
+    children: [{
+      path: 'draw',
+      name: 'draw',
+      component: () => import('@/views/draw/index'),
+      meta: { title: 'Draw', icon: 'el-icon-brush' }
+    }]
+  },
 
   {
     path: '/example',
@@ -145,17 +156,6 @@ export const constantRoutes = [
         component: () => import('@/views/nested/menu2/index'),
         name: 'Menu2',
         meta: { title: 'menu2' }
-      }
-    ]
-  },
-
-  {
-    path: 'external-link',
-    component: Layout,
-    children: [
-      {
-        path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
-        meta: { title: 'External Link', icon: 'link' }
       }
     ]
   },
