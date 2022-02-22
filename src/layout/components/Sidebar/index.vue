@@ -51,6 +51,9 @@ export default {
     isCollapse() {
       return !this.sidebar.opened
     }
+  },
+  mounted() {
+    console.log('菜单栏mounted!!!1')
   }
 }
 </script>

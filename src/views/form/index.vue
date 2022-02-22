@@ -11,16 +11,15 @@ export default {
     return {
       timer: null
     }
-    
   },
   created() {
-    console.log('form....')
-    this.timer = setInterval(() => {
-      console.log('来自轮询的伺候....')
-    }, 1000)
+    // console.log('form....')
+    // this.timer = setInterval(() => {
+    //   console.log('来自轮询的伺候....')
+    // }, 1000)
   },
   beforeDestroy() {
-    clearInterval(this.timer)
+    // clearInterval(this.timer)
   }
 }
 </script>

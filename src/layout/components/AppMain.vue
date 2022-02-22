@@ -1,6 +1,6 @@
 <template>
   <section class="app-main">
-    <transition name="fade-transform" mode="out-in">
+    <transition name="fade-transform" mode="out-in" type="transition">
       <router-view :key="key" />
     </transition>
   </section>
@@ -13,6 +13,9 @@ export default {
     key() {
       return this.$route.path
     }
+  },
+  mounted() {
+    console.log('显示内容区域mounted')
   }
 }
 </script>

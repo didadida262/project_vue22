@@ -1,6 +1,6 @@
 <template>
   <div class="header-notice">
-    {{ showData }}
+    <!-- {{ showData }} -->
   </div>
 </template>
 
