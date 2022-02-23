@@ -1,13 +1,16 @@
 <template>
   <div class="tool">
-    <div class="el-icon-brush icon"
+    <div
+      class="el-icon-brush icon"
       :class="{'is-active':isActive === 'brush'}"
-      @click="brush"/>
+      @click="brush"
+    />
     <el-divider />
     <div
-     class="el-icon-edit icon"
-     :class="{'is-active':isActive === 'brush_small'}"
-     @click="brush_small"/>
+      class="el-icon-edit icon"
+      :class="{'is-active':isActive === 'brush_small'}"
+      @click="brush_small"
+    />
     <el-divider />
   </div>
 </template>
