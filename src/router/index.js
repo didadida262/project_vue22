@@ -65,7 +65,17 @@ export const constantRoutes = [
       meta: { title: 'Draw', icon: 'el-icon-brush' }
     }]
   },
-
+  {
+    path: '/form',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/form/index'),
+        meta: { title: 'Form', icon: 'form' }
+      }
+    ]
+  },
   {
     path: '/example',
     component: Layout,
@@ -88,18 +98,7 @@ export const constantRoutes = [
     ]
   },
 
-  {
-    path: '/form',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        name: 'Form',
-        component: () => import('@/views/form/index'),
-        meta: { title: 'Form', icon: 'form' }
-      }
-    ]
-  },
+
 
   {
     path: '/nested',

@@ -53,7 +53,8 @@ export default {
     }
   },
   mounted() {
-    console.log('菜单栏mounted!!!1')
+    console.log('菜单栏----mounted!!!')
+    console.log(this.$router)
   }
 }
 </script>

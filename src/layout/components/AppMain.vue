@@ -15,7 +15,7 @@ export default {
     }
   },
   mounted() {
-    console.log('显示内容区域mounted')
+    console.log('内容区域----mounted')
   }
 }
 </script>

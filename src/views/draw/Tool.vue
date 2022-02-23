@@ -18,7 +18,7 @@ export default {
   name: 'Tool',
   data() {
     return {
-      isActive: 'brush_small'
+      isActive: 'brush'
     }
   },
   methods: {

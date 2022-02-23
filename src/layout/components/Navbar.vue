@@ -56,15 +56,20 @@ export default {
       await this.$store.dispatch('user/logout')
       this.$router.push(`/login?redirect=${this.$route.fullPath}`)
     },
-    created() {
-      console.log('nav-bar------>created!!!!')
-    }
+  mounted() {
+    console.log('header组件---mounted')
+  },
+  created() {
+    console.log('??????????????????????')
+  }
+
   }
 }
 </script>
 
 <style lang="scss" scoped>
 .navbar {
+  border: 1px solid red;
   height: 50px;
   overflow: hidden;
   position: relative;
