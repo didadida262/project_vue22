@@ -19,7 +19,9 @@ export default {
   },
   data() {
     return {
-      ra: 20
+      ra: 20,
+      paper: null,
+      tool: null
     }
   },
   computed: {
@@ -37,21 +39,22 @@ export default {
     ini() {
       const canvas = this.$refs.Content.$refs.main_canvas
       paper.setup(canvas)
-      const tool = new paper.Tool()
-      tool.onMouseDown = (e) => {
+      this.paper = paper
+      this.tool = new paper.Tool()
+      this.tool.onMouseDown = (e) => {
         console.log('click-down')
         this.myPath = new paper.Path()
         this.myPath.strokeColor = 'red'
         this.myPath.strokeWidth = this.ra
         this.myPath.add(e.point)
       }
-      tool.onMouseUp = () => {
+      this.tool.onMouseUp = () => {
         console.log('抬起')
       }
-      tool.onMouseDrag = (e) => {
+      this.tool.onMouseDrag = (e) => {
         this.myPath.add(e.point)
       }
-      tool.onKeyDown = (e) => {
+      this.tool.onKeyDown = (e) => {
         if (e.key === 'space') {
           const layer = paper.project.activeLayer
           layer.selected = !layer.selected
