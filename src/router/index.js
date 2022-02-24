@@ -77,16 +77,22 @@ export const constantRoutes = [
     ]
   },
   {
-    path: '/example',
+    path: '/paperjs',
     component: Layout,
-    redirect: '/example/table',
-    name: 'Example',
-    meta: { title: 'Example', icon: 'el-icon-s-help' },
+    redirect: '/paperjs/tadpole',
+    name: 'paperjs',
+    meta: { title: 'PaperJs', icon: 'el-icon-s-help' },
     children: [
+      {
+        path: 'tadpole',
+        name: 'tadpole',
+        component: () => import('@/views/paper/index'),
+        meta: { title: 'Tadpole', icon: 'table' }
+      },      
       {
         path: 'table',
         name: 'Table',
-        component: () => import('@/views/table/index'),
+        component: () => import('@/views/paper/table'),
         meta: { title: 'Table', icon: 'table' }
       },
       {

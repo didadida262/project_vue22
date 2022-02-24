@@ -39,6 +39,7 @@ export default {
       paper.setup(canvas)
       const tool = new paper.Tool()
       tool.onMouseDown = (e) => {
+        console.log('click-down')
         this.myPath = new paper.Path()
         this.myPath.strokeColor = 'red'
         this.myPath.strokeWidth = this.ra
@@ -49,6 +50,13 @@ export default {
       }
       tool.onMouseDrag = (e) => {
         this.myPath.add(e.point)
+      }
+      tool.onKeyDown = (e) => {
+        if (e.key === 'space') {
+          const layer = paper.project.activeLayer
+          layer.selected = !layer.selected
+          return false
+        }
       }
     }
   }
