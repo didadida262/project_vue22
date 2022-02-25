@@ -1,7 +1,7 @@
 <template>
   <section class="app-main">
     <transition name="fade-transform" mode="out-in" type="transition">
-      <router-view :key="key" />
+      <router-view />
     </transition>
   </section>
 </template>
@@ -16,6 +16,8 @@ export default {
   },
   mounted() {
     console.log('内容区域----mounted')
+  },
+  created() {
   }
 }
 </script>

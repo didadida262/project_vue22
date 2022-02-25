@@ -1,5 +1,5 @@
 <template>
-  <div class="content" ref="content">
+  <div class="content" ref="content" @wheel="onwheel">
     <canvas resize id="main_canvas" class="main_canvas" ref='main_canvas'/>
   </div>
 </template>
@@ -9,7 +9,12 @@ export default {
   name: 'Content',
   data() {
     return {
-      myPath: '',
+    }
+  },
+  methods: {
+    onwheel(e) {
+      this.$emit('shortCut', e)
+ 
     }
   }
 }
@@ -20,6 +25,9 @@ export default {
   border: 1px solid gainsboro;
   width: calc(100% - 60px);
   height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   .main_canvas {
     width: 100%;
     height: 100%;

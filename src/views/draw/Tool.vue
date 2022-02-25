@@ -31,7 +31,7 @@ export default {
     },
     brush_small() {
       this.isActive = 'brush_small'
-      this.$emit('changeRa', 5)
+      this.$emit('changeRa', 0.1)
     }
   }
 }
