@@ -183,8 +183,6 @@ export function resetRouter() {
   router.matcher = newRouter.matcher // reset router
 }
 router.beforeEach((to, from, next) => {
-  console.log('to:', to)
-  console.log('from:', from)
   next()
 })
 export default router

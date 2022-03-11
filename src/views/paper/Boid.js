@@ -1,9 +1,9 @@
 import paper from 'paper'
-export const Boid = paper.Base.extend({
+const Boid = paper.Base.extend({
     initialize: function(position, maxSpeed, maxForce) {
         var strength = Math.random() * 0.5;
-        this.acceleration = new Point();
-        this.vector = Point.random() * 2 - 1;
+        this.acceleration = new paper.Point();
+        this.vector = paper.Point.random() * 2 - 1;
         this.position = position.clone();
         this.radius = 30;
         this.maxSpeed = maxSpeed + strength;
@@ -50,27 +50,27 @@ export const Boid = paper.Base.extend({
     },
 
     createItems: function() {
-        this.head = new Shape.Ellipse({
+        this.head = new paper.Shape.Ellipse({
             center: [0, 0],
             size: [13, 8],
             fillColor: 'white'
         });
 
-        this.path = new Path({
+        this.path = new paper.Path({
             strokeColor: 'white',
             strokeWidth: 2,
             strokeCap: 'round'
         });
         for (var i = 0; i < this.amount; i++)
-            this.path.add(new Point());
+            this.path.add(new paper.Point());
 
-        this.shortPath = new Path({
+        this.shortPath = new paper.Path({
             strokeColor: 'white',
             strokeWidth: 4,
             strokeCap: 'round'
         });
         for (var i = 0; i < Math.min(3, this.amount); i++)
-            this.shortPath.add(new Point());
+            this.shortPath.add(new paper.Point());
     },
 
     moveHead: function() {
@@ -93,7 +93,7 @@ export const Boid = paper.Base.extend({
         this.vector.length = Math.min(this.maxSpeed, this.vector.length);
         this.position += this.vector;
         // Reset acceleration to 0 each cycle
-        this.acceleration = new Point();
+        this.acceleration = new paper.Point();
     },
 
     seek: function(target) {
@@ -105,7 +105,7 @@ export const Boid = paper.Base.extend({
     },
 
     borders: function() {
-        var vector = new Point();
+        var vector = new paper.Point();
         var position = this.position;
         var radius = this.radius;
         var size = view.size;
@@ -144,7 +144,7 @@ export const Boid = paper.Base.extend({
 
     separate: function(boids) {
         var desiredSeperation = 60;
-        var steer = new Point();
+        var steer = new paper.Point();
         var count = 0;
         // For every boid in the system, check if it's too close
         for (var i = 0, l = boids.length; i < l; i++) {
@@ -173,7 +173,7 @@ export const Boid = paper.Base.extend({
     // For every nearby boid in the system, calculate the average velocity
     align: function(boids) {
         var neighborDist = 25;
-        var steer = new Point();
+        var steer = new paper.Point();
         var count = 0;
         for (var i = 0, l = boids.length; i < l; i++) {
             var other = boids[i];
@@ -200,7 +200,7 @@ export const Boid = paper.Base.extend({
     // calculate steering vector towards that location
     cohesion: function(boids) {
         var neighborDist = 100;
-        var sum = new Point();
+        var sum = new paper.Point();
         var count = 0;
         for (var i = 0, l = boids.length; i < l; i++) {
             var other = boids[i];
@@ -218,3 +218,8 @@ export const Boid = paper.Base.extend({
         return sum;
     }
 });
+
+
+export {
+    Boid
+}
