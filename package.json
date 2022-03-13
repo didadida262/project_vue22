@@ -14,7 +14,9 @@
     "test:ci": "npm run lint && npm run test:unit"
   },
   "dependencies": {
+    "@better-scroll/core": "^2.4.2",
     "axios": "0.18.1",
+    "better-scroll": "^2.4.2",
     "element-ui": "2.13.2",
     "js-cookie": "2.2.0",
     "normalize.css": "7.0.0",
