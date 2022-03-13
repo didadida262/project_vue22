@@ -23,13 +23,9 @@ export default {
     }
   },
   mounted() {
-    this.beforeAnything()
     this.initWorld()
   },
   methods: {
-    beforeAnything() {
-
-    },
     initWorld() {
       console.log('$-_------------初始化世界---------------$-_-')
       console.log('$-_------------初始化世界---------------$-_-')
@@ -42,6 +38,7 @@ export default {
       // canvas的dom节点给到paper装载
       paper.setup(canvas)
       this.paper = paper
+      console.log('this.paper------->', this.paper)
       this.paper.view.onResize = this.onResize
       // 每帧触发
       this.paper.view.onFrame = this.onFrame
@@ -63,18 +60,18 @@ export default {
       // heartPath.fitBounds(view.bounds);
       // heartPath.scale(0.8);        
       },
-    onFrame() {
+    onFrame(event) {
       // console.log('paper.Point.random():', paper.Point.random())
       // console.log('帧动')
-        // for (var i = 0, l = this.boids.length; i < l; i++) {
-        //     if (groupTogether) {
-        //         var length = ((i + event.count / 30) % l) / l * heartPath.length;
-        //         var point = heartPath.getPointAt(length);
-        //         if (point)
-        //             boids[i].arrive(point);
-        //     }
-        //     boids[i].run(boids);  
-        // }
+        for (var i = 0, l = this.boids.length; i < l; i++) {
+            if (this.groupTogether) {
+                const length = ((i + event.count / 30) % l) / l * this.heartPath.length;
+                var point = this.heartPath.getPointAt(length);
+                if (point)
+                    this.boids[i].arrive(point);
+            }
+            this.boids[i].run(this.boids, this.groupTogether);  
+        }
     },
     onKeyDown (e) {
       console.log('按键：', e)

@@ -4,7 +4,6 @@
       <span>测试滚动组件</span>
     </div>
     <div class="dashboard-container">
-      组件区域
       <image-slider
 				:imageList="imageList"
 				@onClickItem="handleClickPic"

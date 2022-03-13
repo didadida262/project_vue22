@@ -91,6 +91,7 @@ export default {
 
 <style lang="scss" scoped>
 .horizontal-container {
+    border: 1px solid red;
     height: 100%;
     display: flex;
     align-items: center;
@@ -101,11 +102,11 @@ export default {
         margin: 10px;
     }
     .scroll-wrapper {
+        border: 1px solid green;
         position: relative;
         white-space: nowrap;
         overflow: hidden;
         height: inherit;
-
         .scroll-content {
             display: inline-block;
             height: inherit;
