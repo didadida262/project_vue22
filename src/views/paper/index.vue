@@ -9,7 +9,6 @@
 import paper from 'paper'
 // import {Boid} from './Boid.js'
 import { Boid } from './myBoid.js'
-
 export default {
   data() {
     return {
@@ -60,10 +59,13 @@ export default {
       // heartPath.fitBounds(view.bounds);
       // heartPath.scale(0.8);        
       },
+
+    // 让蝌蚪动起来
     onFrame(event) {
       // console.log('paper.Point.random():', paper.Point.random())
       // console.log('帧动')
         for (var i = 0, l = this.boids.length; i < l; i++) {
+          // 是否合拢
             if (this.groupTogether) {
                 const length = ((i + event.count / 30) % l) / l * this.heartPath.length;
                 var point = this.heartPath.getPointAt(length);
@@ -74,6 +76,7 @@ export default {
         }
     },
     onKeyDown (e) {
+      // 展示layer
       console.log('按键：', e)
       if (e.key === 'space') {
         const layer = this.paper.project.activeLayer
@@ -81,6 +84,7 @@ export default {
         return false
       }
     },
+    // ⭐形合拢
     onMouseDown (e) {
       console.log('点击', e.point)
       this.groupTogether = !this.groupTogether
