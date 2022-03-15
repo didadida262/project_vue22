@@ -7,13 +7,6 @@
                     v-for="(item, index) in imageList" :key="index"
                     class="scroll-item"
                 >
-                    <div v-if="item.img_name" style="font-size:15px">
-                        <span style="font-weight:bold;">{{item.index}}. </span>
-                        <span v-if="item.img_name.length <= 5">{{item.img_name}}</span>
-                        <el-tooltip v-else class="item" effect="dark" :content="item.img_name" placement="bottom">
-                            <span>{{ item.img_name.slice(0, 5) + '...' }}</span>
-                        </el-tooltip>
-                    </div>
                     <el-image
                         :class="[item.status === '未标注'? 'unMark-image': 'marked-image', 'image','cursor-pointer', item.selected? 'selected-image': '']"
                         fit="contain"
@@ -51,20 +44,22 @@ export default {
         },        
         scroll(direction) {
             let scroll = this.$refs.scroll
+
             let x = this.bs.x + direction * scroll.clientWidth
             if (x < this.bs.maxScrollX) {
                 x = this.bs.maxScrollX
-            } else if (x > this.bs.minScrollX) {
-                x = this.bs.minScrollX
             }
-            if (x == 0 && this.bs.x == 0) {
-                this.$emit('onStart')
-                return       
+            if (x > this.bs.minScrollX) {
+                x = this.bs.minScrollX
             }
             if (x == this.bs.maxScrollX && this.bs.x ==this.bs.maxScrollX) {
                 this.$emit('onEnd')
                 return       
             }
+            if (x == 0 && this.bs.x == 0) {
+                this.$emit('onStart')
+                return       
+            }                 
             this.bs.scrollTo(x, 0, 600)          
         },
         clickItem(item) {
@@ -113,7 +108,7 @@ export default {
 
             .scroll-item {
                 margin-right: 5px;
-                height: 92%;
+                height: 100%;
                 font-size: 24px;
                 display: inline-block;
                 text-align: center;
