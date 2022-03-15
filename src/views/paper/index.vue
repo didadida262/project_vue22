@@ -6,6 +6,9 @@
 
 <script>
 
+
+
+
 import paper from 'paper'
 // import {Boid} from './Boid.js'
 import { Boid } from './myBoid.js'
@@ -22,7 +25,7 @@ export default {
     }
   },
   mounted() {
-    this.initWorld()
+    // this.initWorld()
   },
   methods: {
     initWorld() {

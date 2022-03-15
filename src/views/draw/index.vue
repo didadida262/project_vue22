@@ -19,6 +19,8 @@ export default {
   },
   data() {
     return {
+      myPath: null,
+      myPaths: [],
       ra: 20,
       paper: null,
       tool: null,
@@ -33,13 +35,13 @@ export default {
     ])
   },
   mounted() {
-    this.ini()
+    this.init()
   },
   methods: {
     selectBrush(ra) {
       this.ra = ra
     },
-    ini() {
+    init() {
       const canvas = this.$refs.Content.$refs.main_canvas
       paper.setup(canvas)
       this.paper = paper
@@ -50,25 +52,11 @@ export default {
       this.image.raster.onLoad = () => {
         console.log('图片加载成功！！！')
       }
-      console.log('raster', this.image.raster)
       this.image.raster.position = this.paper.view.center
 
+    // 绑定各种事件函数
       this.tool = new paper.Tool()
       this.tool.onMouseDown = (e) => {
-        const point = e.point
-        console.log('point:', e.point)
-        const circle = new paper.Path.Rectangle({
-            point: [point.x, point.y],
-            size: 1
-        });
-        circle.strokeColor = new paper.Color(1, 0, 0);       
-        console.log('circle:', circle)
-        // let rect = new paper.Rectangle()
-        // rect.center = e.point
-        // rect.size = new paper.Size(100, 100)
-        // rect.strokeColor = new paper.Color(1, 0, 0);
-        // console.log('rect:', rect)
-        
         // 画线条
         this.myPath = new paper.Path()
         this.myPath.strokeColor = 'red'
@@ -76,6 +64,8 @@ export default {
         this.myPath.add(e.point)
       }
       this.tool.onMouseUp = () => {
+        this.myPaths.push(this.myPath)
+        console.log('this.myPaths:', this.myPaths)
         console.log('抬起')
       }
       this.tool.onMouseDrag = (e) => {
@@ -83,7 +73,7 @@ export default {
       }
       this.tool.onKeyDown = (e) => {
         if (e.key === 'space') {
-          const layer = paper.project.activeLayer
+          const layer = this.paper.project.activeLayer
           layer.selected = !layer.selected
           return false
         }
