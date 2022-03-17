@@ -7,10 +7,10 @@ let Boid = paper.Base.extend({
     // maxForce:  0.05
     initialize: function(position, maxSpeed, maxForce) {
         this.position = position.clone()
+
+        let strength = Math.random() * 0.5
         // 尾巴的点数
         this.amount = strength * 10 + 10
-        let strength = Math.random() * 0.5
-
         this.acceleration = new paper.Point()
         this.vector = new paper.Point.random()
         this.radius = 30
@@ -33,8 +33,9 @@ let Boid = paper.Base.extend({
                 strokeCap: 'round'
             });
             // 目测是尾巴长度
-            for (let i = 0; i < this.amount; i++)
+            for (let i = 0; i < this.amount; i++) {
                 this.path.add(new paper.Point());
+            }
             // 颈部
             this.shortPath = new paper.Path({
                 strokeColor: 'white',
@@ -191,17 +192,22 @@ let Boid = paper.Base.extend({
         let speed = this.vector.length;
         let pieceLength = 5 + speed / 3;
         let point = this.position;
-        // segments[0].point = shortSegments[0].point = point;
+        segments[0].point = shortSegments[0].point = point;
 
 
         // Chain goes the other way than the movement
+        // console.log('this.vector:', this.vector)
+        // console.log('------------this.vector:', this.vector.project(new paper.Point(0, 0)))
+
+        // let lastVector = this.vector;
         let lastVector = -this.vector;
+        console.log('lastVector:', lastVector)
         for (let i = 1; i < this.amount; i++) {
             let vector = segments[i].point.subtract(point);
             this.count += speed * 10;
             let wave = Math.sin((this.count + i * 3) / 300);
-            let sway = lastVector.rotate(90).normalize(wave);
-            point = point.add(lastVector.normalize(pieceLength), sway);
+            // let sway = lastVector.rotate(90).normalize(wave);
+            // point = point.add(lastVector.normalize(pieceLength), sway);
             segments[i].point = point;
             if (i < 3)
                 shortSegments[i].point = point;
@@ -212,7 +218,10 @@ let Boid = paper.Base.extend({
     moveHead: function() {
         this.head.position = this.position;
         this.head.rotation = this.vector.angle;
-    },      
+    }, 
+    arrive: function(target) {
+        this.acceleration = this.acceleration.add(this.steer(target, true));
+    },         
 
 })
 

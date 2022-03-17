@@ -30,9 +30,6 @@ export default {
   methods: {
     initWorld() {
       console.log('$-_------------初始化世界---------------$-_-')
-      console.log('$-_------------初始化世界---------------$-_-')
-      console.log('$-_------------初始化世界---------------$-_-')
-      console.log('$-_------------初始化世界---------------$-_-')
 
       const canvas = this.$refs.tadpole
 
@@ -48,7 +45,7 @@ export default {
       this.paper.view.onMouseDown = this.onMouseDown
       
       // // 创建蝌蚪军团
-      for (let i = 0; i < 30; i++) {
+      for (let i = 0; i < 100; i++) {
         const rand = paper.Point.random()
         // // 画布范围内，生成随机位置点
         rand.x = rand.x * paper.view.size.width
@@ -59,8 +56,8 @@ export default {
     },
     onResize() {
       console.log('窗口变化！！！')
-      heartPath.fitBounds(view.bounds);
-      heartPath.scale(0.8);        
+      this.heartPath.fitBounds(this.paper.view.bounds);
+      this.heartPath.scale(0.8);        
       },
 
     // 让蝌蚪动起来
