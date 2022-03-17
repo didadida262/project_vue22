@@ -53,10 +53,10 @@ let Boid = paper.Base.extend({
             } else {
                 this.align(boids);
             }
-            // this.borders();
-            // this.update();
-            // this.calculateTail();
-            // this.moveHead();
+            this.borders();
+            this.update();
+            this.calculateTail();
+            this.moveHead();
         },     
     // We accumulate a new acceleration each time based on three rules
     flock: function(boids) {
@@ -64,10 +64,6 @@ let Boid = paper.Base.extend({
         let alignment = this.align(boids);
         let cohesion = this.cohesion(boids);
         this.acceleration = this.acceleration.add(separation,alignment,cohesion);
-        console.log('separation:', separation)
-        console.log('alignment:', alignment)
-        console.log('cohesion:', cohesion)
-        console.log('this.acceleration:', this.acceleration)
     },  
     separate: function(boids) {
         let desiredSeperation = 60;
@@ -162,7 +158,61 @@ let Boid = paper.Base.extend({
         steer = desired.subtract(this.vector);
         steer.length = Math.min(this.maxForce, steer.length);
         return steer;
-    },            
+    },        
+    borders: function() {
+        let vector = new paper.Point();
+        let position = this.position;
+        let radius = this.radius;
+        let size = paper.view.size;
+        if (position.x < -radius) vector.x = size.width + radius;
+        if (position.y < -radius) vector.y = size.height + radius;
+        if (position.x > size.width + radius) vector.x = -size.width -radius;
+        if (position.y > size.height + radius) vector.y = -size.height -radius;
+        if (!vector.isZero()) {
+            this.position = this.position.add(vector);
+            let segments = this.path.segments;
+            for (let i = 0; i < this.amount; i++) {
+                segments[i].point = segments[i].point.add(vector);
+            }
+        }
+    },       
+    update: function() {
+        // Update velocity
+        this.vector = this.vector.add(this.acceleration);
+        // Limit speed (vector#limit?)
+        this.vector.length = Math.min(this.maxSpeed, this.vector.length);
+        this.position = this.position.add(this.vector);
+        // Reset acceleration to 0 each cycle
+        this.acceleration = new paper.Point();
+    },
+    calculateTail: function() {
+        let segments = this.path.segments,
+            shortSegments = this.shortPath.segments;
+        let speed = this.vector.length;
+        let pieceLength = 5 + speed / 3;
+        let point = this.position;
+        // segments[0].point = shortSegments[0].point = point;
+
+
+        // Chain goes the other way than the movement
+        let lastVector = -this.vector;
+        for (let i = 1; i < this.amount; i++) {
+            let vector = segments[i].point.subtract(point);
+            this.count += speed * 10;
+            let wave = Math.sin((this.count + i * 3) / 300);
+            let sway = lastVector.rotate(90).normalize(wave);
+            point = point.add(lastVector.normalize(pieceLength), sway);
+            segments[i].point = point;
+            if (i < 3)
+                shortSegments[i].point = point;
+            lastVector = vector;
+        }
+        this.path.smooth();
+    },   
+    moveHead: function() {
+        this.head.position = this.position;
+        this.head.rotation = this.vector.angle;
+    },      
 
 })
 
