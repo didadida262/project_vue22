@@ -59,8 +59,8 @@ export default {
     },
     onResize() {
       console.log('窗口变化！！！')
-      // heartPath.fitBounds(view.bounds);
-      // heartPath.scale(0.8);        
+      heartPath.fitBounds(view.bounds);
+      heartPath.scale(0.8);        
       },
 
     // 让蝌蚪动起来

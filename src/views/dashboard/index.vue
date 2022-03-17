@@ -1,15 +1,10 @@
 <template>
   <div class="dashboard">
     <div class="dashboard-text">
-      <span>测试滚动组件</span>
+      <span>.........</span>
     </div>
     <div class="dashboard-container">
-      <image-slider
-				:imageList="imageList"
-				@onClickItem="handleClickPic"
-				@onEnd="loadNextPage"
-				@onStart="loadPrevPage"      
-      />
+
     </div>
   </div>
 </template>
