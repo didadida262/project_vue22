@@ -48,7 +48,7 @@ export default {
     }
   },
   mounted() {
-    console.log('layout----mounted')
+    // console.log('layout----mounted')
   }
 }
 </script>

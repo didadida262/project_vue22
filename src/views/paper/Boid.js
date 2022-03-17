@@ -1,4 +1,3 @@
-
 var Boid = Base.extend({
     initialize: function(position, maxSpeed, maxForce) {
         var strength = Math.random() * 0.5;

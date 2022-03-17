@@ -57,7 +57,7 @@ export default {
       this.$router.push(`/login?redirect=${this.$route.fullPath}`)
     },
   mounted() {
-    console.log('header组件---mounted')
+    // console.log('header组件---mounted')
     }
   }
 }
