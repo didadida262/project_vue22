@@ -6,23 +6,34 @@ const Boid = paper.Base.extend({
   // maxSpeed： 10
   // maxForce:  0.05
   initialize: function(position, maxSpeed, maxForce) {
+    //   确定蝌蚪头部坐标，即在画布范围内随机生成的位置
     this.position = position.clone()
 
+    // strength的取值范围:[0, 0.5)
     const strength = Math.random() * 0.5
-    // 尾巴的点数
+
+    // 尾巴的点数,因为尾巴是一条直线，因此，需要各个点组成
+    // 取值范围:[10, 15)
     this.amount = strength * 10 + 10
+
     this.acceleration = new paper.Point()
     this.vector = new paper.Point.random()
     this.radius = 30
+
+    // 取值范围:[10, 10.5),干嘛的未知
     this.maxSpeed = maxSpeed + strength
+
+    // 取值范围:[0.05, 0.55),干嘛的未知
     this.maxForce = maxForce + strength
+
     this.count = 0
     this.createItems()
   },
   createItems: function() {
     // 椭圆，代表蝌蚪的头部
     this.head = new paper.Shape.Ellipse({
-      center: [0, 0],
+    //   center: [0, 0],
+      center: [this.position.x, this.position.y],
       size: [13, 8],
       fillColor: 'orange'
     })
@@ -184,14 +195,14 @@ const Boid = paper.Base.extend({
     this.acceleration = new paper.Point()
   },
   calculateTail: function() {
+    //   处理颈部及尾巴
     const segments = this.path.segments
     const shortSegments = this.shortPath.segments
     const speed = this.vector.length
     const pieceLength = 5 + speed / 3
     let point = this.position
-    console.log('shortSegments[0].point:', shortSegments[0].point)
-    console.log('point:', point)
-    segments[0].point = shortSegments[0].point = point
+    segments[0].point = this.position.clone()
+    shortSegments[0].point = this.position.clone()
 
     // Chain goes the other way than the movement
     // console.log('this.vector:', this.vector)
