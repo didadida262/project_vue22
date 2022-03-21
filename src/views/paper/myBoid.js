@@ -24,11 +24,11 @@ const Boid = paper.Base.extend({
     this.head = new paper.Shape.Ellipse({
       center: [0, 0],
       size: [13, 8],
-      fillColor: 'white'
+      fillColor: 'orange'
     })
     // 尾巴
     this.path = new paper.Path({
-      strokeColor: 'white',
+      strokeColor: 'green',
       strokeWidth: 2,
       strokeCap: 'round'
     })
@@ -188,22 +188,22 @@ const Boid = paper.Base.extend({
     const shortSegments = this.shortPath.segments
     const speed = this.vector.length
     const pieceLength = 5 + speed / 3
-    const point = this.position
+    let point = this.position
+    console.log('shortSegments[0].point:', shortSegments[0].point)
+    console.log('point:', point)
     segments[0].point = shortSegments[0].point = point
 
     // Chain goes the other way than the movement
     // console.log('this.vector:', this.vector)
     // console.log('------------this.vector:', this.vector.project(new paper.Point(0, 0)))
 
-    // let lastVector = this.vector;
-    let lastVector = -this.vector
-    console.log('lastVector:', lastVector)
+    let lastVector = this.vector.rotate(180, new paper.Point((0,0)))
     for (let i = 1; i < this.amount; i++) {
       const vector = segments[i].point.subtract(point)
       this.count += speed * 10
       const wave = Math.sin((this.count + i * 3) / 300)
-      // let sway = lastVector.rotate(90).normalize(wave);
-      // point = point.add(lastVector.normalize(pieceLength), sway);
+      let sway = lastVector.rotate(90).normalize(wave);
+      point = point.add(lastVector.normalize(pieceLength), sway);
       segments[i].point = point
       if (i < 3) { shortSegments[i].point = point }
       lastVector = vector
