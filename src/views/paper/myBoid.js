@@ -75,6 +75,7 @@ const Boid = paper.Base.extend({
     const alignment = this.align(boids)
     const cohesion = this.cohesion(boids)
     this.acceleration = this.acceleration.add(separation, alignment, cohesion)
+    // 为什么acceleration会是一个点？
   },
   separate: function(boids) {
     const desiredSeperation = 60
@@ -169,10 +170,13 @@ const Boid = paper.Base.extend({
     return steer
   },
   borders: function() {
+    // new paper.Point()返回的就是坐标原点
     const vector = new paper.Point()
     const position = this.position
     const radius = this.radius
     const size = paper.view.size
+    console.log('this-=================',this)
+    console.log('size:', size)
     if (position.x < -radius) vector.x = size.width + radius
     if (position.y < -radius) vector.y = size.height + radius
     if (position.x > size.width + radius) vector.x = -size.width - radius
