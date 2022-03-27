@@ -15,7 +15,7 @@ export default {
     }
   },
   mounted() {
-    console.log('内容区域----mounted')
+    // console.log('内容区域----mounted')
   },
   created() {
   }

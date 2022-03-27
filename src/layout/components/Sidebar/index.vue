@@ -53,7 +53,7 @@ export default {
     }
   },
   mounted() {
-    console.log('菜单组件----mounted!!!')
+    // console.log('菜单组件----mounted!!!')
   }
 }
 </script>

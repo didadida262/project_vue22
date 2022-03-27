@@ -57,7 +57,7 @@ export default {
       this.$router.push(`/login?redirect=${this.$route.fullPath}`)
     },
   mounted() {
-    console.log('header组件---mounted')
+    // console.log('header组件---mounted')
     }
   }
 }
@@ -65,7 +65,6 @@ export default {
 
 <style lang="scss" scoped>
 .navbar {
-  border: 1px solid red;
   height: 50px;
   overflow: hidden;
   position: relative;
