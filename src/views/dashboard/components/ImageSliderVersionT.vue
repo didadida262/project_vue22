@@ -1,74 +1,89 @@
 <template>
-    <div class="horizontal-container">
-        <el-link class="scroll-button" icon="el-icon-arrow-left" :underline="false" @click="scroll(1)"></el-link>
-        <div class="scroll-wrapper" ref="scroll">
-            <div class="scroll-content">
-                <div
-                    v-for="(item, index) in imageList" :key="index"
-                    class="scroll-item"
-                >
-                    <el-image
-                        :class="[item.status === '未标注'? 'unMark-image': 'marked-image', 'image','cursor-pointer', item.selected? 'selected-image': '']"
-                        fit="contain"
-                        :src="item.img_thumbnail_url"
-                        @click="clickItem(item)"
-                    ></el-image>
-                </div>
-            </div>
+  <div class="horizontal-container">
+    <el-link class="scroll-button" icon="el-icon-arrow-left" :underline="false" @click="scroll(1)" />
+    <div ref="scroll" class="scroll-wrapper">
+      <div class="scroll-content">
+        <div
+          v-for="(item, index) in imageList"
+          :key="index"
+          class="scroll-item"
+        >
+          <span>{{ item.img_id }}</span>
+          <el-image
+            :class="[item.status === '未标注'? 'unMark-image': 'marked-image', 'image','cursor-pointer', item.selected? 'selected-image': '']"
+            fit="contain"
+            :src="item.img_thumbnail_url"
+            @click="clickItem(item)"
+          />
         </div>
-        <el-link class="scroll-button" icon="el-icon-arrow-right" :underline="false" @click="scroll(-1)"></el-link>
+      </div>
     </div>
+    <el-link class="scroll-button" icon="el-icon-arrow-right" :underline="false" @click="scroll(-1)" />
+    <el-button @click="test">
+        下一张
+    </el-button>
+    <el-button @click="test2">
+        到第五章
+    </el-button>    
+  </div>
 </template>
 
 <script lang="ts">
 import BScroll from 'better-scroll'
 
 export default {
-    props: {
-        imageList: {
-            type: Array,
-            default: []
-        }
-    },
-    data() {
-        return {
-            bs: null
-        }
-    },
-    methods: {
-        init() {
-            this.bs = new BScroll(this.$refs.scroll, {
-                scrollX: true,
-                probeType: 3 // listening scroll event
-            })
-        },        
-        scroll(direction) {
-            let scroll = this.$refs.scroll
-
-            let x = this.bs.x + direction * scroll.clientWidth
-            if (x < this.bs.maxScrollX) {
-                x = this.bs.maxScrollX
-            }
-            if (x > this.bs.minScrollX) {
-                x = this.bs.minScrollX
-            }
-            if (x == this.bs.maxScrollX && this.bs.x ==this.bs.maxScrollX) {
-                this.$emit('onEnd')
-                return       
-            }
-            if (x == 0 && this.bs.x == 0) {
-                this.$emit('onStart')
-                return       
-            }                 
-            this.bs.scrollTo(x, 0, 600)          
-        },
-        clickItem(item) {
-            this.$emit('onClickItem', item)
-            }
-    },
-    mounted() {
-        this.init()
+  props: {
+    imageList: {
+      type: Array,
+      default: []
     }
+  },
+  data() {
+    return {
+      bs: null
+    }
+  },
+  mounted() {
+    this.init()
+  },
+  methods: {
+    test() {
+      this.bs.scrollTo(this.bs.x - 122.85 - 5, 0, 600)
+    },
+    test2() {
+      this.bs.scrollTo(-511.4, 0, 600)
+    },
+    init() {
+      this.bs = new BScroll(this.$refs.scroll, {
+        scrollX: true,
+        probeType: 3 // listening scroll event
+      })
+    },
+    scroll(direction) {
+      console.log('scroll')
+      const scroll = this.$refs.scroll
+
+      let x = this.bs.x + direction * scroll.clientWidth
+      if (x < this.bs.maxScrollX) {
+        x = this.bs.maxScrollX
+      }
+      if (x > this.bs.minScrollX) {
+        x = this.bs.minScrollX
+      }
+      if (x == this.bs.maxScrollX && this.bs.x == this.bs.maxScrollX) {
+        this.$emit('onEnd')
+        return
+      }
+      if (x == 0 && this.bs.x == 0) {
+        this.$emit('onStart')
+        return
+      }
+      this.bs.scrollTo(x, 0, 600)
+    },
+    clickItem(item) {
+      this.$emit('onClickItem', item)
+    }
+  }
 }
 </script>
 
@@ -107,6 +122,7 @@ export default {
             height: inherit;
 
             .scroll-item {
+                border: 1px solid green;
                 margin-right: 5px;
                 height: 100%;
                 font-size: 24px;

@@ -1,7 +1,6 @@
 <template>
   <div class="dashboard">
-    <div class="dashboard-text">
-      组件区域
+    <div class="dashboard-container">
       <image-slider
         :imageList="imageList"
         @onClickItem="handleClickPic"
@@ -30,37 +29,53 @@ export default {
     return {
       imageList: [
         {
-          img_thumbnail_url: "http://lic.gmface.tech:10444/file_1/1,0145310ca7d13a?rend=1647325062941",
+          img_thumbnail_url: 'https://cms-assets.tutsplus.com/uploads/users/1251/posts/26530/image/BenderPaper.jpg',
           img_id: 1
         },
         {
-          img_thumbnail_url: "http://lic.gmface.tech:10444/file_0/2,01453380f50a14?rend=1647325062942",
-          img_id: 1
+          img_thumbnail_url: 'https://cms-assets.tutsplus.com/uploads/users/1251/posts/26530/image/BenderPaper.jpg',
+          img_id: 2
         },
         {
-          img_thumbnail_url: "http://lic.gmface.tech:10444/file_1/3,014535e3412f69?rend=1647325062942",
-          img_id: 1
+          img_thumbnail_url: 'https://cms-assets.tutsplus.com/uploads/users/1251/posts/26530/image/BenderPaper.jpg',
+          img_id: 3
         },
         {
-          img_thumbnail_url: "http://lic.gmface.tech:10444/file_1/3,014537254ab29c?rend=1647325062942",
-          img_id: 1
+          img_thumbnail_url: 'https://cms-assets.tutsplus.com/uploads/users/1251/posts/26530/image/BenderPaper.jpg',
+          img_id: 4
         },
         {
-          img_thumbnail_url: "http://lic.gmface.tech:10444/file_1/4,01453fa76e8d6a?rend=1647325062945",
-          img_id: 1
+          img_thumbnail_url: 'https://cms-assets.tutsplus.com/uploads/users/1251/posts/26530/image/BenderPaper.jpg',
+          img_id: 5
         },
         {
-          img_thumbnail_url: "http://lic.gmface.tech:10444/file_1/4,014541d86bb873?rend=1647325062946",
-          img_id: 1
+          img_thumbnail_url: 'https://cms-assets.tutsplus.com/uploads/users/1251/posts/26530/image/BenderPaper.jpg',
+          img_id: 6
         },
         {
-          img_thumbnail_url: "http://lic.gmface.tech:10444/file_1/4,0145438c8e7e0b?rend=1647325062946",
-          img_id: 1
+          img_thumbnail_url: 'https://cms-assets.tutsplus.com/uploads/users/1251/posts/26530/image/BenderPaper.jpg',
+          img_id: 7
         },
         {
-          img_thumbnail_url: "http://lic.gmface.tech:10444/file_1/4,0145454962dff2?rend=1647325062947",
-          img_id: 1
-        },                                             
+          img_thumbnail_url: 'https://cms-assets.tutsplus.com/uploads/users/1251/posts/26530/image/BenderPaper.jpg',
+          img_id: 8
+        },
+        {
+          img_thumbnail_url: 'https://cms-assets.tutsplus.com/uploads/users/1251/posts/26530/image/BenderPaper.jpg',
+          img_id: 9
+        },
+        {
+          img_thumbnail_url: 'https://cms-assets.tutsplus.com/uploads/users/1251/posts/26530/image/BenderPaper.jpg',
+          img_id: 10
+        },
+        {
+          img_thumbnail_url: 'https://cms-assets.tutsplus.com/uploads/users/1251/posts/26530/image/BenderPaper.jpg',
+          img_id: 11
+        },
+        {
+          img_thumbnail_url: 'https://cms-assets.tutsplus.com/uploads/users/1251/posts/26530/image/BenderPaper.jpg',
+          img_id: 12
+        }
       ]
     }
   },
@@ -71,13 +86,20 @@ export default {
       console.log('click')
     },
     loadNextPage() {
-      const add = this.imageList.slice(0, 3)
-      this.imageList.push(...add)
+      const add = {
+        img_thumbnail_url: 'https://cms-assets.tutsplus.com/uploads/users/1251/posts/26530/image/BenderPaper.jpg',
+        img_id: 100
+      }
+      this.imageList.push(add)
+
       console.log('下一页')
     },
     loadPrevPage() {
-      const add = this.imageList.slice(0, 3)
-      this.imageList.push(...add)      
+      const add = {
+        img_thumbnail_url: 'https://cms-assets.tutsplus.com/uploads/users/1251/posts/26530/image/BenderPaper.jpg',
+        img_id: 0
+      }
+      this.imageList.unshift(add)
       console.log('上一页')
     }
   }
@@ -105,6 +127,7 @@ export default {
   }
   &-container {
     width: 100%;
+    height: 150px;
   }
 }
 </style>
