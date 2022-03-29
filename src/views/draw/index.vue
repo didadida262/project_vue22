@@ -1,7 +1,11 @@
 <template>
   <div class="draw-container">
-    <Tool @changeRa="selectBrush" />
-    <Content ref='Content' @shortCut="onWheel"/>
+    <Tool
+     @changeRa="selectBrush" 
+    />
+    <Content
+     ref='Content' 
+     @shortCut="onWheel"/>
   </div>
 </template>
 
@@ -96,6 +100,7 @@ export default {
       return { zoom: zoom, offset: a };
     },    
     onWheel(e) {
+      console.log('滚轮事件:', e)
       this.paper.view.center = new paper.Point(e.x, e.y)
       console.log('e:', e)
       if (e.deltaY < 0) {
