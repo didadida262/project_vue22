@@ -23,6 +23,7 @@ export default {
   },
   data() {
     return {
+      info:'hhvcg',
       myPath: null,
       myPaths: [],
       ra: 20,
@@ -43,7 +44,11 @@ export default {
   },
   methods: {
     selectBrush(ra) {
-      this.ra = ra
+      if (ra === 'bbox') {
+        console.warn('选中标注框')
+      } else {
+        this.ra = ra
+      }
     },
     init() {
       const canvas = this.$refs.Content.$refs.main_canvas

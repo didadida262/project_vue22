@@ -60,8 +60,22 @@ export default {
     }
   },
   created() {
+    console.log('组件created')
+    console.log('挂载监听')
+    window.addEventListener("keydown", this.handleKey)
   },
+  // beforeDestroy() {
+  destroyed() {
+    console.log('组件销毁')
+	  window.removeEventListener("keydown", this.handleKey);
+  },
+    // window.addEventListener("keydown",(this.handleKeyDown = this.handleKeyDown.bind(this)))
+
   methods: {
+    handleKey(e) {
+      console.log('触发监听')
+      console.log('e.keyCode', e.keyCode)
+    },
     test() {
       this.data.push(new Array(1000_0000))
       console.log('this.data:', this.data[0])
@@ -85,10 +99,10 @@ export default {
 
 <style lang="scss" scoped>
 .dashboard {
-  border: 1px solid ghostwhite;
+  border: 1px solid red;
   width: 100%;
   margin-bottom: 50px;
-  height: 100vh;
+  height: 90vh;
   padding: 10px;
   overflow: scroll;
   &-text {

@@ -12,6 +12,11 @@
       @click="brush_small"
     />
     <el-divider />
+    <div
+      class="el-icon-full-screen icon"
+      :class="{'is-active':isActive === 'bbox'}"
+      @click="bbox"
+    />    
   </div>
 </template>
 
@@ -25,6 +30,10 @@ export default {
     }
   },
   methods: {
+    bbox() {
+      this.isActive = 'bbox'
+      this.$emit('changeRa', 'bbox')
+    },
     brush() {
       this.isActive = 'brush'
       this.$emit('changeRa', 20)
@@ -33,7 +42,10 @@ export default {
       this.isActive = 'brush_small'
       this.$emit('changeRa', 0.1)
     }
-  }
+  },
+  created() {
+    console.log('this.info--->', this.info)
+  },
 }
 </script>
 
