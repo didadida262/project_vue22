@@ -1,35 +1,22 @@
 import paper from 'paper'
 
-const Boid = paper.Base.extend({
-  // 初始化tadpole类
-  // position: 随机的point类坐标
-  // maxSpeed： 10
-  // maxForce:  0.05
-  initialize: function(position, maxSpeed, maxForce) {
-    //   确定蝌蚪头部坐标，即在画布范围内随机生成的位置
+export class Boid {
+  constructor(position, maxSpeed, maxForce) {
     this.position = position.clone()
-
-    // strength的取值范围:[0, 0.5)
-    const strength = Math.random() * 0.5
-
-    // 尾巴的点数,因为尾巴是一条直线，因此，需要各个点组成
-    // 取值范围:[10, 15)
-    this.amount = strength * 10 + 10
-
+    this.amount = Math.random() * 0.5 * 10 + 10
     this.acceleration = new paper.Point()
     this.vector = new paper.Point.random()
     this.radius = 30
-
+    const strength = Math.random() * 0.5
     // 取值范围:[10, 10.5),干嘛的未知
     this.maxSpeed = maxSpeed + strength
 
     // 取值范围:[0.05, 0.55),干嘛的未知
     this.maxForce = maxForce + strength
-
     this.count = 0
     this.createItems()
-  },
-  createItems: function() {
+  }
+  createItems() {
     // 椭圆，代表蝌蚪的头部
     this.head = new paper.Shape.Ellipse({
     //   center: [0, 0],
@@ -54,8 +41,8 @@ const Boid = paper.Base.extend({
       strokeCap: 'round'
     })
     for (let i = 0; i < Math.min(3, this.amount); i++) { this.shortPath.add(new paper.Point()) }
-  },
-  run: function(boids, groupTogether) {
+  }
+  run(boids, groupTogether) {
     // 记录当前蝌蚪位置
     this.lastLoc = this.position.clone()
     // 不排队
@@ -68,16 +55,16 @@ const Boid = paper.Base.extend({
     this.update()
     this.calculateTail()
     this.moveHead()
-  },
+  }
   // We accumulate a new acceleration each time based on three rules
-  flock: function(boids) {
+  flock(boids) {
     const separation = this.separate(boids).multiply(3)
     const alignment = this.align(boids)
     const cohesion = this.cohesion(boids)
     this.acceleration = this.acceleration.add(separation, alignment, cohesion)
     // 为什么acceleration会是一个点？
-  },
-  separate: function(boids) {
+  }
+  separate(boids) {
     const desiredSeperation = 60
     let steer = new paper.Point()
     let count = 0
@@ -101,11 +88,11 @@ const Boid = paper.Base.extend({
       steer.length = Math.min(steer.length, this.maxForce)
     }
     return steer
-  },
+  }
 
   // Alignment
   // For every nearby boid in the system, calculate the average velocity
-  align: function(boids) {
+  align(boids) {
     const neighborDist = 25
     let steer = new paper.Point()
     let count = 0
@@ -126,12 +113,12 @@ const Boid = paper.Base.extend({
       steer.length = Math.min(steer.length, this.maxForce)
     }
     return steer
-  },
+  }
 
   // Cohesion
   // For the average location (i.e. center) of all nearby boids,
   // calculate steering vector towards that location
-  cohesion: function(boids) {
+  cohesion(boids) {
     const neighborDist = 100
     let sum = new paper.Point()
     let count = 0
@@ -149,11 +136,11 @@ const Boid = paper.Base.extend({
       return this.steer(sum, false)
     }
     return sum
-  },
+  }
   // A method that calculates a steering vector towards a target
   // Takes a second argument, if true, it slows down as it approaches
   // the target
-  steer: function(target, slowdown) {
+  steer(target, slowdown) {
     let steer
     const desired = target.subtract(this.position)
     const distance = desired.length
@@ -168,14 +155,14 @@ const Boid = paper.Base.extend({
     steer = desired.subtract(this.vector)
     steer.length = Math.min(this.maxForce, steer.length)
     return steer
-  },
-  borders: function() {
+  }
+  borders() {
     // new paper.Point()返回的就是坐标原点
     const vector = new paper.Point()
     const position = this.position
     const radius = this.radius
     const size = paper.view.size
-    console.log('this-=================',this)
+    console.log('this-=================', this)
     console.log('size:', size)
     if (position.x < -radius) vector.x = size.width + radius
     if (position.y < -radius) vector.y = size.height + radius
@@ -188,8 +175,8 @@ const Boid = paper.Base.extend({
         segments[i].point = segments[i].point.add(vector)
       }
     }
-  },
-  update: function() {
+  }
+  update() {
     // Update velocity
     this.vector = this.vector.add(this.acceleration)
     // Limit speed (vector#limit?)
@@ -197,8 +184,8 @@ const Boid = paper.Base.extend({
     this.position = this.position.add(this.vector)
     // Reset acceleration to 0 each cycle
     this.acceleration = new paper.Point()
-  },
-  calculateTail: function() {
+  }
+  calculateTail() {
     //   处理颈部及尾巴
     const segments = this.path.segments
     const shortSegments = this.shortPath.segments
@@ -212,29 +199,24 @@ const Boid = paper.Base.extend({
     // console.log('this.vector:', this.vector)
     // console.log('------------this.vector:', this.vector.project(new paper.Point(0, 0)))
 
-    let lastVector = this.vector.rotate(180, new paper.Point((0,0)))
+    let lastVector = this.vector.rotate(180, new paper.Point((0, 0)))
     for (let i = 1; i < this.amount; i++) {
       const vector = segments[i].point.subtract(point)
       this.count += speed * 10
       const wave = Math.sin((this.count + i * 3) / 300)
-      let sway = lastVector.rotate(90).normalize(wave);
-      point = point.add(lastVector.normalize(pieceLength), sway);
+      const sway = lastVector.rotate(90).normalize(wave)
+      point = point.add(lastVector.normalize(pieceLength), sway)
       segments[i].point = point
       if (i < 3) { shortSegments[i].point = point }
       lastVector = vector
     }
     this.path.smooth()
-  },
-  moveHead: function() {
+  }
+  moveHead() {
     this.head.position = this.position
     this.head.rotation = this.vector.angle
-  },
-  arrive: function(target) {
+  }
+  arrive(target) {
     this.acceleration = this.acceleration.add(this.steer(target, true))
   }
-
-})
-
-export {
-  Boid
 }
