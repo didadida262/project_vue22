@@ -1,27 +1,32 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
 import paper from 'paper'
 
 export class Boid {
   constructor(position, maxSpeed, maxForce) {
+    // 小蝌蚪坐标信息
     this.position = position.clone()
-    this.amount = Math.random() * 0.5 * 10 + 10
+    // 尾巴点数【10， 15）
+    this.amount = Math.random() * 5 + 20
+    // 蝌蚪移动速度，此值极其重要，关系到蝌蚪实例的生命力
     this.acceleration = new paper.Point()
+    // 越界时用于更新当前蝌蚪的position
     this.vector = new paper.Point.random()
     this.radius = 30
     const strength = Math.random() * 0.5
     // 取值范围:[10, 10.5),干嘛的未知
     this.maxSpeed = maxSpeed + strength
-
     // 取值范围:[0.05, 0.55),干嘛的未知
     this.maxForce = maxForce + strength
     this.count = 0
     this.createItems()
   }
+  // 定义蝌蚪的身体组成
   createItems() {
     // 椭圆，代表蝌蚪的头部
     this.head = new paper.Shape.Ellipse({
     //   center: [0, 0],
       center: [this.position.x, this.position.y],
-      size: [13, 8],
+      size: [15, 10],
       fillColor: 'orange'
     })
     // 尾巴
@@ -40,7 +45,9 @@ export class Boid {
       strokeWidth: 4,
       strokeCap: 'round'
     })
-    for (let i = 0; i < Math.min(3, this.amount); i++) { this.shortPath.add(new paper.Point()) }
+    for (let i = 0; i < 3; i++) {
+      this.shortPath.add(new paper.Point())
+    }
   }
   run(boids, groupTogether) {
     // 记录当前蝌蚪位置
@@ -51,10 +58,26 @@ export class Boid {
     } else {
       this.align(boids)
     }
+    // 如果越界，对身体各组件位置处理
     this.borders()
+    this.changeColor()
     this.update()
     this.calculateTail()
     this.moveHead()
+  }
+  randomColor() {
+	  let color = '#'
+	  // for循环中，如果后面仅有一条语句，{}可省略不写
+	  // 同上面方法
+	   for (let i = 0; i < 8; i++) color += parseInt(Math.random() * 16).toString(16)
+	   return color
+  }
+  changeColor() {
+    const colors = ['red', 'orange', 'yellow', 'green']
+    const newC = this.randomColor()
+    this.head.fillColor = newC
+    this.shortPath.strokeColor = newC
+    this.path.strokeColor = newC
   }
   // We accumulate a new acceleration each time based on three rules
   flock(boids) {
@@ -162,20 +185,21 @@ export class Boid {
     const position = this.position
     const radius = this.radius
     const size = paper.view.size
-    console.log('this-=================', this)
-    console.log('size:', size)
+    // 越界判断
     if (position.x < -radius) vector.x = size.width + radius
     if (position.y < -radius) vector.y = size.height + radius
     if (position.x > size.width + radius) vector.x = -size.width - radius
     if (position.y > size.height + radius) vector.y = -size.height - radius
     if (!vector.isZero()) {
       this.position = this.position.add(vector)
+      // 批量更新尾巴节点的位置，使得呈现出去又进来的效果
       const segments = this.path.segments
       for (let i = 0; i < this.amount; i++) {
         segments[i].point = segments[i].point.add(vector)
       }
     }
   }
+  // 顾名思义，每帧更新蝌蚪位置position
   update() {
     // Update velocity
     this.vector = this.vector.add(this.acceleration)
@@ -196,8 +220,6 @@ export class Boid {
     shortSegments[0].point = this.position.clone()
 
     // Chain goes the other way than the movement
-    // console.log('this.vector:', this.vector)
-    // console.log('------------this.vector:', this.vector.project(new paper.Point(0, 0)))
 
     let lastVector = this.vector.rotate(180, new paper.Point((0, 0)))
     for (let i = 1; i < this.amount; i++) {
