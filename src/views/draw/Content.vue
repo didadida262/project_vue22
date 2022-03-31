@@ -1,6 +1,6 @@
 <template>
-  <div class="content" ref="content" @wheel="onwheel">
-    <canvas resize id="main_canvas" class="main_canvas" ref='main_canvas'/>
+  <div ref="content" class="content" @wheel="onwheel">
+    <canvas id="main_canvas" ref="main_canvas" resize class="main_canvas" />
   </div>
 </template>
 
@@ -14,7 +14,6 @@ export default {
   methods: {
     onwheel(e) {
       this.$emit('shortCut', e)
- 
     }
   }
 }

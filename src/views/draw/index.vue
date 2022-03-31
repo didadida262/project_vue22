@@ -1,11 +1,12 @@
 <template>
   <div class="draw-container">
     <Tool
-     @changeRa="selectBrush" 
+      @changeRa="selectBrush"
     />
     <Content
-     ref='Content' 
-     @shortCut="onWheel"/>
+      ref="Content"
+      @shortCut="onWheel"
+    />
   </div>
 </template>
 
@@ -23,7 +24,7 @@ export default {
   },
   data() {
     return {
-      info:'hhvcg',
+      info: 'hhvcg',
       myPath: null,
       myPaths: [],
       ra: 20,
@@ -55,17 +56,40 @@ export default {
       paper.setup(canvas)
       this.paper = paper
       console.log('paper:', this.paper)
-      this.image.raster = new paper.Raster(this.image.url);
-      this.image.raster.smoothing = false;
+      this.image.raster = new paper.Raster(this.image.url)
+      this.image.raster.smoothing = false
 
       this.image.raster.onLoad = () => {
         console.log('图片加载成功！！！')
       }
+      const viewheight = this.paper.view.size.height
+      const viewwidth = this.paper.view.size.width
+      const imgwidth = this.image.raster.width
+      const imgheight = this.image.raster.height
+      // 按比例放大或缩小
+      let ratio = null
+      if (imgwidth >= imgheight) {
+        ratio = viewwidth / imgwidth
+      } else {
+        ratio = viewheight / imgheight
+      }
+      ratio = Math.floor(ratio)
+      console.log('ratio:', ratio)
+      // this.image.raster.width = imgwidth * ratio
+      // this.image.raster.height = imgheight * ratio
       this.image.raster.position = this.paper.view.center
+      console.log('this.paper.view.center:', this.paper.view.center)
 
-    // 绑定各种事件函数
+      console.log('this.image.raster:', this.image.raster)
+      console.log('this.image.width', this.image.raster.width)
+      console.log('this.image.height', this.image.raster.height)
+      console.log('this.paper.view', this.paper.view.size)
+
+      // 绑定各种事件函数
       this.tool = new paper.Tool()
       this.tool.onMouseDown = (e) => {
+        console.log('click', e.point)
+
         // 画线条
         this.myPath = new paper.Path()
         this.myPath.strokeColor = 'red'
@@ -90,34 +114,32 @@ export default {
     },
     // copy的函数，慎重使用
     changeZoom(delta, p) {
-      let oldZoom = this.paper.view.zoom;
-      let c = this.paper.view.center;
-      let factor = 0.3 + oldZoom;
+      const oldZoom = this.paper.view.zoom
+      const c = this.paper.view.center
+      const factor = 0.3 + oldZoom
       console.log('oldZoom:', oldZoom)
       console.log('factor:', factor)
       console.log('c:', c)
 
-      let zoom = delta < 0 ? oldZoom * factor : oldZoom / factor;
-      let beta = oldZoom / zoom;
-      let pc = p.subtract(c);
-      let a = p.subtract(pc.multiply(beta)).subtract(c);
+      const zoom = delta < 0 ? oldZoom * factor : oldZoom / factor
+      const beta = oldZoom / zoom
+      const pc = p.subtract(c)
+      const a = p.subtract(pc.multiply(beta)).subtract(c)
 
-      return { zoom: zoom, offset: a };
-    },    
+      return { zoom: zoom, offset: a }
+    },
     onWheel(e) {
-      console.log('滚轮事件:', e)
-      this.paper.view.center = new paper.Point(e.x, e.y)
-      console.log('e:', e)
-      if (e.deltaY < 0) {
-        this.paper.view.zoom = this.paper.view.zoom + 1
-      }
-      if (e.deltaY > 0) {
-        if (this.paper.view.zoom > 0) {
-          this.paper.view.zoom = this.paper.view.zoom - 1
-        }
-      }
-
-
+      // console.log('滚轮事件:', e)
+      // this.paper.view.center = new paper.Point(e.x, e.y)
+      // console.log('e:', e)
+      // if (e.deltaY < 0) {
+      //   this.paper.view.zoom = this.paper.view.zoom + 1
+      // }
+      // if (e.deltaY > 0) {
+      //   if (this.paper.view.zoom > 0) {
+      //     this.paper.view.zoom = this.paper.view.zoom - 1
+      //   }
+      // }
 
       // let viewPosition = paper.view.viewToProject(
       //     new paper.Point(e.offsetX, e.offsetY)
