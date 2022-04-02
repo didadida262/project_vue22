@@ -134,8 +134,8 @@ export default {
       //   segments: path.segements
       // })
 
-      // this.test = path.clone()
-      // this.test.strokeCap = 'square'
+      this.test = path.clone()
+      this.test.strokeCap = 'square'
 
       this.test.unit(path)
       
