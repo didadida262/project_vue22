@@ -24,6 +24,7 @@ export default {
   },
   data() {
     return {
+      test: null,
       info: 'hhvcg',
       myPath: null,
       myPaths: [],
@@ -56,6 +57,8 @@ export default {
       paper.setup(canvas)
       this.paper = paper
       console.log('paper:', this.paper)
+      this.test = new paper.Path()
+
       this.image.raster = new paper.Raster(this.image.url)
       this.image.raster.smoothing = false
 
@@ -74,16 +77,16 @@ export default {
         ratio = viewheight / imgheight
       }
       ratio = Math.floor(ratio)
-      console.log('ratio:', ratio)
+      // console.log('ratio:', ratio)
       // this.image.raster.width = imgwidth * ratio
       // this.image.raster.height = imgheight * ratio
       this.image.raster.position = this.paper.view.center
-      console.log('this.paper.view.center:', this.paper.view.center)
+      // console.log('this.paper.view.center:', this.paper.view.center)
 
-      console.log('this.image.raster:', this.image.raster)
-      console.log('this.image.width', this.image.raster.width)
-      console.log('this.image.height', this.image.raster.height)
-      console.log('this.paper.view', this.paper.view.size)
+      // console.log('this.image.raster:', this.image.raster)
+      // console.log('this.image.width', this.image.raster.width)
+      // console.log('this.image.height', this.image.raster.height)
+      // console.log('this.paper.view', this.paper.view.size)
 
       // 绑定各种事件函数
       this.tool = new paper.Tool()
@@ -91,18 +94,30 @@ export default {
         console.log('click', e.point)
 
         // 画线条
-        this.myPath = new paper.Path()
+        this.myPath = new paper.Path({
+          strokeCap: 'round'
+        })
         this.myPath.strokeColor = 'red'
         this.myPath.strokeWidth = this.ra
         this.myPath.add(e.point)
       }
-      this.tool.onMouseUp = () => {
+      this.tool.onMouseUp = (e) => {
+        console.log('当前item--->',this.myPath)
+        // 点击一次也给他画上
+        if (this.myPath.segments.length === 1) {
+          this.myPath.add(e.point)
+        }
         this.myPaths.push(this.myPath)
         console.log('this.myPaths:', this.myPaths)
         console.log('抬起')
+        this.unite(this.myPath)
+        this.removeMyPath()
       }
       this.tool.onMouseDrag = (e) => {
+        console.log('drag') 
         this.myPath.add(e.point)
+      // this.myPath.flatten(1);
+
       }
       this.tool.onKeyDown = (e) => {
         if (e.key === 'space') {
@@ -112,6 +127,30 @@ export default {
         }
       }
     },
+    unite(path) {
+      console.log('输出path:', path)
+      // this.test = new this.paper.CompoundPath()
+      // this.test = new paper.Path({
+      //   segments: path.segements
+      // })
+
+      // this.test = path.clone()
+      // this.test.strokeCap = 'square'
+
+      this.test.unit(path)
+      
+      // this.myPaths.forEach(path => {
+      //   let t = path.clone()
+      //   t.strokeCap = 'round'
+      // })
+    },
+    removeMyPath () {
+      if (this.myPath != null) {
+        this.myPath.fullySelected = false
+        this.myPath.remove();
+        this.myPath = null
+      }
+    },    
     // copy的函数，慎重使用
     changeZoom(delta, p) {
       const oldZoom = this.paper.view.zoom

@@ -65,6 +65,7 @@ export class Boid {
     this.calculateTail()
     this.moveHead()
   }
+  // 随机生成颜色，每帧更新颜色实现蹦迪的效果
   randomColor() {
 	  let color = '#'
 	  // for循环中，如果后面仅有一条语句，{}可省略不写
