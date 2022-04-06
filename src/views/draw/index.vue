@@ -24,7 +24,10 @@ export default {
   },
   data() {
     return {
+      lastPoint: null,
       test: null,
+      brush: null,
+      selection: null,
       info: 'hhvcg',
       myPath: null,
       myPaths: [],
@@ -57,7 +60,6 @@ export default {
       paper.setup(canvas)
       this.paper = paper
       console.log('paper:', this.paper)
-      this.test = new paper.Path()
 
       this.image.raster = new paper.Raster(this.image.url)
       this.image.raster.smoothing = false
@@ -88,35 +90,103 @@ export default {
       // console.log('this.image.height', this.image.raster.height)
       // console.log('this.paper.view', this.paper.view.size)
 
+      // 画一个圆
+      this.circle = new paper.Path.Circle(new paper.Point(100, 100), 10)
+      this.circle.strokeColor = 'red'
+      
+
       // 绑定各种事件函数
+      this.paper.view.onFrame = this.onFrame
+
       this.tool = new paper.Tool()
       this.tool.onMouseDown = (e) => {
-        console.log('click', e.point)
+        // 扫把头版
+        this.selection = new paper.Path()
+        this.selection.fillColor  = {
+          hue: Math.random() * 360,
+          saturation: 1,
+          brightness: 1
+        }
+        this.selection.add(e.point)
 
-        // 画线条
-        this.myPath = new paper.Path({
-          strokeCap: 'round'
-        })
-        this.myPath.strokeColor = 'red'
-        this.myPath.strokeWidth = this.ra
-        this.myPath.add(e.point)
+
+
+        // 大小葫芦版本
+        // this.selection = new paper.Path()
+        // this.selection.fillColor  = {
+        //   hue: Math.random() * 360,
+        //   // 饱和度对比度
+        //   saturation: 1,
+        //   brightness: 1
+        // };
+        // this.selection.add(e.point)
+
+        // // // // 出现断画的圆形尝试
+        // this.brush = new paper.Path.Circle({
+        //   center: e.point,
+        //   radius: 10,
+        //   strokeColor: 'black'
+        // })
+        // const newSe = this.selection.unite(this.brush.path)
+        // this.selection = newSe;
+
+        // 笔刷正统版实现
+        // this.myPath = new paper.Path({
+        //   strokeCap: 'square',
+        //   strokeWidth: 20,
+        //   strokeColor: 'red'
+        // })
+        // this.myPath.add(e.point)
       }
       this.tool.onMouseUp = (e) => {
-        console.log('当前item--->',this.myPath)
-        // 点击一次也给他画上
-        if (this.myPath.segments.length === 1) {
-          this.myPath.add(e.point)
-        }
-        this.myPaths.push(this.myPath)
-        console.log('this.myPaths:', this.myPaths)
-        console.log('抬起')
-        this.unite(this.myPath)
-        this.removeMyPath()
+        console.log('e:',e)
+        console.log(this.selection)
+        this.selection.closed = true
       }
       this.tool.onMouseDrag = (e) => {
-        console.log('drag') 
-        this.myPath.add(e.point)
-      // this.myPath.flatten(1);
+        // If this is the first drag event,
+        // add the strokes at the start:
+        if(e.count == 0) {
+          this.addStrokes(e.middlePoint, e.delta.multiply(-1));
+        } else {
+          const bottom = e.point.add(e.delta.rotate(90).normalize().multiply(10));
+          const top = e.point.subtract(e.delta.rotate(90).normalize().multiply(10));
+
+          this.selection.add(top);
+          this.selection.insert(0, bottom);
+        }
+        this.selection.smooth();
+        
+        // this.lastPoint = e.middlePoint;
+
+        // 葫芦版本
+        // let step = e.delta;
+        // step.angle += 90;
+        // const t = new paper.Path()
+        // let top = e.middlePoint.add(10);
+        // let bottom = e.middlePoint.subtract(10);
+        
+        // this.selection.add(top);
+        // this.selection.insert(0, bottom);
+        // this.selection.smooth();
+
+
+
+
+          // this.myPath.add(e.point)
+
+        // this.myPath.flatten(1);
+        // this.brush = new paper.Path.Circle({
+        //   center: e.point,
+        //   radius: 10,
+        //   strokeColor: 'black'
+        // })
+        // const newSe = this.selection.unite(this.brush.path)
+        // this.selection.remove();
+        // this.selection = newSe;
+        // this.selection.add(e.point)
+
+        // this.myPath.add(e.point)
 
       }
       this.tool.onKeyDown = (e) => {
@@ -127,17 +197,32 @@ export default {
         }
       }
     },
+    addStrokes (point, delta) {
+      console.log('首当其冲的点')
+      // 原版的齿轮状
+      let step = delta.rotate(90);
+      let strokePoints = 6 * 2 + 1;
+      point = point.subtract(step.divide(2));
+      step = step.divide(strokePoints - 1);
+      for(let i = 0; i < strokePoints; i++) {
+        let strokePoint = point.add(step.multiply(i));
+        let offset = delta.multiply((Math.random() * 0.3 + 0.1)) ;
+        if(i % 2) {
+          offset = offset.multiply(-1);
+        }
+        strokePoint = strokePoint.add(offset);
+        this.selection.insert(0, strokePoint);
+      }
+      
+      // 简易版,直接一个圆
+          // const top = e.middlePoint.add(e.delta.rotate(90).normalize().multiply(10));
+
+      // this.selection.insert(0, point.add(delta.normalize().multiply(10)));
+
+    },
     unite(path) {
       console.log('输出path:', path)
-      // this.test = new this.paper.CompoundPath()
-      // this.test = new paper.Path({
-      //   segments: path.segements
-      // })
 
-      this.test = path.clone()
-      this.test.strokeCap = 'square'
-
-      this.test.unit(path)
       
       // this.myPaths.forEach(path => {
       //   let t = path.clone()
@@ -150,7 +235,13 @@ export default {
         this.myPath.remove();
         this.myPath = null
       }
-    },    
+    },  
+    removeItem(item) {
+      if (item.path != null) {
+        item.path.remove();
+        item.path = null;
+      }
+    },      
     // copy的函数，慎重使用
     changeZoom(delta, p) {
       const oldZoom = this.paper.view.zoom
@@ -191,6 +282,8 @@ export default {
       // // this.image.scale = 1 / transform.zoom;
       // this.paper.view.zoom = transform.zoom + Math.pow(Math.E, -6);
       // this.paper.view.center = this.paper.view.center.add(transform.offset);
+    },
+    onFrame () {
     }
   }
 }
