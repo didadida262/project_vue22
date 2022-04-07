@@ -24,6 +24,7 @@ export default {
   },
   data() {
     return {
+      strokeEnds: 6,
       currentTool: null,
       lastPoint: null,
       test: null,
@@ -112,7 +113,6 @@ export default {
       }
     },
     addStrokes (point, delta) {
-      console.log('首当其冲的点')
       // 原版的齿轮状
       let step = delta.rotate(90);
       let strokePoints = 6 * 2 + 1;
@@ -214,6 +214,7 @@ export default {
       } else if (newVal === 'brush') {
         // 绑定笔刷事件
         this.tool.onMouseDown = (e) => {
+          console.log('开始点:', e)
           this.selection = new paper.Path()
           this.selection.fillColor =  {
             hue: Math.random() * 360,
@@ -234,6 +235,7 @@ export default {
           this.selection.smooth()
         }
         this.tool.onMouseUp = (e) => {
+          console.log('结束点:', e)
           let bot = e.point.add(e.delta.rotate(90).normalize().multiply(10))
           let top = e.point.subtract(e.delta.rotate(90).normalize().multiply(10))
           this.selection.add(bot)
@@ -269,14 +271,41 @@ export default {
           this.selection.closed = true
           this.selection.smooth()
         }
-      } else if (newVal === 'brum_brush') {
+      } else if (newVal === 'broom_brush') {
+        this.tool.fixedDistance = 30;
+        this.tool.maxDistance = 45;
         // 扫把头
         this.tool.onMouseDown = (e) => {
+          console.log('开始点:', e)
           this.selection = new paper.Path()
+          this.selection.fillColor = {
+            hue: Math.random() * 360,
+            saturation: 1,
+            brightness: 1
+          };          
         }
         this.tool.onMouseDrag = (e) => {
+          if(e.count == 0) {
+            this.addStrokes(e.middlePoint, e.delta * -1);
+          } else {          
+            let step = e.delta.divide(2);
+            step.angle += 90;
+
+            let top = e.middlePoint.add(step)
+            let bottom = e.middlePoint.subtract(step)
+            this.selection.add(top);
+            this.selection.insert(0, bottom);          
+          }
+          this.selection.smooth()
+          this.lastPoint = e.middlePoint.clone()
         }
         this.tool.onMouseUp = (e) => {
+          console.log('结束点:', e)
+          let delta = e.point.subtract(this.lastPoint)
+          delta.length = this.tool.maxDistance;
+          this.addStrokes(e.point, delta);
+          this.selection.closed = true
+          this.selection.smooth()
         }        
       }
     }
