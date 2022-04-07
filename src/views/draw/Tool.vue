@@ -1,22 +1,36 @@
 <template>
   <div class="tool">
-    <div
-      class="el-icon-brush icon"
-      :class="{'is-active':isActive === 'brush'}"
-      @click="brush"
-    />
+    <el-tooltip class="item" effect="dark" content="brush" placement="right">
+      <div
+        class="el-icon-brush icon"
+        :class="{'is-active':isActive === 'brush'}"
+        @click="changeBrush('brush')"
+      />
+    </el-tooltip>
     <el-divider />
-    <div
-      class="el-icon-edit icon"
-      :class="{'is-active':isActive === 'brush_small'}"
-      @click="brush_small"
-    />
+    <el-tooltip class="item" effect="dark" content="pencil" placement="right">
+      <div
+        class="el-icon-edit icon"
+        :class="{'is-active':isActive === 'pencil'}"
+        @click="changeBrush('pencil')"
+      />
+    </el-tooltip>
     <el-divider />
-    <div
-      class="el-icon-full-screen icon"
-      :class="{'is-active':isActive === 'bbox'}"
-      @click="bbox"
-    />    
+    <el-tooltip class="item" effect="dark" content="fat_brush" placement="right">
+      <div
+        class="el-icon-full-screen icon"
+        :class="{'is-active':isActive === 'fat_brush'}"
+        @click="changeBrush('fat_brush')"
+      />
+    </el-tooltip>
+    <el-divider />
+    <el-tooltip class="item" effect="dark" content="broom_brush" placement="right">
+      <div
+        class="el-icon-ice-cream-round icon"
+        :class="{'is-active':isActive === 'broom_brush'}"
+        @click="changeBrush('broom_brush')"
+      />       
+    </el-tooltip>
   </div>
 </template>
 
@@ -26,22 +40,14 @@ export default {
   name: 'Tool',
   data() {
     return {
-      isActive: 'brush'
+      isActive: ''
     }
   },
   methods: {
-    bbox() {
-      this.isActive = 'bbox'
-      this.$emit('changeRa', 'bbox')
+    changeBrush(brush) {
+      this.isActive = brush
+      this.$emit('handleChange', brush)
     },
-    brush() {
-      this.isActive = 'brush'
-      this.$emit('changeRa', 20)
-    },
-    brush_small() {
-      this.isActive = 'brush_small'
-      this.$emit('changeRa', 0.1)
-    }
   },
   created() {
     console.log('this.info--->', this.info)

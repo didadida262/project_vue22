@@ -1,7 +1,7 @@
 <template>
   <div class="draw-container">
     <Tool
-      @changeRa="selectBrush"
+      @handleChange="handleChange"
     />
     <Content
       ref="Content"
@@ -24,6 +24,7 @@ export default {
   },
   data() {
     return {
+      currentTool: null,
       lastPoint: null,
       test: null,
       brush: null,
@@ -31,7 +32,6 @@ export default {
       info: 'hhvcg',
       myPath: null,
       myPaths: [],
-      ra: 20,
       paper: null,
       tool: null,
       image: {
@@ -48,12 +48,16 @@ export default {
     this.init()
   },
   methods: {
-    selectBrush(ra) {
-      if (ra === 'bbox') {
-        console.warn('选中标注框')
-      } else {
-        this.ra = ra
-      }
+    handleChange(e) {
+      this.selection = null
+      this.tool.onMouseUp = () => {}
+      this.tool.onMouseDown = () => {}
+      this.tool.onMouseDrag = () => {}
+      this.currentTool = e
+      this.$message({
+        message: `切换画笔至${e}`,
+        type: 'success'
+      });      
     },
     init() {
       const canvas = this.$refs.Content.$refs.main_canvas
@@ -91,104 +95,14 @@ export default {
       // console.log('this.paper.view', this.paper.view.size)
 
       // 画一个圆
-      this.circle = new paper.Path.Circle(new paper.Point(100, 100), 10)
-      this.circle.strokeColor = 'red'
+      // this.circle = new paper.Path.Circle(new paper.Point(100, 100), 10)
+      // this.circle.strokeColor = 'red'
       
 
       // 绑定各种事件函数
       this.paper.view.onFrame = this.onFrame
 
       this.tool = new paper.Tool()
-      this.tool.onMouseDown = (e) => {
-        // 扫把头版
-        this.selection = new paper.Path()
-        this.selection.fillColor  = {
-          hue: Math.random() * 360,
-          saturation: 1,
-          brightness: 1
-        }
-        this.selection.add(e.point)
-
-
-
-        // 大小葫芦版本
-        // this.selection = new paper.Path()
-        // this.selection.fillColor  = {
-        //   hue: Math.random() * 360,
-        //   // 饱和度对比度
-        //   saturation: 1,
-        //   brightness: 1
-        // };
-        // this.selection.add(e.point)
-
-        // // // // 出现断画的圆形尝试
-        // this.brush = new paper.Path.Circle({
-        //   center: e.point,
-        //   radius: 10,
-        //   strokeColor: 'black'
-        // })
-        // const newSe = this.selection.unite(this.brush.path)
-        // this.selection = newSe;
-
-        // 笔刷正统版实现
-        // this.myPath = new paper.Path({
-        //   strokeCap: 'square',
-        //   strokeWidth: 20,
-        //   strokeColor: 'red'
-        // })
-        // this.myPath.add(e.point)
-      }
-      this.tool.onMouseUp = (e) => {
-        console.log('e:',e)
-        console.log(this.selection)
-        this.selection.closed = true
-      }
-      this.tool.onMouseDrag = (e) => {
-        // If this is the first drag event,
-        // add the strokes at the start:
-        if(e.count == 0) {
-          this.addStrokes(e.middlePoint, e.delta.multiply(-1));
-        } else {
-          const bottom = e.point.add(e.delta.rotate(90).normalize().multiply(10));
-          const top = e.point.subtract(e.delta.rotate(90).normalize().multiply(10));
-
-          this.selection.add(top);
-          this.selection.insert(0, bottom);
-        }
-        this.selection.smooth();
-        
-        // this.lastPoint = e.middlePoint;
-
-        // 葫芦版本
-        // let step = e.delta;
-        // step.angle += 90;
-        // const t = new paper.Path()
-        // let top = e.middlePoint.add(10);
-        // let bottom = e.middlePoint.subtract(10);
-        
-        // this.selection.add(top);
-        // this.selection.insert(0, bottom);
-        // this.selection.smooth();
-
-
-
-
-          // this.myPath.add(e.point)
-
-        // this.myPath.flatten(1);
-        // this.brush = new paper.Path.Circle({
-        //   center: e.point,
-        //   radius: 10,
-        //   strokeColor: 'black'
-        // })
-        // const newSe = this.selection.unite(this.brush.path)
-        // this.selection.remove();
-        // this.selection = newSe;
-        // this.selection.add(e.point)
-
-        // this.myPath.add(e.point)
-
-      }
       this.tool.onKeyDown = (e) => {
         if (e.key === 'space') {
           const layer = this.paper.project.activeLayer
@@ -222,12 +136,6 @@ export default {
     },
     unite(path) {
       console.log('输出path:', path)
-
-      
-      // this.myPaths.forEach(path => {
-      //   let t = path.clone()
-      //   t.strokeCap = 'round'
-      // })
     },
     removeMyPath () {
       if (this.myPath != null) {
@@ -284,6 +192,93 @@ export default {
       // this.paper.view.center = this.paper.view.center.add(transform.offset);
     },
     onFrame () {
+    }
+  },
+  watch: {
+    currentTool(newVal, oldVal) {
+      if (newVal === 'pencil') {
+        // 绑定铅笔的事件
+        this.tool.onMouseDown = (e) => {
+          this.selection = new paper.Path({
+            strokeColor: '#00000',
+            strokeWidth: 1
+          })
+          this.selection.add(e.point)
+        }
+        this.tool.onMouseDrag = (e) => {
+          this.selection.add(e.point)
+        }
+        this.tool.onMousUp = (e) => {
+          this.selection = null
+        }
+      } else if (newVal === 'brush') {
+        // 绑定笔刷事件
+        this.tool.onMouseDown = (e) => {
+          this.selection = new paper.Path()
+          this.selection.fillColor =  {
+            hue: Math.random() * 360,
+            saturation: 1,
+            brightness: 1
+          };
+          let bot = e.point.add(e.delta.rotate(90).normalize().multiply(10))
+          let top = e.point.subtract(e.delta.rotate(90).normalize().multiply(10))
+          this.selection.add(bot)
+          this.selection.insert(0, top)
+          this.selection.smooth()
+        }
+        this.tool.onMouseDrag = (e) => {
+          let bot = e.point.add(e.delta.rotate(90).normalize().multiply(10))
+          let top = e.point.subtract(e.delta.rotate(90).normalize().multiply(10))
+          this.selection.add(bot)
+          this.selection.insert(0, top)
+          this.selection.smooth()
+        }
+        this.tool.onMouseUp = (e) => {
+          let bot = e.point.add(e.delta.rotate(90).normalize().multiply(10))
+          let top = e.point.subtract(e.delta.rotate(90).normalize().multiply(10))
+          this.selection.add(bot)
+          this.selection.insert(0, top)
+          this.selection.smooth()
+        }
+      } else if (newVal === 'fat_brush') {
+        this.tool.onMouseDown = (e) => {
+          this.selection = new paper.Path()
+          this.selection.fillColor =  {
+            hue: Math.random() * 360,
+            saturation: 1,
+            brightness: 1
+          };
+          this.selection.add(e.point)          
+        }
+        this.tool.onMouseDrag = (e) => {
+          let step = e.delta.divide(2)
+          step.angle += 90
+          
+          let top = e.middlePoint.add(step);
+          let bottom = e.middlePoint.subtract(step);
+          
+          this.selection.add(top);
+          this.selection.insert(0, bottom);
+          this.selection.smooth();          
+        }
+        this.tool.onMouseUp = (e) => {
+          console.log('e.delta--->',e.delta)
+          console.log('e.delta3--->',e.delta.multiply(3))
+          
+          this.selection.add(e.point)
+          this.selection.closed = true
+          this.selection.smooth()
+        }
+      } else if (newVal === 'brum_brush') {
+        // 扫把头
+        this.tool.onMouseDown = (e) => {
+          this.selection = new paper.Path()
+        }
+        this.tool.onMouseDrag = (e) => {
+        }
+        this.tool.onMouseUp = (e) => {
+        }        
+      }
     }
   }
 }
