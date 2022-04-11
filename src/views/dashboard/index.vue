@@ -1,7 +1,12 @@
 <template>
   <div class="dashboard">
-    <div class="dashboard-container" style="border: 1px solid green">
+    <div class="dashboard-container">
       <el-button @click="test">测试内存</el-button>      
+      <div style="border:1px solid red;width:800px;height:300px">
+        <div class="inner">
+          
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -118,6 +123,12 @@ export default {
   }
   &-container {
     width: 100%;
+    .inner {
+      width:100px;
+      background-color: red;
+      height:100px;
+      transform: scale(1,1)
+    }
   }
 }
 </style>

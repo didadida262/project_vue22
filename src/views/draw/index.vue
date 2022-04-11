@@ -60,6 +60,21 @@ export default {
         type: 'success'
       });      
     },
+    // 对加载图像自适应
+    fit() {
+      // let frame = document.getElementById("frame")
+      // if (!!this.paper.view && !!this.image) {
+      //   let parentX = this.image.raster_width = this.image.raster.width
+      //   let parentY = this.image.raster_height = this.image.raster.height
+
+      //   this.paper.view.zoom = Math.min(
+      //     frame.clientWidth / (parentX + Math.pow(Math.E, -6)),
+      //     (frame.clientHeight - 100) / (parentY + Math.pow(Math.E, -6))
+      //   ) + Math.pow(Math.E, -6)
+      //   this.paper.view.setCenter(0, 0);
+      //   this.image.scale = 1 / this.paper.view.zoom;
+      // }
+    },
     init() {
       const canvas = this.$refs.Content.$refs.main_canvas
       paper.setup(canvas)
@@ -71,23 +86,27 @@ export default {
 
       this.image.raster.onLoad = () => {
         console.log('图片加载成功！！！')
+        // this.image.raster.sendToBack();
+        console.log('this.paper',this.paper)
+        this.fit()
       }
-      const viewheight = this.paper.view.size.height
-      const viewwidth = this.paper.view.size.width
-      const imgwidth = this.image.raster.width
-      const imgheight = this.image.raster.height
-      // 按比例放大或缩小
-      let ratio = null
-      if (imgwidth >= imgheight) {
-        ratio = viewwidth / imgwidth
-      } else {
-        ratio = viewheight / imgheight
-      }
-      ratio = Math.floor(ratio)
+
+      // const viewheight = this.paper.view.size.height
+      // const viewwidth = this.paper.view.size.width
+      // const imgwidth = this.image.raster.width
+      // const imgheight = this.image.raster.height
+      // // 按比例放大或缩小
+      // let ratio = null
+      // if (imgwidth >= imgheight) {
+      //   ratio = viewwidth / imgwidth
+      // } else {
+      //   ratio = viewheight / imgheight
+      // }
+      // ratio = Math.floor(ratio)
       // console.log('ratio:', ratio)
       // this.image.raster.width = imgwidth * ratio
       // this.image.raster.height = imgheight * ratio
-      this.image.raster.position = this.paper.view.center
+      // this.image.raster.position = this.paper.view.center
       // console.log('this.paper.view.center:', this.paper.view.center)
 
       // console.log('this.image.raster:', this.image.raster)
