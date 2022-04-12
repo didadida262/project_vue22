@@ -76,11 +76,11 @@ export default {
           frame.clientWidth / (parentX + Math.pow(Math.E, -6)),
           (frame.clientHeight - 100) / (parentY + Math.pow(Math.E, -6))
         ) + Math.pow(Math.E, -6)
-        // this.paper.view.zoom = ratio
-        this.paper.view.zoom = Math.min(w, h)
+        this.paper.view.zoom = ratio
+        // this.paper.view.zoom = Math.min(w, h)
         // console.log('this.paper.view:', JSON.stringify(this.paper.view.center))
         this.paper.view.setCenter(0, 0);
-        // this.image.scale = 1 / this.paper.view.zoom;
+        this.image.scale = this.paper.view.zoom;
         console.log('this.image:', this.image)
     },
     init() {
@@ -194,15 +194,32 @@ export default {
       return { zoom: zoom, offset: a }
     },
     onWheel(e) {
-      const point = {x: e.x, y: e.y} 
-      console.log('滚动点:', point)
-      if (e.wheelDelta > 0) {
-        console.log('上滚动----放大')
-      } else if (e.wheelDelta < 0) {
-        console.log('下滚动----缩小')
-      }
+      const point = {x: e.x, y: e.y}
+      console.log('滚动点:', e)
+      // if (e.wheelDelta > 0) {
+      //   console.log('上滚动----放大')
+      //   this.paper.view.setCenter(new paper.Point({x: e.x, y: e.y}))
+      //   this.paper.view.zoom = this.paper.view.zoom +  0.5
+      // } else if (e.wheelDelta < 0) {
+      //   console.log('下滚动----缩小')
+      // }
+      let view = this.paper.view
+      let viewPosition = view.viewToProject(
+          new paper.Point(e.offsetX, e.offsetY)
+      );
+
+      let transform = this.changeZoom(e.deltaY, viewPosition);
+      this.image.scale = 1 / transform.zoom;
+      this.paper.view.zoom = transform.zoom + Math.pow(Math.E, -6);
+      this.paper.view.center = view.center.add(transform.offset);
     },
     onFrame () {
+    },
+    realXY (point) {
+      return {
+        x: point.x * this.image.scale,
+        y: point.y * this.image.scale
+      }
     },
     onMouseDown (e) {
       console.log('click:', e.point)
