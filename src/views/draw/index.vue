@@ -62,24 +62,23 @@ export default {
     },
     // 对加载图像自适应
     fit() {
-      // let frame = document.getElementById("frame")
-      // if (!!this.paper.view && !!this.image) {
-      //   let parentX = this.image.raster_width = this.image.raster.width
-      //   let parentY = this.image.raster_height = this.image.raster.height
+      const frame = this.$refs.Content.$refs.content
+      let parentX = this.image.raster.width
+      let parentY = this.image.raster.height
+      console.log('parentX:',parentX)
+      console.log('parentY:',parentY)
 
-      //   this.paper.view.zoom = Math.min(
-      //     frame.clientWidth / (parentX + Math.pow(Math.E, -6)),
-      //     (frame.clientHeight - 100) / (parentY + Math.pow(Math.E, -6))
-      //   ) + Math.pow(Math.E, -6)
-      //   this.paper.view.setCenter(0, 0);
-      //   this.image.scale = 1 / this.paper.view.zoom;
-      // }
+      this.paper.view.zoom = Math.min(
+        frame.clientWidth / (parentX + Math.pow(Math.E, -6)),
+        (frame.clientHeight - 100) / (parentY + Math.pow(Math.E, -6))
+      ) + Math.pow(Math.E, -6)
+      this.paper.view.setCenter(0, 0);
+      this.image.scale = 1 / this.paper.view.zoom;
     },
     init() {
       const canvas = this.$refs.Content.$refs.main_canvas
       paper.setup(canvas)
       this.paper = paper
-      console.log('paper:', this.paper)
 
       this.image.raster = new paper.Raster(this.image.url)
       this.image.raster.smoothing = false
@@ -123,6 +122,7 @@ export default {
       this.paper.view.onFrame = this.onFrame
 
       this.tool = new paper.Tool()
+      this.paper.view.onMouseDown = this.onMouseDown
       this.tool.onKeyDown = (e) => {
         if (e.key === 'space') {
           const layer = this.paper.project.activeLayer
@@ -211,6 +211,9 @@ export default {
       // this.paper.view.center = this.paper.view.center.add(transform.offset);
     },
     onFrame () {
+    },
+    onMouseDown (e) {
+      console.log('click:', e.point)
     }
   },
   watch: {
