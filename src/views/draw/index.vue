@@ -63,17 +63,25 @@ export default {
     // 对加载图像自适应
     fit() {
       const frame = this.$refs.Content.$refs.content
+      // 首先拿到当前图片宽高
       let parentX = this.image.raster.width
       let parentY = this.image.raster.height
-      console.log('parentX:',parentX)
-      console.log('parentY:',parentY)
-
-      this.paper.view.zoom = Math.min(
-        frame.clientWidth / (parentX + Math.pow(Math.E, -6)),
-        (frame.clientHeight - 100) / (parentY + Math.pow(Math.E, -6))
-      ) + Math.pow(Math.E, -6)
-      this.paper.view.setCenter(0, 0);
-      this.image.scale = 1 / this.paper.view.zoom;
+      console.log('div宽高:', frame.clientWidth,frame.clientHeight)
+      console.log('图片宽高:', parentX,parentY)
+      // 计算缩放因子
+      // 规则:分别计算canvas画布宽高是图片宽高各自的倍数,最后取最小值作为整体的放大倍数
+      let w = frame.clientWidth / parentX
+      let h = frame.clientHeight / parentY
+      let ratio = Math.min(
+          frame.clientWidth / (parentX + Math.pow(Math.E, -6)),
+          (frame.clientHeight - 100) / (parentY + Math.pow(Math.E, -6))
+        ) + Math.pow(Math.E, -6)
+        // this.paper.view.zoom = ratio
+        this.paper.view.zoom = Math.min(w, h)
+        // console.log('this.paper.view:', JSON.stringify(this.paper.view.center))
+        this.paper.view.setCenter(0, 0);
+        // this.image.scale = 1 / this.paper.view.zoom;
+        console.log('this.image:', this.image)
     },
     init() {
       const canvas = this.$refs.Content.$refs.main_canvas
@@ -186,29 +194,13 @@ export default {
       return { zoom: zoom, offset: a }
     },
     onWheel(e) {
-      // console.log('滚轮事件:', e)
-      // this.paper.view.center = new paper.Point(e.x, e.y)
-      // console.log('e:', e)
-      // if (e.deltaY < 0) {
-      //   this.paper.view.zoom = this.paper.view.zoom + 1
-      // }
-      // if (e.deltaY > 0) {
-      //   if (this.paper.view.zoom > 0) {
-      //     this.paper.view.zoom = this.paper.view.zoom - 1
-      //   }
-      // }
-
-      // let viewPosition = paper.view.viewToProject(
-      //     new paper.Point(e.offsetX, e.offsetY)
-      // );
-      // console.log('viewPosition:', viewPosition)
-      // console.log('e.deltaY:', e.deltaY)
-
-      // let transform = this.changeZoom(e.deltaY, viewPosition);
-      // console.log('transform:', transform)
-      // // this.image.scale = 1 / transform.zoom;
-      // this.paper.view.zoom = transform.zoom + Math.pow(Math.E, -6);
-      // this.paper.view.center = this.paper.view.center.add(transform.offset);
+      const point = {x: e.x, y: e.y} 
+      console.log('滚动点:', point)
+      if (e.wheelDelta > 0) {
+        console.log('上滚动----放大')
+      } else if (e.wheelDelta < 0) {
+        console.log('下滚动----缩小')
+      }
     },
     onFrame () {
     },
