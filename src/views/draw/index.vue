@@ -28,7 +28,9 @@ export default {
       currentTool: null,
       lastPoint: null,
       test: null,
-      brush: null,
+      brush: {
+        path: null
+      },
       selection: null,
       info: 'hhvcg',
       myPath: null,
@@ -66,8 +68,6 @@ export default {
       // 首先拿到当前图片宽高
       let parentX = this.image.raster.width
       let parentY = this.image.raster.height
-      console.log('div宽高:', frame.clientWidth,frame.clientHeight)
-      console.log('图片宽高:', parentX,parentY)
       // 计算缩放因子
       // 规则:分别计算canvas画布宽高是图片宽高各自的倍数,最后取最小值作为整体的放大倍数
       let w = frame.clientWidth / parentX
@@ -81,7 +81,6 @@ export default {
         // console.log('this.paper.view:', JSON.stringify(this.paper.view.center))
         this.paper.view.setCenter(0, 0);
         this.image.scale = this.paper.view.zoom;
-        console.log('this.image:', this.image)
     },
     init() {
       const canvas = this.$refs.Content.$refs.main_canvas
@@ -94,7 +93,6 @@ export default {
       this.image.raster.onLoad = () => {
         console.log('图片加载成功！！！')
         // this.image.raster.sendToBack();
-        console.log('this.paper',this.paper)
         this.fit()
       }
 
@@ -182,10 +180,6 @@ export default {
       const oldZoom = this.paper.view.zoom
       const c = this.paper.view.center
       const factor = 0.3 + oldZoom
-      console.log('oldZoom:', oldZoom)
-      console.log('factor:', factor)
-      console.log('c:', c)
-
       const zoom = delta < 0 ? oldZoom * factor : oldZoom / factor
       const beta = oldZoom / zoom
       const pc = p.subtract(c)
@@ -195,7 +189,6 @@ export default {
     },
     onWheel(e) {
       const point = {x: e.x, y: e.y}
-      console.log('滚动点:', e)
       // if (e.wheelDelta > 0) {
       //   console.log('上滚动----放大')
       //   this.paper.view.setCenter(new paper.Point({x: e.x, y: e.y}))
@@ -223,7 +216,25 @@ export default {
     },
     onMouseDown (e) {
       console.log('click:', e.point)
-    }
+    },
+    // 笔刷跟随鼠标移动
+    moveBrush(point) {
+      if (this.brush.path == null) this.createBrush(point);
+      console.log('this.brush----',this.brush)
+      this.brush.path.bringToFront();
+      this.brush.path.position = point;
+    }, 
+    createBrush(center) {
+      console.log('Jin--createBrush')
+    //   center = center || new paper.Point(0, 0);
+    //   console.log('center:', center)
+      this.brush.path = new this.paper.Path.Circle({
+        strokeColor: 'gree',
+        strokeWidth: 20,
+        radius: 10,
+        center: center
+     })
+    }       
   },
   watch: {
     currentTool(newVal, oldVal) {
@@ -244,6 +255,9 @@ export default {
         }
       } else if (newVal === 'brush') {
         // 绑定笔刷事件
+        // this.tool.onMouseMove = (e) => {
+        //   this.moveBrush(e.point);
+        // }
         this.tool.onMouseDown = (e) => {
           console.log('开始点:', e)
           this.selection = new paper.Path()
@@ -317,7 +331,8 @@ export default {
         }
         this.tool.onMouseDrag = (e) => {
           if(e.count == 0) {
-            this.addStrokes(e.middlePoint, e.delta * -1);
+            console.log('存在?')
+            this.addStrokes(e.middlePoint, e.delta.multiply(-1));
           } else {          
             let step = e.delta.divide(2);
             step.angle += 90;
