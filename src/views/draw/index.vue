@@ -234,7 +234,16 @@ export default {
         radius: 10,
         center: center
      })
-    }       
+    },
+    line() {
+      const vector = this.lastPoint.subtract(this.firstPoint)
+      this.line.path.add(vector.normalize().multiply(this.line.pathOptions.lineWidth / 2).rotate(-90).add(this.firstPoint))
+      this.line.path.add(vector.normalize().multiply(this.line.pathOptions.lineWidth / 2).rotate(90).add(this.firstPoint))
+      const vector2 = this.firstPoint.subtract(this.lastPoint)
+      this.line.path.add(vector2.normalize().multiply(this.line.pathOptions.lineWidth / 2).rotate(-90).add(this.lastPoint))
+      this.line.path.add(vector2.normalize().multiply(this.line.pathOptions.lineWidth / 2).rotate(90).add(this.lastPoint))
+    }
+      
   },
   watch: {
     currentTool(newVal, oldVal) {
@@ -270,7 +279,6 @@ export default {
           let top = e.point.subtract(e.delta.rotate(90).normalize().multiply(10))
           this.selection.add(bot)
           this.selection.insert(0, top)
-          this.selection.smooth()
         }
         this.tool.onMouseDrag = (e) => {
           let bot = e.point.add(e.delta.rotate(90).normalize().multiply(10))
@@ -285,7 +293,6 @@ export default {
           let top = e.point.subtract(e.delta.rotate(90).normalize().multiply(10))
           this.selection.add(bot)
           this.selection.insert(0, top)
-          this.selection.smooth()
         }
       } else if (newVal === 'fat_brush') {
         this.tool.onMouseDown = (e) => {
@@ -318,7 +325,11 @@ export default {
         }
       } else if (newVal === 'broom_brush') {
         this.tool.fixedDistance = 30;
+        // 触发drag需要拖拽的最大距离
+        // 这里我觉得很奇怪,tool有最大距离和最小距离....
+        
         this.tool.maxDistance = 45;
+        // this.tool.maxDistance = 1;
         // 扫把头
         this.tool.onMouseDown = (e) => {
           console.log('开始点:', e)
@@ -330,10 +341,11 @@ export default {
           };          
         }
         this.tool.onMouseDrag = (e) => {
-          if(e.count == 0) {
-            console.log('存在?')
-            this.addStrokes(e.middlePoint, e.delta.multiply(-1));
-          } else {          
+          console.log('drag---->', e)
+          // if(e.count == 0) {
+          //   console.log('存在?')
+          //   this.addStrokes(e.middlePoint, e.delta.multiply(-1));
+          // } else {          
             let step = e.delta.divide(2);
             step.angle += 90;
 
@@ -341,7 +353,7 @@ export default {
             let bottom = e.middlePoint.subtract(step)
             this.selection.add(top);
             this.selection.insert(0, bottom);          
-          }
+          // }
           this.selection.smooth()
           this.lastPoint = e.middlePoint.clone()
         }
@@ -349,7 +361,7 @@ export default {
           console.log('结束点:', e)
           let delta = e.point.subtract(this.lastPoint)
           delta.length = this.tool.maxDistance;
-          this.addStrokes(e.point, delta);
+          // this.addStrokes(e.point, delta);
           this.selection.closed = true
           this.selection.smooth()
         }        
