@@ -26,6 +26,7 @@ export default {
     return {
       strokeEnds: 6,
       currentTool: null,
+      firstPoint: null,
       lastPoint: null,
       test: null,
       brush: {
@@ -88,6 +89,7 @@ export default {
       this.paper = paper
 
       this.image.raster = new paper.Raster(this.image.url)
+      this.mask_png = new paper.Raster('http://zhuoxilab.com:10444/file_0/2,035e7ca1c5d1ae?rend=1649939540571');
       this.image.raster.smoothing = false
 
       this.image.raster.onLoad = () => {
@@ -242,6 +244,15 @@ export default {
       const vector2 = this.firstPoint.subtract(this.lastPoint)
       this.line.path.add(vector2.normalize().multiply(this.line.pathOptions.lineWidth / 2).rotate(-90).add(this.lastPoint))
       this.line.path.add(vector2.normalize().multiply(this.line.pathOptions.lineWidth / 2).rotate(90).add(this.lastPoint))
+    },
+    getTopBot(firstPoint, lastPoint) {
+      // 返回其中顶
+      const vector = this.lastPoint.subtract(this.firstPoint)
+      const top = vector.normalize().multiply(10).rotate(-90).add(this.firstPoint)
+      const bot = vector.normalize().multiply(10).rotate(90).add(this.firstPoint)
+      return [top, bot]
+      
+      
     }
       
   },
@@ -275,24 +286,28 @@ export default {
             saturation: 1,
             brightness: 1
           };
-          let bot = e.point.add(e.delta.rotate(90).normalize().multiply(10))
-          let top = e.point.subtract(e.delta.rotate(90).normalize().multiply(10))
-          this.selection.add(bot)
-          this.selection.insert(0, top)
+          this.firstPoint = e.point
         }
         this.tool.onMouseDrag = (e) => {
-          let bot = e.point.add(e.delta.rotate(90).normalize().multiply(10))
-          let top = e.point.subtract(e.delta.rotate(90).normalize().multiply(10))
+          console.log('拖动点---->', e)
+          this.lastPoint = e.point
+          // this.selection.removeSegments()
+          const [top, bot] = this.getTopBot(this.firstPoint, this.lastPoint)
+          this.selection.add(top)
           this.selection.add(bot)
-          this.selection.insert(0, top)
-          this.selection.smooth()
+          this.selection.closePath()
+          this.firstPoint = this.lastPoint
+
+          // 老版本
+          // let bot = e.point.add(e.delta.rotate(90).normalize().multiply(10))
+          // let top = e.point.subtract(e.delta.rotate(90).normalize().multiply(10))
+          // this.selection.add(bot)
+          // this.selection.insert(0, top)
+          // this.selection.smooth()
         }
         this.tool.onMouseUp = (e) => {
           console.log('结束点:', e)
-          let bot = e.point.add(e.delta.rotate(90).normalize().multiply(10))
-          let top = e.point.subtract(e.delta.rotate(90).normalize().multiply(10))
-          this.selection.add(bot)
-          this.selection.insert(0, top)
+          this.lastPoint = e.point
         }
       } else if (newVal === 'fat_brush') {
         this.tool.onMouseDown = (e) => {

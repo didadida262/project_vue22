@@ -9,12 +9,16 @@ export default {
   name: 'Content',
   data() {
     return {
+      mask_png: null
     }
   },
   methods: {
     onwheel(e) {
       this.$emit('shortCut', e)
     }
+  },
+  mounted() {
+    console.log('this.mask_png:', this.mask_png)
   }
 }
 </script>
