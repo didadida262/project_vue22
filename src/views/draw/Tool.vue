@@ -31,6 +31,14 @@
         @click="changeBrush('broom_brush')"
       />       
     </el-tooltip>
+    <el-divider />
+    <el-tooltip class="item" effect="dark" content="矩形框" placement="right">
+      <div
+        class="el-icon-camera icon"
+        :class="{'is-active':isActive === 'square'}"
+        @click="changeBrush('square')"
+      />       
+    </el-tooltip>    
   </div>
 </template>
 
