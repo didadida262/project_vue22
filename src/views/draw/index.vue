@@ -63,68 +63,18 @@ export default {
         type: 'success'
       });      
     },
-    // 对加载图像自适应
-    fit() {
-      const frame = this.$refs.Content.$refs.content
-      // 首先拿到当前图片宽高
-      let parentX = this.image.raster.width
-      let parentY = this.image.raster.height
-      // 计算缩放因子
-      // 规则:分别计算canvas画布宽高是图片宽高各自的倍数,最后取最小值作为整体的放大倍数
-      let w = frame.clientWidth / parentX
-      let h = frame.clientHeight / parentY
-      let ratio = Math.min(
-          frame.clientWidth / (parentX + Math.pow(Math.E, -6)),
-          (frame.clientHeight - 100) / (parentY + Math.pow(Math.E, -6))
-        ) + Math.pow(Math.E, -6)
-        this.paper.view.zoom = ratio
-        // this.paper.view.zoom = Math.min(w, h)
-        // console.log('this.paper.view:', JSON.stringify(this.paper.view.center))
-        this.paper.view.setCenter(0, 0);
-        this.image.scale = this.paper.view.zoom;
-    },
+
     init() {
       const canvas = this.$refs.Content.$refs.main_canvas
       paper.setup(canvas)
       this.paper = paper
-
       this.image.raster = new paper.Raster(this.image.url)
-      this.mask_png = new paper.Raster('http://zhuoxilab.com:10444/file_0/2,035e7ca1c5d1ae?rend=1649939540571');
+      // this.mask_png = new paper.Raster('http://zhuoxilab.com:10444/file_0/2,035e7ca1c5d1ae?rend=1649939540571');
       this.image.raster.smoothing = false
-
       this.image.raster.onLoad = () => {
-        console.log('图片加载成功！！！')
-        // this.image.raster.sendToBack();
         this.fit()
       }
 
-      // const viewheight = this.paper.view.size.height
-      // const viewwidth = this.paper.view.size.width
-      // const imgwidth = this.image.raster.width
-      // const imgheight = this.image.raster.height
-      // // 按比例放大或缩小
-      // let ratio = null
-      // if (imgwidth >= imgheight) {
-      //   ratio = viewwidth / imgwidth
-      // } else {
-      //   ratio = viewheight / imgheight
-      // }
-      // ratio = Math.floor(ratio)
-      // console.log('ratio:', ratio)
-      // this.image.raster.width = imgwidth * ratio
-      // this.image.raster.height = imgheight * ratio
-      // this.image.raster.position = this.paper.view.center
-      // console.log('this.paper.view.center:', this.paper.view.center)
-
-      // console.log('this.image.raster:', this.image.raster)
-      // console.log('this.image.width', this.image.raster.width)
-      // console.log('this.image.height', this.image.raster.height)
-      // console.log('this.paper.view', this.paper.view.size)
-
-      // 画一个圆
-      // this.circle = new paper.Path.Circle(new paper.Point(100, 100), 10)
-      // this.circle.strokeColor = 'red'
-      
 
       // 绑定各种事件函数
       this.paper.view.onFrame = this.onFrame
@@ -177,15 +127,21 @@ export default {
         item.path = null;
       }
     },      
-    // copy的函数，慎重使用
+    // 以当前滚轮方向及真实坐标数据为输入
     changeZoom(delta, p) {
+      console.log('方向---->', delta)
+      console.log('滚轮所在真实坐标点---->', p)
       const oldZoom = this.paper.view.zoom
+      console.log('oldZoom', oldZoom)
       const c = this.paper.view.center
       const factor = 0.3 + oldZoom
+      // < 0:向上-->放大，反之向下--->缩小
       const zoom = delta < 0 ? oldZoom * factor : oldZoom / factor
+      console.log('zoom', zoom)
       const beta = oldZoom / zoom
       const pc = p.subtract(c)
       const a = p.subtract(pc.multiply(beta)).subtract(c)
+      console.log('a:', a)
 
       return { zoom: zoom, offset: a }
     },
@@ -199,15 +155,41 @@ export default {
       //   console.log('下滚动----缩小')
       // }
       let view = this.paper.view
+      // view.viewToProject:这玩意儿能干嘛呢？将点转化为视图中点，即：视图中真实的点
       let viewPosition = view.viewToProject(
           new paper.Point(e.offsetX, e.offsetY)
       );
 
-      let transform = this.changeZoom(e.deltaY, viewPosition);
-      this.image.scale = 1 / transform.zoom;
-      this.paper.view.zoom = transform.zoom + Math.pow(Math.E, -6);
-      this.paper.view.center = view.center.add(transform.offset);
+      // let transform = this.changeZoom(e.deltaY, viewPosition);
+      // this.image.scale = transform.zoom;
+      console.log('this.paper.view.zoom:',this.paper.view)
+      if (e.deltaY < 0) {
+        this.paper.view.zoom = this.paper.view.zoom + 0.5
+      } else {
+        if (this.paper.view.zoom - 0.5 > 0) {
+          this.paper.view.zoom = this.paper.view.zoom - 0.5
+        }
+      }
+      // this.paper.view.zoom = transform.zoom
+      // this.paper.view.center = view.center.add(transform.offset);
     },
+    // 根据加载图片宽高及外层div宽高，作自适应处理。
+    fit() {
+      const frame = this.$refs.Content.$refs.content
+      let parentX = this.image.raster.width
+      let parentY = this.image.raster.height
+      // 计算缩放因子
+      // 规则:分别计算canvas画布宽高是图片宽高各自的倍数,最后取最小值作为整体的缩放倍数
+      let w = frame.clientWidth / parentX
+      let h = frame.clientHeight / parentY
+      let ratio = Math.min(w, h)
+      this.paper.view.zoom = ratio - 0.1
+      console.log('当前zoom:',this.paper.view.zoom)
+      this.paper.view.setCenter(0, 0);
+      console.log('当前zoom:',this.paper.view)
+
+      this.image.scale = this.paper.view.zoom;
+    },    
     onFrame () {
     },
     realXY (point) {

@@ -30,10 +30,10 @@ export default {
   },
   // beforeDestroy() {
   destroyed() {
-    console.log('组件销毁')
   },
 
   methods: {
+   
     draw() {
       const dom = this.$refs.cont
       for (let i = 0; i < 10; i++) {
