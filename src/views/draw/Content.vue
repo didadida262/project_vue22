@@ -14,7 +14,6 @@ export default {
   },
   methods: {
     onwheel(e) {
-      console.log('触发滚轮事件')
       this.$emit('shortCut', e)
     }
   },

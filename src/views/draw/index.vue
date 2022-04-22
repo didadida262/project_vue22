@@ -1,8 +1,12 @@
 <template>
   <div class="draw-container">
-    <Tool
-      @handleChange="handleChange"
-    />
+    <div class="tool" @click="changeBrush">
+      <el-tooltip v-for="(item, index) in brushArray" :key="index" class="item" effect="dark" :content="item.descript" placement="right" :id="item.name">
+        <div :class="[{'is-active':isActive === item.name }, 'icon', item.icon]">     
+          <el-divider />
+        </div>
+      </el-tooltip>
+    </div>
     <Content
       ref="Content"
       @shortCut="onWheel"
@@ -12,14 +16,12 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import Tool from './Tool'
 import Content from './Content'
 import paper from 'paper'
 
 export default {
   name: 'Dashboard',
   components: {
-    Tool,
     Content
   },
   data() {
@@ -40,7 +42,35 @@ export default {
       tool: null,
       image: {
         url: 'https://cms-assets.tutsplus.com/uploads/users/1251/posts/26530/image/BenderPaper.jpg'
-      }
+      },
+      isActive: '',
+      brushArray: [
+        {
+          name: 'brush',
+          icon: 'el-icon-brush',
+          descript: '实验笔刷'
+        },
+        {
+          name: 'pencil',
+          icon: 'el-icon-edit',
+          descript: '铅笔'
+        },
+        {
+          name: 'fat_brush',
+          icon: 'el-icon-full-screen',
+          descript: '胖子笔刷'
+        },
+        {
+          name: 'broom_brush',
+          icon: 'el-icon-ice-cream-round',
+          descript: '胖子笔刷'
+        },
+        {
+          name: 'square',
+          icon: 'el-icon-camera',
+          descript: '扫把头'
+        },
+      ]      
     }
   },
   computed: {
@@ -52,14 +82,14 @@ export default {
     this.init()
   },
   methods: {
-    handleChange(e) {
+    changeBrush(e) {
       this.selection = null
       this.tool.onMouseUp = () => {}
       this.tool.onMouseDown = () => {}
       this.tool.onMouseDrag = () => {}
-      this.currentTool = e
+      this.currentTool = e.target.id
       this.$message({
-        message: `切换画笔至${e}`,
+        message: `切换画笔至${e.target.id}`,
         type: 'success'
       });      
     },
@@ -130,7 +160,6 @@ export default {
     // 以当前滚轮方向及真实坐标数据为输入
     changeZoom(delta, viewPosition) {
       const oldZoom = this.paper.view.zoom
-      console.log('oldZoom---->', oldZoom)
       const c = this.paper.view.center
       const factor = 0.5
       // < 0:向上-->放大，反之向下--->缩小
@@ -161,8 +190,6 @@ export default {
       let ratio = Math.min(w, h)
       this.paper.view.zoom = ratio - 0.1
       this.paper.view.setCenter(0, 0);
-      console.log('初始化zoom:',this.paper.view.zoom)
-
       this.image.scale = this.paper.view.zoom;
     },    
     onFrame () {
@@ -174,7 +201,7 @@ export default {
       }
     },
     onMouseDown (e) {
-      console.log('click:', e.point)
+      console.log('点击:', e.point)
     },
     // 笔刷跟随鼠标移动
     moveBrush(point) {
@@ -347,6 +374,25 @@ export default {
 .draw {
   &-container {
     margin: 30px;
+    .tool {
+      padding: 10px;
+      padding-top: 20px;
+      border: 1px solid gainsboro;
+      width: 40px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      .is-active {
+        color: red;
+      }
+      .icon {
+        margin-bottom: 10px;
+      }
+      .icon:hover {
+        cursor: pointer;
+      }
+    }    
   }
 }
 .draw-container {
