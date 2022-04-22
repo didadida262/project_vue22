@@ -46,29 +46,19 @@ export default {
       isActive: '',
       brushArray: [
         {
-          name: 'brush',
-          icon: 'el-icon-brush',
-          descript: '实验笔刷'
-        },
-        {
           name: 'pencil',
           icon: 'el-icon-edit',
           descript: '铅笔'
         },
         {
           name: 'fat_brush',
-          icon: 'el-icon-full-screen',
+          icon: 'el-icon-brush',
           descript: '胖子笔刷'
         },
         {
           name: 'broom_brush',
           icon: 'el-icon-ice-cream-round',
           descript: '胖子笔刷'
-        },
-        {
-          name: 'square',
-          icon: 'el-icon-camera',
-          descript: '扫把头'
         },
       ]      
     }
@@ -82,7 +72,9 @@ export default {
     this.init()
   },
   methods: {
+    // 更改笔刷，随机初始化各方法
     changeBrush(e) {
+      this.isActive = e.target.id
       this.selection = null
       this.tool.onMouseUp = () => {}
       this.tool.onMouseDown = () => {}
@@ -251,47 +243,14 @@ export default {
           })
           this.selection.add(e.point)
         }
+        this.mypath = new paper.Path.Rectangle(new paper.Point(220, 94.5), new paper.Size(1, 1))
+        this.mypath.fillColor = 'blue'
+        console.log(this.paper.view)
         this.tool.onMouseDrag = (e) => {
           this.selection.add(e.point)
         }
         this.tool.onMousUp = (e) => {
           this.selection = null
-        }
-      } else if (newVal === 'brush') {
-        // 绑定笔刷事件
-        // this.tool.onMouseMove = (e) => {
-        //   this.moveBrush(e.point);
-        // }
-        this.tool.onMouseDown = (e) => {
-          console.log('开始点:', e)
-          this.selection = new paper.Path()
-          this.selection.fillColor =  {
-            hue: Math.random() * 360,
-            saturation: 1,
-            brightness: 1
-          };
-          this.firstPoint = e.point
-        }
-        this.tool.onMouseDrag = (e) => {
-          console.log('拖动点---->', e)
-          this.lastPoint = e.point
-          // this.selection.removeSegments()
-          const [top, bot] = this.getTopBot(this.firstPoint, this.lastPoint)
-          this.selection.add(top)
-          this.selection.add(bot)
-          this.selection.closePath()
-          this.firstPoint = this.lastPoint
-
-          // 老版本
-          // let bot = e.point.add(e.delta.rotate(90).normalize().multiply(10))
-          // let top = e.point.subtract(e.delta.rotate(90).normalize().multiply(10))
-          // this.selection.add(bot)
-          // this.selection.insert(0, top)
-          // this.selection.smooth()
-        }
-        this.tool.onMouseUp = (e) => {
-          console.log('结束点:', e)
-          this.lastPoint = e.point
         }
       } else if (newVal === 'fat_brush') {
         this.tool.onMouseDown = (e) => {
