@@ -128,50 +128,26 @@ export default {
       }
     },      
     // 以当前滚轮方向及真实坐标数据为输入
-    changeZoom(delta, p) {
-      console.log('方向---->', delta)
-      console.log('滚轮所在真实坐标点---->', p)
+    changeZoom(delta, viewPosition) {
       const oldZoom = this.paper.view.zoom
-      console.log('oldZoom', oldZoom)
+      console.log('oldZoom---->', oldZoom)
       const c = this.paper.view.center
-      const factor = 0.3 + oldZoom
+      const factor = 0.5
       // < 0:向上-->放大，反之向下--->缩小
-      const zoom = delta < 0 ? oldZoom * factor : oldZoom / factor
-      console.log('zoom', zoom)
-      const beta = oldZoom / zoom
-      const pc = p.subtract(c)
-      const a = p.subtract(pc.multiply(beta)).subtract(c)
-      console.log('a:', a)
-
-      return { zoom: zoom, offset: a }
+      const zoom = delta < 0 ? oldZoom + factor : oldZoom - factor
+      return zoom <= 0 || zoom >= 160? oldZoom: zoom
     },
     onWheel(e) {
       const point = {x: e.x, y: e.y}
-      // if (e.wheelDelta > 0) {
-      //   console.log('上滚动----放大')
-      //   this.paper.view.setCenter(new paper.Point({x: e.x, y: e.y}))
-      //   this.paper.view.zoom = this.paper.view.zoom +  0.5
-      // } else if (e.wheelDelta < 0) {
-      //   console.log('下滚动----缩小')
-      // }
       let view = this.paper.view
-      // view.viewToProject:这玩意儿能干嘛呢？将点转化为视图中点，即：视图中真实的点
+
       let viewPosition = view.viewToProject(
           new paper.Point(e.offsetX, e.offsetY)
       );
 
-      // let transform = this.changeZoom(e.deltaY, viewPosition);
-      // this.image.scale = transform.zoom;
-      console.log('this.paper.view.zoom:',this.paper.view)
-      if (e.deltaY < 0) {
-        this.paper.view.zoom = this.paper.view.zoom + 0.5
-      } else {
-        if (this.paper.view.zoom - 0.5 > 0) {
-          this.paper.view.zoom = this.paper.view.zoom - 0.5
-        }
-      }
-      // this.paper.view.zoom = transform.zoom
-      // this.paper.view.center = view.center.add(transform.offset);
+
+      this.paper.view.zoom = this.changeZoom(e.deltaY, viewPosition);
+      this.paper.view.center = viewPosition;
     },
     // 根据加载图片宽高及外层div宽高，作自适应处理。
     fit() {
@@ -184,9 +160,8 @@ export default {
       let h = frame.clientHeight / parentY
       let ratio = Math.min(w, h)
       this.paper.view.zoom = ratio - 0.1
-      console.log('当前zoom:',this.paper.view.zoom)
       this.paper.view.setCenter(0, 0);
-      console.log('当前zoom:',this.paper.view)
+      console.log('初始化zoom:',this.paper.view.zoom)
 
       this.image.scale = this.paper.view.zoom;
     },    
