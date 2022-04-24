@@ -46,10 +46,15 @@ export default {
       isActive: '',
       brushArray: [
         {
+          name: 'pixelbrush',
+          icon: 'el-icon-edit',
+          descript: '像素笔刷'
+        },
+        {
           name: 'pencil',
           icon: 'el-icon-edit',
           descript: '铅笔'
-        },
+        },        
         {
           name: 'fat_brush',
           icon: 'el-icon-brush',
@@ -182,6 +187,8 @@ export default {
       let ratio = Math.min(w, h)
       this.paper.view.zoom = ratio - 0.1
       this.paper.view.setCenter(0, 0);
+      this.mypath = new paper.Path.Rectangle(new paper.Point(0, 0), new paper.Size(1, 1))
+      this.mypath.fillColor = 'black'
       this.image.scale = this.paper.view.zoom;
     },    
     onFrame () {
@@ -192,8 +199,14 @@ export default {
         y: point.y * this.image.scale
       }
     },
+    // 全视图的mousedown事件
     onMouseDown (e) {
-      console.log('点击:', e.point)
+      console.log('点击坐标----->', e.point)
+      // const newP = new paper.Point(Math.floor(e.point.x), Math.floor(e.point.y))
+      // console.log('newP', newP)
+      
+      // this.mypath = new paper.Path.Rectangle(newP, new paper.Size(1, 1))
+      // this.mypath.fillColor = 'red'      
     },
     // 笔刷跟随鼠标移动
     moveBrush(point) {
@@ -234,7 +247,15 @@ export default {
   },
   watch: {
     currentTool(newVal, oldVal) {
-      if (newVal === 'pencil') {
+      // 像素笔刷
+      if (newVal === 'pixelbrush') {
+        this.tool.onMouseDown = (e) => {
+          console.log('tool点击:', e.point)
+          this.myPath = new this.paper.Path.Rectangle(new paper.Point(Math.floor(e.point.x), Math.floor(e.point.y)), new paper.Size(1, 1))
+          this.myPath.fillColor = 'black'
+        }
+        
+      } else if (newVal === 'pencil') {
         // 绑定铅笔的事件
         this.tool.onMouseDown = (e) => {
           this.selection = new paper.Path({
