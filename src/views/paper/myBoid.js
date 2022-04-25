@@ -10,6 +10,7 @@ export class Boid {
     // 蝌蚪移动速度，此值极其重要，关系到蝌蚪实例的生命力
     this.acceleration = new paper.Point()
     // 越界时用于更新当前蝌蚪的position
+    // vector这个变量，决定了下一帧，或者说是下一时刻，小蝌蚪的运动目的地
     this.vector = new paper.Point.random()
     this.radius = 30
     const strength = Math.random() * 0.5
