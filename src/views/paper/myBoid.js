@@ -1,3 +1,9 @@
+/*
+ * @Author: Hhvcg
+ * @Date: 2022-03-11 17:26:22
+ * @LastEditors: -_-
+ * @Description: boid类文件
+ */
 /* eslint-disable no-mixed-spaces-and-tabs */
 import paper from 'paper'
 
@@ -6,7 +12,7 @@ export class Boid {
     // 小蝌蚪坐标信息
     this.position = position.clone()
     // 尾巴点数【10， 15）
-    this.amount = Math.random() * 5 + 20
+    this.amount = Math.random() * 5 + 10
     // 蝌蚪移动速度，此值极其重要，关系到蝌蚪实例的生命力
     this.acceleration = new paper.Point()
     // 越界时用于更新当前蝌蚪的position
@@ -25,7 +31,7 @@ export class Boid {
   createItems() {
     // 椭圆，代表蝌蚪的头部
     this.head = new paper.Shape.Ellipse({
-    //   center: [0, 0],
+      //   center: [0, 0],
       center: [this.position.x, this.position.y],
       size: [15, 10],
       fillColor: 'orange'
@@ -49,6 +55,9 @@ export class Boid {
     for (let i = 0; i < 3; i++) {
       this.shortPath.add(new paper.Point())
     }
+    // 截止此时，除了头部已经画出，颈部及尾巴均没有实际画出，实质上是通过加point的方式，埋了几个坑位
+    // 为什么此时不画出颈部和尾巴呢？因为方向未知
+    // 颈部和尾巴都是线段，通过add的方式添加点坑位，其值存储在各自的segements。这种纯线段图形，没有children
   }
   run(boids, groupTogether) {
     // 记录当前蝌蚪位置
@@ -57,22 +66,22 @@ export class Boid {
     if (!groupTogether) {
       this.flock(boids)
     } else {
+      // 沿着svg的轨迹运动---很神奇
       this.align(boids)
     }
-    // 如果越界，对身体各组件位置处理
     this.borders()
-    this.changeColor()
+    // this.changeColor()
     this.update()
     this.calculateTail()
     this.moveHead()
   }
   // 随机生成颜色，每帧更新颜色实现蹦迪的效果
   randomColor() {
-	  let color = '#'
-	  // for循环中，如果后面仅有一条语句，{}可省略不写
-	  // 同上面方法
-	   for (let i = 0; i < 8; i++) color += parseInt(Math.random() * 16).toString(16)
-	   return color
+    let color = '#'
+    // for循环中，如果后面仅有一条语句，{}可省略不写
+    // 同上面方法
+    for (let i = 0; i < 8; i++) color += parseInt(Math.random() * 16).toString(16)
+    return color
   }
   changeColor() {
     const colors = ['red', 'orange', 'yellow', 'green']
@@ -181,8 +190,8 @@ export class Boid {
     steer.length = Math.min(this.maxForce, steer.length)
     return steer
   }
+  // 如果越界，对身体各组件位置处理
   borders() {
-    // new paper.Point()返回的就是坐标原点
     const vector = new paper.Point()
     const position = this.position
     const radius = this.radius
