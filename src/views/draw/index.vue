@@ -26,14 +26,21 @@ export default {
   },
   data() {
     return {
+      brush: {
+        pathOptions: {
+          strokeColor: "green",
+          strokeWidth: 1,
+          radius: 30,
+          btype: "circle"  // circle ||  rectangle
+        }
+      },      
+    //       this.brush.path = null
+    // this.selection = null
       strokeEnds: 6,
       currentTool: null,
       firstPoint: null,
       lastPoint: null,
       test: null,
-      brush: {
-        path: null
-      },
       selection: null,
       info: 'hhvcg',
       myPath: null,
@@ -46,8 +53,13 @@ export default {
       isActive: '',
       brushArray: [
         {
+          name: 'old_brush',
+          icon: 'el-icon-scissors',
+          descript: '老版本笔刷'
+        },        
+        {
           name: 'pixelbrush',
-          icon: 'el-icon-edit',
+          icon: 'el-icon-mobile',
           descript: '像素笔刷'
         },
         {
@@ -77,6 +89,51 @@ export default {
     this.init()
   },
   methods: {
+    // // 笔刷跟随鼠标移动
+    // moveBrush(point) {
+    //   if (this.brush.path == null) this.createBrush(point);
+    //   console.log('this.brush----',this.brush)
+    //   this.brush.path.bringToFront();
+    //   this.brush.path.position = point;
+    // }, 
+    // createBrush(center) {
+    //   console.log('Jin--createBrush')
+    // //   center = center || new paper.Point(0, 0);
+    // //   console.log('center:', center)
+    //   this.brush.path = new this.paper.Path.Circle({
+    //     strokeColor: 'gree',
+    //     strokeWidth: 20,
+    //     radius: 10,
+    //     center: center
+    //  })
+    // },    
+    removeBrush() {
+      if (this.brush.path != null) {
+        this.brush.path.remove();
+        this.brush.path = null;
+      }
+    },
+    removeSelection() {
+      if (this.selection != null) {
+        this.selection.remove();
+        this.selection = null;
+      }
+    },    
+    createBrush(center) {
+      this.brush.path = new paper.Path.Circle({
+        strokeColor: this.brush.pathOptions.strokeColor,
+        strokeWidth: this.brush.pathOptions.strokeWidth,
+        radius: this.brush.pathOptions.radius,
+        center: center
+      });
+    },
+    moveBrush(point) {
+      if (!this.brush.path) {
+        this.createBrush(point)
+      }
+      this.brush.path.bringToFront();
+      this.brush.path.position = point;
+    },    
     // 更改笔刷，随机初始化各方法
     changeBrush(e) {
       this.isActive = e.target.id
@@ -208,24 +265,7 @@ export default {
       // this.mypath = new paper.Path.Rectangle(newP, new paper.Size(1, 1))
       // this.mypath.fillColor = 'red'      
     },
-    // 笔刷跟随鼠标移动
-    moveBrush(point) {
-      if (this.brush.path == null) this.createBrush(point);
-      console.log('this.brush----',this.brush)
-      this.brush.path.bringToFront();
-      this.brush.path.position = point;
-    }, 
-    createBrush(center) {
-      console.log('Jin--createBrush')
-    //   center = center || new paper.Point(0, 0);
-    //   console.log('center:', center)
-      this.brush.path = new this.paper.Path.Circle({
-        strokeColor: 'gree',
-        strokeWidth: 20,
-        radius: 10,
-        center: center
-     })
-    },
+
     line() {
       const vector = this.lastPoint.subtract(this.firstPoint)
       this.line.path.add(vector.normalize().multiply(this.line.pathOptions.lineWidth / 2).rotate(-90).add(this.firstPoint))
@@ -240,8 +280,6 @@ export default {
       const top = vector.normalize().multiply(10).rotate(-90).add(this.firstPoint)
       const bot = vector.normalize().multiply(10).rotate(90).add(this.firstPoint)
       return [top, bot]
-      
-      
     }
       
   },
@@ -343,6 +381,34 @@ export default {
           // this.addStrokes(e.point, delta);
           this.selection.closed = true
           this.selection.smooth()
+        }        
+      } else if (newVal === 'old_brush') {
+        //         if (this.brush.path == null) this.createBrush();
+        // this.brush.path.bringToFront();
+        // this.brush.path.position = point;
+        // this.brush.path = new paper.Path.Circle({
+        //   strokeColor: this.brush.pathOptions.strokeColor,
+        //   strokeWidth: this.brush.pathOptions.strokeWidth,
+        //   radius: this.brush.pathOptions.radius,
+        //   center: center
+        // });        
+        this.tool.onMouseDown = (e) => {
+          this.selection = new paper.Path({
+            strokeColor: this.brush.pathOptions.strokeColor,
+            strokeWidth: this.brush.pathOptions.strokeWidth
+          });
+        }
+        this.tool.onMouseMove = (e) => {
+          this.moveBrush(e.point)
+        }
+        this.tool.onMouseDrag = (e) => {
+          // let newSelection = this.selection.unite(this.brush.path);
+          let newSelection = this.selection.unite(this.brush.path);
+          this.selection.remove();
+          this.selection = newSelection;          
+        }
+        this.tool.onMousUp = (e) => {
+          console.log('this.selection--->', this.selection)
         }        
       }
     }
