@@ -6,6 +6,7 @@
           <el-divider />
         </div>
       </el-tooltip>
+      <el-button @click="click">测试</el-button>
     </div>
     <Content
       ref="Content"
@@ -87,8 +88,13 @@ export default {
   },
   mounted() {
     this.init()
+    console.log('this.paper---', this.paper)
   },
   methods: {
+    click() {
+      this.image.raster.source = this.image.url
+      console.log('测试')
+    },
     // // 笔刷跟随鼠标移动
     // moveBrush(point) {
     //   if (this.brush.path == null) this.createBrush(point);
@@ -156,6 +162,7 @@ export default {
       // this.mask_png = new paper.Raster('http://zhuoxilab.com:10444/file_0/2,035e7ca1c5d1ae?rend=1649939540571');
       this.image.raster.smoothing = false
       this.image.raster.onLoad = () => {
+        console.log('图片加载成功！')
         this.fit()
       }
 

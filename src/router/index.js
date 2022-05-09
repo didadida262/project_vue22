@@ -88,7 +88,13 @@ export const constantRoutes = [
         name: 'tadpole',
         component: () => import('@/views/paper/index'),
         meta: { title: 'Tadpole', icon: 'table' }
-      },      
+      },   
+      {
+        path: 'tank',
+        name: 'Tank',
+        component: () => import('@/views/paper/Tank/index'),
+        meta: { title: 'Tank', icon: 'table' }
+      },         
       {
         path: 'table',
         name: 'Table',
