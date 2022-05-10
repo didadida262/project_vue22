@@ -76,12 +76,18 @@ export default {
         //   this.bombs.push(new Bomb(new this.paper.Point(this.role.gun.position.x, this.role.gun.position.y - this.GUNHEIGHT / 2 - 5), 10))
         // }
       }
+      this.tool.onMouseMove = (e) => {
+        const vector = e.point.subtract(this.role.gun.position).normalize()
+        console.log('vvvb-', vector)
+        this.role.gun.rotate(vector.angle, this.role.gun.position)
+      }
       console.log('初始化坦克世界')
       console.log(this.paper)
       this.role.bottom = new this.paper.Path.Rectangle(this.paper.view.size.width / 2 - this.BOTTOMWIDTH / 2, this.paper.view.size.height - this.BOTTOMHEIGHT, this.BOTTOMWIDTH, this.BOTTOMHEIGHT)
       this.role.bottom.fillColor = 'green'
       this.role.gun = new this.paper.Path.Rectangle(this.role.bottom.position.x - this.GUNWIDTH / 2, this.role.bottom.position.y - this.GUNHEIGHT - this.BOTTOMHEIGHT / 2, this.GUNWIDTH, this.GUNHEIGHT)
       this.role.gun.fillColor = 'red'
+      console.log('.....',this.role.gun)
     },
     onFrame () {
       for (let bomb of this.bombs) {
