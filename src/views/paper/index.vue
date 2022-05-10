@@ -1295,6 +1295,7 @@ export default {
         rand.x = rand.x * paper.view.size.width;
         rand.y = rand.y * paper.view.size.height;
         this.boids.push(new Boid(rand, 10, 0.05));
+        console.log(this.boids)
       }
     },
     onResize() {
