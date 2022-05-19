@@ -153,7 +153,6 @@ export default {
         type: 'success'
       });      
     },
-
     init() {
       const canvas = this.$refs.Content.$refs.main_canvas
       paper.setup(canvas)
@@ -169,7 +168,6 @@ export default {
 
       // 绑定各种事件函数
       this.paper.view.onFrame = this.onFrame
-
       this.tool = new paper.Tool()
       this.paper.view.onMouseDown = this.onMouseDown
       this.tool.onKeyDown = (e) => {
@@ -253,6 +251,8 @@ export default {
       this.paper.view.setCenter(0, 0);
       this.mypath = new paper.Path.Rectangle(new paper.Point(0, 0), new paper.Size(1, 1))
       this.mypath.fillColor = 'black'
+      this.mypath2 = new paper.Path.Rectangle(new paper.Point(1, 0), new paper.Size(1, 1))
+      this.mypath2.fillColor = 'red'
       this.image.scale = this.paper.view.zoom;
     },    
     onFrame () {
