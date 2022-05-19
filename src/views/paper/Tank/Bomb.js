@@ -13,8 +13,8 @@ export class Bomb {
     })
     this.path.fillColor = 'blue'
   }
-  update() {
-    this.position = this.path.position.add(new paper.Point(0, -26))
+  update(speed) {
+    this.position = this.path.position.add(new paper.Point(0, -speed))
     this.path.position = this.position.clone()
   }
 }

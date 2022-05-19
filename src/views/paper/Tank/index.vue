@@ -1,7 +1,13 @@
 <template>
   <div class="app-container">
     <h1>Tank</h1>
-    <canvas id="tank" ref="tank" resize class="tank" />
+    <div class="view">
+      <div class="operation">
+        <el-button @click="changeSpeed(true)" size="mini">Speed_up!</el-button>
+        <el-button @click="changeSpeed(false)" size="mini" class="mgt">Speed_down!</el-button>
+      </div>
+      <canvas id="tank" ref="tank" resize class="tank" />
+    </div>
   </div>
 </template>
 
@@ -19,6 +25,7 @@ export default {
       bombs: [],
       paper: null,
       role: {
+        speed: 10,
         name: "hhvcg",
         blood: "",
         // 底座300x100
@@ -36,6 +43,14 @@ export default {
   },
 
   methods: {
+    changeSpeed(flag) {
+      if (flag) {
+        this.role.speed += 10
+      } else {
+        if (this.role.speed === 10) return
+        this.role.speed -= 10
+      }
+    },
     updateBottom(point) {
       this.role.bottom.position = this.role.bottom.position.add(point).clone();
       this.role.gun.position = this.role.gun.position.add(point).clone();
@@ -88,16 +103,7 @@ export default {
         // }
       };
       this.tool.onMouseMove = (e) => {
-        const vector = e.point.subtract(this.role.gun.position).normalize();
-        // console.log('vvvb-', vector)
-        console.log('----------------->',this.role.gun.position.getAngle(e.point))
-        console.log('--------getAngleInRadians--------->',this.role.gun.position.getAngleInRadians(e.point))
-        
-        // this.role.gun.rotate(
-        //   1,
-        //   // Math.abs(vector.angle),
-        //   this.role.gun.position
-        // );
+        // const vector = e.point.subtract(this.role.gun.position).normalize();
       };
       this.tool.onMouseDown = (e) => {
         console.log("e.point---->", e.point);
@@ -120,17 +126,37 @@ export default {
       console.log(".....", this.role.gun);
     },
     onFrame() {
+      this.role.gun.rotate(this.role.speed, this.role.gun.position)
       for (let bomb of this.bombs) {
-        bomb.update();
+        bomb.update(this.role.speed);
       }
     },
   },
 };
 </script>
-<style scoped>
-.tank {
-  background: black;
-  height: 80vh;
-  width: 80vw;
+<style scoped lang="scss">
+.app-container {
+  .view {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    .operation {
+      padding: 10px;
+      height: 80vh;
+      width: 10vw;
+      border: 1px solid gray;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+    .tank {
+      background: black;
+      height: 80vh;
+      width: 80vw;
+    }
+  }
+
 }
+
 </style>
