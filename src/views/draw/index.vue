@@ -296,6 +296,9 @@ export default {
       if (newVal === 'pixelbrush') {
         this.tool.onMouseDown = (e) => {
           console.log('tool点击:', e.point)
+          const newP = new paper.Point(Math.floor(e.point.x),Math.floor(e.point.y))
+          console.log('newP:',newP)
+          
           this.myPath = new this.paper.Path.Rectangle(new paper.Point(Math.floor(e.point.x), Math.floor(e.point.y)), new paper.Size(1, 1))
           this.myPath.fillColor = 'black'
         }

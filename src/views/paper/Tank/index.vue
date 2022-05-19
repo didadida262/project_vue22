@@ -17,6 +17,7 @@ import { Bomb } from "./Bomb";
 export default {
   data() {
     return {
+      colors: ['#80FFA5'],
       GUNWIDTH: 10,
       GUNHEIGHT: 100,
       BOTTOMWIDTH: 300,
@@ -43,6 +44,7 @@ export default {
   },
 
   methods: {
+    // 变更gun的火力(速度)
     changeSpeed(flag) {
       if (flag) {
         this.role.speed += 10
@@ -77,7 +79,8 @@ export default {
                   this.role.gun.position.x,
                   this.role.gun.position.y - this.GUNHEIGHT / 2 - 5
                 ),
-                10
+                10,
+                this.colors[0]
               )
             );
             break;
@@ -115,18 +118,19 @@ export default {
         this.BOTTOMWIDTH,
         this.BOTTOMHEIGHT
       );
-      this.role.bottom.fillColor = "green";
+      this.role.bottom.fillColor = "black";
       this.role.gun = new this.paper.Path.Rectangle(
         this.role.bottom.position.x - this.GUNWIDTH / 2,
         this.role.bottom.position.y - this.GUNHEIGHT - this.BOTTOMHEIGHT / 2,
         this.GUNWIDTH,
         this.GUNHEIGHT
       );
-      this.role.gun.fillColor = "red";
+      this.role.gun.fillColor = this.colors[0];
       console.log(".....", this.role.gun);
     },
     onFrame() {
       this.role.gun.rotate(this.role.speed, this.role.gun.position)
+      console.log(this.role.gun)
       for (let bomb of this.bombs) {
         bomb.update(this.role.speed);
       }

@@ -1,9 +1,10 @@
 import paper from 'paper'
 
 export class Bomb {
-  constructor(position, radius) {
+  constructor(position, radius, color) {
     this.position = position
     this.radius = radius
+    this.color = color
     this.init()
   }
   init() {
@@ -11,7 +12,7 @@ export class Bomb {
       center: this.position,
       radius: this.radius
     })
-    this.path.fillColor = 'blue'
+    this.path.fillColor = this.color
   }
   update(speed) {
     this.position = this.path.position.add(new paper.Point(0, -speed))
