@@ -35,9 +35,14 @@ export default {
       tool: null,
       // 存储画布容器宽高
       XY: {},
-      SIZE: 20,
-      i: 0,
-      j: 0
+      SIZE: 100,
+      snake: {
+        x: null,
+        y: null,
+        direction: 1,
+        respo: []
+      },
+      
     }
   },
   created() {
@@ -51,32 +56,51 @@ export default {
 
 
   methods: {
-    onFrame() {
-      console.log('真动')
-      this.brick = new paper.Path.Rectangle(new paper.Point(this.i, 0), new paper.Size(this.SIZE,this.SIZE))
-      this.brick.fillColor = getRandomColor()
-      if (this.i + this.SIZE < this.XY.x / 2) {
-        this.i = this.i + this.SIZE
-      } else {
-        this.i = 0
-        this.j = this.j + this.SIZE
+    // 绘制snake的step
+    drawSnakeStep() {
+      if (this.snake.x >= this.XY.x || this.snake.y >= this.XY.y) {
+        this.snake.respo.forEach((brick) => {
+        brick.fillColor = getRandomColor()
+    console.log('this.paper--->', this.paper)
+    console.log('this.snake.resp--->',this.snake.respo.length)
+
+       })
+      return
       }
+      // 根据当前snake的xy绘制图形
+      const brick = new paper.Path.Rectangle(new paper.Point(this.snake.x, this.snake.y), new paper.Size(this.SIZE,this.SIZE))
+      brick.fillColor = getRandomColor()
+      this.snake.respo.push(brick)
       
+      if (Math.abs(this.snake.x + this.SIZE * this.snake.direction) <= this.XY.x) {
+        this.snake.x += this.SIZE * this.snake.direction 
+      } else {
+        this.snake.y += this.SIZE
+        this.snake.direction = -this.snake.direction
+      }
+    },
+    onFrame() {
+      // this.drawSnakeStep()
     },
     // 铺砖函数
     drawBrick() {
-      // for (let i = 0; i < this.XY.x / 2;) {
-      //   for (let j = 0; j < this.XY.y / 2;) {
-      //     this.brick = new paper.Path.Rectangle(new paper.Point(i, j), new paper.Size(this.SIZE,this.SIZE))
-      //     this.brick.fillColor = getRandomColor()
-      //     j = j + this.SIZE
-      //   }
-      //   i = i + this.SIZE
-      // }
-      
-      
 
     },
+onResize(event) {
+    project.activeLayer.removeChildren();
+
+    // Transform the raster so that it fills the bounding rectangle
+    // of the view:
+    raster.fitBounds(view.bounds, true);
+
+    // Create a path that fills the view, and fill it with
+    // the average color of the raster:
+    new Path.Rectangle({
+        rectangle: view.bounds,
+        fillColor: raster.getAverageColor(view.bounds),
+        onMouseMove: moveHandler
+    });
+}    
     // 绘制当前paperjs画布的坐标系
     drawXY() {
       this.X = new this.paper.Path()
@@ -96,7 +120,8 @@ export default {
       const canvas = this.$refs.main_canvas
       this.XY.x = canvas.clientWidth
       this.XY.y = canvas.clientHeight
-      console.log('xy', this.XY)
+      this.snake.x = -Math.floor(canvas.clientWidth / 2)
+      this.snake.y = -Math.floor(canvas.clientHeight / 2)
       paper.setup(canvas)
       this.paper = paper
       this.paper.view.setCenter(0, 0);
@@ -114,7 +139,7 @@ export default {
 <style lang="scss" scoped>
 .dashboard {
   border: 1px solid gray;
-  width: 100vw;
+  width: 100%;
   height: calc(100vh - 50px);
   padding: 10px;
   display: flex;
@@ -129,6 +154,7 @@ export default {
   &-container {
     height: calc(100% - 100px);
     width: 100%;
+    border: 1px solid red;
     .main_canvas {
       width: 90%;
       height: 90%;
