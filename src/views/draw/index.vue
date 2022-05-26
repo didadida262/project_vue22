@@ -242,6 +242,20 @@ export default {
       const frame = this.$refs.Content.$refs.content
       let parentX = this.image.raster.width
       let parentY = this.image.raster.height
+      console.log('this.image.raster:', this.image.raster)
+      // this.xx = new this.paper.Path()
+      // this.xx.strokeColor = 'red'      
+      for (let i = 0; i < this.image.raster.width / 2; i++) {
+          // this.xx.add(new this.paper.Point(i ,0))
+          this.xx = new paper.Path.Rectangle(new paper.Point(i, 12), new paper.Size(1, 1))
+          this.xx.fillColor = 'green'
+          
+      }    
+      this.yy = new this.paper.Path()
+      this.yy.strokeColor = 'red'      
+      for (let i = 0; i < this.image.raster.height / 2; i++) {
+          this.yy.add(new this.paper.Point(0 ,i))
+      }          
       // 计算缩放因子
       // 规则:分别计算canvas画布宽高是图片宽高各自的倍数,最后取最小值作为整体的缩放倍数
       let w = frame.clientWidth / parentX
@@ -251,9 +265,11 @@ export default {
       this.paper.view.setCenter(0, 0);
       this.mypath = new paper.Path.Rectangle(new paper.Point(0, 0), new paper.Size(1, 1))
       this.mypath.fillColor = 'black'
-      this.mypath2 = new paper.Path.Rectangle(new paper.Point(1, 0), new paper.Size(1, 1))
-      this.mypath2.fillColor = 'red'
+      // this.mypath2 = new paper.Path.Rectangle(new paper.Point(1, 0), new paper.Size(1, 1))
+      // this.mypath2.fillColor = 'red'
       this.image.scale = this.paper.view.zoom;
+
+
     },    
     onFrame () {
     },
@@ -299,7 +315,7 @@ export default {
           const newP = new paper.Point(Math.floor(e.point.x),Math.floor(e.point.y))
           console.log('newP:',newP)
           
-          this.myPath = new this.paper.Path.Rectangle(new paper.Point(Math.floor(e.point.x), Math.floor(e.point.y)), new paper.Size(1, 1))
+          this.myPath = new this.paper.Path.Rectangle(new paper.Point(Math.floor(e.point.x), Math.floor(e.point.y - 0.5) + 0.5), new paper.Size(1, 1))
           this.myPath.fillColor = 'black'
         }
         
