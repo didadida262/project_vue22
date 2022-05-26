@@ -1,12 +1,26 @@
+<!--
+ * @Author: Hhvcg
+ * @Date: 2022-02-20 15:26:48
+ * @LastEditors: -_-
+ * @Description: 
+-->
 <template>
   <div class="dashboard">
-    <div class="dashboard-container" ref="cont">
+    <div class="dashboard-text flex-cc">
+      <span>
+        正弦波
+      </span>
+    </div>
+    <div class="dashboard-container pd10 flex-cc">
+      <canvas id="main_canvas" ref="main_canvas" resize class="main_canvas" />
     </div>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import paper from 'paper'
+import {getRandomColor} from '../../weapons'
 
 export default {
   name: 'Dashboard',
@@ -17,84 +31,109 @@ export default {
   },
   data() {
     return {
-      tabs: null,
-      divs: [],
-      steps: 1000
+      paper: null,
+      tool: null,
+      // 存储画布容器宽高
+      XY: {},
+      SIZE: 20,
+      i: 0,
+      j: 0
     }
   },
   created() {
-    this.tabs = this.fastSin(10)
+    
   },
   mounted() {
-    this.draw()
-  },
-  // beforeDestroy() {
-  destroyed() {
+    this.initWorld()
+    // this.drawXY()
+    this.drawBrick()
   },
 
+
   methods: {
-   
-    draw() {
-      const dom = this.$refs.cont
-      for (let i = 0; i < 10; i++) {
-        const top = this.tabs[i] >= 0 ? (1 - this.tabs[i]) : (1 + Math.abs(this.tabs[i]))
-        const div = document.createElement('div')
-        div.style.position = 'absolute'
-        div.style.width = '10px'
-        div.style.height = '40px'
-        div.style.top = top * 100 + 'px'
-        div.style.left = i * 100 + 'px'
-        div.style.backgroundColor = 'black'
-        this.divs.push(div)
+    onFrame() {
+      console.log('真动')
+      this.brick = new paper.Path.Rectangle(new paper.Point(this.i, 0), new paper.Size(this.SIZE,this.SIZE))
+      this.brick.fillColor = getRandomColor()
+      if (this.i + this.SIZE < this.XY.x / 2) {
+        this.i = this.i + this.SIZE
+      } else {
+        this.i = 0
+        this.j = this.j + this.SIZE
       }
-      setInterval(() => {
-        for (const item of this.divs) {
-          dom.appendChild(item)
-        }
-      }, 2000)
+      
     },
-    fastSin(steps) {
-      const tabs = []
-      let ang = 0
-      let step = Math.PI * 2 / steps
-      while (steps) {
-        tabs.push(Math.sin(ang))
-        steps--
-        ang = ang + step
+    // 铺砖函数
+    drawBrick() {
+      // for (let i = 0; i < this.XY.x / 2;) {
+      //   for (let j = 0; j < this.XY.y / 2;) {
+      //     this.brick = new paper.Path.Rectangle(new paper.Point(i, j), new paper.Size(this.SIZE,this.SIZE))
+      //     this.brick.fillColor = getRandomColor()
+      //     j = j + this.SIZE
+      //   }
+      //   i = i + this.SIZE
+      // }
+      
+      
+
+    },
+    // 绘制当前paperjs画布的坐标系
+    drawXY() {
+      this.X = new this.paper.Path()
+      this.X.strokeColor = 'black'
+      this.Y = new this.paper.Path()
+      this.Y.strokeColor = 'black'
+      for (let i = 0; i < this.XY.x / 2; i++) {
+        this.X.add(new paper.Point(i, 0))
+        this.X.add(new paper.Point(-i, 0))
       }
-      return tabs
-    }
+      for (let i = 0; i < this.XY.y / 2; i++) {
+        this.Y.add(new paper.Point(0, i))
+        this.Y.add(new paper.Point(0, -i))
+      }
+    },
+    initWorld() {
+      const canvas = this.$refs.main_canvas
+      this.XY.x = canvas.clientWidth
+      this.XY.y = canvas.clientHeight
+      console.log('xy', this.XY)
+      paper.setup(canvas)
+      this.paper = paper
+      this.paper.view.setCenter(0, 0);
+      this.paper.view.onFrame = this.onFrame
+      this.tool = new paper.Tool()
+      this.tool.onMouseDown = (e) => {
+        console.log('点击事件--->', e.point)
+      }
+      // 初始化世界
+    },
   }
 }
 </script>
 
 <style lang="scss" scoped>
 .dashboard {
-  border: 1px solid red;
-  width: 100%;
-  margin-bottom: 50px;
-  height: 80vh;
+  border: 1px solid gray;
+  width: 100vw;
+  height: calc(100vh - 50px);
   padding: 10px;
-  overflow: scroll;
   display: flex;
-  justify-content: center;
+  // justify-content: center;
   align-items: center;
+  flex-direction: column;
   &-text {
-    display: flex;
-    justify-content: center;
-    font-weight: bold;
     width: 100%;
-    height: 45px;
-    border: 1px solid gray;
-    margin-bottom: 10px;
-    position: sticky;
-    top: 0;
+    height: 100px;
+    border: 1px solid ghostwhite;
   }
   &-container {
-    width: 80%;
-    height: 500px;
-    border: 1px solid black;
-    position: relative;
+    height: calc(100% - 100px);
+    width: 100%;
+    .main_canvas {
+      width: 90%;
+      height: 90%;
+      background: gray;
+    }    
   }
 }
 </style>
