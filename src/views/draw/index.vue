@@ -1,8 +1,8 @@
 <template>
   <div class="draw-container">
     <div class="tool" @click="changeBrush">
-      <el-tooltip v-for="(item, index) in brushArray" :key="index" class="item" effect="dark" :content="item.descript" placement="right" :id="item.name">
-        <div :class="[{'is-active':isActive === item.name }, 'icon', item.icon]">     
+      <el-tooltip v-for="(item, index) in brushArray" :id="item.name" :key="index" class="item" effect="dark" :content="item.descript" placement="right">
+        <div :class="[{'is-active':isActive === item.name }, 'icon', item.icon]">
           <el-divider />
         </div>
       </el-tooltip>
@@ -29,14 +29,14 @@ export default {
     return {
       brush: {
         pathOptions: {
-          strokeColor: "green",
+          strokeColor: 'green',
           strokeWidth: 1,
           radius: 30,
-          btype: "circle"  // circle ||  rectangle
+          btype: 'circle' // circle ||  rectangle
         }
-      },      
-    //       this.brush.path = null
-    // this.selection = null
+      },
+      //       this.brush.path = null
+      // this.selection = null
       strokeEnds: 6,
       currentTool: null,
       firstPoint: null,
@@ -57,7 +57,7 @@ export default {
           name: 'old_brush',
           icon: 'el-icon-scissors',
           descript: '老版本笔刷'
-        },        
+        },
         {
           name: 'pixelbrush',
           icon: 'el-icon-mobile',
@@ -67,7 +67,7 @@ export default {
           name: 'pencil',
           icon: 'el-icon-edit',
           descript: '铅笔'
-        },        
+        },
         {
           name: 'fat_brush',
           icon: 'el-icon-brush',
@@ -77,8 +77,8 @@ export default {
           name: 'broom_brush',
           icon: 'el-icon-ice-cream-round',
           descript: '胖子笔刷'
-        },
-      ]      
+        }
+      ]
     }
   },
   computed: {
@@ -86,239 +86,18 @@ export default {
       'name'
     ])
   },
-  mounted() {
-    this.init()
-    console.log('this.paper---', this.paper)
-  },
-  methods: {
-    click() {
-      this.image.raster.source = this.image.url
-      console.log('测试')
-    },
-    // // 笔刷跟随鼠标移动
-    // moveBrush(point) {
-    //   if (this.brush.path == null) this.createBrush(point);
-    //   console.log('this.brush----',this.brush)
-    //   this.brush.path.bringToFront();
-    //   this.brush.path.position = point;
-    // }, 
-    // createBrush(center) {
-    //   console.log('Jin--createBrush')
-    // //   center = center || new paper.Point(0, 0);
-    // //   console.log('center:', center)
-    //   this.brush.path = new this.paper.Path.Circle({
-    //     strokeColor: 'gree',
-    //     strokeWidth: 20,
-    //     radius: 10,
-    //     center: center
-    //  })
-    // },    
-    removeBrush() {
-      if (this.brush.path != null) {
-        this.brush.path.remove();
-        this.brush.path = null;
-      }
-    },
-    removeSelection() {
-      if (this.selection != null) {
-        this.selection.remove();
-        this.selection = null;
-      }
-    },    
-    createBrush(center) {
-      this.brush.path = new paper.Path.Circle({
-        strokeColor: this.brush.pathOptions.strokeColor,
-        strokeWidth: this.brush.pathOptions.strokeWidth,
-        radius: this.brush.pathOptions.radius,
-        center: center
-      });
-    },
-    moveBrush(point) {
-      if (!this.brush.path) {
-        this.createBrush(point)
-      }
-      this.brush.path.bringToFront();
-      this.brush.path.position = point;
-    },    
-    // 更改笔刷，随机初始化各方法
-    changeBrush(e) {
-      this.isActive = e.target.id
-      this.selection = null
-      this.tool.onMouseUp = () => {}
-      this.tool.onMouseDown = () => {}
-      this.tool.onMouseDrag = () => {}
-      this.currentTool = e.target.id
-      this.$message({
-        message: `切换画笔至${e.target.id}`,
-        type: 'success'
-      });      
-    },
-    init() {
-      const canvas = this.$refs.Content.$refs.main_canvas
-      paper.setup(canvas)
-      this.paper = paper
-      this.image.raster = new paper.Raster(this.image.url)
-      // this.mask_png = new paper.Raster('http://zhuoxilab.com:10444/file_0/2,035e7ca1c5d1ae?rend=1649939540571');
-      this.image.raster.smoothing = false
-      this.image.raster.onLoad = () => {
-        console.log('图片加载成功！')
-        this.fit()
-      }
-
-
-      // 绑定各种事件函数
-      this.paper.view.onFrame = this.onFrame
-      this.tool = new paper.Tool()
-      this.paper.view.onMouseDown = this.onMouseDown
-      this.tool.onKeyDown = (e) => {
-        if (e.key === 'space') {
-          const layer = this.paper.project.activeLayer
-          layer.selected = !layer.selected
-          return false
-        }
-      }
-    },
-    addStrokes (point, delta) {
-      // 原版的齿轮状
-      let step = delta.rotate(90);
-      let strokePoints = 6 * 2 + 1;
-      point = point.subtract(step.divide(2));
-      step = step.divide(strokePoints - 1);
-      for(let i = 0; i < strokePoints; i++) {
-        let strokePoint = point.add(step.multiply(i));
-        let offset = delta.multiply((Math.random() * 0.3 + 0.1)) ;
-        if(i % 2) {
-          offset = offset.multiply(-1);
-        }
-        strokePoint = strokePoint.add(offset);
-        this.selection.insert(0, strokePoint);
-      }
-      
-      // 简易版,直接一个圆
-          // const top = e.middlePoint.add(e.delta.rotate(90).normalize().multiply(10));
-
-      // this.selection.insert(0, point.add(delta.normalize().multiply(10)));
-
-    },
-    unite(path) {
-      console.log('输出path:', path)
-    },
-    removeMyPath () {
-      if (this.myPath != null) {
-        this.myPath.fullySelected = false
-        this.myPath.remove();
-        this.myPath = null
-      }
-    },  
-    removeItem(item) {
-      if (item.path != null) {
-        item.path.remove();
-        item.path = null;
-      }
-    },      
-    // 以当前滚轮方向及真实坐标数据为输入
-    changeZoom(delta, viewPosition) {
-      const oldZoom = this.paper.view.zoom
-      const c = this.paper.view.center
-      const factor = 0.5
-      // < 0:向上-->放大，反之向下--->缩小
-      const zoom = delta < 0 ? oldZoom + factor : oldZoom - factor
-      return zoom <= 0 || zoom >= 160? oldZoom: zoom
-    },
-    onWheel(e) {
-      const point = {x: e.x, y: e.y}
-      let view = this.paper.view
-
-      let viewPosition = view.viewToProject(
-          new paper.Point(e.offsetX, e.offsetY)
-      );
-
-
-      this.paper.view.zoom = this.changeZoom(e.deltaY, viewPosition);
-      this.paper.view.center = viewPosition;
-    },
-    // 根据加载图片宽高及外层div宽高，作自适应处理。
-    fit() {
-      const frame = this.$refs.Content.$refs.content
-      let parentX = this.image.raster.width
-      let parentY = this.image.raster.height
-      console.log('this.image.raster:', this.image.raster)
-      // this.xx = new this.paper.Path()
-      // this.xx.strokeColor = 'red'      
-      for (let i = 0; i < this.image.raster.width / 2; i++) {
-          // this.xx.add(new this.paper.Point(i ,0))
-          this.xx = new paper.Path.Rectangle(new paper.Point(i, 12), new paper.Size(1, 1))
-          this.xx.fillColor = 'green'
-          
-      }    
-      this.yy = new this.paper.Path()
-      this.yy.strokeColor = 'red'      
-      for (let i = 0; i < this.image.raster.height / 2; i++) {
-          this.yy.add(new this.paper.Point(0 ,i))
-      }          
-      // 计算缩放因子
-      // 规则:分别计算canvas画布宽高是图片宽高各自的倍数,最后取最小值作为整体的缩放倍数
-      let w = frame.clientWidth / parentX
-      let h = frame.clientHeight / parentY
-      let ratio = Math.min(w, h)
-      this.paper.view.zoom = ratio - 0.1
-      this.paper.view.setCenter(0, 0);
-      this.mypath = new paper.Path.Rectangle(new paper.Point(0, 0), new paper.Size(1, 1))
-      this.mypath.fillColor = 'black'
-      // this.mypath2 = new paper.Path.Rectangle(new paper.Point(1, 0), new paper.Size(1, 1))
-      // this.mypath2.fillColor = 'red'
-      this.image.scale = this.paper.view.zoom;
-
-
-    },    
-    onFrame () {
-    },
-    realXY (point) {
-      return {
-        x: point.x * this.image.scale,
-        y: point.y * this.image.scale
-      }
-    },
-    // 全视图的mousedown事件
-    onMouseDown (e) {
-      console.log('点击坐标----->', e.point)
-      // const newP = new paper.Point(Math.floor(e.point.x), Math.floor(e.point.y))
-      // console.log('newP', newP)
-      
-      // this.mypath = new paper.Path.Rectangle(newP, new paper.Size(1, 1))
-      // this.mypath.fillColor = 'red'      
-    },
-
-    line() {
-      const vector = this.lastPoint.subtract(this.firstPoint)
-      this.line.path.add(vector.normalize().multiply(this.line.pathOptions.lineWidth / 2).rotate(-90).add(this.firstPoint))
-      this.line.path.add(vector.normalize().multiply(this.line.pathOptions.lineWidth / 2).rotate(90).add(this.firstPoint))
-      const vector2 = this.firstPoint.subtract(this.lastPoint)
-      this.line.path.add(vector2.normalize().multiply(this.line.pathOptions.lineWidth / 2).rotate(-90).add(this.lastPoint))
-      this.line.path.add(vector2.normalize().multiply(this.line.pathOptions.lineWidth / 2).rotate(90).add(this.lastPoint))
-    },
-    getTopBot(firstPoint, lastPoint) {
-      // 返回其中顶
-      const vector = this.lastPoint.subtract(this.firstPoint)
-      const top = vector.normalize().multiply(10).rotate(-90).add(this.firstPoint)
-      const bot = vector.normalize().multiply(10).rotate(90).add(this.firstPoint)
-      return [top, bot]
-    }
-      
-  },
   watch: {
     currentTool(newVal, oldVal) {
       // 像素笔刷
       if (newVal === 'pixelbrush') {
         this.tool.onMouseDown = (e) => {
           console.log('tool点击:', e.point)
-          const newP = new paper.Point(Math.floor(e.point.x),Math.floor(e.point.y))
-          console.log('newP:',newP)
-          
+          const newP = new paper.Point(Math.floor(e.point.x), Math.floor(e.point.y))
+          console.log('newP:', newP)
+
           this.myPath = new this.paper.Path.Rectangle(new paper.Point(Math.floor(e.point.x), Math.floor(e.point.y - 0.5) + 0.5), new paper.Size(1, 1))
           this.myPath.fillColor = 'black'
         }
-        
       } else if (newVal === 'pencil') {
         // 绑定铅笔的事件
         this.tool.onMouseDown = (e) => {
@@ -340,38 +119,38 @@ export default {
       } else if (newVal === 'fat_brush') {
         this.tool.onMouseDown = (e) => {
           this.selection = new paper.Path()
-          this.selection.fillColor =  {
+          this.selection.fillColor = {
             hue: Math.random() * 360,
             saturation: 1,
             brightness: 1
-          };
-          this.selection.add(e.point)          
+          }
+          this.selection.add(e.point)
         }
         this.tool.onMouseDrag = (e) => {
-          let step = e.delta.divide(2)
+          const step = e.delta.divide(2)
           step.angle += 90
-          
-          let top = e.middlePoint.add(step);
-          let bottom = e.middlePoint.subtract(step);
-          
-          this.selection.add(top);
-          this.selection.insert(0, bottom);
-          this.selection.smooth();          
+
+          const top = e.middlePoint.add(step)
+          const bottom = e.middlePoint.subtract(step)
+
+          this.selection.add(top)
+          this.selection.insert(0, bottom)
+          this.selection.smooth()
         }
         this.tool.onMouseUp = (e) => {
-          console.log('e.delta--->',e.delta)
-          console.log('e.delta3--->',e.delta.multiply(3))
-          
+          console.log('e.delta--->', e.delta)
+          console.log('e.delta3--->', e.delta.multiply(3))
+
           this.selection.add(e.point)
           this.selection.closed = true
           this.selection.smooth()
         }
       } else if (newVal === 'broom_brush') {
-        this.tool.fixedDistance = 30;
+        this.tool.fixedDistance = 30
         // 触发drag需要拖拽的最大距离
         // 这里我觉得很奇怪,tool有最大距离和最小距离....
-        
-        this.tool.maxDistance = 45;
+
+        this.tool.maxDistance = 45
         // this.tool.maxDistance = 1;
         // 扫把头
         this.tool.onMouseDown = (e) => {
@@ -381,33 +160,33 @@ export default {
             hue: Math.random() * 360,
             saturation: 1,
             brightness: 1
-          };          
+          }
         }
         this.tool.onMouseDrag = (e) => {
           console.log('drag---->', e)
           // if(e.count == 0) {
           //   console.log('存在?')
           //   this.addStrokes(e.middlePoint, e.delta.multiply(-1));
-          // } else {          
-            let step = e.delta.divide(2);
-            step.angle += 90;
+          // } else {
+          const step = e.delta.divide(2)
+          step.angle += 90
 
-            let top = e.middlePoint.add(step)
-            let bottom = e.middlePoint.subtract(step)
-            this.selection.add(top);
-            this.selection.insert(0, bottom);          
+          const top = e.middlePoint.add(step)
+          const bottom = e.middlePoint.subtract(step)
+          this.selection.add(top)
+          this.selection.insert(0, bottom)
           // }
           this.selection.smooth()
           this.lastPoint = e.middlePoint.clone()
         }
         this.tool.onMouseUp = (e) => {
           console.log('结束点:', e)
-          let delta = e.point.subtract(this.lastPoint)
-          delta.length = this.tool.maxDistance;
+          const delta = e.point.subtract(this.lastPoint)
+          delta.length = this.tool.maxDistance
           // this.addStrokes(e.point, delta);
           this.selection.closed = true
           this.selection.smooth()
-        }        
+        }
       } else if (newVal === 'old_brush') {
         //         if (this.brush.path == null) this.createBrush();
         // this.brush.path.bringToFront();
@@ -417,27 +196,219 @@ export default {
         //   strokeWidth: this.brush.pathOptions.strokeWidth,
         //   radius: this.brush.pathOptions.radius,
         //   center: center
-        // });        
+        // });
         this.tool.onMouseDown = (e) => {
           this.selection = new paper.Path({
             strokeColor: this.brush.pathOptions.strokeColor,
             strokeWidth: this.brush.pathOptions.strokeWidth
-          });
+          })
         }
         this.tool.onMouseMove = (e) => {
           this.moveBrush(e.point)
         }
         this.tool.onMouseDrag = (e) => {
           // let newSelection = this.selection.unite(this.brush.path);
-          let newSelection = this.selection.unite(this.brush.path);
-          this.selection.remove();
-          this.selection = newSelection;          
+          const newSelection = this.selection.unite(this.brush.path)
+          this.selection.remove()
+          this.selection = newSelection
         }
         this.tool.onMousUp = (e) => {
           console.log('this.selection--->', this.selection)
-        }        
+        }
       }
     }
+  },
+  mounted() {
+    this.init()
+    console.log('this.paper---', this.paper)
+  },
+  methods: {
+    click() {
+      this.image.raster.source = this.image.url
+      console.log('测试')
+    },
+    // // 笔刷跟随鼠标移动
+    // moveBrush(point) {
+    //   if (this.brush.path == null) this.createBrush(point);
+    //   console.log('this.brush----',this.brush)
+    //   this.brush.path.bringToFront();
+    //   this.brush.path.position = point;
+    // },
+    // createBrush(center) {
+    //   console.log('Jin--createBrush')
+    // //   center = center || new paper.Point(0, 0);
+    // //   console.log('center:', center)
+    //   this.brush.path = new this.paper.Path.Circle({
+    //     strokeColor: 'gree',
+    //     strokeWidth: 20,
+    //     radius: 10,
+    //     center: center
+    //  })
+    // },
+    removeBrush() {
+      if (this.brush.path != null) {
+        this.brush.path.remove()
+        this.brush.path = null
+      }
+    },
+    removeSelection() {
+      if (this.selection != null) {
+        this.selection.remove()
+        this.selection = null
+      }
+    },
+    createBrush(center) {
+      this.brush.path = new paper.Path.Circle({
+        strokeColor: this.brush.pathOptions.strokeColor,
+        strokeWidth: this.brush.pathOptions.strokeWidth,
+        radius: this.brush.pathOptions.radius,
+        center: center
+      })
+    },
+    moveBrush(point) {
+      if (!this.brush.path) {
+        this.createBrush(point)
+      }
+      this.brush.path.bringToFront()
+      this.brush.path.position = point
+    },
+    // 更改笔刷，随机初始化各方法
+    changeBrush(e) {
+      this.isActive = e.target.id
+      this.selection = null
+      this.tool.onMouseUp = () => {}
+      this.tool.onMouseDown = () => {}
+      this.tool.onMouseDrag = () => {}
+      this.currentTool = e.target.id
+      this.$message({
+        message: `切换画笔至${e.target.id}`,
+        type: 'success'
+      })
+    },
+    init() {
+      const canvas = this.$refs.Content.$refs.main_canvas
+      paper.setup(canvas)
+      this.paper = paper
+      this.image.raster = new paper.Raster(this.image.url)
+      // this.mask_png = new paper.Raster('http://zhuoxilab.com:10444/file_0/2,035e7ca1c5d1ae?rend=1649939540571');
+      this.image.raster.smoothing = false
+      this.image.raster.onLoad = () => {
+        console.log('图片加载成功！')
+        this.image.raster.fitBounds(this.paper.view.bounds, false)
+        // this.fit()
+      }
+
+      // 绑定各种事件函数
+      this.paper.view.onFrame = this.onFrame
+      this.tool = new paper.Tool()
+      this.paper.view.onMouseDown = this.onMouseDown
+      this.paper.view.setCenter(0, 0)
+      this.tool.onKeyDown = (e) => {
+        if (e.key === 'space') {
+          const layer = this.paper.project.activeLayer
+          layer.selected = !layer.selected
+          return false
+        }
+      }
+    },
+    addStrokes(point, delta) {
+      // 原版的齿轮状
+      let step = delta.rotate(90)
+      const strokePoints = 6 * 2 + 1
+      point = point.subtract(step.divide(2))
+      step = step.divide(strokePoints - 1)
+      for (let i = 0; i < strokePoints; i++) {
+        let strokePoint = point.add(step.multiply(i))
+        let offset = delta.multiply((Math.random() * 0.3 + 0.1))
+        if (i % 2) {
+          offset = offset.multiply(-1)
+        }
+        strokePoint = strokePoint.add(offset)
+        this.selection.insert(0, strokePoint)
+      }
+
+      // 简易版,直接一个圆
+      // const top = e.middlePoint.add(e.delta.rotate(90).normalize().multiply(10));
+
+      // this.selection.insert(0, point.add(delta.normalize().multiply(10)));
+    },
+    unite(path) {
+      console.log('输出path:', path)
+    },
+    removeMyPath() {
+      if (this.myPath != null) {
+        this.myPath.fullySelected = false
+        this.myPath.remove()
+        this.myPath = null
+      }
+    },
+    removeItem(item) {
+      if (item.path != null) {
+        item.path.remove()
+        item.path = null
+      }
+    },
+    // 以当前滚轮方向及真实坐标数据为输入
+    changeZoom(delta, viewPosition) {
+      const oldZoom = this.paper.view.zoom
+      const c = this.paper.view.center
+      const factor = 0.5
+      // < 0:向上-->放大，反之向下--->缩小
+      const zoom = delta < 0 ? oldZoom + factor : oldZoom - factor
+      return zoom <= 0 || zoom >= 160 ? oldZoom : zoom
+    },
+    onWheel(e) {
+      // const point = { x: e.x, y: e.y }
+      // const view = this.paper.view
+
+      // const viewPosition = view.viewToProject(
+      //   new paper.Point(e.offsetX, e.offsetY)
+      // )
+      if (e.wheelDeltaY > 0) {
+        if (this.paper.view.zoom - 0.1 > 0) {
+          this.paper.view.zoom -= 0.4
+        }
+      } else {
+        this.paper.view.zoom += 0.4
+      }
+      this.paper.view.setCenter(e.point)
+    },
+    // 根据加载图片宽高及外层div宽高，作自适应处理。
+
+    onFrame() {
+    },
+    realXY(point) {
+      return {
+        x: point.x * this.image.scale,
+        y: point.y * this.image.scale
+      }
+    },
+    // 全视图的mousedown事件
+    onMouseDown(e) {
+      console.log('点击坐标----->', e.point)
+      // const newP = new paper.Point(Math.floor(e.point.x), Math.floor(e.point.y))
+      // console.log('newP', newP)
+
+      // this.mypath = new paper.Path.Rectangle(newP, new paper.Size(1, 1))
+      // this.mypath.fillColor = 'red'
+    },
+
+    line() {
+      const vector = this.lastPoint.subtract(this.firstPoint)
+      this.line.path.add(vector.normalize().multiply(this.line.pathOptions.lineWidth / 2).rotate(-90).add(this.firstPoint))
+      this.line.path.add(vector.normalize().multiply(this.line.pathOptions.lineWidth / 2).rotate(90).add(this.firstPoint))
+      const vector2 = this.firstPoint.subtract(this.lastPoint)
+      this.line.path.add(vector2.normalize().multiply(this.line.pathOptions.lineWidth / 2).rotate(-90).add(this.lastPoint))
+      this.line.path.add(vector2.normalize().multiply(this.line.pathOptions.lineWidth / 2).rotate(90).add(this.lastPoint))
+    },
+    getTopBot(firstPoint, lastPoint) {
+      // 返回其中顶
+      const vector = this.lastPoint.subtract(this.firstPoint)
+      const top = vector.normalize().multiply(10).rotate(-90).add(this.firstPoint)
+      const bot = vector.normalize().multiply(10).rotate(90).add(this.firstPoint)
+      return [top, bot]
+    }
+
   }
 }
 </script>
@@ -464,7 +435,7 @@ export default {
       .icon:hover {
         cursor: pointer;
       }
-    }    
+    }
   }
 }
 .draw-container {
