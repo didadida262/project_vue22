@@ -1,3 +1,9 @@
+<!--
+ * @Author: Hhvcg
+ * @Date: 2022-02-20 15:26:48
+ * @LastEditors: -_-
+ * @Description: 
+-->
 <template>
   <div ref="content" class="content" @wheel="onwheel">
     <canvas id="main_canvas" ref="main_canvas" resize class="main_canvas" />
@@ -18,7 +24,6 @@ export default {
     }
   },
   mounted() {
-    console.log('this.mask_png:', this.mask_png)
   }
 }
 </script>

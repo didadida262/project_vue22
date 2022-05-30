@@ -122,6 +122,7 @@ export default {
       }
     },
     initWorld() {
+      // 获取
       const canvas = this.$refs.main_canvas
       this.XY.x = canvas.clientWidth
       this.XY.y = canvas.clientHeight

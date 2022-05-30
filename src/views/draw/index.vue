@@ -6,7 +6,6 @@
           <el-divider />
         </div>
       </el-tooltip>
-      <el-button @click="click">测试</el-button>
     </div>
     <Content
       ref="Content"
@@ -91,9 +90,9 @@ export default {
       // 像素笔刷
       if (newVal === 'pixelbrush') {
         this.tool.onMouseDown = (e) => {
-          console.log('tool点击:', e.point)
+          // console.log('tool点击:', e.point)
           const newP = new paper.Point(Math.floor(e.point.x), Math.floor(e.point.y))
-          console.log('newP:', newP)
+          // console.log('newP:', newP)
 
           this.myPath = new this.paper.Path.Rectangle(new paper.Point(Math.floor(e.point.x), Math.floor(e.point.y - 0.5) + 0.5), new paper.Size(1, 1))
           this.myPath.fillColor = 'black'
@@ -109,7 +108,7 @@ export default {
         }
         this.mypath = new paper.Path.Rectangle(new paper.Point(220, 94.5), new paper.Size(1, 1))
         this.mypath.fillColor = 'blue'
-        console.log(this.paper.view)
+        // console.log(this.paper.view)
         this.tool.onMouseDrag = (e) => {
           this.selection.add(e.point)
         }
@@ -138,8 +137,8 @@ export default {
           this.selection.smooth()
         }
         this.tool.onMouseUp = (e) => {
-          console.log('e.delta--->', e.delta)
-          console.log('e.delta3--->', e.delta.multiply(3))
+          // console.log('e.delta--->', e.delta)
+          // console.log('e.delta3--->', e.delta.multiply(3))
 
           this.selection.add(e.point)
           this.selection.closed = true
@@ -154,7 +153,7 @@ export default {
         // this.tool.maxDistance = 1;
         // 扫把头
         this.tool.onMouseDown = (e) => {
-          console.log('开始点:', e)
+          // console.log('开始点:', e)
           this.selection = new paper.Path()
           this.selection.fillColor = {
             hue: Math.random() * 360,
@@ -163,9 +162,9 @@ export default {
           }
         }
         this.tool.onMouseDrag = (e) => {
-          console.log('drag---->', e)
+          // console.log('drag---->', e)
           // if(e.count == 0) {
-          //   console.log('存在?')
+          //   // console.log('存在?')
           //   this.addStrokes(e.middlePoint, e.delta.multiply(-1));
           // } else {
           const step = e.delta.divide(2)
@@ -180,7 +179,7 @@ export default {
           this.lastPoint = e.middlePoint.clone()
         }
         this.tool.onMouseUp = (e) => {
-          console.log('结束点:', e)
+          // console.log('结束点:', e)
           const delta = e.point.subtract(this.lastPoint)
           delta.length = this.tool.maxDistance
           // this.addStrokes(e.point, delta);
@@ -213,31 +212,51 @@ export default {
           this.selection = newSelection
         }
         this.tool.onMousUp = (e) => {
-          console.log('this.selection--->', this.selection)
+          // console.log('this.selection--->', this.selection)
         }
       }
     }
   },
   mounted() {
     this.init()
-    console.log('this.paper---', this.paper)
+    // console.log('this.paper---', this.paper)
   },
   methods: {
-    click() {
-      this.image.raster.source = this.image.url
-      console.log('测试')
-    },
-    // // 笔刷跟随鼠标移动
+    init() {
+      const canvas = this.$refs.Content.$refs.main_canvas
+      paper.setup(canvas)
+      this.paper = paper
+      this.image.raster = new paper.Raster(this.image.url)
+      // this.mask_png = new paper.Raster('http://zhuoxilab.com:10444/file_0/2,035e7ca1c5d1ae?rend=1649939540571');
+      this.image.raster.smoothing = false
+      this.image.raster.onLoad = () => {
+        // 让图片raster的宽高自适应view这个容器
+        this.image.raster.fitBounds(this.paper.view.bounds, false)
+      }
+
+      // 绑定各种事件函数
+      this.paper.view.onFrame = this.onFrame
+      this.paper.view.onMouseDown = this.onMouseDown
+      this.paper.view.setCenter(0, 0)
+      this.tool = new paper.Tool()
+      this.tool.onKeyDown = (e) => {
+        if (e.key === 'space') {
+          const layer = this.paper.project.activeLayer
+          layer.selected = !layer.selected
+          return false
+        }
+      }
+    },    // // 笔刷跟随鼠标移动
     // moveBrush(point) {
     //   if (this.brush.path == null) this.createBrush(point);
-    //   console.log('this.brush----',this.brush)
+    //   // console.log('this.brush----',this.brush)
     //   this.brush.path.bringToFront();
     //   this.brush.path.position = point;
     // },
     // createBrush(center) {
-    //   console.log('Jin--createBrush')
+    //   // console.log('Jin--createBrush')
     // //   center = center || new paper.Point(0, 0);
-    // //   console.log('center:', center)
+    // //   // console.log('center:', center)
     //   this.brush.path = new this.paper.Path.Circle({
     //     strokeColor: 'gree',
     //     strokeWidth: 20,
@@ -285,32 +304,7 @@ export default {
         type: 'success'
       })
     },
-    init() {
-      const canvas = this.$refs.Content.$refs.main_canvas
-      paper.setup(canvas)
-      this.paper = paper
-      this.image.raster = new paper.Raster(this.image.url)
-      // this.mask_png = new paper.Raster('http://zhuoxilab.com:10444/file_0/2,035e7ca1c5d1ae?rend=1649939540571');
-      this.image.raster.smoothing = false
-      this.image.raster.onLoad = () => {
-        console.log('图片加载成功！')
-        this.image.raster.fitBounds(this.paper.view.bounds, false)
-        // this.fit()
-      }
 
-      // 绑定各种事件函数
-      this.paper.view.onFrame = this.onFrame
-      this.tool = new paper.Tool()
-      this.paper.view.onMouseDown = this.onMouseDown
-      this.paper.view.setCenter(0, 0)
-      this.tool.onKeyDown = (e) => {
-        if (e.key === 'space') {
-          const layer = this.paper.project.activeLayer
-          layer.selected = !layer.selected
-          return false
-        }
-      }
-    },
     addStrokes(point, delta) {
       // 原版的齿轮状
       let step = delta.rotate(90)
@@ -333,7 +327,7 @@ export default {
       // this.selection.insert(0, point.add(delta.normalize().multiply(10)));
     },
     unite(path) {
-      console.log('输出path:', path)
+      // console.log('输出path:', path)
     },
     removeMyPath() {
       if (this.myPath != null) {
@@ -375,7 +369,9 @@ export default {
     },
     // 根据加载图片宽高及外层div宽高，作自适应处理。
 
+    // 帧动
     onFrame() {
+      // console.log('震动')
     },
     realXY(point) {
       return {
@@ -386,11 +382,6 @@ export default {
     // 全视图的mousedown事件
     onMouseDown(e) {
       console.log('点击坐标----->', e.point)
-      // const newP = new paper.Point(Math.floor(e.point.x), Math.floor(e.point.y))
-      // console.log('newP', newP)
-
-      // this.mypath = new paper.Path.Rectangle(newP, new paper.Size(1, 1))
-      // this.mypath.fillColor = 'red'
     },
 
     line() {
