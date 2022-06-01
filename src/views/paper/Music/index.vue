@@ -1,5 +1,5 @@
 <template>
-  <div id="music">
+  <div class="music">
     <div class="music-player">
       <div class="info">
         <div class="left">
@@ -19,21 +19,26 @@
           <a href="#" class="icon-model"></a>
           <a href="#" class="icon-share"></a>
         </div>
-        <div class="progress">
-          <span class="jp-play-bar"></span>
+        <!-- 进度条 -->
+        <div class="progress" ref="progress">
+          <div class="jp-play-bar" ref="jp-play-bar"></div>
         </div>
       </div>
       <div class="controls">
-        <!-- <div class="current">{{ timer }}</div> -->
+        <div class="current">{{ this.musicBox.timer }}</div>
+        <!-- operation -->
         <div class="play-controls">
           <a href="#" class="icon-back"></a>
-          <a href="#" class="icon-play" @click="handleSong(1)" ref="playRef"></a>
           <a
+           v-if="musicBox.status === 'paused'"
+           href="#" 
+           class="icon-play" 
+           @click="handleSong('playing')"></a>
+          <a
+            v-if="musicBox.status === 'playing'"
             href="#"
             class="icon-pause"
-            style="display: none"
-            @click="handleSong(-1)"
-            ref="pauseRef"
+            @click="handleSong('paused')"
           ></a>
           <a href="#" class="icon-next"></a>
         </div>
@@ -47,24 +52,32 @@
         </div>
       </div>
     </div>
-    <!-- <audio
+    <audio
+      ref="audio"
       class="audio"
       style="display: none"
+      muted=“muted”
       loop
       @timeupdate="updateTime"
-      :src="audioUrl"
+      src="@/assets/诚如神之所说.mp3"
       controls="controls"
-    /> -->
+    />
   </div>
 
 </template>
 <script lang="ts">
 
+import { log, e} from '@/utils/weapons'
 export default {
   name: "Music",
   data() {
     return {
-      musicBox: null
+      musicBox: {
+        el: null,
+        timer: '00:00',
+        audioUrl: null,
+        status: 'paused'
+      }
     }
   },
   created() {
@@ -98,27 +111,38 @@ export default {
     //   pauseRef.value.style.display = "none";
     //   logoRef.value.style.animationPlayState = "paused";
     // };
-    // const updateTime = () => {
-    //   // timer = 分:秒
-    //   const min = Math.floor(musicBox.currentTime / 60);
-    //   let minl = "";
-    //   const sec = (musicBox.currentTime - min * 60).toFixed(0);
-    //   let secl = "";
-    //   if (min < 10) {
-    //     minl = "0";
-    //   }
-    //   if (Number(sec) < 10) {
-    //     secl = "0";
-    //   }
-    //   timer.value = minl + min + ":" + secl + sec;
-    // };
+
     methods: {
+      updateTime() {
+        // timer = 分:秒
+        const total = this.musicBox.el.duration
+        const progressDom = this.$refs['progress']
+        const jpplaybarDom = this.$refs['jp-play-bar']
+        log('progressDom--->', progressDom)
+        log('jpplaybarDom--->', jpplaybarDom)
+        jpplaybarDom.style.width =  this.musicBox.el.currentTime / total * progressDom.clientWidth + 'px'
+        
+        const min = Math.floor(this.musicBox.el.currentTime / 60)
+        let minl = ''
+        const sec = (this.musicBox.el.currentTime - (min * 60)).toFixed(0)
+        let secl = ''
+        if (min < 10) {
+          minl = '0'
+        }
+        if (Number(sec) < 10) {
+          secl = '0'
+        }
+        this.musicBox.timer = minl + min + ':' + secl + sec
+      },     
       handleSong(flag) {
-        if (flag === 1) {
+        if (flag === 'playing') {
           console.log('放')
-        } else if(flag === -1) {
+          this.musicBox.el.play()
+        } else if(flag === 'paused') {
+          this.musicBox.el.pause()
           console.log('停')
         }
+        this.musicBox.status = flag
       },
       changeVol(flag) {
         if (flag === 1) {
@@ -131,8 +155,10 @@ export default {
       // 初始化播放器
       initMusic() {
         // this.$refs.logoRef.value.style.animationPlayState = "paused";
-        // this.musicBox = e("audio");
-        // console.log("musicBox:", musicBox);
+        this.musicBox.el = this.$refs['audio']
+        // this.musicBox.el.src = '../../../assets/诚如神之所说.mp3'
+        log('this.musicBox', this.musicBox)
+
         // musicBox.src = audioUrl.value;
         // console.log("musicBox:", musicBox);
         // addSong('诚如神之所说.mp3')
@@ -155,8 +181,8 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-#music {
+<style scoped lang="scss">
+.music {
   margin: 10px auto;
   background: url("../../../assets/back-image.jpg") no-repeat center;
   width: 100%;
@@ -164,16 +190,43 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  .music-player {
+    position: relative;
+    width: 350px;
+    height: 290px;
+    box-shadow: 0 0 60px rgba(0, 0, 0, 0.8);
+    border-radius: 10px;
+    background: #222;
+    overflow: hidden;
+    .progress {
+      width: 100%;
+      height: 5px;
+      background: #000;
+      position: absolute;
+      bottom: 0px;
+      cursor: pointer;
+      .jp-play-bar {
+        height: 100%;
+        width: 0px;
+        background-color: red;
+      }
+    }    
+    .current {
+      font-size: 48px;
+      height: 90px;
+      color: rgba(225, 225, 225, 0.4);
+      padding: 15px 0 20px;
+    }    
+  }  
 }
-.music-player {
-  position: relative;
-  width: 350px;
-  height: 290px;
-  box-shadow: 0 0 60px rgba(0, 0, 0, 0.8);
-  border-radius: 10px;
-  background: #222;
-  overflow: hidden;
-}
+
+
+
+
+
+
+
+
 
 .music-player .info {
   width: 100%;
@@ -231,27 +284,13 @@ export default {
   background: url("../../../assets/model.png") no-repeat center;
 }
 
-.music-player .progress {
-  width: 100%;
-  height: 5px;
-  /* border: 1px solid red; */
-  background: #000;
-  position: absolute;
-  bottom: 0px;
-  cursor: pointer;
-}
+.music-player 
 .music-player .progress span {
   position: relative;
   display: block;
   background: #ed553b;
   cursor: pointer;
-
   height: 100%;
-}
-.music-player .current {
-  font-size: 48px;
-  color: rgba(225, 225, 225, 0.4);
-  padding: 15px 0 20px;
 }
 
 .music-player .play-controls a {

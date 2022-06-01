@@ -1,3 +1,9 @@
+<!--
+ * @Author: Hhvcg
+ * @Date: 2022-02-20 15:26:48
+ * @LastEditors: -_-
+ * @Description: 
+-->
 <template>
   <section class="app-main">
     <transition name="fade-transform" mode="out-in" type="transition">
@@ -25,7 +31,7 @@ export default {
 <style scoped>
 .app-main {
   /*50 = navbar  */
-  min-height: calc(100vh - 50px);
+  height: calc(100vh - 50px);
   width: 100%;
   position: relative;
   overflow: hidden;
