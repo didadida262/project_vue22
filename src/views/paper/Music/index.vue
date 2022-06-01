@@ -137,8 +137,10 @@ export default {
       handleSong(flag) {
         if (flag === 'playing') {
           console.log('放')
+          this.$refs['logoRef'].style.animationPlayState = "running";
           this.musicBox.el.play()
         } else if(flag === 'paused') {
+          this.$refs['logoRef'].style.animationPlayState = "paused";
           this.musicBox.el.pause()
           console.log('停')
         }
@@ -154,7 +156,8 @@ export default {
       },
       // 初始化播放器
       initMusic() {
-        // this.$refs.logoRef.value.style.animationPlayState = "paused";
+        this.$refs['logoRef'].style.animationPlayState = "paused";
+        // this.$refs.logoRef.valu
         this.musicBox.el = this.$refs['audio']
         // this.musicBox.el.src = '../../../assets/诚如神之所说.mp3'
         log('this.musicBox', this.musicBox)
