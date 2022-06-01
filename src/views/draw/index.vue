@@ -75,7 +75,7 @@ export default {
         {
           name: 'broom_brush',
           icon: 'el-icon-ice-cream-round',
-          descript: '胖子笔刷'
+          descript: '测试笔刷'
         }
       ]
     }
@@ -106,8 +106,6 @@ export default {
           })
           this.selection.add(e.point)
         }
-        this.mypath = new paper.Path.Rectangle(new paper.Point(220, 94.5), new paper.Size(1, 1))
-        this.mypath.fillColor = 'blue'
         // console.log(this.paper.view)
         this.tool.onMouseDrag = (e) => {
           this.selection.add(e.point)
@@ -149,7 +147,7 @@ export default {
         // 触发drag需要拖拽的最大距离
         // 这里我觉得很奇怪,tool有最大距离和最小距离....
 
-        this.tool.maxDistance = 45
+        // this.tool.maxDistance = 45
         // this.tool.maxDistance = 1;
         // 扫把头
         this.tool.onMouseDown = (e) => {
