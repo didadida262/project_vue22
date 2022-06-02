@@ -117,7 +117,7 @@ export const constantRoutes = [
   },
 
 
-
+// all kinds of toys...
   {
     path: '/nested',
     component: Layout,
@@ -173,6 +173,12 @@ export const constantRoutes = [
         component: () => import('@/views/nested/menu2/index'),
         name: 'Menu2',
         meta: { title: 'menu2' }
+      },
+      {
+        path: 'video',
+        components: () => import('@/views/Toys/VideoPractice/index'),
+        name: 'Video',
+        meta: { title: 'video'}
       }
     ]
   },
