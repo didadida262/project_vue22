@@ -64,19 +64,24 @@ div:focus {
   padding: 20px;
 }
 
-.mgl {
+.mgl10 {
   margin-left: 10px  
 }
-.mgr {
+.mgr10 {
   margin-right: 10px  
 }
-.mgt {
+.mgt10 {
   margin-top: 10px  
 }
 
 .flex-cc {
   display: flex;
   justify-content: center;
+  align-items: center;
+}
+.flex-sc {
+  display: flex;
+  justify-content: space-around;
   align-items: center;
 }
 .pd10 {

@@ -117,7 +117,6 @@ export const constantRoutes = [
   },
 
 
-// all kinds of toys...
   {
     path: '/nested',
     component: Layout,
@@ -173,14 +172,28 @@ export const constantRoutes = [
         component: () => import('@/views/nested/menu2/index'),
         name: 'Menu2',
         meta: { title: 'menu2' }
-      },
-      {
-        path: 'video',
-        components: () => import('@/views/Toys/VideoPractice/index'),
-        name: 'Video',
-        meta: { title: 'video'}
       }
     ]
+  },
+// all kinds of toys...
+{
+  path: '/toys',
+  component: Layout,
+  redirect: '/toys/video',
+  name: 'Toys',
+  meta: {
+    title: 'Toys',
+    icon: 'nested'
+  },
+  children: [
+    {
+      path: 'video',
+      component: () => import('@/views/Toys/VideoPractice/index'),
+      name: 'Video',
+      meta: { title: 'Video' }
+    }
+  ]
+
   },
 
   // 404 page must be placed at the end !!!
