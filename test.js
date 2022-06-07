@@ -1,27 +1,17 @@
 /*
  * @Author: Hhvcg
- * @Date: 2022-04-25 15:44:39
+ * @Date: 2022-04-15 18:09:58
  * @LastEditors: -_-
  * @Description: 
  */
 
-const t = [
-  {
-    3: 120
-  },
-  {
-    4: 120
-  },
-  {
-    5: 120
-  },
-  {
-    5: 120
-  },
-]
 
+let x = {c: 'x'}
+let y = {c: 'y'}
+x.a = y
+y.a = x
+x = null
 
-const res = t.map((item) => {
-    console.log('item---->', Object.keys(item)[0])
-  
-})
+console.log('x--->', x)
+console.log('y--->', y)
+

@@ -27,6 +27,7 @@
     <div class="operation mgt10">
       <el-button type="primary" size="mini" @click="queryImg">截图</el-button>
       <el-button size="mini">下载</el-button>
+      <el-button size="mini" @click="test">test</el-button>
     </div>
     <!-- <el-alert :closable="false" title="menu 2" /> -->
   </div>
@@ -38,10 +39,15 @@ export default {
   name: "videoPractice",
   data() {
     return {
+      testData: []
 
     }
   },
   methods: {
+    test() {
+      this.testData.push(new Array(1000_000))
+      console.log(' this.testData----->',  this.testData)
+    },
 //下载图片
     download (){
       // // 转base64格式、图片格式转换、图片质量压缩---支持两种格式image/jpeg+image/png
@@ -84,6 +90,10 @@ export default {
   },
   mounted() {
     this.initWorld()
+  },
+  beforeDestroy() {
+    this.testData = null
+    console.log('this.testData---',this.testData)
   }
 }
 </script>
