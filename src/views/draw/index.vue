@@ -212,6 +212,9 @@ export default {
         //   this.selection.remove()
         //   this.selection = newSelection
         // }
+        this.tool.onMouseMove = (e) => {
+          this.moveBrush(e.point)
+        }         
         this.tool.onMouseDrag = (e) => {
             let _point = e.point
             this.moveBrush(_point);
@@ -220,7 +223,7 @@ export default {
         this.tool.onMouseUp = (e) => {
           // this.merge();
           console.log('销毁前--->', this.selection)
-          this.removeSelection();
+          // this.removeSelection();
         }
       } else if (newVal === 'kill_brush') {
 
@@ -232,8 +235,16 @@ export default {
         // this.tool.maxDistance = 1;
         // 扫把头
         this.tool.onMouseDown = (e) => {
-          // console.log('开始点:', e)
+          console.log('开始点:', e)
+          const header = new paper.Path.Circle(e.point, new paper.Size(10))
+          header.fillColor = 'red'
           this.selection = new paper.Path()
+          // const header = this.brush.path.clone()
+          // header.position = e.
+          // this.selection = this.selection.unite(this.brush.path).clone()
+          console.log('开始--->', this.selection)
+          // this.header = this.brush.path.clone()
+          // this.selection = this.selection.unite(this.brush.path).clone()
           // this.selection.unite(this.brush.path)
           // const step = e.delta.divide(2)
           // step.angle += 90
@@ -269,7 +280,14 @@ export default {
           // this.selection.add(top)
           // this.selection.insert(0, bottom)
           // }
-          this.selection.unite(this.brush.path)
+          // 
+          // const newSel = this.selection.unite(this.brush.path).clone()
+          // this.removeSelection()
+          // this.selection = newSel
+          // this.selection = this.selection.unite(this.brush.path).clone()
+          
+          // this.selection = this.selection.unite(this.header).clone()
+          this.selection = this.selection.unite(this.brush.path).clone()
           this.selection.closed = true
           this.selection.smooth()
           console.log('this.selection---', this.selection)
@@ -295,6 +313,8 @@ export default {
         let newSelection = this.selection.unite(this.brush.path);
         this.selection.remove();
         this.selection = newSelection;
+        // this.selection.intersect(this.brush.path)
+
       }
     },
     createSelection() {
@@ -357,7 +377,6 @@ export default {
         }
       }
       this.layer = this.paper.project.activeLayer
-     
     },    // // 笔刷跟随鼠标移动
 
     removeBrush() {
