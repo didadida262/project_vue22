@@ -27,6 +27,7 @@ export default {
   },
   data() {
     return {
+      layer: null,
       selection: null,
       brush: {
         pathOptions: {
@@ -76,8 +77,13 @@ export default {
         {
           name: 'broom_brush',
           icon: 'el-icon-ice-cream-round',
+          descript: '连笔刷'
+        },
+        {
+          name: 'kill_brush',
+          icon: 'el-icon-brush',
           descript: '测试笔刷'
-        }
+        }        
       ]
     }
   },
@@ -195,13 +201,11 @@ export default {
         // }
         this.tool.onMouseDown = (e) => {
             let _point = e.point
-            let p_x = Math.abs(_point.x) + this.brush.pathOptions.radius
-            let p_y = Math.abs(_point.y) + this.brush.pathOptions.radius
+            // let p_x = Math.abs(_point.x) + this.brush.pathOptions.radius
+            // let p_y = Math.abs(_point.y) + this.brush.pathOptions.radius
             this.createSelection();
         }
-        this.tool.onMouseMove = (e) => {
-          this.moveBrush(e.point)
-        }
+
         // this.tool.onMouseDrag = (e) => {
         //   // let newSelection = this.selection.unite(this.brush.path);
         //   const newSelection = this.selection.unite(this.brush.path)
@@ -217,6 +221,58 @@ export default {
           // this.merge();
           console.log('销毁前--->', this.selection)
           this.removeSelection();
+        }
+      } else if (newVal === 'kill_brush') {
+
+        this.tool.fixedDistance = this.brush.pathOptions.radius
+        // 触发drag需要拖拽的最大距离
+        // 这里我觉得很奇怪,tool有最大距离和最小距离....
+
+        // this.tool.maxDistance = 45
+        // this.tool.maxDistance = 1;
+        // 扫把头
+        this.tool.onMouseDown = (e) => {
+          // console.log('开始点:', e)
+          this.selection = new paper.Path()
+          // this.selection.unite(this.brush.path)
+          // const step = e.delta.divide(2)
+          // step.angle += 90
+          // const top = e.downPoint.add(step.normalize().multiply(this.brush.pathOptions.radius))
+          // const bottom = e.downPoint.subtract(step.normalize().multiply(this.brush.pathOptions.radius))
+          // this.selection.add(top)
+          // this.selection.insert(0, bottom)
+          // // }
+          // this.selection.smooth()       
+        }
+        this.tool.onMouseMove = (e) => {
+          this.moveBrush(e.point)
+        } 
+        this.tool.onMouseDrag = (e) => {
+          this.moveBrush(e.point)
+          this.layer.selected = true
+          console.log('---drag--->', e)
+          const step = e.delta.divide(2)
+          step.angle += 90
+
+          const top = e.middlePoint.add(step.normalize().multiply(this.brush.pathOptions.radius))
+          const bottom = e.middlePoint.subtract(step.normalize().multiply(this.brush.pathOptions.radius))
+          this.selection.add(top)
+          this.selection.insert(0, bottom)
+          // }
+          this.selection.smooth()
+        }
+        this.tool.onMouseUp = (e) => {
+          // const step = e.delta.divide(2)
+          // step.angle += 90
+          // const top = e.point.add(step.normalize().multiply(this.brush.pathOptions.radius))
+          // const bottom = e.point.subtract(step.normalize().multiply(this.brush.pathOptions.radius))
+          // this.selection.add(top)
+          // this.selection.insert(0, bottom)
+          // }
+          this.selection.unite(this.brush.path)
+          this.selection.closed = true
+          this.selection.smooth()
+          console.log('this.selection---', this.selection)
         }
       }
     }
@@ -300,6 +356,8 @@ export default {
           return false
         }
       }
+      this.layer = this.paper.project.activeLayer
+     
     },    // // 笔刷跟随鼠标移动
 
     removeBrush() {
