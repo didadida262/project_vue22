@@ -109,7 +109,9 @@ export default {
         this.tool.onMouseDown = (e) => {
           this.selection = new paper.Path({
             strokeColor: '#00000',
-            strokeWidth: 1
+            strokeWidth: 1,
+            strokeCap: 'round'
+
           })
           this.selection.add(e.point)
         }
@@ -118,6 +120,7 @@ export default {
           this.selection.add(e.point)
         }
         this.tool.onMousUp = (e) => {
+          this.selection.smooth()
           this.selection = null
         }
       } else if (newVal === 'fat_brush') {
@@ -227,7 +230,8 @@ export default {
         }
       } else if (newVal === 'kill_brush') {
 
-        this.tool.fixedDistance = this.brush.pathOptions.radius
+        this.tool.fixedDistance = this.brush.pathOptions.radius / 2
+        // this.tool.fixedDistance = 1
         // 触发drag需要拖拽的最大距离
         // 这里我觉得很奇怪,tool有最大距离和最小距离....
 
@@ -236,9 +240,13 @@ export default {
         // 扫把头
         this.tool.onMouseDown = (e) => {
           console.log('开始点:', e)
-          const header = new paper.Path.Circle(e.point, new paper.Size(10))
-          header.fillColor = 'red'
+          // const header = new paper.Path.Circle(e.point, new paper.Size(10))
           this.selection = new paper.Path()
+          this.selection.unite(new paper.Path.Circle(e.point, new paper.Size(this.brush.pathOptions.radius)))
+          // this.selection.unite(new paper.Path.Circle(e.downPoint), new paper.Size(this.brush.pathOptions.radius))
+
+          // this.selection = this.selection.unite(header).clone()
+          // header = null
           // const header = this.brush.path.clone()
           // header.position = e.
           // this.selection = this.selection.unite(this.brush.path).clone()
@@ -265,31 +273,27 @@ export default {
           const step = e.delta.divide(2)
           step.angle += 90
 
-          const top = e.middlePoint.add(step.normalize().multiply(this.brush.pathOptions.radius))
-          const bottom = e.middlePoint.subtract(step.normalize().multiply(this.brush.pathOptions.radius))
-          this.selection.add(top)
-          this.selection.insert(0, bottom)
+          const bottom = e.middlePoint.add(step.normalize().multiply(this.brush.pathOptions.radius))
+          const top = e.middlePoint.subtract(step.normalize().multiply(this.brush.pathOptions.radius))
+          this.selection.add(bottom)
+          this.selection.insert(0, top)
           // }
-          this.selection.smooth()
+          // this.selection.smooth()
         }
         this.tool.onMouseUp = (e) => {
-          // const step = e.delta.divide(2)
-          // step.angle += 90
-          // const top = e.point.add(step.normalize().multiply(this.brush.pathOptions.radius))
-          // const bottom = e.point.subtract(step.normalize().multiply(this.brush.pathOptions.radius))
-          // this.selection.add(top)
-          // this.selection.insert(0, bottom)
-          // }
-          // 
-          // const newSel = this.selection.unite(this.brush.path).clone()
-          // this.removeSelection()
-          // this.selection = newSel
-          // this.selection = this.selection.unite(this.brush.path).clone()
+          console.log('结束点--->', e)
+          // this.selection.curves.splitAt(this.selection.segments.length / 2)
+          // this.selection.add(e.point)
+        
+          // this.selection.closed = true
           
-          // this.selection = this.selection.unite(this.header).clone()
-          this.selection = this.selection.unite(this.brush.path).clone()
-          this.selection.closed = true
-          this.selection.smooth()
+          // 直接加上当前笔刷
+          this.selection.unite(this.brush.path)
+          // this.selection.closed = true
+          // this.selection.curves.splice(news.segements / 2 - 1, 1)
+          // this.selection = this.selection.clone()
+          // this.selection.smooth()
+          
           console.log('this.selection---', this.selection)
         }
       }
@@ -301,11 +305,10 @@ export default {
   },
   methods: {
 // 测试笔刷断画
-    removeSelection() {
-      if (this.selection != null) {
-        this.selection.remove();
-        this.selection = null;
-        console.log('销毁后--->', this.selection)
+    removePath(pathItem) {
+      if (pathItem != null) {
+        pathItem.remove();
+        pathItem = null;
       }
     },
     draw() {
@@ -376,6 +379,7 @@ export default {
           return false
         }
       }
+ 
       this.layer = this.paper.project.activeLayer
     },    // // 笔刷跟随鼠标移动
 
