@@ -71,7 +71,16 @@ export default {
         size: new paper.Size(40)
       })
       this.role.fillColor = 'red'
+      let textItem = new paper.PointText({
+        content: 'Click and drag to draw a line.',
+        point: new paper.Point(-canvas.clientWidth / 2 + 50, -canvas.clientHeight / 2 + 50),
+        fillColor: 'orange',
+      });
     },
+  },
+  beforeDestroyed() {
+    console.log('销毁前')
+    this.paper = null
   }
 
 
