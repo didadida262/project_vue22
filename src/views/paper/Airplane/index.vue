@@ -26,36 +26,50 @@ export default {
   },
   data() {
     return {
-
+      Ship: null
     };
   },
   watch: {},
   mounted() {
     this.init();
-    console.log('tool',this.tool)
   },
   methods: {
-
     onFrame() {
 
     },
     onKeyDown(e) {
-      console.log(e)
-      // switch (e.key) {
-      //   case 'space':
-      // }
+      switch (e.key) {
+        case 'space':
+          console.log('fire!')
+          break;
+        case 'left':
+          this.Ship.rotate(-10)
+          break;
+        case 'right':
+          this.Ship.rotate(10)
+          break;
+        case 'up':
+          this.Ship.position = this.Ship.position.subtract(new paper.Point(0, 5)).clone()
+          break;
+        case 'down':
+          this.Ship.position = this.Ship.position.add(new paper.Point(0, 5)).clone()
+          break;                    
+      }
     },
     onMouseDown(e) {
-      console.log('onMouseDown--->', e)
     },
     init() {
-      console.log("初始化世界!!!");
       const canvas = this.$refs.canvas;
       this.paper = paper;
       this.paper.setup(canvas);
-      // 将视图的远点置于底部中间，方便后续炮塔等的向量计算
       this.paper.view.setCenter(0, 0);
       this.paper.view.onFrame = this.onFrame;
+      console.log("初始化世界!!!");
+      // this.Ship = new paper.Path([-10, -8], [10, 0], [-10, 8], [-8, 4], [-8, -4])
+      this.Ship = new paper.Path([0, 0], [20, 20],[16, 22], [11, 15], [8, 16], [4, 12], [0, 20], [-4, 12], [-8, 16], [-11, 15], [-16, 22], [-20, 20])
+      this.Ship.strokeColor = 'white'
+      this.Ship.closed = true
+      
     },
   },
   beforeDestroyed() {
