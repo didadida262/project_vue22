@@ -27,6 +27,8 @@ export default {
   },
   data() {
     return {
+      // 老版本笔刷
+      lastDragPoint: null,
       layer: null,
       selection: null,
       brush: {
@@ -204,6 +206,7 @@ export default {
         // }
         this.tool.onMouseDown = (e) => {
             let _point = e.point
+            this.lastDragPoint = e.point
             // let p_x = Math.abs(_point.x) + this.brush.pathOptions.radius
             // let p_y = Math.abs(_point.y) + this.brush.pathOptions.radius
             this.createSelection();
@@ -221,10 +224,11 @@ export default {
         this.tool.onMouseDrag = (e) => {
             let _point = e.point
             this.moveBrush(_point);
-            this.draw();
+            this.draw(e.point);
         }
         this.tool.onMouseUp = (e) => {
           // this.merge();
+            this.lastDragPoint = null
           console.log('销毁前--->', this.selection)
           // this.removeSelection();
         }
@@ -239,18 +243,17 @@ export default {
         // this.tool.maxDistance = 1;
         // 扫把头
         this.tool.onMouseDown = (e) => {
-          console.log('开始点:', e)
+          console.log('onMouseDown点---->:', e)
           // const header = new paper.Path.Circle(e.point, new paper.Size(10))
           this.selection = new paper.Path()
           this.selection.unite(new paper.Path.Circle(e.point, new paper.Size(this.brush.pathOptions.radius)))
-          // this.selection.unite(new paper.Path.Circle(e.downPoint), new paper.Size(this.brush.pathOptions.radius))
 
           // this.selection = this.selection.unite(header).clone()
           // header = null
           // const header = this.brush.path.clone()
           // header.position = e.
           // this.selection = this.selection.unite(this.brush.path).clone()
-          console.log('开始--->', this.selection)
+          console.log('onMouseDownSel---->:', this.selection)
           // this.header = this.brush.path.clone()
           // this.selection = this.selection.unite(this.brush.path).clone()
           // this.selection.unite(this.brush.path)
@@ -267,9 +270,9 @@ export default {
           this.moveBrush(e.point)
         } 
         this.tool.onMouseDrag = (e) => {
+          console.log('onMouseDrag点---->:', e)
           this.moveBrush(e.point)
           this.layer.selected = true
-          console.log('---drag--->', e)
           const step = e.delta.divide(2)
           step.angle += 90
 
@@ -278,23 +281,22 @@ export default {
           this.selection.add(bottom)
           this.selection.insert(0, top)
           // }
+          console.log('onMouseDragSel---->:', this.selection)
           // this.selection.smooth()
         }
         this.tool.onMouseUp = (e) => {
-          console.log('结束点--->', e)
+          console.log('onMouseUp点---->:', e)
           // this.selection.curves.splitAt(this.selection.segments.length / 2)
           // this.selection.add(e.point)
         
           // this.selection.closed = true
-          
           // 直接加上当前笔刷
           this.selection.unite(this.brush.path)
           // this.selection.closed = true
           // this.selection.curves.splice(news.segements / 2 - 1, 1)
           // this.selection = this.selection.clone()
           // this.selection.smooth()
-          
-          console.log('this.selection---', this.selection)
+          console.log('onMouseUpSel---->:', this.selection)
         }
       }
     }
@@ -311,8 +313,16 @@ export default {
         pathItem = null;
       }
     },
-    draw() {
+    draw(point) {
       if (this.selection) {
+        console.log('point--->', point)
+        console.log('lastpoint--->', this.lastDragPoint)
+        console.log('point.getDistance(this.lastDragPoint):', point.getDistance(this.lastDragPoint))
+        if (point.getDistance(this.lastDragPoint) >= this.brush.pathOptions.radius * 2) {
+          console.log('断画！')
+          // for (let i = this.lastDragPoint.x; i < )
+        }
+        this.lastDragPoint = point
         let newSelection = this.selection.unite(this.brush.path);
         this.selection.remove();
         this.selection = newSelection;
@@ -372,6 +382,21 @@ export default {
       this.paper.view.onMouseDown = this.onMouseDown
       this.paper.view.setCenter(0, 0)
       this.tool = new paper.Tool()
+      const x1Center = new paper.Point(0,0)
+      const x2Center = new paper.Point(100,100)
+      this.x1 = new paper.Path.Circle(x1Center, new paper.Size(10))
+      this.x1.fillColor = 'red'
+      this.x2 = new paper.Path.Circle(x2Center, new paper.Size(5))
+      this.x2.fillColor = 'black'
+      this.liness = new paper.Path.Line(x1Center, x2Center)
+      this.liness.strokeColor = 'orange'
+      console.log(this.x1.contains(this.x2))
+      // const vector = x2Center.subtract(x1Center)
+      // for (let i = 1; i < vector.length; i++) {
+      //   const newPoint = x1Center.add(vector.normalize().multiply(i))
+      //   this.x3 = new paper.Path.Circle(newPoint, new paper.Size(10))
+      //   this.x3.fillColor = 'green'
+      // }
       this.tool.onKeyDown = (e) => {
         if (e.key === 'space') {
           const layer = this.paper.project.activeLayer
@@ -435,12 +460,6 @@ export default {
         this.myPath = null
       }
     },
-    removeItem(item) {
-      if (item.path != null) {
-        item.path.remove()
-        item.path = null
-      }
-    },
     // 以当前滚轮方向及真实坐标数据为输入
     changeZoom(delta, viewPosition) {
       const oldZoom = this.paper.view.zoom
@@ -480,7 +499,6 @@ export default {
     },
     // 全视图的mousedown事件
     onMouseDown(e) {
-      // console.log('点击坐标----->', e.point)
     },
 
     line() {

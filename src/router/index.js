@@ -112,7 +112,15 @@ export const constantRoutes = [
         name: 'Music',
         component: () => import('@/views/paper/Music/index'),
         meta: { title: 'Music', icon: 'table' }
-      }
+      },
+      // 见缝插针
+      {
+        path: 'stickIn',
+        name: 'StickIn',
+        component: () => import('@/views/paper/StickIn/index'),
+        meta: { title: 'StickIn', icon: 'table' }
+      }      
+
     ]
   },
 

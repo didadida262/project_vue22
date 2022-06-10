@@ -75,7 +75,9 @@ div:focus {
 .mgt10 {
   margin-top: 10px
 }
-
+.mgb10 {
+  margin-bottom: 10px
+}
 .flex-cc {
   display: flex;
   justify-content: center;
@@ -90,6 +92,9 @@ div:focus {
 
 .pd10 {
   padding: 10px
+}
+.cursor-pointer {
+  cursor: pointer;
 }
 
 // 全局的滚动条样式修改
