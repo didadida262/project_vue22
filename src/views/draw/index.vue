@@ -122,6 +122,7 @@ export default {
           this.selection.add(e.point)
         }
         this.tool.onMousUp = (e) => {
+          this.selection.simplify(10)
           this.selection.smooth()
           this.selection = null
         }

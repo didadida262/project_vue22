@@ -93,25 +93,14 @@ export const constantRoutes = [
         path: 'tank',
         name: 'Tank',
         component: () => import('@/views/paper/Tank/index'),
-        meta: { title: 'Tank', icon: 'table' }
+        meta: { title: 'Tank', icon: 'el-icon-aim' }
       },         
-      {
-        path: 'table',
-        name: 'Table',
-        component: () => import('@/views/paper/table'),
-        meta: { title: 'Table', icon: 'table' }
-      },
-      {
-        path: 'tree',
-        name: 'Tree',
-        component: () => import('@/views/tree/index'),
-        meta: { title: 'Tree', icon: 'tree' }
-      },
+
       {
         path: 'music',
         name: 'Music',
         component: () => import('@/views/paper/Music/index'),
-        meta: { title: 'Music', icon: 'table' }
+        meta: { title: 'Music', icon: 'el-icon-headset' }
       },
       // 见缝插针
       {
@@ -119,7 +108,14 @@ export const constantRoutes = [
         name: 'StickIn',
         component: () => import('@/views/paper/StickIn/index'),
         meta: { title: 'StickIn', icon: 'table' }
-      }      
+      },
+       // airplane
+      {
+        path: 'ariplane',
+        name: 'Ariplane',
+        component: () => import('@/views/paper/Airplane/index'),
+        meta: { title: 'Airplane', icon: 'el-icon-s-promotion' }
+      } 
 
     ]
   },
@@ -198,7 +194,7 @@ export const constantRoutes = [
       path: 'video',
       component: () => import('@/views/Toys/VideoPractice/index'),
       name: 'Video',
-      meta: { title: 'Video' }
+      meta: { title: 'Video', icon: 'el-icon-video-camera' }
     }
   ]
 
