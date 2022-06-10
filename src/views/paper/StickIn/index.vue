@@ -44,8 +44,8 @@ export default {
     onFrame() {
       this.role.rotate(10)
       this.respo.forEach((item) => {
-        item.rotate(10)
-        // item.rotate(10, new paper.Point(0,0))
+        // item.rotate(10)
+        item.rotate(10, new paper.Point(0,0))
       })
     },
     init() {
@@ -62,6 +62,7 @@ export default {
       this.tool.onMouseDown = (e) => {
         let line = new paper.Path.Line(new paper.Point(0,0), e.point)
         line.strokeColor = getRandomColor()
+        // line.strokeColor = 'white'
         this.respo.push(line.clone())
         this.removeItem(line)
       };
