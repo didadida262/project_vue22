@@ -37,16 +37,21 @@ export default {
     onFrame() {
 
     },
+    fire() {
+      
+    },
     onKeyDown(e) {
       switch (e.key) {
-        case 'space':
-          console.log('fire!')
+        case 'z':
+          this.fire()
           break;
         case 'left':
           this.Ship.rotate(-10)
+          console.log(this.Ship)
           break;
         case 'right':
           this.Ship.rotate(10)
+          console.log(this.Ship)
           break;
         case 'up':
           this.Ship.position = this.Ship.position.subtract(new paper.Point(0, 5)).clone()
@@ -57,6 +62,9 @@ export default {
       }
     },
     onMouseDown(e) {
+    },
+    // 挂了重来一次？
+    showOperations() {
     },
     init() {
       const canvas = this.$refs.canvas;
@@ -69,6 +77,8 @@ export default {
       this.Ship = new paper.Path([0, 0], [20, 20],[16, 22], [11, 15], [8, 16], [4, 12], [0, 20], [-4, 12], [-8, 16], [-11, 15], [-16, 22], [-20, 20])
       this.Ship.strokeColor = 'white'
       this.Ship.closed = true
+      console.log(this.Ship)
+      this.showOperations()
       
     },
   },
