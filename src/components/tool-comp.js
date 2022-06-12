@@ -1,3 +1,9 @@
+/*
+ * @Author: Hhvcg
+ * @Date: 2022-05-30 21:46:35
+ * @LastEditors: -_-
+ * @Description: 公司老版本
+ */
 import paper from "paper";
 
 const DefaultColors = {

@@ -23,7 +23,11 @@ export default {
       this.$emit('shortCut', e)
     }
   },
+  created() {
+    this.log('content组件---created！')
+  },
   mounted() {
+    this.log('content组件----mounted！')
   }
 }
 </script>

@@ -13,3 +13,8 @@ export const getRandomColor = () => {
   let t = Math.random().toFixed(1)
   return `rgba(${r}, ${g}, ${b}, ${t})`
 }
+
+
+export const log = (content) => {
+  return console.log(content)
+}

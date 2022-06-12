@@ -1,3 +1,9 @@
+/*
+ * @Author: Hhvcg
+ * @Date: 2022-02-20 15:26:48
+ * @LastEditors: -_-
+ * @Description: 
+ */
 import Vue from 'vue'
 
 import 'normalize.css/normalize.css' // A modern alternative to CSS resets
@@ -14,6 +20,8 @@ import router from './router'
 
 import '@/icons' // icon
 import '@/permission' // permission control
+
+import { log } from './weapons'
 
 /**
  * If you don't want to use mock-server
@@ -34,7 +42,7 @@ Vue.use(ElementUI, { locale })
 // Vue.use(ElementUI)
 
 Vue.config.productionTip = false
-
+Vue.prototype.log = log
 new Vue({
   el: '#app',
   router,
