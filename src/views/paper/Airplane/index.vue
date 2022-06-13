@@ -18,6 +18,7 @@ import paper from "paper";
 import commonTemplate from '@/components/titleTemplate.vue'
 import { getRandomColor } from '@/weapons'
 import tool from '@/components/tool'
+import { Ariplane } from './myAriplane'
 export default {
   name: 'Airplane',
   mixins: [tool],
@@ -73,12 +74,10 @@ export default {
       this.paper.view.setCenter(0, 0);
       this.paper.view.onFrame = this.onFrame;
       console.log("初始化世界!!!");
-      // this.Ship = new paper.Path([-10, -8], [10, 0], [-10, 8], [-8, 4], [-8, -4])
-      this.Ship = new paper.Path([0, 0], [20, 20],[16, 22], [11, 15], [8, 16], [4, 12], [0, 20], [-4, 12], [-8, 16], [-11, 15], [-16, 22], [-20, 20])
-      this.Ship.strokeColor = 'white'
-      this.Ship.closed = true
-      console.log(this.Ship)
-      this.showOperations()
+      this.ari = new Ariplane()
+
+      // console.log(this.Ship)
+      // this.showOperations()
       
     },
   },
