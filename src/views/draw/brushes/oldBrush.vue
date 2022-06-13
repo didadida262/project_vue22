@@ -72,7 +72,6 @@ export default {
     },
     onMouseUp(e) {
       this.draw()
-      this.lastPos.remove()
       this.lastPos = null
     },
     onMouseDown(e) {
@@ -80,11 +79,13 @@ export default {
         strokeColor: this.brush.color
       })
       this.draw()
-      this.lastPos = this.brush.path.clone()
+      this.lastPos = e.point
     },
     draw() {
       requestAnimationFrame(() => {
-        this.selection.unite(this.brush.path)
+        const temp = this.selection.unite(this.brush.path)
+        this.selection.remove()
+        this.selection = temp
       })
     },
     onMouseMove(e) {
@@ -98,24 +99,26 @@ export default {
       this.brush.path.position = e.point
     },
     onMouseDrag(e) {
+      console.log('drag--->',e.point)
       this.moveBrush(e)
       console.log('drag')
-      if (e.point.getDistance(this.lastPos.position) >= this.brush.radius * 2) {
+      if (e.point.getDistance(this.lastPos) >= this.brush.radius * 2) {
         console.log('断画！')
-        const vector = e.point.subtract(this.lastPos.position).normalize()
-        for (let i = 1; i < e.point.getDistance(this.lastPos.position);) {
+        const vector = e.point.subtract(this.lastPos).normalize()
+        for (let i = 1; i < e.point.getDistance(this.lastPos);) {
           let temp = new paper.Path.Circle({
-            center: this.lastPos.position.add(vector * i),
+            center: this.lastPos.add(vector * i),
             radius: this.brush.radius
           })
           this.selection.unite(temp)
           temp.remove()
           temp = null
-          i = i + this.brush.radius * 2 - 1
+          i = i + this.brush.radius
         }
       }
       this.draw()
-      this.lastPos = this.brush.path.clone()
+      this.lastPos = e.point
+      console.log(this.lastPos)
     },
     createBrush(e) {
       this.brush.path = new paper.Path.Circle({
