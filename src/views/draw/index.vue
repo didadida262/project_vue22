@@ -1,26 +1,13 @@
 <template>
   <div class="draw-container">
-    <!-- <div class="tool" @click="changeBrush">
-      <el-tooltip
-       v-for="(item, index) in brushArray" 
-       :id="item.name" 
-       :key="index" 
-       class="item" 
-       effect="dark" 
-       :content="item.descript" 
-       placement="right">
-        <div :class="[{'is-active':isActive === item.name }, 'icon', item.icon]">
-          <el-divider />
-        </div>
-      </el-tooltip>
-    </div> -->
+
     <!-- 所有笔刷 -->
     <div class="tool">
       <Pencil
         :selected="activatedBrush"
         @changeBrush="changeBrush"
       />
-      <Brush
+      <oldBrush
         :selected="activatedBrush"
         @changeBrush="changeBrush"
       />      
@@ -40,7 +27,7 @@ import Content from './Content'
 import paper from 'paper'
 import tool from '@/components/tool'
 import Pencil from './brushes/Pencil.vue'
-import Brush from './brushes/Brush.vue'
+import oldBrush from './brushes/oldBrush.vue'
 
 export default {
   name: 'Dashboard',
@@ -48,7 +35,7 @@ export default {
   components: {
     Content,
     Pencil,
-    Brush
+    oldBrush
   },
   data() {
     return {
@@ -309,6 +296,7 @@ export default {
   methods: {
     changeBrush(brush) {
       this.activatedBrush = brush
+      this.$message(`切换至${brush}`)
     },
     draw(point) {
       if (this.selection) {

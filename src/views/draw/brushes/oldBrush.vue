@@ -8,11 +8,11 @@
   <el-tooltip
     class="item"
     effect="dark"
-    content="铅笔"
+    content="老笔刷"
     placement="right"
   >
     <div
-     :class="[{ 'is-active': selected === 'pencil' }, 'icon', icon]"
+     :class="[{ 'is-active': selected === 'old_brush' }, 'icon', 'el-icon-brush']"
      @click="changeBrush"
      >
       <el-divider />
@@ -25,7 +25,7 @@ import paper from "paper";
 import tool from "@/components/tool";
 
 export default {
-  name: "pencil",
+  name: "oldBrush",
   props: {
     selected: {
       type: String,
@@ -35,15 +35,19 @@ export default {
   mixins: [tool],
   data() {
     return {
-      icon: "el-icon-edit",
-      path: null,
+      brush: {
+        readius: 10,
+        path: null,
+        color: 'black'
+      },
+      selection: null,
       tool: null
     };
   },
   computed: {},
   watch: {
     selected() {
-      if (this.selected === 'pencil') {
+      if (this.selected === 'old_brush') {
         this.init()
       } else {
         this.tool = null
@@ -53,27 +57,46 @@ export default {
   mounted() {},
   methods: {
     init() {
-      this.log('初始化pencil--->')
       this.tool = new paper.Tool()
       this.tool.onKeyDown = this.onKeyDown
       this.tool.onMouseDown = this.onMouseDown    
       this.tool.onMouseDrag = this.onMouseDrag    
-    },
+      this.tool.onMouseMove = this.onMouseMove    
+      this.tool.onMouseUp = this.onMouseUp    
+    },    
     changeBrush() {
-      this.$emit('changeBrush', 'pencil')
+      this.$emit('changeBrush', 'old_brush')
     },
     onKeyDown(e) {
     },
+    onMouseUp(e) {
+
+    },
     onMouseDown(e) {
-      console.log('铅笔down')
-      this.path = new paper.Path({
-        strokeColor:  'black'
+      this.selection = new paper.Path({
+        strokeColor: this.brush.color,
+        strokeWidth: this.brush.radius
       })
-      this.path.add(e.point)
+      this.selection = this.selection.unite(this.brush.path).clone()
+    },
+    onMouseMove(e) {
+      this.log('move')
+      if (this.brush.path === null) {
+        this.createBrush(e)
+      }
+      this.brush.path.bringToFront();
+      this.brush.path.position = e.point
     },
     onMouseDrag(e) {
-      this.path.add(e.point)
+      this.seclection = this.selection.unite(this.brush.path).clone()
     },
+    createBrush(e) {
+      this.brush.path = new paper.Path.Circle({
+        center: e.point,
+        strokeColor: this.brush.color,
+        radius: this.brush.radius
+      })
+    }
   },
 
   created() {
