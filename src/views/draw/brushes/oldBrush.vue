@@ -22,7 +22,6 @@
 
 <script>
 import paper from "paper";
-import tool from "@/components/tool";
 
 export default {
   name: "oldBrush",
@@ -32,16 +31,17 @@ export default {
       required: true,
     },
   },
-  mixins: [tool],
   data() {
     return {
+      lastPos: null,
       brush: {
-        readius: 10,
+        radius: 10,
         path: null,
         color: 'black'
       },
       selection: null,
-      tool: null
+      tool: null,
+      handle: null
     };
   },
   computed: {},
@@ -57,12 +57,13 @@ export default {
   mounted() {},
   methods: {
     init() {
-      this.tool = new paper.Tool()
+      this.log('初始化brush--->')
+      this.tool = this.$parent.tool
       this.tool.onKeyDown = this.onKeyDown
       this.tool.onMouseDown = this.onMouseDown    
       this.tool.onMouseDrag = this.onMouseDrag    
       this.tool.onMouseMove = this.onMouseMove    
-      this.tool.onMouseUp = this.onMouseUp    
+      this.tool.onMouseUp = this.onMouseUp
     },    
     changeBrush() {
       this.$emit('changeBrush', 'old_brush')
@@ -70,31 +71,58 @@ export default {
     onKeyDown(e) {
     },
     onMouseUp(e) {
-
+      this.draw()
+      this.lastPos.remove()
+      this.lastPos = null
     },
     onMouseDown(e) {
       this.selection = new paper.Path({
-        strokeColor: this.brush.color,
-        strokeWidth: this.brush.radius
+        strokeColor: this.brush.color
       })
-      this.selection = this.selection.unite(this.brush.path).clone()
+      this.draw()
+      this.lastPos = this.brush.path.clone()
+    },
+    draw() {
+      requestAnimationFrame(() => {
+        this.selection.unite(this.brush.path)
+      })
     },
     onMouseMove(e) {
-      this.log('move')
       if (this.brush.path === null) {
         this.createBrush(e)
       }
-      this.brush.path.bringToFront();
+      this.moveBrush(e)
+      // this.brush.path.bringToFront();
+    },
+    moveBrush(e) {
       this.brush.path.position = e.point
     },
     onMouseDrag(e) {
-      this.seclection = this.selection.unite(this.brush.path).clone()
+      this.moveBrush(e)
+      console.log('drag')
+      if (e.point.getDistance(this.lastPos.position) >= this.brush.radius * 2) {
+        console.log('断画！')
+        const vector = e.point.subtract(this.lastPos.position).normalize()
+        for (let i = 1; i < e.point.getDistance(this.lastPos.position);) {
+          let temp = new paper.Path.Circle({
+            center: this.lastPos.position.add(vector * i),
+            radius: this.brush.radius
+          })
+          this.selection.unite(temp)
+          temp.remove()
+          temp = null
+          i = i + this.brush.radius * 2 - 1
+        }
+      }
+      this.draw()
+      this.lastPos = this.brush.path.clone()
     },
     createBrush(e) {
       this.brush.path = new paper.Path.Circle({
         center: e.point,
         strokeColor: this.brush.color,
-        radius: this.brush.radius
+        radius: this.brush.radius,
+        strokeWidth: this.brush.radius / 2
       })
     }
   },
@@ -106,9 +134,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.item {
-  .is-active {
-    color: red;
-  }
-}
+
 </style>

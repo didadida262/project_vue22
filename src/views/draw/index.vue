@@ -15,6 +15,7 @@
       <!-- style="cursor:none" -->
 
     <Content
+      :class="[{'cursorpointerNone-st': activatedBrush === 'old_brush'}]"
       ref="Content"
       @shortCut="onWheel"
     />
@@ -25,13 +26,11 @@
 import { mapGetters } from 'vuex'
 import Content from './Content'
 import paper from 'paper'
-import tool from '@/components/tool'
 import Pencil from './brushes/Pencil.vue'
 import oldBrush from './brushes/oldBrush.vue'
 
 export default {
   name: 'Dashboard',
-  mixins: [tool],
   components: {
     Content,
     Pencil,
@@ -40,7 +39,8 @@ export default {
   data() {
     return {
       // 当前激活工具
-      activatedBrush: 'pencil',
+      activatedBrush: '',
+      tool: null,
 
 
 
@@ -69,7 +69,6 @@ export default {
       myPath: null,
       myPaths: [],
       paper: null,
-      tool: null,
       image: {
         url: 'https://cms-assets.tutsplus.com/uploads/users/1251/posts/26530/image/BenderPaper.jpg'
       },
@@ -355,6 +354,7 @@ export default {
       paper.setup(canvas)
       this.paper = paper
       this.image.raster = new paper.Raster(this.image.url)
+      this.tool = new paper.Tool()
       // this.mask_png = new paper.Raster('http://zhuoxilab.com:10444/file_0/2,035e7ca1c5d1ae?rend=1649939540571');
       this.image.raster.smoothing = false
       this.image.raster.onLoad = () => {
@@ -460,33 +460,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.draw {
-  &-container {
-    margin: 30px;
-    .tool {
-      padding: 10px;
-      padding-top: 20px;
-      border: 1px solid gainsboro;
-      width: 40px;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      .is-active {
-        color: red;
-      }
-      .icon {
-        margin-bottom: 10px;
-      }
-      .icon:hover {
-        cursor: pointer;
-      }
-    }
-  }
-}
-.draw-container {
-  height: 80vh;
-  display: flex;
-  justify-content: space-between;
-}
+@import '@/styles/draw/index.scss'
 </style>

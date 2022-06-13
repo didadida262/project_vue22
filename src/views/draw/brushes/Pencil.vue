@@ -5,16 +5,10 @@
  * @Description: 
 -->
 <template>
-  <el-tooltip
-    class="item"
-    effect="dark"
-    content="铅笔"
-    placement="right"
-  >
+  <el-tooltip class="item" effect="dark" content="铅笔" placement="right">
     <div
      :class="[{ 'is-active': selected === 'pencil' }, 'icon', icon]"
-     @click="changeBrush"
-     >
+     @click="changeBrush">
       <el-divider />
     </div>
   </el-tooltip>
@@ -22,7 +16,6 @@
 
 <script>
 import paper from "paper";
-import tool from "@/components/tool";
 
 export default {
   name: "pencil",
@@ -32,7 +25,6 @@ export default {
       required: true,
     },
   },
-  mixins: [tool],
   data() {
     return {
       icon: "el-icon-edit",
@@ -50,14 +42,18 @@ export default {
       }
     },
   },
-  mounted() {},
+  mounted() { },
   methods: {
     init() {
       this.log('初始化pencil--->')
-      this.tool = new paper.Tool()
+      this.tool = this.$parent.tool
       this.tool.onKeyDown = this.onKeyDown
-      this.tool.onMouseDown = this.onMouseDown    
-      this.tool.onMouseDrag = this.onMouseDrag    
+      this.tool.onMouseDown = this.onMouseDown
+      this.tool.onMouseDrag = this.onMouseDrag
+      this.tool.onMouseMove = this.onMouseMove
+    },
+    onMouseMove(e) {
+
     },
     changeBrush() {
       this.$emit('changeBrush', 'pencil')
@@ -65,9 +61,8 @@ export default {
     onKeyDown(e) {
     },
     onMouseDown(e) {
-      console.log('铅笔down')
       this.path = new paper.Path({
-        strokeColor:  'black'
+        strokeColor: 'black'
       })
       this.path.add(e.point)
     },
@@ -77,15 +72,11 @@ export default {
   },
 
   created() {
-    this.log("pencile---created");
+    console.log('this.selected--->', this.selected)
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.item {
-  .is-active {
-    color: red;
-  }
-}
+
 </style>

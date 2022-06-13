@@ -8,11 +8,9 @@ export default {
   computed: {
   },
   created() {
-    this.log('mixin组件--created')
 
   },
   mounted() {
-    this.log('mixin组件----mounted！')
 
     
     // In order to fix the click on menu on the ios device will trigger the mouseleave bug
