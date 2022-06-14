@@ -8,11 +8,11 @@
   <el-tooltip
     class="item"
     effect="dark"
-    content="老笔刷"
+    content="kill_brush"
     placement="right"
   >
     <div
-     :class="[{ 'is-active': selected === 'old_brush' }, 'icon', 'el-icon-brush']"
+     :class="[{ 'is-active': selected === 'kill_brush' }, 'icon', 'el-icon-brush']"
      @click="changeBrush"
      >
       <el-divider />
@@ -47,7 +47,7 @@ export default {
   computed: {},
   watch: {
     selected() {
-      if (this.selected === 'old_brush') {
+      if (this.selected === 'kill_brush') {
         this.init()
       } else {
         this.tool = null
@@ -91,7 +91,7 @@ export default {
       this.tool.onMouseUp = this.onMouseUp
     },    
     changeBrush() {
-      this.$emit('changeBrush', 'old_brush')
+      this.$emit('changeBrush', 'kill_brush')
     },
     onKeyDown(e) {
     },
@@ -151,7 +151,6 @@ export default {
         center: e.point,
         strokeColor: this.brush.color,
         radius: this.brush.radius,
-        strokeWidth: 3
       })
     }
   },

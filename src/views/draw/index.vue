@@ -11,11 +11,15 @@
         :selected="activatedBrush"
         @changeBrush="changeBrush"
       />      
+      <killBrush
+        :selected="activatedBrush"
+        @changeBrush="changeBrush"
+      />      
      </div>
       <!-- style="cursor:none" -->
 
     <Content
-      :class="[{'cursorpointerNone-st': activatedBrush === 'old_brush'}]"
+      :class="[{'cursorpointerNone-st': activatedBrush === 'old_brush' || activatedBrush === 'kill_brush'}]"
       ref="Content"
       @shortCut="onWheel"
     />
@@ -28,13 +32,15 @@ import Content from './Content'
 import paper from 'paper'
 import Pencil from './brushes/Pencil.vue'
 import oldBrush from './brushes/oldBrush.vue'
+import killBrush from './brushes/kill_brush.vue'
 
 export default {
   name: 'Dashboard',
   components: {
     Content,
     Pencil,
-    oldBrush
+    oldBrush,
+    killBrush
   },
   data() {
     return {
