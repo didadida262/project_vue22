@@ -140,13 +140,18 @@ export default {
       // this.selection.simplify(10)
     },
     drawHead(e) {
-      console.log('head点数据---》', e)
+      // console.log('head点数据---》', e)
       const vector = new paper.Point({
         angle: 0,
         length: this.brush.radius
       })
-      const top = e.point.add(vector.rotate(-90))
-      const bottom = e.point.add(vector.rotate(90))
+      // const vector = e.point.subtract(e.lastPoint)
+      const step = vector.normalize().multiply(this.brush.radius)
+      step.angle += 90      
+          const top = e.point.add(step)
+      const bottom = e.point.subtract(step)
+      // const top = e.point.add(vector.rotate(-90))
+      // const bottom = e.point.add(vector.rotate(90))
       // const t1 = new paper.PointText({
       //   point: top,
       //   content: 'top',
@@ -192,6 +197,25 @@ export default {
       this.drawHead(e)
     },
     onMouseDrag(e) {
+      // 第一次出发
+      if (this.selection.segments.length === 2) {
+        const x = this.selection.segments[0].point
+        const y = this.selection.segments[1].point
+        const t = y.add(x.subtract(y).divide(2))
+        const vector = e.point.subtract(t)
+        const step = vector.normalize().multiply(this.brush.radius)
+        step.angle += 90
+
+        const top = t.add(step)
+        const bottom = t.subtract(step)
+        this.selection.remove()
+        this.selection = new paper.Path({
+        strokeColor: 'black'
+          
+        })
+        this.selection.add(top)
+        this.selection.insert(0, bottom)   
+      }
       // console.log('drag--->',e)
       const vector = e.point.subtract(e.lastPoint)
       const step = vector.normalize().multiply(this.brush.radius)
