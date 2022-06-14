@@ -8,11 +8,11 @@
   <el-tooltip
     class="item"
     effect="dark"
-    content="kill_brush"
+    content="broom_brush"
     placement="right"
   >
     <div
-     :class="[{ 'is-active': selected === 'kill_brush' }, 'icon', 'el-icon-brush']"
+     :class="[{ 'is-active': selected === 'broom_brush' }, 'icon', 'el-icon-brush']"
      @click="changeBrush"
      >
       <el-divider />
@@ -28,7 +28,7 @@ import { getRandomColor } from '@/weapons'
 // 饱和度    saturation: 1,
 // 亮度       brightness: 1
 export default {
-  name: "killBrush",
+  name: "broomBrush",
   props: {
     selected: {
       type: String,
@@ -51,7 +51,7 @@ export default {
   computed: {},
   watch: {
     selected() {
-      if (this.selected === 'kill_brush') {
+      if (this.selected === 'broom_brush') {
         this.init()
       } else {
         this.tool = null
@@ -93,117 +93,34 @@ export default {
       this.tool.onMouseDrag = this.onMouseDrag    
       this.tool.onMouseMove = this.onMouseMove    
       this.tool.onMouseUp = this.onMouseUp
-      this.tool.fixedDistance = this.brush.radius / 2
-      
-      const point1 = new paper.Point(100, 0)
-      const point2 = new paper.Point(100, this.brush.radius * 2)
-      const vector = new paper.Point({
-        angle: point1.subtract(point2).angle,
-        length: this.brush.radius
-      });
-      console.log('vector',vector)
-
-      const path = new paper.Path({
-        segments: [
-          [point1, vector.rotate(90).multiply(1.5), vector.rotate(-90).multiply(1.5)],
-          [point2, vector.rotate(-90).multiply(1.5), vector.rotate(90).multiply(1.5)]
-        ],
-        fullySelected: true
-      });   
-      path.closed = true
-      console.log('path',path)
-      const text1 = new paper.PointText({
-        point: point1.subtract(10),
-        content: 'point1',
-        fontSize: 10
-      })
-      const text2 = new paper.PointText({
-        point: point2.add(10),
-        content: 'point2',
-        fontSize: 10
-      })
-   
-
     },    
     changeBrush() {
-      this.$emit('changeBrush', 'kill_brush')
+      this.$emit('changeBrush', 'broom_brush')
     },
     onKeyDown(e) {
     },
     onMouseUp(e) {
-      // if (this.selection.segments.length === 2) {
-        
-      // }
       this.selection.closed = true
-      console.log('this.selection',this.selection)
-      console.log(this.selection.segments[0].point.subtract(this.selection.segments[1].point))
-      // this.selection.simplify(10)
-    },
-    drawHead(e) {
-      console.log('head点数据---》', e)
-      const vector = new paper.Point({
-        angle: 0,
-        length: this.brush.radius
-      })
-      const top = e.point.add(vector.rotate(-90))
-      const bottom = e.point.add(vector.rotate(90))
-      // const t1 = new paper.PointText({
-      //   point: top,
-      //   content: 'top',
-      //   fontSize: 10
-      // })
-      // const t2 = new paper.PointText({
-      //   point: bottom,
-      //   content: 'bottom',
-      //   fontSize: 10
-      // })
-      
-      // this.selection = new paper.Path({
-      //   segments: [
-      //     [top, vector, vector.rotate(-180)],
-      //     [bottom, vector.rotate(-180), vector],
-
-      //   ],
-      //   strokeColor: 'black',
-      //   fullySelected: true
-      // })            
-      // const v = new paper.Point({
-      //   angle: top.subtract(bottom).angle,
-      //   length: this.brush.radius
-      // });      
-      // this.selection = new paper.Path({
-      //   segments: [
-      //     // [top, v.rotate(90), v.rotate(-90)],
-      //     // [bottom, v.rotate(-90), v.rotate(90)]
-      //     [top, null, null],
-      //     [bottom, null, null]
-      //   ],
-      //   fillColor: "black"
-      // })      
-
-            this.selection.add(bottom)
-      this.selection.insert(0, top)
+      this.selection.smooth()      
     },
     onMouseDown(e) {
       this.selection = new paper.Path({
-        strokeColor: 'black'
+        fillColor: getRandomColor()
       })
-
-      this.drawHead(e)
+      this.selection.add(e.point)
     },
     onMouseDrag(e) {
-      // console.log('drag--->',e)
-      const vector = e.point.subtract(e.lastPoint)
-      const step = vector.normalize().multiply(this.brush.radius)
+      console.log('drag--->',e.point)
+      this.moveBrush(e)
+      const step = e.delta.divide(2)
       step.angle += 90
 
-      const top = e.point.add(step)
-      const bottom = e.point.subtract(step)
+      const top = e.middlePoint.add(step)
+      const bottom = e.middlePoint.subtract(step)
       this.selection.add(top)
       this.selection.insert(0, bottom)
       // }
-      this.moveBrush(e)
-
+      this.selection.smooth()
     },
     onMouseMove(e) {
       if (this.brush.path === null) {
@@ -220,6 +137,7 @@ export default {
         center: e.point,
         strokeColor: this.brush.color,
         radius: this.brush.radius,
+        strokeWidth: 3
       })
     }
   },

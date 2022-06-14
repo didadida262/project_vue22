@@ -10,14 +10,19 @@
       <oldBrush
         :selected="activatedBrush"
         @changeBrush="changeBrush"
-      />      
+      />  
+      <broomBrush
+        :selected="activatedBrush"
+        @changeBrush="changeBrush"
+      />           
       <killBrush
         :selected="activatedBrush"
         @changeBrush="changeBrush"
       />      
+           
      </div>
     <Content
-      :class="[{'cursorpointerNone-st': activatedBrush === 'old_brush' || activatedBrush === 'kill_brush'}]"
+      :class="[{'cursorpointerNone-st': activatedBrush !== 'pencil'}]"
       ref="Content"
       @shortCut="onWheel"
     />
@@ -31,6 +36,7 @@ import paper from 'paper'
 import Pencil from './brushes/Pencil.vue'
 import oldBrush from './brushes/oldBrush.vue'
 import killBrush from './brushes/kill_brush.vue'
+import broomBrush from './brushes/broomBrush.vue'
 
 export default {
   name: 'Dashboard',
@@ -38,7 +44,8 @@ export default {
     Content,
     Pencil,
     oldBrush,
-    killBrush
+    killBrush,
+    broomBrush
   },
   data() {
     return {
@@ -87,48 +94,7 @@ export default {
     //       this.selection.closed = true
     //       this.selection.smooth()
     //     }
-    //   } else if (newVal === 'broom_brush') {
-    //     this.tool.fixedDistance = 30
-    //     // 触发drag需要拖拽的最大距离
-    //     // 这里我觉得很奇怪,tool有最大距离和最小距离....
-
-    //     // this.tool.maxDistance = 45
-    //     // this.tool.maxDistance = 1;
-    //     // 扫把头
-    //     this.tool.onMouseDown = (e) => {
-    //       // console.log('开始点:', e)
-    //       this.selection = new paper.Path()
-    //       this.selection.fillColor = {
-    //         hue: Math.random() * 360,
-    //         saturation: 1,
-    //         brightness: 1
-    //       }
-    //     }
-    //     this.tool.onMouseDrag = (e) => {
-    //       // console.log('drag---->', e)
-    //       // if(e.count == 0) {
-    //       //   // console.log('存在?')
-    //       //   this.addStrokes(e.middlePoint, e.delta.multiply(-1));
-    //       // } else {
-    //       const step = e.delta.divide(2)
-    //       step.angle += 90
-
-    //       const top = e.middlePoint.add(step)
-    //       const bottom = e.middlePoint.subtract(step)
-    //       this.selection.add(top)
-    //       this.selection.insert(0, bottom)
-    //       // }
-    //       this.selection.smooth()
-    //       this.lastPoint = e.middlePoint.clone()
-    //     }
-    //     this.tool.onMouseUp = (e) => {
-    //       // console.log('结束点:', e)
-    //       const delta = e.point.subtract(this.lastPoint)
-    //       delta.length = this.tool.maxDistance
-    //       // this.addStrokes(e.point, delta);
-    //       this.selection.closed = true
-    //       this.selection.smooth()
-    //     }
+    
     //   } else if (newVal === 'old_brush') {
 
     //     // this.tool.onMouseDown = (e) => {
