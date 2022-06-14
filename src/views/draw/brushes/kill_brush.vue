@@ -22,9 +22,11 @@
 
 <script>
 import paper from "paper";
-
+// 色调         hue: Math.random() * 360,
+// 饱和度    saturation: 1,
+// 亮度       brightness: 1
 export default {
-  name: "oldBrush",
+  name: "killBrush",
   props: {
     selected: {
       type: String,

@@ -16,8 +16,6 @@
         @changeBrush="changeBrush"
       />      
      </div>
-      <!-- style="cursor:none" -->
-
     <Content
       :class="[{'cursorpointerNone-st': activatedBrush === 'old_brush' || activatedBrush === 'kill_brush'}]"
       ref="Content"
@@ -47,33 +45,9 @@ export default {
       // 当前激活工具
       activatedBrush: '',
       tool: null,
-
-
-
-
-
-      isActive: 'old_brush',
       lastDragPoint: null,
       layer: null,
-      selection: null,
-      brush: {
-        pathOptions: {
-          strokeColor: "black",
-          strokeWidth: 1,
-          radius: 10,
-          btype: "circle"  // circle ||  rectangle
-        }
-      },
-      //       this.brush.path = null
-      // this.selection = null
-      strokeEnds: 6,
-      currentTool: null,
-      firstPoint: null,
-      lastPoint: null,
-      test: null,
       info: 'hhvcg',
-      myPath: null,
-      myPaths: [],
       paper: null,
       image: {
         url: 'https://cms-assets.tutsplus.com/uploads/users/1251/posts/26530/image/BenderPaper.jpg'
@@ -89,43 +63,9 @@ export default {
   watch: {
     // currentTool(newVal, oldVal) {
     //   // 像素笔刷
-    //   if (newVal === 'pixelbrush') {
-    //     this.tool.onMouseDown = (e) => {
-    //       // console.log('tool点击:', e.point)
-    //       const newP = new paper.Point(Math.floor(e.point.x), Math.floor(e.point.y))
-    //       // console.log('newP:', newP)
-
-    //       this.myPath = new this.paper.Path.Rectangle(new paper.Point(Math.floor(e.point.x), Math.floor(e.point.y - 0.5) + 0.5), new paper.Size(1, 1))
-    //       this.myPath.fillColor = 'black'
-    //     }
-    //   } else if (newVal === 'pencil') {
-    //     // 绑定铅笔的事件
-    //     this.tool.onMouseDown = (e) => {
-    //       this.selection = new paper.Path({
-    //         strokeColor: '#00000',
-    //         strokeWidth: 1,
-    //         strokeCap: 'round'
-
-    //       })
-    //       this.selection.add(e.point)
-    //     }
-    //     // console.log(this.paper.view)
-    //     this.tool.onMouseDrag = (e) => {
-    //       this.selection.add(e.point)
-    //     }
-    //     this.tool.onMousUp = (e) => {
-    //       this.selection.simplify(10)
-    //       this.selection.smooth()
-    //       this.selection = null
-    //     }
     //   } else if (newVal === 'fat_brush') {
     //     this.tool.onMouseDown = (e) => {
     //       this.selection = new paper.Path()
-    //       this.selection.fillColor = {
-    //         hue: Math.random() * 360,
-    //         saturation: 1,
-    //         brightness: 1
-    //       }
     //       this.selection.add(e.point)
     //     }
     //     this.tool.onMouseDrag = (e) => {
