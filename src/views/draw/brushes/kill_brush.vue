@@ -197,6 +197,12 @@ export default {
     onMouseDown(e) {
       this.drawHead(e)
     },
+    removePath(item) {
+      if (item) {
+        item.remove()
+        item = null
+      }
+    },
     getDragPoints(e) {
       const vector = e.point.subtract(e.lastPoint)
       const step = vector.normalize().multiply(this.brush.radius)
@@ -221,16 +227,22 @@ export default {
       const top = t.subtract(step)
       this.selection.remove()
       this.selection = null
-      // this.selection = new paper.Path({
-      //   strokeColor: this.brush.radius
-      // })
+      this.selection = new paper.Path({
+        strokeColor: this.brush.radius
+      })
       // this.selection.add(bottom)
       // this.selection.insert(0, top)
+      this.removePath(this.selection)
+
       // 打点
+      const v = new paper.Point({
+        angle: top.subtract(bottom).angle,
+        length: Math.sqrt(this.brush.radius * this.brush.radius)
+      });      
       this.selection = new paper.Path({
         segments: [
-          [top, vector.normalize().multiply(this.brush.radius), vector.rotate(-180).multiply(this.brush.radius)],
-          [bottom, vector.rotate(-180).multiply(this.brush.radius), vector.multiply(this.brush.radius)],
+          [top, v.rotate(90).multiply(1.5), v.rotate(-90).multiply(1.5)],
+          [bottom, v.rotate(-90).multiply(1.5), v.rotate(90).multiply(1.5)]
         ],
         strokeColor: 'black',
       }) 
