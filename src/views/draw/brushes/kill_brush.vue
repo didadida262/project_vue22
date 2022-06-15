@@ -131,19 +131,19 @@ export default {
     },
     onMouseUp(e) {
       const temp = this.selection.unite(this.brush.path)
-      this.selection.remove()
-      this.selection = null
+      this.removePath(this.selection)
+
       this.selection = temp.clone()
-      // if (this.selection.segments.length === 2) {
-        
-      // }
       this.selection.closed = true
       console.log('this.selection',this.selection)
-      // console.log(this.selection.segments[0].point.subtract(this.selection.segments[1].point))
-      // this.selection.simplify(10)
+    },
+    // 返回点在向量方向的上下顶点,长度基于brush.radius
+    getTopAndBot(point, vector) {
+      const top = point.add(vector.normalize().multiply(this.brush.radius).rotate(-90))
+      const bot = point.add(vector.normalize().multiply(this.brush.radius).rotate(90))
+      return [top, bot]
     },
     drawHead(e) {
-      // 纯粹路径头部加点
       this.selection = new paper.Path({
         strokeColor: this.brush.color
       })      
@@ -151,48 +151,9 @@ export default {
         angle: 0,
         length: this.brush.radius
       })      
-      vector.angle += 90      
-      const bottom = e.point.add(vector)
-      const top = e.point.subtract(vector)
-      this.selection.add(bottom)
-      this.selection.insert(0, top)      
-
-
-      // // 尝试构造向量
-      // // const top = e.point.add(vector.rotate(-90))
-      // // const bottom = e.point.add(vector.rotate(90))
-      const t1 = new paper.PointText({
-        point: top,
-        content: 'top',
-        fontSize: 5
-      })
-      const t2 = new paper.PointText({
-        point: bottom,
-        content: 'bottom',
-        fontSize: 5
-      })
-      
-      // this.selection = new paper.Path({
-      //   segments: [
-      //     [top, vector, vector.rotate(-180)],
-      //     [bottom, vector.rotate(-180), vector],
-      //   ],
-      //   strokeColor: 'black',
-      // })            
-      // const v = new paper.Point({
-      //   angle: top.subtract(bottom).angle,
-      //   length: this.brush.radius
-      // });      
-      // this.selection = new paper.Path({
-      //   segments: [
-      //     // [top, v.rotate(90), v.rotate(-90)],
-      //     // [bottom, v.rotate(-90), v.rotate(90)]
-      //     [top, null, null],
-      //     [bottom, null, null]
-      //   ],
-      //   fillColor: "black"
-      // })      
-
+      const res = this.getTopAndBot(e.point, vector)
+      this.selection.add(res[1])
+      this.selection.insert(0, res[0])      
     },
     onMouseDown(e) {
       this.drawHead(e)
@@ -211,38 +172,31 @@ export default {
       const top = e.point.subtract(step)
       return [top, bottom]
     },
-    // 输入时第一个触发drag的点
-    // 返回开始点被修正后的selection
+    // 捕捉第一个触发drag的点,修正开始两点的向量信息
     modifyHead(e) {
       // 拿到之前的点击点
       const x = this.selection.segments[0].point
       const y = this.selection.segments[1].point
       const t = y.add(x.subtract(y).divide(2))
-
       const vector = e.point.subtract(t)
-      const step = vector.normalize().multiply(this.brush.radius)
-      step.angle += 90
+      const res = this.getTopAndBot(t, vector)
 
-      const bottom = t.add(step)
-      const top = t.subtract(step)
       this.selection.remove()
       this.selection = null
       this.selection = new paper.Path({
         strokeColor: this.brush.radius
       })
-      // this.selection.add(bottom)
-      // this.selection.insert(0, top)
       this.removePath(this.selection)
 
       // 打点
       const v = new paper.Point({
-        angle: top.subtract(bottom).angle,
+        angle: res[0].subtract(res[1]).angle,
         length: Math.sqrt(this.brush.radius * this.brush.radius)
       });      
       this.selection = new paper.Path({
         segments: [
-          [top, v.rotate(90).multiply(1.5), v.rotate(-90).multiply(1.5)],
-          [bottom, v.rotate(-90).multiply(1.5), v.rotate(90).multiply(1.5)]
+          [res[0], v.rotate(90).multiply(1.5), v.rotate(-90).multiply(1.5)],
+          [res[1], v.rotate(-90).multiply(1.5), v.rotate(90).multiply(1.5)]
         ],
         strokeColor: 'black',
       }) 
@@ -252,12 +206,11 @@ export default {
       if (this.selection && this.selection.segments.length === 2) {
         this.modifyHead(e)
       }
-      // console.log('drag--->',e)
-      this.selection.add(this.getDragPoints(e)[1])
-      this.selection.insert(0, this.getDragPoints(e)[0])
+      const res = this.getTopAndBot(e.point, e.point.subtract(e.lastPoint))
+      this.selection.add(res[1])
+      this.selection.insert(0, res[0])
       // }
       this.moveBrush(e)
-
     },
     onMouseMove(e) {
       if (this.brush.path === null) {
