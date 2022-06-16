@@ -85,7 +85,6 @@ export default {
       const height = e.point.y - this.first.y
       this.selection = new paper.Path.Rectangle(this.first.x,this.first.y, width, height)
       this.selection.selected = true
-      console.log('this.selection=====',this.selection)
     },
     // 若path存在，清除第二个点，加上当前点
     onMouseMove(e) {

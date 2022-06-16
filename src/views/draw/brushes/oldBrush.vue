@@ -40,8 +40,9 @@ export default {
         color: 'black'
       },
       selection: null,
+      view: null,
       tool: null,
-      handle: null
+      handle: null,
     };
   },
   computed: {},
@@ -83,12 +84,15 @@ export default {
     },     
     init() {
       this.log('初始化brush--->')
+      this.view = this.$parent.paper.view
+      console.log('this.view--->',this.view)
       this.tool = this.$parent.tool
       this.tool.onKeyDown = this.onKeyDown
       this.tool.onMouseDown = this.onMouseDown    
       this.tool.onMouseDrag = this.onMouseDrag    
       this.tool.onMouseMove = this.onMouseMove    
       this.tool.onMouseUp = this.onMouseUp
+      
     },    
     changeBrush() {
       this.$emit('changeBrush', 'old_brush')
@@ -107,11 +111,11 @@ export default {
       this.lastPoint = e.point
     },
     draw() {
-      requestAnimationFrame(() => {
+      this.view.requestUpdate = () => {
         const temp = this.selection.unite(this.brush.path)
         this.selection.remove()
         this.selection = temp
-      })
+      }
     },
     onMouseMove(e) {
       if (this.brush.path === null) {
