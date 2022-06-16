@@ -43,8 +43,8 @@ export default {
         color: 'black',
         pathOptions: {
           radius: 10,
-          // btype: "circle"  // circle ||  rectangle
-          btype: "rectangle"  // circle ||  rectangle,
+          btype: "circle"  // circle ||  rectangle
+          // btype: "rectangle"  // circle ||  rectangle,
 
         }
       },
@@ -134,11 +134,11 @@ export default {
     onKeyDown(e) {
     },
     onMouseUp(e) {
-      const temp = this.selection.unite(this.brush.path)
+      // const temp = this.selection.unite(this.brush.path)
       this.removeSelection()
 
-      this.selection = temp.clone()
-      this.selection.closed = true
+      // this.selection = temp.clone()
+      // this.selection.closed = true
     },
     // 返回点在向量方向的上下顶点,长度基于brush.pathOptions.radius
     getTopAndBot(point, vector) {

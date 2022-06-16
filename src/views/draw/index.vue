@@ -18,11 +18,19 @@
       <killBrush
         :selected="activatedBrush"
         @changeBrush="changeBrush"
-      />      
+      />    
+      <LineBrush
+        :selected="activatedBrush"
+        @changeBrush="changeBrush"
+      />     
+      <RectBrush
+        :selected="activatedBrush"
+        @changeBrush="changeBrush"
+      />              
            
      </div>
     <Content
-      :class="[{'cursorpointerNone-st': activatedBrush !== 'pencil'}]"
+      :class="[{'cursorpointerNone-st': activatedBrush !== 'pencil' && activatedBrush !== 'line' && activatedBrush !== 'rect_brush'}]"
       ref="Content"
       @shortCut="onWheel"
     />
@@ -38,6 +46,8 @@ import Pencil from './brushes/Pencil.vue'
 import oldBrush from './brushes/oldBrush.vue'
 import killBrush from './brushes/kill_brush.vue'
 import broomBrush from './brushes/broomBrush.vue'
+import LineBrush from './brushes/Line.vue'
+import RectBrush from './brushes/RectBrush.vue'
 
 export default {
   name: 'Dashboard',
@@ -46,7 +56,9 @@ export default {
     Pencil,
     oldBrush,
     killBrush,
-    broomBrush
+    broomBrush,
+    LineBrush,
+    RectBrush
   },
   data() {
     return {
