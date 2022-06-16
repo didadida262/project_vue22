@@ -39,9 +39,14 @@ export default {
     return {
       lastPoint: null,
       brush: {
-        radius: 10,
         path: null,
-        color: 'black'
+        color: 'black',
+        pathOptions: {
+          radius: 10,
+          // btype: "circle"  // circle ||  rectangle
+          btype: "rectangle"  // circle ||  rectangle,
+
+        }
       },
       selection: null,
       tool: null,
@@ -61,13 +66,13 @@ export default {
   mounted() {},
   methods: {
     addBrokenPath(_point) {
-      if (this.selection && _point.getDistance(this.lastPoint) >= this.brush.radius * 2) {
+      if (this.selection && _point.getDistance(this.lastPoint) >= this.brush.pathOptions.radius * 2) {
         const vector = _point.subtract(this.lastPoint)
         for (let i = 1; i < vector.length;) {
           let newPoint = this.lastPoint.add(vector.normalize().multiply(i))
           let temp = null
           // if (this.brush.pathOptions.btype==='circle'){
-            temp = new paper.Path.Circle(newPoint, new paper.Size(this.brush.radius))
+            temp = new paper.Path.Circle(newPoint, new paper.Size(this.brush.pathOptions.radius))
           // } else {
           //   temp = new paper.Path.Rectangle({
           //     center: newPoint,
@@ -79,7 +84,7 @@ export default {
           temp = null
           this.selection.remove();
           this.selection = newSelection;
-          i = i + this.brush.radius / 2
+          i = i + this.brush.pathOptions.radius / 2
         }
         this.lastPoint = _point
       }  
@@ -93,13 +98,13 @@ export default {
       this.tool.onMouseDrag = this.onMouseDrag    
       this.tool.onMouseMove = this.onMouseMove    
       this.tool.onMouseUp = this.onMouseUp
-      this.tool.fixedDistance = this.brush.radius / 2
+      this.tool.fixedDistance = this.brush.pathOptions.radius / 2
       
       const point1 = new paper.Point(100, 0)
-      const point2 = new paper.Point(100, this.brush.radius * 2)
+      const point2 = new paper.Point(100, this.brush.pathOptions.radius * 2)
       const vector = new paper.Point({
         angle: point1.subtract(point2).angle,
-        length: Math.sqrt(this.brush.radius * this.brush.radius)
+        length: Math.sqrt(this.brush.pathOptions.radius * this.brush.pathOptions.radius)
       });
 
       const path = new paper.Path({
@@ -131,16 +136,16 @@ export default {
     },
     onMouseUp(e) {
       const temp = this.selection.unite(this.brush.path)
-      this.removePath(this.selection)
+      this.removeSelection()
 
       this.selection = temp.clone()
       this.selection.closed = true
       console.log('this.selection',this.selection)
     },
-    // 返回点在向量方向的上下顶点,长度基于brush.radius
+    // 返回点在向量方向的上下顶点,长度基于brush.pathOptions.radius
     getTopAndBot(point, vector) {
-      const top = point.add(vector.normalize().multiply(this.brush.radius).rotate(-90))
-      const bot = point.add(vector.normalize().multiply(this.brush.radius).rotate(90))
+      const top = point.add(vector.normalize().multiply(this.brush.pathOptions.radius).rotate(-90))
+      const bot = point.add(vector.normalize().multiply(this.brush.pathOptions.radius).rotate(90))
       return [top, bot]
     },
     drawHead(e) {
@@ -149,57 +154,68 @@ export default {
       })      
       const vector = new paper.Point({
         angle: 0,
-        length: this.brush.radius
+        length: this.brush.pathOptions.radius
       })      
       const res = this.getTopAndBot(e.point, vector)
       this.selection.add(res[1])
       this.selection.insert(0, res[0])      
     },
-    onMouseDown(e) {
-      this.drawHead(e)
-    },
-    removePath(item) {
-      if (item) {
-        item.remove()
-        item = null
-      }
-    },
     getDragPoints(e) {
       const vector = e.point.subtract(e.lastPoint)
-      const step = vector.normalize().multiply(this.brush.radius)
+      const step = vector.normalize().multiply(this.brush.pathOptions.radius)
       step.angle += 90
       const bottom = e.point.add(step)
       const top = e.point.subtract(step)
       return [top, bottom]
+    },    
+    onMouseDown(e) {
+      this.drawHead(e)
+    }, 
+    removeSelection() {
+      if (this.selection) {
+        this.selection.remove()
+        this.selection = null
+      }
     },
+    // 给定两点，获取其中点
+    getCenter(point1, point2) {
+      return point2.add(point1.subtract(point2).divide(2))
+    },
+
     // 捕捉第一个触发drag的点,修正开始两点的向量信息
     modifyHead(e) {
       // 拿到之前的点击点
-      const x = this.selection.segments[0].point
-      const y = this.selection.segments[1].point
-      const t = y.add(x.subtract(y).divide(2))
+      const t = this.getCenter(this.selection.segments[0].point, this.selection.segments[1].point)
+      // vector为当前drag点到第一个点的向量
       const vector = e.point.subtract(t)
+      const ress = this.getTopAndBot(t.subtract(vector.normalize().multiply(this.brush.pathOptions.radius)), vector)
       const res = this.getTopAndBot(t, vector)
-
-      this.selection.remove()
-      this.selection = null
-      this.selection = new paper.Path({
-        strokeColor: this.brush.radius
-      })
-      this.removePath(this.selection)
+      this.removeSelection()
 
       // 打点
-      const v = new paper.Point({
-        angle: res[0].subtract(res[1]).angle,
-        length: Math.sqrt(this.brush.radius * this.brush.radius)
-      });      
-      this.selection = new paper.Path({
-        segments: [
-          [res[0], v.rotate(90).multiply(1.5), v.rotate(-90).multiply(1.5)],
-          [res[1], v.rotate(-90).multiply(1.5), v.rotate(90).multiply(1.5)]
-        ],
-        strokeColor: 'black',
-      }) 
+      // const v = new paper.Point({
+      //   angle: res[0].subtract(res[1]).angle,
+      //   length: Math.sqrt(this.brush.pathOptions.radius * this.brush.pathOptions.radius * 2)
+      // });
+      vector.length = Math.sqrt(this.brush.pathOptions.radius * this.brush.pathOptions.radius * 2)
+      if (this.brush.pathOptions.btype === 'circle') {
+        this.selection = new paper.Path({
+          segments: [
+            [res[0], vector, vector.rotate(-180)],
+            [res[1], vector.rotate(-180), vector]
+          ],
+          strokeColor: 'black',
+        }) 
+        // 如果是矩形
+      } else {
+        this.selection = new paper.Path({
+          segments: [
+            [ress[0], vector.normalize(), vector.rotate(90).normalize().multiply(this.brush.pathOptions.radius)],
+            [ress[1], vector.rotate(-90).normalize().multiply(this.brush.pathOptions.radius), vector]
+          ],
+          strokeColor: 'black',
+        }) 
+      }
     },
     onMouseDrag(e) {
       // 第一次出发
@@ -226,7 +242,7 @@ export default {
       this.brush.path = new paper.Path.Circle({
         center: e.point,
         strokeColor: this.brush.color,
-        radius: this.brush.radius,
+        radius: this.brush.pathOptions.radius,
       })
     }
   },
