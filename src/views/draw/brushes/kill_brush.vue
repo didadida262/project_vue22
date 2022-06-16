@@ -115,7 +115,6 @@ export default {
         fullySelected: true
       });   
       path.closed = true
-      console.log('path',path)
       const text1 = new paper.PointText({
         point: point1.subtract(10),
         content: 'point1',
@@ -140,7 +139,6 @@ export default {
 
       this.selection = temp.clone()
       this.selection.closed = true
-      console.log('this.selection',this.selection)
     },
     // 返回点在向量方向的上下顶点,长度基于brush.pathOptions.radius
     getTopAndBot(point, vector) {
@@ -248,7 +246,6 @@ export default {
   },
 
   created() {
-    this.log("pencile---created");
   },
 };
 </script>

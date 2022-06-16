@@ -72,7 +72,6 @@ export default {
   },
 
   created() {
-    console.log('this.selected--->', this.selected)
   },
 };
 </script>

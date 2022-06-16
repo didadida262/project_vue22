@@ -143,7 +143,6 @@ export default {
   },
 
   created() {
-    this.log("pencile---created");
   },
 };
 </script>
