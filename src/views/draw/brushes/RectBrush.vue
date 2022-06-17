@@ -73,6 +73,20 @@ export default {
       this.selection.selected = false
       this.selection.fillColor = getRandomColor()
       this.resp.push(this.selection.clone())
+      const left = this.selection.curves[0].point1
+      const right = this.selection.curves[0].point2
+      let t1 = new paper.PointText({
+        content: 'left',
+        point: left,
+        fontSize: 5
+      });
+      let t2 = new paper.PointText({
+        content: 'right',
+        point: right,
+        fontSize: 5
+      });      
+      console.log('/////',this.selection)
+      this.removeSelection()
     },
 
     onMouseDown(e) {

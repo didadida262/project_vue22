@@ -29,7 +29,7 @@ export default {
     return {
       Ship: null,
       tool: null,
-      lastDown: null
+      myPath: null
     };
   },
   watch: {},
@@ -65,7 +65,7 @@ export default {
       }
     },
     onMouseDown(e) {
-      console.log('view的鼠标点击事件---->', e)
+      // console.log('view的鼠标点击事件---->', e)
     },
     // 挂了重来一次？
     showOperations() {
@@ -79,30 +79,16 @@ export default {
       this.paper.view.onMouseDown = this.onMouseDown
       this.tool = new paper.Tool()
       this.tool.onMouseDown = (e) => {
-        console.log('tool的鼠标点击事件---->', e)
-        if (this.lastDown) {
-          console.log(e.point.subtract(this.lastDown))
-        }
-        this.lastDown = e.point
+        // console.log('tool的鼠标点击事件---->', e)
+        const res = this.myPath.contains(e.point)
+        console.log('res--->', res)
       }
-      console.log(this.paper)
-      
       console.log("初始化世界!!!");
       this.ari = new Ariplane()
+      this.myPath = new paper.Path.Rectangle(new paper.Point(-400,-400), new paper.Size(100))
+      this.myPath.strokeColor = getRandomColor()
+      
 
-      this.myPoint = new paper.Point(100,100)
-      console.log(this.myPoint)
-      this.path1 = new paper.Path({
-        strokeColor:'red'
-      })
-      this.path2 = new paper.Path({
-        strokeColor:'white'
-      })
-      this.path1.add(new paper.Point())
-      this.path1.add(this.myPoint)
-      this.path2.add(new paper.Point())
-      this.path2.add(this.myPoint.divide(2))
-      console.log()
 
       // console.log(this.Ship)
       // this.showOperations()
