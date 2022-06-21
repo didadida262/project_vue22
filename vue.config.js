@@ -31,6 +31,7 @@ module.exports = {
   productionSourceMap: false,
   devServer: {
     port: port,
+    // open为true，运行完后能自动帮我们打开站点
     open: true,
     overlay: {
       warnings: false,

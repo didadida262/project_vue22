@@ -118,8 +118,8 @@ export default {
         const total = this.musicBox.el.duration
         const progressDom = this.$refs['progress']
         const jpplaybarDom = this.$refs['jp-play-bar']
-        log('progressDom--->', progressDom)
-        log('jpplaybarDom--->', jpplaybarDom)
+        // log('progressDom--->', progressDom)
+        // log('jpplaybarDom--->', jpplaybarDom)
         jpplaybarDom.style.width =  this.musicBox.el.currentTime / total * progressDom.clientWidth + 'px'
         
         const min = Math.floor(this.musicBox.el.currentTime / 60)
@@ -160,7 +160,7 @@ export default {
         // this.$refs.logoRef.valu
         this.musicBox.el = this.$refs['audio']
         // this.musicBox.el.src = '../../../assets/诚如神之所说.mp3'
-        log('this.musicBox', this.musicBox)
+        // log('this.musicBox', this.musicBox)
 
         // musicBox.src = audioUrl.value;
         // console.log("musicBox:", musicBox);

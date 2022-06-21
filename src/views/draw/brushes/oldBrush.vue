@@ -83,7 +83,7 @@ export default {
 
     },     
     init() {
-      this.log('初始化brush--->')
+      // this.log('初始化brush--->')
       this.view = this.$parent.paper.view
       console.log('this.view--->',this.view)
       this.tool = this.$parent.tool

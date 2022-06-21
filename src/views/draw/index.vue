@@ -26,7 +26,7 @@
       <RectBrush
         :selected="activatedBrush"
         @changeBrush="changeBrush"
-      />              
+      />    
            
      </div>
     <Content
@@ -73,6 +73,11 @@ export default {
         // url: 'https://cms-assets.tutsplus.com/uploads/users/1251/posts/26530/image/BenderPaper.jpg'
         url: '@/assets/rick.jpg'
       },
+      testInfo: {
+        plan: {
+          price: 0
+        }
+      }
 
     }
   },
@@ -87,6 +92,9 @@ export default {
     console.log('this.paper---', this.paper)
   },
   methods: {
+    test() {
+
+    },
     changeBrush(brush) {
       this.activatedBrush = brush
       this.$message(`切换至${brush}`)
@@ -250,7 +258,7 @@ export default {
 
   },
   created() {
-  }
+  },
 }
 </script>
 

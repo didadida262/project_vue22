@@ -45,7 +45,7 @@ export default {
   mounted() { },
   methods: {
     init() {
-      this.log('初始化pencil--->')
+      // this.log('初始化pencil--->')
       this.tool = this.$parent.tool
       this.tool.onKeyDown = this.onKeyDown
       this.tool.onMouseDown = this.onMouseDown

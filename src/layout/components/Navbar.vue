@@ -3,7 +3,15 @@
     <hamburger :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
     <breadcrumb class="breadcrumb-container" />
     <header-notice></header-notice>
-    <div class="right-menu">
+    <div class="right-menu flex-sc">
+      <!-- <el-dropdown split-button type="primary">
+        切换语言
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item>中文</el-dropdown-item>
+          <el-dropdown-item>英文</el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>       -->
+      <el-button @click="changeLanguage">切换语言</el-button>
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
           <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar">
@@ -46,9 +54,27 @@ export default {
     ...mapGetters([
       'sidebar',
       'avatar'
-    ])
+    ]),
+    language() {
+      return sessionStorage.getItem('local')
+    }
   },
   methods: {
+    changeLanguage(){
+      if (this.language === 'zh') {
+        sessionStorage.setItem('local', 'en')
+      } else {
+        sessionStorage.setItem('local', 'zh')
+      }
+      console.log(this.language)
+      this.$message(`切换至${this.language}`)
+
+      // this.$message({
+      //   message: `切换至${this.language}`,
+      //   center: true,
+      //   duration: 3
+      // });
+    },
     toggleSideBar() {
       this.$store.dispatch('app/toggleSideBar')
     },
@@ -91,8 +117,8 @@ export default {
   .right-menu {
     float: right;
     height: 100%;
-    line-height: 50px;
-
+    width: 250px;
+    // line-height: 50px;
     &:focus {
       outline: none;
     }

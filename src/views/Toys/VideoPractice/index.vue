@@ -67,7 +67,7 @@ export default {
       ADOM.click()
     },    
     queryImg() {
-      log('截图！')
+      // log('截图！')
     },
     async initWorld() {
       console.info('初始化世界！！1')

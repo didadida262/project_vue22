@@ -91,7 +91,7 @@ export default {
 
     },     
     init() {
-      this.log('初始化brush--->')
+      // this.log('初始化brush--->')
       this.tool = this.$parent.tool
       this.tool.onKeyDown = this.onKeyDown
       this.tool.onMouseDown = this.onMouseDown    

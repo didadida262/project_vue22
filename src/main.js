@@ -5,6 +5,7 @@
  * @Description: 
  */
 import Vue from 'vue'
+import Vuei18n from 'vue-i18n'
 
 import 'normalize.css/normalize.css' // A modern alternative to CSS resets
 
@@ -21,7 +22,16 @@ import router from './router'
 import '@/icons' // icon
 import '@/permission' // permission control
 
-import { log } from './weapons'
+
+// 引入语言包
+// const i18n = new Vuei18n({
+//   local: window.sessionStorage.getItem("lang") || 'zh',
+//   messages: {
+//     zh: require("@/lang/zh.js"),
+//     en: require("@/lang/en.js"),
+//   }
+// })
+
 
 /**
  * If you don't want to use mock-server
@@ -38,14 +48,17 @@ if (process.env.NODE_ENV === 'production') {
 
 // set ElementUI lang to EN
 Vue.use(ElementUI, { locale })
+// Vue.use(Vuei18n)
+// Vue.use(ElementUI, 'en')
 // 如果想要中文版 element-ui，按如下方式声明
 // Vue.use(ElementUI)
 
 Vue.config.productionTip = false
-Vue.prototype.log = log
+// Vue.prototype.log = log
 new Vue({
   el: '#app',
   router,
   store,
+  // i18n,
   render: h => h(App)
 })
