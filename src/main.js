@@ -2,16 +2,16 @@
  * @Author: Hhvcg
  * @Date: 2022-02-20 15:26:48
  * @LastEditors: -_-
- * @Description: 
+ * @Description: 主文件配置
  */
 import Vue from 'vue'
 import Vuei18n from 'vue-i18n'
-
+// import i18n from '@/i18n'
 import 'normalize.css/normalize.css' // A modern alternative to CSS resets
 
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
-import locale from 'element-ui/lib/locale/lang/en' // lang i18n
+// import localeEI from 'element-ui/lib/locale/lang/en' // lang i18n
 
 import '@/styles/index.scss' // global css
 
@@ -22,16 +22,24 @@ import router from './router'
 import '@/icons' // icon
 import '@/permission' // permission control
 
-
+// Vue.config.silent = true
 // 引入语言包
-// const i18n = new Vuei18n({
-//   local: window.sessionStorage.getItem("lang") || 'zh',
-//   messages: {
-//     zh: require("@/lang/zh.js"),
-//     en: require("@/lang/en.js"),
-//   }
-// })
-
+Vue.use(Vuei18n)
+const i18n = new Vuei18n({
+  local: 'zh-CN',
+  // messages: {
+  //   'zh': {
+  //     name: '名称'
+  //   },
+  //   'en' : {
+  //     name: 'content'
+  //   }
+  // }
+  messages: {
+    'zh-CN': require('@/i18n/locale/zh-CN.js'),
+    'en-US': require('@/i18n/locale/en-US.js')
+  }
+})
 
 /**
  * If you don't want to use mock-server
@@ -47,11 +55,11 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 // set ElementUI lang to EN
-Vue.use(ElementUI, { locale })
-// Vue.use(Vuei18n)
+// Vue.use(ElementUI, { localeEI })
 // Vue.use(ElementUI, 'en')
 // 如果想要中文版 element-ui，按如下方式声明
-// Vue.use(ElementUI)
+Vue.use(ElementUI)
+if (window) window['$t'] = (key, value) => i18n.t(key, value);
 
 Vue.config.productionTip = false
 // Vue.prototype.log = log
@@ -59,6 +67,6 @@ new Vue({
   el: '#app',
   router,
   store,
-  // i18n,
+  i18n,
   render: h => h(App)
 })

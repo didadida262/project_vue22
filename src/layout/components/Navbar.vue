@@ -4,6 +4,7 @@
     <breadcrumb class="breadcrumb-container" />
     <header-notice></header-notice>
     <div class="right-menu flex-sc">
+     
       <!-- <el-dropdown split-button type="primary">
         切换语言
         <el-dropdown-menu slot="dropdown">
@@ -11,7 +12,7 @@
           <el-dropdown-item>英文</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>       -->
-      <el-button @click="changeLanguage">切换语言</el-button>
+      <el-button @click="changeLanguage" size="mini">{{ $t('name')}}</el-button>
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
           <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar">
@@ -59,14 +60,22 @@ export default {
       return sessionStorage.getItem('local')
     }
   },
+  data(){
+    return {
+    }
+  },
   methods: {
     changeLanguage(){
+      console.log('改前---->', this.language)
+      console.log('改前---->', typeof this.language)
       if (this.language === 'zh') {
+        console.log('1')
         sessionStorage.setItem('local', 'en')
       } else {
+        console.log('2')
         sessionStorage.setItem('local', 'zh')
       }
-      console.log(this.language)
+      console.log('改后---->', this.language)
       this.$message(`切换至${this.language}`)
 
       // this.$message({
@@ -85,6 +94,9 @@ export default {
   mounted() {
     // console.log('header组件---mounted')
     }
+  },
+  mounted() {
+    console.log(this.$t("page.login.title"))
   }
 }
 </script>

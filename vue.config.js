@@ -80,6 +80,13 @@ module.exports = {
         symbolId: 'icon-[name]'
       })
       .end()
+      // i18n
+      config.module
+          .rule('i18n')
+          .resourceQuery(/blockType=i18n/)
+          .use('i18n')
+          .loader('@kazupon/vue-i18n-loader')
+          .end();      
 
     config
       .when(process.env.NODE_ENV !== 'development',
