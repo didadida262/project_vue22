@@ -1,3 +1,9 @@
+/*
+ * @Author: Hhvcg
+ * @Date: 2022-02-20 15:26:48
+ * @LastEditors: -_-
+ * @Description: 
+ */
 import router from './router'
 import store from './store'
 import { Message } from 'element-ui'
@@ -26,6 +32,7 @@ router.beforeEach(async(to, from, next) => {
       next({ path: '/' })
       NProgress.done()
     } else {
+      console.log('有token,然后嫩')
       const hasGetUserInfo = store.getters.name
       if (hasGetUserInfo) {
         next()

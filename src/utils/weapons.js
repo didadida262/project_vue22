@@ -4,9 +4,7 @@
  * @LastEditors: -_-
  * @Description: 
  */
-const log = console.log.bind(console)
-const e = (selector) => {
+export const e = (selector) => {
     return document.querySelector(selector)
 }
 
-export { log, e }

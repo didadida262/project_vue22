@@ -27,12 +27,14 @@
         :selected="activatedBrush"
         @changeBrush="changeBrush"
       />    
+      <el-button @click="change">测试</el-button>
            
      </div>
     <Content
       :class="[{'cursorpointerNone-st': activatedBrush !== 'pencil' && activatedBrush !== 'line' && activatedBrush !== 'rect_brush'}]"
       ref="Content"
       @shortCut="onWheel"
+      :info="info"
     />
     <img src="@/assets/rick.jpg" srcset="" style="display: none" ref="image">
   </div>
@@ -67,7 +69,9 @@ export default {
       tool: null,
       lastDragPoint: null,
       layer: null,
-      info: 'hhvcg',
+      info: {
+        name: 'hhvcg'
+      },
       paper: null,
       image: {
         // url: 'https://cms-assets.tutsplus.com/uploads/users/1251/posts/26530/image/BenderPaper.jpg'
@@ -92,6 +96,9 @@ export default {
     console.log('this.paper---', this.paper)
   },
   methods: {
+    change() {
+      console.log('this.info--->', this.info)
+    },
     test() {
 
     },
