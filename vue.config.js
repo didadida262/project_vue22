@@ -16,7 +16,7 @@ const name = defaultSettings.title || 'vue Admin Template' // page title
 // You can change the port by the following methods:
 // port = 9528 npm run dev OR npm run dev --port = 9528
 const port = process.env.port || process.env.npm_config_port || 9528 // dev port
-const webpack = require("webpack")
+// const webpack = require('webpack')
 // All configuration item explanations can be find in https://cli.vuejs.org/config/
 module.exports = {
   /**
@@ -31,16 +31,16 @@ module.exports = {
   assetsDir: 'static',
   lintOnSave: process.env.NODE_ENV === 'development',
   productionSourceMap: false,
-  // devServer: {
-  //   port: port,
-  //   // open为true，运行完后能自动帮我们打开站点
-  //   open: true,
-  //   overlay: {
-  //     warnings: false,
-  //     errors: true
-  //   },
-  //   // before: require('./mock/mock-server.js')
-  // },
+  devServer: {
+    port: port,
+    // open为true，运行完后能自动帮我们打开站点
+    open: true,
+    overlay: {
+      warnings: false,
+      errors: true
+    },
+    // before: require('./mock/mock-server.js')
+  },
 //   devServer: {
 //     // publicPath: Setting.publicPath,
 //     // 配置前端转发
@@ -64,14 +64,14 @@ module.exports = {
       }
     },
     // plugins
-    plugins: [
-      new webpack.ProvidePlugin({
-        $: 'jquery',
-        jQuery: 'jquery',
-        'window.jQuery': 'jquery',
-        Popper: ['popper.js', 'default']
-      })
-    ]
+    // plugins: [
+    //   new webpack.ProvidePlugin({
+    //     $: 'jquery',
+    //     jQuery: 'jquery',
+    //     'window.jQuery': 'jquery',
+    //     Popper: ['popper.js', 'default']
+    //   })
+    // ]
   },
   chainWebpack(config) {
     // it can improve the speed of the first screen, it is recommended to turn on preload

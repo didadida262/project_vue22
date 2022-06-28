@@ -7,14 +7,14 @@
 import Vue from 'vue'
 import Vuei18n from 'vue-i18n'
 // 引入jQuery、bootstrap----->虽然很不想装jquery，但还是tm的被迫装了
-import $ from 'jquery'
+// import $ from 'jquery'
 import 'bootstrap'
 // 引入bootstrap样式
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap/dist/js/bootstrap.min.js'
 
 // 全局注册 $
-Vue.prototype.$ = $
+// Vue.prototype.$ = $
 
 
 

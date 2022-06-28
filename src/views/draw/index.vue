@@ -4,26 +4,32 @@
     <!-- 所有笔刷 -->
     <div class="tool">
       <Pencil
+        class="cursor-pointer"
         :selected="activatedBrush"
         @changeBrush="changeBrush"
       />
       <oldBrush
+        class="cursor-pointer"
         :selected="activatedBrush"
         @changeBrush="changeBrush"
       />  
       <broomBrush
+        class="cursor-pointer"
         :selected="activatedBrush"
         @changeBrush="changeBrush"
       />           
       <killBrush
+        class="cursor-pointer"
         :selected="activatedBrush"
         @changeBrush="changeBrush"
       />    
       <LineBrush
+        class="cursor-pointer"
         :selected="activatedBrush"
         @changeBrush="changeBrush"
       />     
       <RectBrush
+        class="cursor-pointer"
         :selected="activatedBrush"
         @changeBrush="changeBrush"
       />    
