@@ -11,6 +11,7 @@
      @click="changeBrush">
       <el-divider />
     </div>
+<i class="bi bi-mouse2-fill"></i>
   </el-tooltip>
 </template>
 

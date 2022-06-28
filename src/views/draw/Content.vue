@@ -12,19 +12,14 @@
       type="datetime"
       placeholder="选择日期时间">
     </el-date-picker>  -->
-    <el-button @click="change">改值</el-button>
+
   </div>
 </template>
 
 <script>
 export default {
   name: 'Content',
-  props: {
-    info: {
-      type: Object,
-      required: true
-    }
-  },
+
   data() {
     return {
       mask_png: null,
@@ -36,9 +31,6 @@ export default {
     onwheel(e) {
       this.$emit('shortCut', e)
     },
-    change() {
-      this.info.name = 'asdsdfsdf'
-    }
   },
   created() {
   },
