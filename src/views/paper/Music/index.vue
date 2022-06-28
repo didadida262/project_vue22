@@ -186,13 +186,13 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 .music {
-  margin: 10px auto;
-  background: url("../../../assets/back-image.jpg") no-repeat center;
+  // background: url("../../../assets/back-image.jpg") no-repeat center;
   width: 100%;
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
+  background-image: linear-gradient(120deg,#487399,#994515);
   .music-player {
     position: relative;
     width: 350px;

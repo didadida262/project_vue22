@@ -3,7 +3,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const path = require('path')
 const defaultSettings = require('./src/settings.js')
 
-// 返回路径
 function resolve(dir) {
   return path.join(__dirname, dir)
 }

@@ -104,7 +104,7 @@ export default {
     },
     changeBrush(brush) {
       this.activatedBrush = brush
-      this.$message(`切换至${brush}`)
+      this.$message.success(`切换至${brush}`)
     },
     draw(point) {
       if (this.selection) {
