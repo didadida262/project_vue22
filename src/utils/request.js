@@ -50,7 +50,8 @@ service.interceptors.response.use(
    * You can also judge the status by HTTP Status Code
    */
   res => {
-    console.log('沟道的数据--->', res.data)
+    console.log('沟道的数据--->', res)
+    console.log('typeof--->',typeof res.data)
     return Promise.resolve(res.data)
 
     // if (res.code !== 20000) {

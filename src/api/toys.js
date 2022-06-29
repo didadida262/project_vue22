@@ -23,6 +23,17 @@ export default {
     return axios.get('/music')
   },
   getImg() {
-    return axios.get('/img')
-  }
+    return axios({
+      method: 'get',
+      responseType: 'arraybuffer',
+      url: '/img'
+    })
+  },
+  getMedia() {
+    return axios({
+      method: 'get',
+      responseType: 'blob',
+      url: '/music'
+    })
+  }  
 }

@@ -52,7 +52,8 @@
         </div>
       </div>
     </div>
-    <el-button @click="getImg">测试按钮</el-button>
+    <el-button @click="getMedia">测试按钮</el-button>
+    <!-- <img :src="imgUrl" alt="" srcset=""> -->
     <audio
       ref="audio"
       class="audio"
@@ -69,6 +70,7 @@
 </template>
 <script lang="ts">
 
+import { _arrayBufferToBase64 } from '@/utils/index'
 export default {
   name: "Music",
   data() {
@@ -79,7 +81,8 @@ export default {
         audioUrl: null,
         status: 'paused',
         url: ''
-      }
+      },
+      // imgUrl: ''
     }
   },
   created() {
@@ -89,9 +92,15 @@ export default {
     this.initMusic();
   },
   methods: {
-    getImg() {
-      const res = this.$axios.getImg()
-      console.log('图片--->', res)
+    async getMedia() {
+      const res = await this.$axios.getMedia()
+      console.log('res---->', res)
+      let blob = new Blob([res], {type: 'mp3'})
+      let url = URL.createObjectURL(blob)
+      // url = url + _arrayBufferToBase64(res)
+      this.musicBox.url = url
+      console.log('blob--->', blob)
+      console.log('url--->', url)
     },
     async switchSong(flag) {
       if (flag === 1) {
