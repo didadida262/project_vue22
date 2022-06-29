@@ -32,7 +32,6 @@ router.beforeEach(async(to, from, next) => {
       next({ path: '/' })
       NProgress.done()
     } else {
-      console.log('有token,然后嫩')
       const hasGetUserInfo = store.getters.name
       if (hasGetUserInfo) {
         next()

@@ -67,7 +67,7 @@
 </template>
 <script lang="ts">
 
-import { log, e} from '@/utils/weapons'
+import {e} from '@/utils/weapons'
 export default {
   name: "Music",
   data() {
@@ -81,6 +81,7 @@ export default {
     }
   },
   created() {
+   console.log(this._.flattenDeep([1,2,3,4,[5,5],[[1,2,3]]]))
 
   },
   mounted() {

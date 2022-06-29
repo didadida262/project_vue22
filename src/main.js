@@ -34,7 +34,8 @@ import router from './router'
 
 import '@/icons' // icon
 import '@/permission' // permission control
-
+import _ from 'lodash'
+Vue.prototype._ = _
 // Vue.config.silent = true
 // 引入语言包
 Vue.use(Vuei18n)
