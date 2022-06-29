@@ -5,6 +5,10 @@
  * @Description: 主文件配置
  */
 import Vue from 'vue'
+import apis from '@/api/index'
+
+
+
 import Vuei18n from 'vue-i18n'
 // 引入jQuery、bootstrap----->虽然很不想装jquery，但还是tm的被迫装了
 // import $ from 'jquery'
@@ -36,6 +40,8 @@ import '@/icons' // icon
 import '@/permission' // permission control
 import _ from 'lodash'
 Vue.prototype._ = _
+Vue.prototype.$axios = apis
+
 // Vue.config.silent = true
 // 引入语言包
 Vue.use(Vuei18n)
@@ -63,10 +69,10 @@ const i18n = new Vuei18n({
  * Currently MockJs will be used in the production environment,
  * please remove it before going online ! ! !
  */
-if (process.env.NODE_ENV === 'production') {
-  const { mockXHR } = require('../mock')
-  mockXHR()
-}
+// if (process.env.NODE_ENV === 'production') {
+//   const { mockXHR } = require('../mock')
+//   mockXHR()
+// }
 
 // set ElementUI lang to EN
 // Vue.use(ElementUI, { localeEI })
