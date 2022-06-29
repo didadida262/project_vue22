@@ -1,12 +1,20 @@
+/*
+ * @Author: Hhvcg
+ * @Date: 2022-02-20 15:26:48
+ * @LastEditors: -_-
+ * @Description: 
+ */
 const Mock = require('mockjs')
 const { param2Obj } = require('./utils')
 
 const user = require('./user')
 const table = require('./table')
+// const toys = require('./toys')
 
 const mocks = [
   ...user,
-  ...table
+  ...table,
+  // ...toys
 ]
 
 // for front mock

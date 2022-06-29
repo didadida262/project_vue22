@@ -20,15 +20,15 @@
           <a href="#" class="icon-share"></a>
         </div>
         <!-- 进度条 -->
-        <div class="progress" ref="progress">
-          <div class="jp-play-bar" ref="jp-play-bar"></div>
+        <div class="progress" ref="progress" @click="changeProgress">
+          <div class="jp-play-bar" ref="jp-play-bar" />
         </div>
       </div>
       <div class="controls">
         <div class="current">{{ this.musicBox.timer }}</div>
         <!-- operation -->
         <div class="play-controls">
-          <a href="#" class="icon-back"></a>
+          <a href="#" class="icon-back" @click="switchSong(-1)"></a>
           <a
            v-if="musicBox.status === 'paused'"
            href="#" 
@@ -40,13 +40,13 @@
             class="icon-pause"
             @click="handleSong('paused')"
           ></a>
-          <a href="#" class="icon-next"></a>
+          <a href="#" class="icon-next" @click="switchSong(1)"></a>
         </div>
 
         <div class="volume-level">
           <a href="#" class="icon-volume-down" @click="changeVol(-1)"></a>
-          <div class="volume-progress">
-            <span class="jp-volume-bar"></span>
+          <div class="volume-progress" ref="volume-progress" @click="changeVolProgress">
+            <span class="jp-volume-bar" ref="jp-volume-bar"></span>
           </div>
           <a href="#" class="icon-volume-up" @click="changeVol(1)"></a>
         </div>
@@ -67,7 +67,6 @@
 </template>
 <script lang="ts">
 
-import {e} from '@/utils/weapons'
 export default {
   name: "Music",
   data() {
@@ -81,46 +80,48 @@ export default {
     }
   },
   created() {
-   console.log(this._.flattenDeep([1,2,3,4,[5,5],[[1,2,3]]]))
-
+    window.addEventListener("keydown", this.handleKeyDown)
   },
   mounted() {
     this.initMusic();
   },
-    // const logoRef = ref<null | HTMLElement>(null);
-    // const pauseRef = ref<null | HTMLElement>(null);
-    // const playRef = ref<null | HTMLElement>(null);
-    // const audioUrl = ref("");
-    // const timer = ref<null | any>(null);
-    // getMusic().then((music) => {
-    //   audioUrl.value = "data:audio/mp3;base64," + _arrayBufferToBase64(music);
-    // });
-    // let musicBox = null as any;
-    // const songs: any[] = [];
-    // const addSong = (name: string) => {
-    //   songs.push("./media/" + name);
-    // };
-    // const playSong = () => {
-    //   musicBox.play();
-    //   pauseRef.value.style.display = "inline-block";
-    //   playRef.value.style.display = "none";
-    //   logoRef.value.style.animationPlayState = "running";
-    // };
-    // const stopSong = () => {
-    //   musicBox.pause();
-    //   playRef.value.style.display = "inline-block";
-    //   pauseRef.value.style.display = "none";
-    //   logoRef.value.style.animationPlayState = "paused";
-    // };
-
     methods: {
+      async switchSong(flag) {
+        if (flag === 1) {
+          console.log('下一首')
+          const music = await this.$axios.getMusic()
+          console.log('music---->', music)
+        } else {
+          console.log('上一首')
+        }
+      },
+      changeVolProgress(e) {
+        const volDiv = this.$refs['volume-progress']
+        const volInner = this.$refs['jp-volume-bar']
+        this.musicBox.el.volume =  e.offsetX / volDiv.clientWidth
+        volInner.style.width = e.offsetX + 'px'
+      },
+      handleKeyDown(e) {
+        console.log('执行handleKeyDown----', e)
+        switch(e.code) {
+          case 'Space':
+            this.handleSong(this.musicBox.status === 'playing'? 'paused': 'playing')
+            break;
+        }
+      },
+      changeProgress(e) {
+        // 获取鼠标点击点到div的左边距
+        const progressDom = this.$refs['progress']
+        const jpplaybarDom = this.$refs['jp-play-bar']
+        const ratio = e.offsetX / progressDom.clientWidth
+        jpplaybarDom.style.width =  ratio + 'px'
+        this.musicBox.el.currentTime = ratio * this.musicBox.el.duration 
+      },
       updateTime() {
         // timer = 分:秒
         const total = this.musicBox.el.duration
         const progressDom = this.$refs['progress']
         const jpplaybarDom = this.$refs['jp-play-bar']
-        // log('progressDom--->', progressDom)
-        // log('jpplaybarDom--->', jpplaybarDom)
         jpplaybarDom.style.width =  this.musicBox.el.currentTime / total * progressDom.clientWidth + 'px'
         
         const min = Math.floor(this.musicBox.el.currentTime / 60)
@@ -147,40 +148,27 @@ export default {
         }
         this.musicBox.status = flag
       },
+      // 音量控制
       changeVol(flag) {
         if (flag === 1) {
-          console.log('加大音量')
+          this.musicBox.el.volume = (this.musicBox.el.volume + 0.1) >= 1?1: this.musicBox.el.volume + 0.1
         } else if(flag === -1) {
-          console.log('减小音量')
+          this.musicBox.el.volume = (this.musicBox.el.volume - 0.1) <= 0?0: this.musicBox.el.volume - 0.1
         }
-
+        const volDiv = this.$refs['volume-progress']
+        const volInner = this.$refs['jp-volume-bar']
+        volInner.style.width = this.musicBox.el.volume * volDiv.clientWidth + 'px'
       },
       // 初始化播放器
       initMusic() {
         this.$refs['logoRef'].style.animationPlayState = "paused";
-        // this.$refs.logoRef.valu
         this.musicBox.el = this.$refs['audio']
-        // this.musicBox.el.src = '../../../assets/诚如神之所说.mp3'
-        // log('this.musicBox', this.musicBox)
-
-        // musicBox.src = audioUrl.value;
-        // console.log("musicBox:", musicBox);
-        // addSong('诚如神之所说.mp3')
-        // addSong('小姐.mp3')
-        // playSong(0)
+        this.musicBox.el.volume = 1
       }
-      // const addVol = () => {
-      //   console.log(musicBox.volume);
-      //   musicBox.vloume = musicBox.volume + 0.1;
-      // };
-      // const minusVol = () => {
-      //   console.log(musicBox.volume);
-      // }
-      //   musicBox.vloume = musicBox.volume - 0.1;
     },
-
-
-
+    beforeDestroy() {
+      window.removeEventListener("keydown", this.handleKeyDown);
+    }
 };
 </script>
 
