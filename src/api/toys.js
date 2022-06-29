@@ -29,11 +29,14 @@ export default {
       url: '/img'
     })
   },
-  getMedia() {
+  getMedia(index) {
     return axios({
       method: 'get',
       responseType: 'blob',
-      url: '/music'
+      url: '/music/',
+      params: {
+        index: index
+      }
     })
   }  
 }
