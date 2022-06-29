@@ -186,7 +186,6 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 .music {
-  // background: url("../../../assets/back-image.jpg") no-repeat center;
   width: 100%;
   height: 100%;
   display: flex;
