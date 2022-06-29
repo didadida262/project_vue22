@@ -52,6 +52,7 @@
         </div>
       </div>
     </div>
+    <el-button @click="getImg">测试按钮</el-button>
     <audio
       ref="audio"
       class="audio"
@@ -59,9 +60,10 @@
       muted=“muted”
       loop
       @timeupdate="updateTime"
-      src="@/assets/诚如神之所说.mp3"
+      :src="musicBox.url"
       controls="controls"
     />
+      <!-- src="@/assets/诚如神之所说.mp3" -->
   </div>
 
 </template>
@@ -75,7 +77,8 @@ export default {
         el: null,
         timer: '00:00',
         audioUrl: null,
-        status: 'paused'
+        status: 'paused',
+        url: ''
       }
     }
   },
@@ -85,90 +88,96 @@ export default {
   mounted() {
     this.initMusic();
   },
-    methods: {
-      async switchSong(flag) {
-        if (flag === 1) {
-          console.log('下一首')
-          const music = await this.$axios.getMusic()
-          console.log('music---->', music)
-        } else {
-          console.log('上一首')
-        }
-      },
-      changeVolProgress(e) {
-        const volDiv = this.$refs['volume-progress']
-        const volInner = this.$refs['jp-volume-bar']
-        this.musicBox.el.volume =  e.offsetX / volDiv.clientWidth
-        volInner.style.width = e.offsetX + 'px'
-      },
-      handleKeyDown(e) {
-        console.log('执行handleKeyDown----', e)
-        switch(e.code) {
-          case 'Space':
-            this.handleSong(this.musicBox.status === 'playing'? 'paused': 'playing')
-            break;
-        }
-      },
-      changeProgress(e) {
-        // 获取鼠标点击点到div的左边距
-        const progressDom = this.$refs['progress']
-        const jpplaybarDom = this.$refs['jp-play-bar']
-        const ratio = e.offsetX / progressDom.clientWidth
-        jpplaybarDom.style.width =  ratio + 'px'
-        this.musicBox.el.currentTime = ratio * this.musicBox.el.duration 
-      },
-      updateTime() {
-        // timer = 分:秒
-        const total = this.musicBox.el.duration
-        const progressDom = this.$refs['progress']
-        const jpplaybarDom = this.$refs['jp-play-bar']
-        jpplaybarDom.style.width =  this.musicBox.el.currentTime / total * progressDom.clientWidth + 'px'
-        
-        const min = Math.floor(this.musicBox.el.currentTime / 60)
-        let minl = ''
-        const sec = (this.musicBox.el.currentTime - (min * 60)).toFixed(0)
-        let secl = ''
-        if (min < 10) {
-          minl = '0'
-        }
-        if (Number(sec) < 10) {
-          secl = '0'
-        }
-        this.musicBox.timer = minl + min + ':' + secl + sec
-      },     
-      handleSong(flag) {
-        if (flag === 'playing') {
-          console.log('放')
-          this.$refs['logoRef'].style.animationPlayState = "running";
-          this.musicBox.el.play()
-        } else if(flag === 'paused') {
-          this.$refs['logoRef'].style.animationPlayState = "paused";
-          this.musicBox.el.pause()
-          console.log('停')
-        }
-        this.musicBox.status = flag
-      },
-      // 音量控制
-      changeVol(flag) {
-        if (flag === 1) {
-          this.musicBox.el.volume = (this.musicBox.el.volume + 0.1) >= 1?1: this.musicBox.el.volume + 0.1
-        } else if(flag === -1) {
-          this.musicBox.el.volume = (this.musicBox.el.volume - 0.1) <= 0?0: this.musicBox.el.volume - 0.1
-        }
-        const volDiv = this.$refs['volume-progress']
-        const volInner = this.$refs['jp-volume-bar']
-        volInner.style.width = this.musicBox.el.volume * volDiv.clientWidth + 'px'
-      },
-      // 初始化播放器
-      initMusic() {
-        this.$refs['logoRef'].style.animationPlayState = "paused";
-        this.musicBox.el = this.$refs['audio']
-        this.musicBox.el.volume = 1
+  methods: {
+    getImg() {
+      const res = this.$axios.getImg()
+      console.log('图片--->', res)
+    },
+    async switchSong(flag) {
+      if (flag === 1) {
+        console.log('下一首')
+        const music = await this.$axios.getMusic()
+        console.log('axios---->', this.$axios)
+        console.log('music--->', music)
+      } else {
+        console.log('上一首')
       }
     },
-    beforeDestroy() {
-      window.removeEventListener("keydown", this.handleKeyDown);
+    changeVolProgress(e) {
+      const volDiv = this.$refs['volume-progress']
+      const volInner = this.$refs['jp-volume-bar']
+      this.musicBox.el.volume =  e.offsetX / volDiv.clientWidth
+      volInner.style.width = e.offsetX + 'px'
+    },
+    handleKeyDown(e) {
+      console.log('执行handleKeyDown----', e)
+      switch(e.code) {
+        case 'Space':
+          this.handleSong(this.musicBox.status === 'playing'? 'paused': 'playing')
+          break;
+      }
+    },
+    changeProgress(e) {
+      // 获取鼠标点击点到div的左边距
+      const progressDom = this.$refs['progress']
+      const jpplaybarDom = this.$refs['jp-play-bar']
+      const ratio = e.offsetX / progressDom.clientWidth
+      jpplaybarDom.style.width =  ratio + 'px'
+      this.musicBox.el.currentTime = ratio * this.musicBox.el.duration 
+    },
+    updateTime() {
+      // timer = 分:秒
+      const total = this.musicBox.el.duration
+      const progressDom = this.$refs['progress']
+      const jpplaybarDom = this.$refs['jp-play-bar']
+      jpplaybarDom.style.width =  this.musicBox.el.currentTime / total * progressDom.clientWidth + 'px'
+      
+      const min = Math.floor(this.musicBox.el.currentTime / 60)
+      let minl = ''
+      const sec = (this.musicBox.el.currentTime - (min * 60)).toFixed(0)
+      let secl = ''
+      if (min < 10) {
+        minl = '0'
+      }
+      if (Number(sec) < 10) {
+        secl = '0'
+      }
+      this.musicBox.timer = minl + min + ':' + secl + sec
+    },     
+    // 播放合暂停
+    handleSong(flag) {
+      if (flag === 'playing') {
+        console.log('放')
+        this.$refs['logoRef'].style.animationPlayState = "running";
+        this.musicBox.el.play()
+      } else if(flag === 'paused') {
+        this.$refs['logoRef'].style.animationPlayState = "paused";
+        this.musicBox.el.pause()
+        console.log('停')
+      }
+      this.musicBox.status = flag
+    },
+    // 音量控制
+    changeVol(flag) {
+      if (flag === 1) {
+        this.musicBox.el.volume = (this.musicBox.el.volume + 0.1) >= 1?1: this.musicBox.el.volume + 0.1
+      } else if(flag === -1) {
+        this.musicBox.el.volume = (this.musicBox.el.volume - 0.1) <= 0?0: this.musicBox.el.volume - 0.1
+      }
+      const volDiv = this.$refs['volume-progress']
+      const volInner = this.$refs['jp-volume-bar']
+      volInner.style.width = this.musicBox.el.volume * volDiv.clientWidth + 'px'
+    },
+    // 初始化播放器
+    initMusic() {
+      this.$refs['logoRef'].style.animationPlayState = "paused";
+      this.musicBox.el = this.$refs['audio']
+      this.musicBox.el.volume = 1
     }
+  },
+  beforeDestroy() {
+    window.removeEventListener("keydown", this.handleKeyDown);
+  }
 };
 </script>
 

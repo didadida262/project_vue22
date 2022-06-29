@@ -6,9 +6,11 @@
  */
 
 import toys from './toys'
+import user from './user'
 
 const apis =  {
   ...toys,
+  ...user
 }
 
 // 直接通过this.$axios.xxx().then(() => {}) 的形式调用

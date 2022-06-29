@@ -109,11 +109,8 @@ export default {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
-          console.log('this.loginForm--->',this.loginForm)
           this.$store.dispatch('user/login', this.loginForm).then(() => {
-            console.log('登陆完毕')
             this.$router.push({ path: this.redirect || '/' })
-            // this.$router.push({ path: '/' })
             this.loading = false
           }).catch(() => {
             this.loading = false

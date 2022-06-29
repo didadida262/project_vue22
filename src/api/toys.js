@@ -4,16 +4,25 @@
  * @LastEditors: -_-
  * @Description: dadadad
  */
-import request from '@/utils/request'
+import axios from '@/utils/request'
 
-export function login(params) {
-  return request.post('/signIn', params)
-}
+// export function login(params) {
+//   return request.post('/signIn', params)
+// }
 
-export function getInfo(params) {
-  return request.get('/getInfo', {token: params})
-}
+// export function getInfo(params) {
+//   return request.get('/getInfo', {token: params})
+// }
 
-export function getMusic() {
-  return request.get('/music')
+// export function getMusic() {
+//   return request.get('/music')
+// }
+
+export default {
+  getMusic() {
+    return axios.get('/music')
+  },
+  getImg() {
+    return axios.get('/img')
+  }
 }
