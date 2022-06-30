@@ -22,9 +22,16 @@
           />
         </div>
         <div class="right" style="color: gray">
-          <div>
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-emoji-smile-upside-down-fill" viewBox="0 0 16 16">
-              <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0zM7 9.5C7 8.672 6.552 8 6 8s-1 .672-1 1.5.448 1.5 1 1.5 1-.672 1-1.5zM4.285 6.433a.5.5 0 0 0 .683-.183A3.498 3.498 0 0 1 8 4.5c1.295 0 2.426.703 3.032 1.75a.5.5 0 0 0 .866-.5A4.498 4.498 0 0 0 8 3.5a4.5 4.5 0 0 0-3.898 2.25.5.5 0 0 0 .183.683zM10 8c-.552 0-1 .672-1 1.5s.448 1.5 1 1.5 1-.672 1-1.5S10.552 8 10 8z"/>
+          <div @click="showList(true)" v-if="!musicBox.songsListFlag" class="cursor-pointer">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-box-arrow-in-left" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M10 3.5a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-2a.5.5 0 0 1 1 0v2A1.5 1.5 0 0 1 9.5 14h-8A1.5 1.5 0 0 1 0 12.5v-9A1.5 1.5 0 0 1 1.5 2h8A1.5 1.5 0 0 1 11 3.5v2a.5.5 0 0 1-1 0v-2z"/>
+              <path fill-rule="evenodd" d="M4.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H14.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"/>
+            </svg>
+          </div>
+          <div @click="showList(false)" v-if="musicBox.songsListFlag" class="cursor-pointer">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z"/>
+              <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"/>
             </svg>
           </div>
         </div>
@@ -61,6 +68,9 @@
         </div>
       </div>
     </div>
+    <songs-component
+      :showFlag='musicBox.songsListFlag'
+     />
     <audio
       ref="audio"
       class="audio"
@@ -78,8 +88,12 @@
 <script lang="ts">
 
 import { _arrayBufferToBase64 } from '@/utils/index'
+import songsComponent from './components/songsList.vue'
 export default {
   name: "Music",
+  components: {
+    songsComponent
+  },
   data() {
     return {
       musicBox: {
@@ -88,19 +102,24 @@ export default {
         audioUrl: null,
         status: 'paused',
         url: '',
-        songIndex: 0
+        songIndex: 0,
+        songsListFlag: false,
       },
       // imgUrl: ''
     }
   },
-  created() {
-    this.getMedia()
+  async created() {
+    // this.getMedia()
     window.addEventListener("keydown", this.handleKeyDown)
   },
   mounted() {
     this.initMusic();
   },
   methods: {
+    showList(flag) {
+      this.musicBox.songsListFlag = flag
+    },
+
     async getMedia() {
       this.musicBox.songIndex = Math.floor(Math.random() * 3)
       const res = await this.$axios.getMedia(this.musicBox.songIndex)
@@ -215,7 +234,6 @@ export default {
     position: relative;
     width: 350px;
     height: 290px;
-    box-shadow: 0 0 60px rgba(0, 0, 0, 0.8);
     border-radius: 10px;
     background: #222;
     overflow: hidden;
@@ -238,7 +256,7 @@ export default {
       color: rgba(225, 225, 225, 0.4);
       padding: 15px 0 20px;
     }    
-  }  
+  }
 }
 
 

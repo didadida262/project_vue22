@@ -38,5 +38,8 @@ export default {
         index: index
       }
     })
-  }  
+  },
+  getSongs() {
+    return axios.get('/songs/list')
+  }
 }
