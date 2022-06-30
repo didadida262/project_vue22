@@ -5,7 +5,7 @@
  * @Description: 侧边栏组件，用于显示后端返回的歌曲
 -->
 <template>
-  <div class="song-item mgb10">
+  <div class="song-item mgb10 cursor-pointer flex-cc">
     <span>{{ data }}</span>
   </div>
 </template>
@@ -39,9 +39,15 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
   .song-item {
+    padding: 5px;
     width: 100%;
     height: 45px;
-    border: 1px solid black;
+    border-radius: 2px;
+    box-shadow: 0px 0px 6px rgba(109, 106, 106, 0.8);
+    color: white;
+  }
+  .song-item:hover {
+    background-image: linear-gradient(120deg,#b0d2ee,#13ca75);
   }
 
 </style>

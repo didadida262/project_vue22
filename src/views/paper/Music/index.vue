@@ -1,3 +1,9 @@
+<!--
+ * @Author: Hhvcg
+ * @Date: 2022-05-31 15:42:55
+ * @LastEditors: -_-
+ * @Description: music盒子，随机播放后端音频
+-->
 <template>
   <div class="music">
     <div class="music-player">
@@ -209,8 +215,6 @@ export default {
     },
     // 初始化播放器
     initMusic() {
-      this.$refs['logoRef'].style.animationPlayState = "paused";
-      this.$refs['logoRef'].style.transform = "rotate(0deg)";
       this.musicBox.el = this.$refs['audio']
       this.musicBox.el.volume = 1
     }
@@ -237,6 +241,30 @@ export default {
     border-radius: 10px;
     background: #222;
     overflow: hidden;
+    /* logo图标设置 */
+    #logo {
+      position: absolute;
+      top: 10px;
+      left: 140px;
+      animation: App-logo-spin infinite 20s linear;
+      animation-play-state: paused
+    }
+    // .logo-pause {
+    //   animation-play-state: paused !important;
+    // }
+
+    // .logo-play {
+    //   animation-play-state: running !important;
+    // }    
+
+    @keyframes App-logo-spin {
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(360deg);
+      }
+    }    
     .progress {
       width: 100%;
       height: 5px;
@@ -420,28 +448,7 @@ export default {
   left: 1px;
 }
 
-/* logo图标设置 */
-#logo {
-  position: absolute;
-  top: 10px;
-  left: 140px;
-  animation: App-logo-spin infinite 20s linear;
-}
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
 
-.logo-pause {
-  animation-play-state: paused !important;
-}
 
-.logo-play {
-  animation-play-state: running !important;
-}
 </style>
