@@ -96,7 +96,6 @@ export default {
     }
   },
   mounted() {
-    console.log(this.$t("page.login.title"))
   }
 }
 </script>

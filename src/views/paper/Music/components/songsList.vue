@@ -7,8 +7,8 @@
 <template>
   <div>
     <div class="music_songs_list" v-if="showFlag">
-      <div v-for="(item, index) in songsList" :key="index">
-        <song-item :data="item" :class="{'selected-song': target === index}" />
+      <div v-for="(item, index) in songsList" :key="index" @click="handleClick(index)">
+        <song-item :data="item"  :class="{'selected-song': currentSongIndex === index}"/>
       </div>
     </div>
   </div>
@@ -30,27 +30,32 @@ export default {
   data() {
     return {
       songsList: [],
-      target: null,
+      currentSongIndex: null,
     }
   },
   created() {
     this.getSongs()
   },
-  computed: {
-    // isActive() {
-    //   return this.target === index
-    // }
-  },
   mounted() {
-    console.log('data--->', this.data)
+  },
+  watch: {
+    currentSongIndex() {
+      if (this.currentSongIndex) {
+        this.$emit('changeSong', this.currentSongIndex)
+      }
+    }
   },
   methods: {
+    handleClick(index) {
+      this.currentSongIndex = index
+    },
     changeSong(index) {
-      this.target = index
-      console.log('this.target--->',this.target)
+      this.currentSongIndex = index
+      console.log('this.currentSongIndex--->',this.currentSongIndex)
     },
     async getSongs() {
       this.songsList = await this.$axios.getSongs()
+      this.currentSongIndex = Math.floor(Math.random() * this.songsList.length)
       console.log('当前所有songs--->',this.songsList)
     },
   },

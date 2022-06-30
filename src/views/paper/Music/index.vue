@@ -76,6 +76,7 @@
     </div>
     <songs-component
       :showFlag='musicBox.songsListFlag'
+      @changeSong="changeSong"
      />
     <audio
       ref="audio"
@@ -108,34 +109,38 @@ export default {
         audioUrl: null,
         status: 'paused',
         url: '',
-        songIndex: 0,
         songsListFlag: false,
+        songIndex: null
       },
       // imgUrl: ''
     }
   },
-  async created() {
-    // this.getMedia()
+  created() {
     window.addEventListener("keydown", this.handleKeyDown)
   },
-  mounted() {
+  async mounted() {
+    await this.getMedia(this.musicBox.songIndex? this.musicBox.songIndex: 0)
     this.initMusic();
+    this.handleSong('playing')
   },
   methods: {
+    async changeSong(index) {
+      console.log('子组件传回来的值index---->', index)
+      await this.getMedia(index)
+
+    },
     showList(flag) {
       this.musicBox.songsListFlag = flag
     },
 
-    async getMedia() {
-      this.musicBox.songIndex = Math.floor(Math.random() * 3)
-      const res = await this.$axios.getMedia(this.musicBox.songIndex)
-      console.log('res---->', res)
+// 根据当前song的id获取音频资源
+    async getMedia(index) {
+      const res = await this.$axios.getMedia(index)
       let blob = new Blob([res], {type: 'mp3'})
+      console.warn(2)
       let url = URL.createObjectURL(blob)
-      // url = url + _arrayBufferToBase64(res)
       this.musicBox.url = url
-      console.log('blob--->', blob)
-      console.log('url--->', url)
+      console.log('确定url--->', url)
     },
     async switchSong(flag) {
       if (flag === 1) {
@@ -192,13 +197,11 @@ export default {
     // 播放合暂停
     handleSong(flag) {
       if (flag === 'playing') {
-        console.log('放')
         this.$refs['logoRef'].style.animationPlayState = "running";
         this.musicBox.el.play()
       } else if(flag === 'paused') {
         this.$refs['logoRef'].style.animationPlayState = "paused";
         this.musicBox.el.pause()
-        console.log('停')
       }
       this.musicBox.status = flag
     },
