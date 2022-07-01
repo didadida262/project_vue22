@@ -1,6 +1,12 @@
+/*
+ * @Author: Hhvcg
+ * @Date: 2022-02-20 15:26:48
+ * @LastEditors: -_-
+ * @Description: 
+ */
 module.exports = {
 
-  title: 'Vue Admin Template',
+  title: 'dadadadada!!!',
 
   /**
    * @type {boolean} true | false
