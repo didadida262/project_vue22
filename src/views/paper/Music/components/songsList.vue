@@ -25,39 +25,42 @@ export default {
     showFlag: {
       type: Boolean,
       required: true  
+    },
+    songsList: {
+      type: Array,
+      required: true
+    },
+    // 当前歌曲index
+    currentSongIndex: {
+      type: Number,
+      required: true
     }
   },
   data() {
     return {
-      songsList: [],
-      currentSongIndex: null,
     }
   },
   created() {
-    this.getSongs()
   },
   mounted() {
   },
   watch: {
     currentSongIndex() {
-      if (this.currentSongIndex) {
-        this.$emit('changeSong', this.currentSongIndex)
-      }
+      // if (this.currentSongIndex) {
+      //   this.$emit('changeSong', this.currentSongIndex)
+      // }
     }
   },
   methods: {
     handleClick(index) {
-      this.currentSongIndex = index
+      this.$emit('changeSong', index)
+      // this.currentSongIndex = index
     },
     changeSong(index) {
-      this.currentSongIndex = index
+      // this.currentSongIndex = index
       console.log('this.currentSongIndex--->',this.currentSongIndex)
     },
-    async getSongs() {
-      this.songsList = await this.$axios.getSongs()
-      this.currentSongIndex = Math.floor(Math.random() * this.songsList.length)
-      console.log('当前所有songs--->',this.songsList)
-    },
+
   },
 
   beforeDestroy() {

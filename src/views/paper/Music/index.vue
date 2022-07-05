@@ -2,7 +2,7 @@
  * @Author: Hhvcg
  * @Date: 2022-05-31 15:42:55
  * @LastEditors: -_-
- * @Description: music盒子，随机播放后端音频
+ * @Description: music盒子，该有的功能都得支持
 -->
 <template>
   <div class="music">
@@ -47,7 +47,7 @@
         </div>
       </div>
       <div class="controls">
-        <div class="current">{{ this.musicBox.timer }}</div>
+        <div class="current">{{ musicBox.timer }}</div>
         <!-- operation -->
         <div class="play-controls">
           <a href="#" class="icon-back" @click="switchSong(-1)"></a>
@@ -55,12 +55,12 @@
            v-if="musicBox.status === 'paused'"
            href="#" 
            class="icon-play" 
-           @click="handleSong('playing')"></a>
+           @click="playOrStopSong('playing')"></a>
           <a
             v-if="musicBox.status === 'playing'"
             href="#"
             class="icon-pause"
-            @click="handleSong('paused')"
+            @click="playOrStopSong('paused')"
           ></a>
           <a href="#" class="icon-next" @click="switchSong(1)"></a>
         </div>
@@ -76,6 +76,8 @@
     </div>
     <songs-component
       :showFlag='musicBox.songsListFlag'
+      :songsList="songsList"
+      :currentSongIndex="musicBox.currentSongIndex"
       @changeSong="changeSong"
      />
     <audio
@@ -86,8 +88,7 @@
       loop
       @timeupdate="updateTime"
       :src="musicBox.url"
-      controls="controls"
-    />
+      controls="controls" />
       <!-- src="@/assets/诚如神之所说.mp3" -->
   </div>
 
@@ -103,67 +104,94 @@ export default {
   },
   data() {
     return {
+      songsList: [],
       musicBox: {
-        el: null,
         timer: '00:00',
-        audioUrl: null,
         status: 'paused',
         url: '',
         songsListFlag: false,
-        songIndex: null
+        currentSongIndex: 0
       },
       // imgUrl: ''
     }
   },
-  created() {
+  async created() {
+    console.warn('1')
+    await this.getSongs()
+    console.warn('2')
+    await this.getMedia(this.musicBox.currentSongIndex)
     window.addEventListener("keydown", this.handleKeyDown)
   },
   async mounted() {
-    await this.getMedia(this.musicBox.songIndex? this.musicBox.songIndex: 0)
-    this.initMusic();
-    this.handleSong('playing')
+    // this.initMusic();
   },
   methods: {
+    async getSongs() {
+      this.songsList = await this.$axios.getSongs()
+      this.musicBox.currentSongIndex = Math.floor(Math.random() * this.songsList.length)
+      console.log('随机值--->', this.musicBox.currentSongIndex)
+      console.log('当前所有songs--->',this.songsList)
+    }, 
+// 根据当前song的id获取音频资源
+    async getMedia(index) {
+      console.log('当前歌曲id--->', index)
+      const res = await this.$axios.getMedia(index)
+      let blob = new Blob([res], {type: 'mp3'})
+      let url = URL.createObjectURL(blob)
+      this.musicBox.url = url
+      console.log('当前url--->', this.musicBox.url)
+    },       
     async changeSong(index) {
       console.log('子组件传回来的值index---->', index)
+      this.playOrStopSong('paused')
+      this.musicBox.currentSongIndex = index
       await this.getMedia(index)
-
+      this.initMusic()
+      this.playOrStopSong('playing')
     },
     showList(flag) {
       this.musicBox.songsListFlag = flag
     },
 
-// 根据当前song的id获取音频资源
-    async getMedia(index) {
-      const res = await this.$axios.getMedia(index)
-      let blob = new Blob([res], {type: 'mp3'})
-      console.warn(2)
-      let url = URL.createObjectURL(blob)
-      this.musicBox.url = url
-      console.log('确定url--->', url)
-    },
-    async switchSong(flag) {
+
+    // 根据flag上下切歌，如没有，则返回随机值
+    getNextSong(flag) {
       if (flag === 1) {
-        console.log('下一首')
-        // const music = await this.$axios.getMusic()
+        if (this.musicBox.currentSongIndex + 1>= this.songsList.length) {
+          this.musicBox.currentSongIndex = 0
+        } else {
+          this.musicBox.currentSongIndex++
+        }
+      } else if(flag === -1) {
+        if (this.musicBox.currentSongIndex - 1< 0) {
+          this.musicBox.currentSongIndex = this.songsList.length - 1
+        } else {
+          this.musicBox.currentSongIndex--
+        }
       } else {
-        console.log('上一首')
+        this.musicBox.currentSongIndex = Math.ceil(Math.random() * this.songsList.length)
       }
-      this.handleSong('paused')
+    },
+    // 切歌
+    async switchSong(flag) {
+      this.getNextSong(flag)
+      console.log('this.musicBox.currentSongIndex--->',this.musicBox.currentSongIndex)
+      this.musicBox.url = await this.$axios.getMedia(this.musicBox.currentSongIndex)
+      console.log('music--->', this.musicBox.url)
+      // this.playOrStopSong('paused')
       this.initMusic()
-      this.getMedia()
     },
     changeVolProgress(e) {
       const volDiv = this.$refs['volume-progress']
       const volInner = this.$refs['jp-volume-bar']
-      this.musicBox.el.volume =  e.offsetX / volDiv.clientWidth
+      this.$refs['audio'].volume =  e.offsetX / volDiv.clientWidth
       volInner.style.width = e.offsetX + 'px'
     },
     handleKeyDown(e) {
       console.log('执行handleKeyDown----', e)
       switch(e.code) {
         case 'Space':
-          this.handleSong(this.musicBox.status === 'playing'? 'paused': 'playing')
+          this.playOrStopSong(this.musicBox.status === 'playing'? 'paused': 'playing')
           break;
       }
     },
@@ -173,18 +201,18 @@ export default {
       const jpplaybarDom = this.$refs['jp-play-bar']
       const ratio = e.offsetX / progressDom.clientWidth
       jpplaybarDom.style.width =  ratio + 'px'
-      this.musicBox.el.currentTime = ratio * this.musicBox.el.duration 
+      this.$refs['audio'].currentTime = ratio * this.$refs['audio'].duration 
     },
     updateTime() {
       // timer = 分:秒
-      const total = this.musicBox.el.duration
+      const total = this.$refs['audio'].duration
       const progressDom = this.$refs['progress']
       const jpplaybarDom = this.$refs['jp-play-bar']
-      jpplaybarDom.style.width =  this.musicBox.el.currentTime / total * progressDom.clientWidth + 'px'
+      jpplaybarDom.style.width =  this.$refs['audio'].currentTime / total * progressDom.clientWidth + 'px'
       
-      const min = Math.floor(this.musicBox.el.currentTime / 60)
+      const min = Math.floor(this.$refs['audio'].currentTime / 60)
       let minl = ''
-      const sec = (this.musicBox.el.currentTime - (min * 60)).toFixed(0)
+      const sec = (this.$refs['audio'].currentTime - (min * 60)).toFixed(0)
       let secl = ''
       if (min < 10) {
         minl = '0'
@@ -195,31 +223,32 @@ export default {
       this.musicBox.timer = minl + min + ':' + secl + sec
     },     
     // 播放合暂停
-    handleSong(flag) {
+    playOrStopSong(flag) {
       if (flag === 'playing') {
         this.$refs['logoRef'].style.animationPlayState = "running";
-        this.musicBox.el.play()
+        this.$refs['audio'].play()
       } else if(flag === 'paused') {
         this.$refs['logoRef'].style.animationPlayState = "paused";
-        this.musicBox.el.pause()
+        this.$refs['audio'].pause()
       }
       this.musicBox.status = flag
     },
     // 音量控制
     changeVol(flag) {
       if (flag === 1) {
-        this.musicBox.el.volume = (this.musicBox.el.volume + 0.1) >= 1?1: this.musicBox.el.volume + 0.1
+        this.$refs['audio'].volume = (this.$refs['audio'].volume + 0.1) >= 1?1: this.$refs['audio'].volume + 0.1
       } else if(flag === -1) {
-        this.musicBox.el.volume = (this.musicBox.el.volume - 0.1) <= 0?0: this.musicBox.el.volume - 0.1
+        this.$refs['audio'].volume = (this.$refs['audio'].volume - 0.1) <= 0?0: this.$refs['audio'].volume - 0.1
       }
       const volDiv = this.$refs['volume-progress']
       const volInner = this.$refs['jp-volume-bar']
-      volInner.style.width = this.musicBox.el.volume * volDiv.clientWidth + 'px'
+      volInner.style.width = this.$refs['audio'].volume * volDiv.clientWidth + 'px'
     },
     // 初始化播放器
     initMusic() {
-      this.musicBox.el = this.$refs['audio']
-      this.musicBox.el.volume = 1
+      this.$refs['logoRef'].style.setProperty('transform', 'rotate(0deg)') 
+      console.log('??????', this.$refs['logoRef'].style)
+      // this.$refs['logoRef'].transform = 'rotate(0)'
     }
   },
   beforeDestroy() {
