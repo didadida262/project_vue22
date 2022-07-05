@@ -7,6 +7,18 @@
 <template>
   <div>
     <div class="music_songs_list" v-if="showFlag">
+      <div class="flex-cc mgb10">
+        <el-input
+          placeholder="请输入内容"
+          v-model="songName"
+          clearable>
+        </el-input>
+        <el-button
+          class="mgl10"
+         @click="searchSong">
+          查询
+        </el-button>
+      </div>
       <div v-for="(item, index) in songsList" :key="index" @click="handleClick(index)">
         <song-item :data="item"  :class="{'selected-song': currentSongIndex === index}"/>
       </div>
@@ -38,6 +50,7 @@ export default {
   },
   data() {
     return {
+      songName:'',
     }
   },
   created() {
@@ -52,6 +65,9 @@ export default {
     }
   },
   methods: {
+    searchSong() {
+      console.log('搜索--->', this.songName)
+    },
     handleClick(index) {
       this.$emit('changeSong', index)
       // this.currentSongIndex = index

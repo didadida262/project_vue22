@@ -246,7 +246,7 @@ export default {
     },
     // 初始化播放器
     initMusic() {
-      this.$refs['logoRef'].style.setProperty('transform', 'rotate(0deg)') 
+      this.$refs['logoRef'].style.setProperty('transform', 'rotate(0deg)', "important") 
       console.log('??????', this.$refs['logoRef'].style)
       // this.$refs['logoRef'].transform = 'rotate(0)'
     }
