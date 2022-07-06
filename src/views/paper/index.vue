@@ -1204,6 +1204,7 @@
         <path d="M20.5 344.5C20.5 344.5 22 333.5 10.5 346.5" />
       </g>
     </svg>
+    <el-button @click="test">测试内存</el-button>
   </div>
 </template>
 
@@ -1214,6 +1215,7 @@ import { Boid } from "./myBoid.js";
 export default {
   data() {
     return {
+      testData: [],
       boids: [],
       paper: null,
       // 心形图案
@@ -1227,19 +1229,23 @@ export default {
   mounted() {
     this.initWorld();
     // this.tadpole();
-    this.testTiger()
+    this.testTiger();
     // this.testPaper()
   },
   beforeDestroy() {
     this.paper = null;
   },
   methods: {
+    test() {
+      console.log('测试内存---->')
+      this.testData.push(new Array(1000_0000))
+    },
     testPaper() {
       this.head = new paper.Shape.Ellipse({
-      center: [100, 100],
-      size: [15, 10],
-      fillColor: 'orange'
-    })
+        center: [100, 100],
+        size: [15, 10],
+        fillColor: "orange",
+      });
       // const head = new paper.Shape.Ellipse({
       //   center: [100, 200],
       //     size: [13, 8],
@@ -1294,13 +1300,13 @@ export default {
         rand.x = rand.x * paper.view.size.width;
         rand.y = rand.y * paper.view.size.height;
         this.boids.push(new Boid(rand, 10, 0.05));
-        console.log(this.boids)
+        console.log(this.boids);
       }
     },
     onResize() {
       console.log("窗口变化！！！");
-      this.heartPath.fitBounds(this.paper.view.bounds);
-      this.heartPath.scale(0.8);
+      // this.heartPath.fitBounds(this.paper.view.bounds);
+      // this.heartPath.scale(0.8);
     },
     // 帧数级别的执行run函数，即：让蝌蚪们动起来
     onFrame(event) {
