@@ -77,6 +77,21 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/threejs',
+    component: Layout,
+    redirect: '/threejs/circleEarth',
+    name: 'threejs',
+    meta: { title: 'threeJS', icon: 'el-icon-s-help'},
+    children: [
+      {
+        path: 'circleEarth',
+        name: 'circleEarth',
+        component: () => import('@/views/threeJs/circleEarth'),
+        meta: { title: 'circleEarth', icon: 'el-icon-s-help'}
+      }
+    ]
+  },
+  {
     path: '/paperjs',
     component: Layout,
     redirect: '/paperjs/tadpole',
