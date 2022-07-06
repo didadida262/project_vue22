@@ -66,7 +66,7 @@ export default {
   },
   methods: {
     searchSong() {
-      console.log('搜索--->', this.songName)
+      this.$emit('searchSong', this.songName)
     },
     handleClick(index) {
       this.$emit('changeSong', index)

@@ -1226,8 +1226,8 @@ export default {
   },
   mounted() {
     this.initWorld();
-    this.tadpole();
-    // this.testTiger()1
+    // this.tadpole();
+    this.testTiger()
     // this.testPaper()
   },
   beforeDestroy() {
@@ -1235,8 +1235,7 @@ export default {
   },
   methods: {
     testPaper() {
-          this.head = new paper.Shape.Ellipse({
-      //   center: [0, 0],
+      this.head = new paper.Shape.Ellipse({
       center: [100, 100],
       size: [15, 10],
       fillColor: 'orange'

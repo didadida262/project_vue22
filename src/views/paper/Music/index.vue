@@ -79,6 +79,7 @@
       :songsList="songsList"
       :currentSongIndex="musicBox.currentSongIndex"
       @changeSong="changeSong"
+      @searchSong="searchSong"
      />
     <audio
       ref="audio"
@@ -89,9 +90,7 @@
       @timeupdate="updateTime"
       :src="musicBox.url"
       controls="controls" />
-      <!-- src="@/assets/诚如神之所说.mp3" -->
   </div>
-
 </template>
 <script lang="ts">
 
@@ -116,9 +115,7 @@ export default {
     }
   },
   async created() {
-    console.warn('1')
     await this.getSongs()
-    console.warn('2')
     await this.getMedia(this.musicBox.currentSongIndex)
     window.addEventListener("keydown", this.handleKeyDown)
   },
@@ -151,6 +148,10 @@ export default {
     },
     showList(flag) {
       this.musicBox.songsListFlag = flag
+    },
+    searchSong(name) {
+      console.log('搜索111--->', name)
+      this.$message.info('未查询到！')
     },
 
 
@@ -188,7 +189,6 @@ export default {
       volInner.style.width = e.offsetX + 'px'
     },
     handleKeyDown(e) {
-      console.log('执行handleKeyDown----', e)
       switch(e.code) {
         case 'Space':
           this.playOrStopSong(this.musicBox.status === 'playing'? 'paused': 'playing')
