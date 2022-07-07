@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container">
+  <div class="page-container">
     <h1>Tank</h1>
     <div class="view">
       <div class="operation">
@@ -139,7 +139,7 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-.app-container {
+.page-container {
   .view {
     display: flex;
     justify-content: space-around;

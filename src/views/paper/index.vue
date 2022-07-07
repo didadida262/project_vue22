@@ -5,7 +5,7 @@
  * @Description: 蝌蚪DJ---Aloha
 -->
 <template>
-  <div class="app-container">
+  <div class="page-container">
     <canvas id="tadpole" ref="tadpole" resize class="tadpole" />
 
     <!-- tiger -->
