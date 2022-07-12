@@ -72,7 +72,15 @@ export const constantRoutes = [
       {
         path: 'index',
         component: () => import('@/views/form/index'),
-        meta: { title: 'Form', icon: 'form' }
+        meta: { title: 'Form', icon: 'form' },
+        // children: [{
+        //   name: 'createArticle',
+        //   path: '/createArticle',
+        //   component: () => important('@/views/form/createArticle'),
+        //   hidden: true
+
+        // }
+        // ]
       }
     ]
   },

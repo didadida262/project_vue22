@@ -7,10 +7,12 @@
 
 import toys from './toys'
 import user from './user'
+import form from './form'
 
 const apis =  {
   ...toys,
-  ...user
+  ...user,
+  ...form
 }
 
 // 直接通过this.$axios.xxx().then(() => {}) 的形式调用
