@@ -36,7 +36,13 @@ export const constantRoutes = [
     component: () => import('@/views/login/index'),
     hidden: true
   },
-
+  // // 创建文章
+  // {
+  //   name: 'createArticle',
+  //   path: '/createArticle',
+  //   component: () => import('@/views/form/createArticle'),
+  //   hidden: true
+  // },
   {
     path: '/404',
     component: () => import('@/views/404'),
@@ -73,14 +79,12 @@ export const constantRoutes = [
         path: 'index',
         component: () => import('@/views/form/index'),
         meta: { title: 'Form', icon: 'form' },
-        // children: [{
-        //   name: 'createArticle',
-        //   path: '/createArticle',
-        //   component: () => important('@/views/form/createArticle'),
-        //   hidden: true
-
-        // }
-        // ]
+        children: [{
+          name: 'createArticle',
+          path: 'createArticle',
+          component: () => import('@/views/form/createArticle'),
+        }
+        ]
       }
     ]
   },
