@@ -32,8 +32,9 @@ export default {
   methods: {
     animated() {
       requestAnimationFrame(this.animated)
-				this.mesh.rotation.x += 0.01;
-				this.mesh.rotation.y += 0.01;
+				// this.mesh.rotation.x += 0.1;
+				this.mesh.rotation.y += 0.1;
+				// this.mesh.rotation.z += 0.1;
         this.renderer.render(this.scene, this.camera)
     },
 
