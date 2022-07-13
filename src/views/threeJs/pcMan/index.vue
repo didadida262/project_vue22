@@ -1,8 +1,8 @@
 <!--
  * @Author: Hhvcg
- * @Date: 2022-07-06 17:59:06
+ * @Date: 2022-07-13 15:20:52
  * @LastEditors: -_-
- * @Description: threejs相关特性探索
+ * @Description: pcman小游戏
 -->
 
 <template>
