@@ -72,37 +72,29 @@ export const constantRoutes = [
     }]
   },
   {
-    path: '/form',
+    path: '/articleList',
     component: Layout,
+    redirect: '/articleList',
     children: [
       {
-        path: 'index',
+        name: 'articleList',
+        path: 'articleList',
         component: () => import('@/views/form/index'),
-        meta: { title: 'Form', icon: 'form' },
-        children: [{
-          name: 'createArticle',
-          path: 'createArticle',
-          component: () => import('@/views/form/createArticle'),
-        }
-        ]
-      }
-    ]
-  },
-  {
-    path: '/threejs',
-    component: Layout,
-    redirect: '/threejs/circleEarth',
-    name: 'threejs',
-    meta: { title: 'threeJS', icon: 'el-icon-s-help'},
-    children: [
+        meta: { title: 'ArticleList', icon: 'form' },
+      },
       {
-        path: 'circleEarth',
-        name: 'circleEarth',
-        component: () => import('@/views/threeJs/circleEarth'),
-        meta: { title: 'circleEarth', icon: 'el-icon-s-help'}
+        name: 'createArticle',
+        path: 'createArticle',
+        component: () => import('@/views/form/createArticle'),
+        meta: {
+          title: 'CreateArticle',
+          icon: 'form'
+        },
+        hidden: true
       }
     ]
   },
+
   {
     path: '/paperjs',
     component: Layout,
@@ -146,7 +138,28 @@ export const constantRoutes = [
 
     ]
   },
-
+  // threejs
+  {
+    path: '/threejs',
+    component: Layout,
+    redirect: '/threejs/pcman',
+    name: 'threejs',
+    meta: { title: 'ThreeJs', icon: 'el-icon-s-help' },
+    children: [
+      {
+        path: 'pcman',
+        name: 'pcman',
+        component: () => import('@/views/threeJs/pcMan/index'),
+        meta: { title: 'PcMan', icon: 'table' }
+      }, 
+      {
+        path: 'circleEarth',
+        name: 'circleEarth',
+        component: () => import('@/views/threeJs/circleEarth'),
+        meta: { title: 'CircleEarth', icon: 'el-icon-s-help'}
+      }          
+    ]
+  },
 
   {
     path: '/nested',

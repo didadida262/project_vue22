@@ -2,7 +2,7 @@
  * @Author: Hhvcg
  * @Date: 2022-07-06 17:59:06
  * @LastEditors: -_-
- * @Description: 模仿实现github首页大圆球
+ * @Description: threejs相关特性探索
 -->
 
 <template>
@@ -32,8 +32,8 @@ export default {
   methods: {
     animated() {
       requestAnimationFrame(this.animated)
-				// this.mesh.rotation.x += 0.1;
-				this.mesh.rotation.y += 0.1;
+				this.mesh.rotation.x += 0.1;
+				// this.mesh.rotation.y += 0.1;
 				// this.mesh.rotation.z += 0.1;
         this.renderer.render(this.scene, this.camera)
     },
@@ -61,6 +61,10 @@ export default {
       let point = new Three.PointLight(0xffffff, 0.2)
       point.position.set(2,200,300)
       this.scene.add(point)
+// 测试点
+      let point2 = new Three.PointLight(0xffffff, 0.2)
+      point2.position.set(100, 0, 0)
+      this.scene.add(point2)
       // // 环境光
       let ambient = new Three.AmbientLight(0x444444);
       this.scene.add(ambient);
@@ -76,9 +80,9 @@ export default {
       this.renderer = new Three.WebGLRenderer();
       this.renderer.setSize(width, height);//设置渲染区域尺寸
       this.renderer.setClearColor(0x401230, 0.5); //设置背景颜色
-      container.appendChild(this.renderer.domElement); //body元素中插入canvas对象
       //执行渲染操作   指定场景、相机作为参数
       this.renderer.render(this.scene, this.camera);      
+      container.appendChild(this.renderer.domElement); //body元素中插入canvas对象
     }
   },
 };

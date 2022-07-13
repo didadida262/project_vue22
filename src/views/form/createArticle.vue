@@ -7,8 +7,8 @@
 <template>
   <div class="articleForm-container">
     <el-form ref="articleForm" :model="articleForm" label-width="80px">
-      <el-form-item label="活动名称">
-        <el-input v-model="form.name"></el-input>
+      <el-form-item label="文章标题">
+        <el-input v-model="articleForm.name"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit">立即创建</el-button>
