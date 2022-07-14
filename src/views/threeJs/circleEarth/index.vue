@@ -9,6 +9,7 @@
     <div id="container" ref="container" class="container"></div>
 </template>
 
+
 <script>
 
 import * as Three from 'three'
@@ -37,7 +38,8 @@ export default {
       requestAnimationFrame(this.animated)
 				// this.mesh.rotation.x += 0.1;
 				// this.mesh.rotation.y += 0.1;
-				// this.mesh.rotation.z += 0.01;
+        this.mesh.position.x += 0.01
+				this.mesh.rotation.z += 0.01;
         this.renderer.render(this.scene, this.camera)
     },
 
@@ -48,6 +50,7 @@ export default {
       this.containerHeight = container.clientHeight; //窗口高度
       this.scene = new Three.Scene()
       this.setGoem()
+      // this.moveGeo()
       this.setPoint()
       // // // 环境光
       // let ambient = new Three.AmbientLight(0x444444);
@@ -56,6 +59,10 @@ export default {
       this.setRender()
       this.setOrbit()
       this.setAxes()
+    },
+    moveGeo() {
+      this.mesh.position.set(0,0,0)
+      console.log(this.mesh)
     },
     // 添加坐标轴
     setAxes() {
@@ -81,11 +88,11 @@ export default {
     setGoem(){
       // const geometry  = new Three.SphereBufferGeometry(60, 40, 40)
       const geometry  = new Three.BoxGeometry(60, 60, 60)
-      const material  = new Three.MeshStandardMaterial({})
+      const material  = new Three.MeshStandardMaterial()
       // const material  = new Three.MeshBasicMaterial({})
       material.metalness = 0.7
       material.roughness = 0.2
-      material.color = new Three.Color(0xfffaaa)
+      material.color = new Three.Color('red')
       this.mesh = new Three.Mesh(geometry , material )
       this.scene.add(this.mesh)
     },

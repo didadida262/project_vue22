@@ -40,6 +40,7 @@ export default {
   },
   data() {
     return {
+      selectionsResp: [],
       lastPoint: null,
       brush: {
         path: null,
@@ -138,6 +139,7 @@ export default {
     },
     onMouseUp(e) {
       // const temp = this.selection.unite(this.brush.path)
+      this.selectionsResp.push(this.selection)
       this.removeSelection()
 
       // this.selection = temp.clone()

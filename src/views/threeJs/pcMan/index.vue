@@ -2,7 +2,7 @@
  * @Author: Hhvcg
  * @Date: 2022-07-13 15:20:52
  * @LastEditors: -_-
- * @Description: pcman小游戏
+ * @Description: pcman小游戏-尚未开始
 -->
 
 <template>
