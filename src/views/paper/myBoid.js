@@ -12,7 +12,7 @@ export class Boid {
     // 小蝌蚪坐标信息
     this.position = position.clone()
     // 尾巴点数【10， 15）
-    this.amount = Math.random() * 5 + 10
+    this.tailAmount = Math.random() * 5 + 10
     // 蝌蚪移动速度，此值极其重要，关系到蝌蚪实例的生命力
     this.acceleration = new paper.Point()
     // 越界时用于更新当前蝌蚪的position
@@ -43,7 +43,7 @@ export class Boid {
       strokeCap: 'round'
     })
     // 目测是尾巴长度
-    for (let i = 0; i < this.amount; i++) {
+    for (let i = 0; i < this.tailAmount; i++) {
       this.path.add(new paper.Point())
     }
     // 颈部
@@ -205,7 +205,7 @@ export class Boid {
       this.position = this.position.add(vector)
       // 批量更新尾巴节点的位置，使得呈现出去又进来的效果
       const segments = this.path.segments
-      for (let i = 0; i < this.amount; i++) {
+      for (let i = 0; i < this.tailAmount; i++) {
         segments[i].point = segments[i].point.add(vector)
       }
     }
@@ -233,7 +233,7 @@ export class Boid {
     // Chain goes the other way than the movement
 
     let lastVector = this.vector.rotate(180, new paper.Point((0, 0)))
-    for (let i = 1; i < this.amount; i++) {
+    for (let i = 1; i < this.tailAmount; i++) {
       const vector = segments[i].point.subtract(point)
       this.count += speed * 10
       const wave = Math.sin((this.count + i * 3) / 300)

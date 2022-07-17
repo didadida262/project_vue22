@@ -7,7 +7,6 @@
 <template>
   <div class="page-container">
     <canvas id="tadpole" ref="tadpole" resize class="tadpole" />
-
     <!-- tiger -->
     <svg
       id="svg"
@@ -1204,7 +1203,6 @@
         <path d="M20.5 344.5C20.5 344.5 22 333.5 10.5 346.5" />
       </g>
     </svg>
-    <el-button @click="test">测试内存</el-button>
   </div>
 </template>
 
@@ -1215,8 +1213,7 @@ import { Boid } from "./myBoid.js";
 export default {
   data() {
     return {
-      testData: [],
-      boids: [],
+      boids: null,
       paper: null,
       // 心形图案
       heartPath: null,
@@ -1224,22 +1221,21 @@ export default {
       mypath: null,
       tool: null,
       svg: null,
+      canvasWidth: null,
+      canvasHeight: null,
+      test: null
     };
   },
   mounted() {
     this.initWorld();
-    // this.tadpole();
-    this.testTiger();
+    this.tadpole();
+    // this.testTiger();
     // this.testPaper()
   },
   beforeDestroy() {
     this.paper = null;
   },
   methods: {
-    test() {
-      console.log('测试内存---->')
-      this.testData.push(new Array(1000_0000))
-    },
     testPaper() {
       this.head = new paper.Shape.Ellipse({
         center: [100, 100],
@@ -1277,11 +1273,14 @@ export default {
       // canvas的dom节点给到paper装载
       this.paper = paper;
       this.paper.setup(canvas);
+      this.canvasWidth = this.paper.view.size.width
+      this.canvasHeight = this.paper.view.size.height
       // 加装各类事件
       this.paper.view.onResize = this.onResize;
       this.paper.view.onFrame = this.onFrame;
       this.paper.view.onKeyDown = this.onKeyDown;
       this.paper.view.onMouseDown = this.onMouseDown;
+
     },
     testTiger() {
       console.log("测试老虎");
@@ -1293,15 +1292,20 @@ export default {
     },
     // 生成画布内的随机坐标点，作为蝌蚪军团的出生点
     tadpole() {
-      // this.heartPath = new paper.Path('M514.69629,624.70313c-7.10205,-27.02441 -17.2373,-52.39453 -30.40576,-76.10059c-13.17383,-23.70703 -38.65137,-60.52246 -76.44434,-110.45801c-27.71631,-36.64355 -44.78174,-59.89355 -51.19189,-69.74414c-10.5376,-16.02979 -18.15527,-30.74951 -22.84717,-44.14893c-4.69727,-13.39893 -7.04297,-26.97021 -7.04297,-40.71289c0,-25.42432 8.47119,-46.72559 25.42383,-63.90381c16.94775,-17.17871 37.90527,-25.76758 62.87354,-25.76758c25.19287,0 47.06885,8.93262 65.62158,26.79834c13.96826,13.28662 25.30615,33.10059 34.01318,59.4375c7.55859,-25.88037 18.20898,-45.57666 31.95215,-59.09424c19.00879,-18.32178 40.99707,-27.48535 65.96484,-27.48535c24.7373,0 45.69531,8.53564 62.87305,25.5957c17.17871,17.06592 25.76855,37.39551 25.76855,60.98389c0,20.61377 -5.04102,42.08691 -15.11719,64.41895c-10.08203,22.33203 -29.54687,51.59521 -58.40723,87.78271c-37.56738,47.41211 -64.93457,86.35352 -82.11328,116.8125c-13.51758,24.0498 -23.82422,49.24902 -30.9209,75.58594z')
+      this.heartPath = new paper.Path('M514.69629,624.70313c-7.10205,-27.02441 -17.2373,-52.39453 -30.40576,-76.10059c-13.17383,-23.70703 -38.65137,-60.52246 -76.44434,-110.45801c-27.71631,-36.64355 -44.78174,-59.89355 -51.19189,-69.74414c-10.5376,-16.02979 -18.15527,-30.74951 -22.84717,-44.14893c-4.69727,-13.39893 -7.04297,-26.97021 -7.04297,-40.71289c0,-25.42432 8.47119,-46.72559 25.42383,-63.90381c16.94775,-17.17871 37.90527,-25.76758 62.87354,-25.76758c25.19287,0 47.06885,8.93262 65.62158,26.79834c13.96826,13.28662 25.30615,33.10059 34.01318,59.4375c7.55859,-25.88037 18.20898,-45.57666 31.95215,-59.09424c19.00879,-18.32178 40.99707,-27.48535 65.96484,-27.48535c24.7373,0 45.69531,8.53564 62.87305,25.5957c17.17871,17.06592 25.76855,37.39551 25.76855,60.98389c0,20.61377 -5.04102,42.08691 -15.11719,64.41895c-10.08203,22.33203 -29.54687,51.59521 -58.40723,87.78271c-37.56738,47.41211 -64.93457,86.35352 -82.11328,116.8125c-13.51758,24.0498 -23.82422,49.24902 -30.9209,75.58594z')
+      this.boids = new Buffer()
       // // 创建蝌蚪军团
-      for (let i = 0; i < 5; i++) {
-        const rand = paper.Point.random();
-        rand.x = rand.x * paper.view.size.width;
-        rand.y = rand.y * paper.view.size.height;
-        this.boids.push(new Boid(rand, 10, 0.05));
+      for (let i = 0; i < 200; i++) {
+        const location = paper.Point.random();
+        location.x = location.x * this.canvasWidth;
+        location.y = location.y * this.canvasHeight;
+        this.boids.push(new Boid(location, 10, 0.05));
         console.log(this.boids);
       }
+      this.test = new paper.Path({
+        strokeColor: 'red'
+      })
+      this.boids.forEach(boid => this.test.add(boid.position))
     },
     onResize() {
       console.log("窗口变化！！！");
@@ -1310,7 +1314,7 @@ export default {
     },
     // 帧数级别的执行run函数，即：让蝌蚪们动起来
     onFrame(event) {
-      // console.log('帧动')
+      console.log('帧动')
       for (var i = 0, l = this.boids.length; i < l; i++) {
         // 是否合拢
         if (this.groupTogether) {
@@ -1323,6 +1327,11 @@ export default {
         }
         this.boids[i].run(this.boids, this.groupTogether);
       }
+      this.test.remove()
+         this.test = new paper.Path({
+        strokeColor: 'red'
+      })
+      this.boids.forEach(boid => this.test.add(boid.position))    
     },
     onKeyDown(e) {
       // 展示layer
