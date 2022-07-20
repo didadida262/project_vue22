@@ -134,7 +134,13 @@ export const constantRoutes = [
         name: 'Ariplane',
         component: () => import('@/views/paper/Airplane/index'),
         meta: { title: 'Airplane', icon: 'el-icon-s-promotion' }
-      } 
+      },
+      {
+        path: 'pcman',
+        name: 'pcman',
+        component: () => import('@/views/paper/pcMan/index'),
+        meta: { title: 'PcMan', icon: 'table' }
+      },       
 
     ]
   },
@@ -142,16 +148,11 @@ export const constantRoutes = [
   {
     path: '/threejs',
     component: Layout,
-    redirect: '/threejs/pcman',
+    redirect: '/threejs/circleEarth',
     name: 'threejs',
     meta: { title: 'ThreeJs', icon: 'el-icon-s-help' },
     children: [
-      {
-        path: 'pcman',
-        name: 'pcman',
-        component: () => import('@/views/threeJs/pcMan/index'),
-        meta: { title: 'PcMan', icon: 'table' }
-      }, 
+
       {
         path: 'circleEarth',
         name: 'circleEarth',
