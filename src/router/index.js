@@ -71,6 +71,20 @@ export const constantRoutes = [
       meta: { title: 'Draw', icon: 'el-icon-brush' }
     }]
   },
+  // openLayer
+  {
+    path: '/openlayer',
+    component: Layout,
+    redirect: '/openlayer',
+    children: [
+      {
+        path: 'openlayer',
+        name: 'openlayer',
+        component: () => import('@/views/openLayer/index'),
+        meta: { title: 'OpenLayer', icon: 'el-icon-brush'}
+      }
+    ]
+  },
   {
     path: '/articleList',
     component: Layout,
@@ -107,13 +121,13 @@ export const constantRoutes = [
         name: 'tadpole',
         component: () => import('@/views/paper/index'),
         meta: { title: 'Tadpole', icon: 'table' }
-      },   
+      },
       {
         path: 'tank',
         name: 'Tank',
         component: () => import('@/views/paper/Tank/index'),
         meta: { title: 'Tank', icon: 'el-icon-aim' }
-      },         
+      },
 
       {
         path: 'music',
@@ -128,7 +142,7 @@ export const constantRoutes = [
         component: () => import('@/views/paper/StickIn/index'),
         meta: { title: 'StickIn', icon: 'table' }
       },
-       // airplane
+      // airplane
       {
         path: 'ariplane',
         name: 'Ariplane',
@@ -140,7 +154,7 @@ export const constantRoutes = [
         name: 'pcman',
         component: () => import('@/views/paper/pcMan/index'),
         meta: { title: 'PcMan', icon: 'table' }
-      },       
+      },
 
     ]
   },
@@ -157,11 +171,10 @@ export const constantRoutes = [
         path: 'circleEarth',
         name: 'circleEarth',
         component: () => import('@/views/threeJs/circleEarth'),
-        meta: { title: 'CircleEarth', icon: 'el-icon-s-help'}
-      }          
+        meta: { title: 'CircleEarth', icon: 'el-icon-s-help' }
+      }
     ]
   },
-
   {
     path: '/nested',
     component: Layout,
@@ -220,24 +233,24 @@ export const constantRoutes = [
       }
     ]
   },
-// all kinds of toys...
-{
-  path: '/toys',
-  component: Layout,
-  redirect: '/toys/video',
-  name: 'Toys',
-  meta: {
-    title: 'Toys',
-    icon: 'nested'
-  },
-  children: [
-    {
-      path: 'video',
-      component: () => import('@/views/Toys/VideoPractice/index'),
-      name: 'Video',
-      meta: { title: 'Video', icon: 'el-icon-video-camera' }
-    }
-  ]
+  // all kinds of toys...
+  {
+    path: '/toys',
+    component: Layout,
+    redirect: '/toys/video',
+    name: 'Toys',
+    meta: {
+      title: 'Toys',
+      icon: 'nested'
+    },
+    children: [
+      {
+        path: 'video',
+        component: () => import('@/views/Toys/VideoPractice/index'),
+        name: 'Video',
+        meta: { title: 'Video', icon: 'el-icon-video-camera' }
+      }
+    ]
 
   },
 
