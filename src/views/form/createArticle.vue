@@ -50,6 +50,12 @@ export default {
   created() {
 
   },
+  mounted() {
+    console.log('mounted')
+  },
+  beforeUnmount() {
+    console.log('beforeUnmount')
+  },
   beforeDestroy() {
   },
   methods: {

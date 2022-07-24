@@ -26,6 +26,7 @@
 
 <script>
 import paper from "paper";
+import { getRandomColor } from '@/weapons'
 
 export default {
   name: "oldBrush",
@@ -37,7 +38,6 @@ export default {
   },
   data() {
     return {
-      lastPoint: null,
       brush: {
         radius: 10,
         path: null,
@@ -82,14 +82,13 @@ export default {
           this.selection = newSelection;
           i = i + this.brush.radius / 2
         }
-        this.lastPoint = _point
       }  
 
     },     
     init() {
+      console.log('老笔刷----')
       // this.log('初始化brush--->')
       this.view = this.$parent.paper.view
-      console.log('this.view--->',this.view)
       this.tool = this.$parent.tool
       this.tool.onKeyDown = this.onKeyDown
       this.tool.onMouseDown = this.onMouseDown    
@@ -105,36 +104,28 @@ export default {
     },
     onMouseUp(e) {
       this.draw()
-      this.lastPoint = null
     },
     onMouseDown(e) {
       this.selection = new paper.Path({
-        strokeColor: this.brush.color
+        strokeColor: getRandomColor()
       })
       this.draw()
-      this.lastPoint = e.point
     },
+    // 将当前brush的path合并到selection
     draw() {
-      this.view.requestUpdate = () => {
-        const temp = this.selection.unite(this.brush.path)
-        this.selection.remove()
-        this.selection = temp
-      }
+      this.selection.unite(this.brush.path)
     },
     onMouseMove(e) {
       if (this.brush.path === null) {
         this.createBrush(e)
       }
       this.moveBrush(e)
-      // this.brush.path.bringToFront();
     },
     moveBrush(e) {
       this.brush.path.position = e.point
     },
     onMouseDrag(e) {
-      console.log('drag--->',e.point)
       this.moveBrush(e)
-      console.log('drag')
       // this.addBrokenPath(e.point)
       // if (e.point.getDistance(this.lastPoint) >= this.brush.radius * 2) {
       //   console.log('断画！')
@@ -151,13 +142,11 @@ export default {
       //   }
       // }
       this.draw()
-      this.lastPoint = e.point
-      console.log(this.lastPoint)
     },
     createBrush(e) {
       this.brush.path = new paper.Path.Circle({
         center: e.point,
-        strokeColor: this.brush.color,
+        strokeColor: getRandomColor(),
         radius: this.brush.radius,
         strokeWidth: 3
       })
