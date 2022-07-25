@@ -55,8 +55,8 @@ export default {
   },
   mounted() {
     this.initWorld()
-    // this.drawXY()
-    // this.drawBrick()
+    this.drawXY()
+    this.drawSnakeStep()
   },
 
   methods: {
@@ -132,8 +132,8 @@ export default {
       this.paper = paper
       this.paper.view.setCenter(0, 0)
       this.paper.view.onFrame = this.onFrame
-      this.image.raster = new paper.Raster(this.urlt)
-      this.image.raster.fitBounds(this.paper.view.bounds, false)
+      // this.image.raster = new paper.Raster(this.urlt)
+      // this.image.raster.fitBounds(this.paper.view.bounds, false)
       this.tool = new paper.Tool()
       this.tool.onMouseDown = (e) => {
         console.log('点击事件--->', e.point)
