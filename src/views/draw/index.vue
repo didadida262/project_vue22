@@ -67,6 +67,8 @@ export default {
   },
   data() {
     return {
+      XY: {},
+
       // 当前激活工具
       activatedBrush: '',
       tool: null,
@@ -96,11 +98,27 @@ export default {
 
   mounted() {
     this.init()
+    this.drawXY()
     console.log('this.paper---', this.paper)
   },
   methods: {
     test() {
 
+    },
+    // 绘制当前paperjs画布的坐标系
+    drawXY() {
+      this.X = new this.paper.Path()
+      this.X.strokeColor = 'black'
+      this.Y = new this.paper.Path()
+      this.Y.strokeColor = 'black'
+      for (let i = 0; i < this.XY.x / 2; i++) {
+        this.X.add(new paper.Point(i, 0))
+        this.X.add(new paper.Point(-i, 0))
+      }
+      for (let i = 0; i < this.XY.y / 2; i++) {
+        this.Y.add(new paper.Point(0, i))
+        this.Y.add(new paper.Point(0, -i))
+      }
     },
     changeBrush(brush) {
       this.activatedBrush = brush
@@ -160,6 +178,8 @@ export default {
     // 。。。。。。。。。。。。。。
     init() {
       const canvas = this.$refs.Content.$refs.main_canvas
+      this.XY.x = canvas.clientWidth
+      this.XY.y = canvas.clientHeight
       paper.setup(canvas)
       this.paper = paper
       // this.image.raster = new paper.Raster(this.image.url)

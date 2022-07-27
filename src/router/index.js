@@ -85,6 +85,7 @@ export const constantRoutes = [
       }
     ]
   },
+  // article
   {
     path: '/articleList',
     component: Layout,
@@ -108,7 +109,7 @@ export const constantRoutes = [
       }
     ]
   },
-
+// paperjs
   {
     path: '/paperjs',
     component: Layout,
@@ -155,6 +156,12 @@ export const constantRoutes = [
         component: () => import('@/views/paper/pcMan/index'),
         meta: { title: 'PcMan', icon: 'table' }
       },
+      {
+        path: 'radio',
+        name: 'radio',
+        component: () => import('@/views/paper/Radio/index'),
+        meta: { title: 'Radio', icon: 'el-icon-headset' }
+      }
 
     ]
   },

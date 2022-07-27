@@ -43,7 +43,8 @@ export default {
       selection: null,
       first: null,
       myPath: null,
-      resp: []
+      resp: [],
+      colors: []
     };
   },
   computed: {},
@@ -60,6 +61,7 @@ export default {
   methods: {
     init() {
       // this.log('初始化brush--->')
+      this.createColors()
       this.tool = this.$parent.tool
       this.tool.onKeyDown = this.onKeyDown
       this.tool.onMouseDown = this.onMouseDown    
@@ -72,9 +74,29 @@ export default {
     },
     onKeyDown(e) {
     },
+        // 针对给定path，color，上梯度色
+    colorFul(item) {
+      console.log('item---->', item.bounds)
+      this.gradient = new paper.Gradient(this.colors, false)
+      this.radius = Math.max(item.bounds.width, item.bounds.height) * 0.75;
+      item.fillColor = new paper.Color(this.gradient, item.bounds.leftCenter, item.bounds.rightCenter.add(this.radius));
+    },
+    createColors() {
+      for (let i = 0; i < 60; i++) {
+          let brightness = 1 - (i / 60) * 1.5;
+          let hue = i / 60 * 4 * 360;
+          let color = {
+              hue: hue,
+              saturation: 1,
+              brightness: brightness
+          };
+          this.colors.push(color);
+      }
+      console.log(this.colors)
+    },
     onMouseUp(e) {
       this.selection.selected = false
-      this.selection.fillColor = getRandomColor()
+      this.colorFul(this.selection)
       this.resp.push(this.selection.clone())
       const left = this.selection.curves[0].point1
       const right = this.selection.curves[0].point2
@@ -88,7 +110,6 @@ export default {
         point: right,
         fontSize: 5
       });      
-      console.log('/////',this.selection)
       this.removeSelection()
     },
 

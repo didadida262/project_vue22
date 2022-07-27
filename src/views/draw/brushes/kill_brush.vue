@@ -49,7 +49,6 @@ export default {
           radius: 10,
           btype: "circle"  // circle ||  rectangle
           // btype: "rectangle"  // circle ||  rectangle,
-
         }
       },
       selection: null,
@@ -139,7 +138,10 @@ export default {
     },
     onMouseUp(e) {
       // const temp = this.selection.unite(this.brush.path)
-      this.selectionsResp.push(this.selection)
+        let newSelection = this.selection.unite(this.brush.path);
+        this.selection.remove();
+        this.selection = newSelection;
+      this.selectionsResp.push(this.selection.clone())
       this.removeSelection()
 
       // this.selection = temp.clone()
@@ -207,7 +209,7 @@ export default {
             [res[0], vector, vector.rotate(-180)],
             [res[1], vector.rotate(-180), vector]
           ],
-          strokeColor: 'black',
+          fillColor: getRandomColor(),
         }) 
         // 如果是矩形
       } else {
@@ -216,7 +218,7 @@ export default {
             [ress[0], vector.normalize(), vector.rotate(90).normalize().multiply(this.brush.pathOptions.radius)],
             [ress[1], vector.rotate(-90).normalize().multiply(this.brush.pathOptions.radius), vector]
           ],
-          strokeColor: 'black',
+          fillColor: getRandomColor(),
         }) 
       }
     },
