@@ -56,10 +56,29 @@ export default {
   mounted() {
     this.initWorld()
     this.drawXY()
-    this.drawSnakeStep()
+    // this.drawSnakeStep()
+    this.test()
   },
 
   methods: {
+    test() {
+      // 问题
+      // this.p1 = new paper.Path.Circle(new paper.Point(0), new paper.Size(100))
+      // this.p1.fillColor = 'black'
+      // this.p2 = new paper.Path.Circle(new paper.Point(10), new paper.Size(10))
+      // this.p2.fillColor = 'red'
+      // console.log('////////////////',this.p2.intersects(this.p1))
+      this.path1 = new paper.Path.Rectangle(new paper.Point(20), new paper.Size(60));
+      this.path1.fillColor = 'pink';
+
+      this.path2 = new paper.Path.Rectangle(new paper.Point(20), new paper.Size(20));
+      this.path2.fillColor = 'yellow';
+
+
+      console.log('res',this.path1.unite(this.path2))
+      console.log('res1',this.path1)      
+      
+    },
     // 绘制snake的step
     drawSnakeStep() {
       if (this.snake.x >= this.XY.x && this.snake.y >= this.XY.y) {
