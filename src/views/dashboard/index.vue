@@ -51,6 +51,11 @@ export default {
     }
   },
   created() {
+    console.log('---Dashboard---加载完成--->')
+    console.log(window.performance)
+    // jsHeapSizeLimit
+    // totalJSHeapSize
+    // usedJSHeapSize
 
   },
   mounted() {
@@ -75,8 +80,7 @@ export default {
       this.path2.fillColor = 'yellow';
 
 
-      console.log('res',this.path1.unite(this.path2))
-      console.log('res1',this.path1)      
+   
       
     },
     // 绘制snake的step
