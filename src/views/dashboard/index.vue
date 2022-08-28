@@ -62,7 +62,9 @@ export default {
     this.initWorld()
     this.drawXY()
     // this.drawSnakeStep()
+        console.time('1')
     this.test()
+    console.timeEnd('1')
   },
 
   methods: {
@@ -73,11 +75,18 @@ export default {
       // this.p2 = new paper.Path.Circle(new paper.Point(10), new paper.Size(10))
       // this.p2.fillColor = 'red'
       // console.log('////////////////',this.p2.intersects(this.p1))
-      this.path1 = new paper.Path.Rectangle(new paper.Point(20), new paper.Size(60));
-      this.path1.fillColor = 'pink';
+      // this.path1 = new paper.Path.Rectangle(new paper.Point(20), new paper.Size(60));
+      // this.path1.fillColor = 'pink';
 
-      this.path2 = new paper.Path.Rectangle(new paper.Point(20), new paper.Size(20));
-      this.path2.fillColor = 'yellow';
+      // this.path2 = new paper.Path.Rectangle(new paper.Point(20), new paper.Size(20));
+      // this.path2.fillColor = 'yellow';
+      for (let i = 0; i < 3000; i++) {
+        this.p = new paper.Path.Circle({
+          center: new paper.Point(Math.round(Math.random()*3000)),
+          radius: 1,
+          fillColor: getRandomColor()
+        })
+      }
 
 
    
