@@ -61,11 +61,111 @@ export default {
   mounted() {
     this.initWorld()
     this.drawXY()
+    this.drawWave()
     // this.drawSnakeStep()
     this.test()
   },
 
   methods: {
+    modifyHead() {
+      let top = this.path.segments[3]
+      let bot = this.path.segments[4]
+      let v = top.point.subtract(bot.point).normalize()
+      const vector = new paper.Point({
+        angle: v.angle,
+        length: Math.PI * 200 / 4
+      })
+      top.handleOut = vector.rotate(-90)
+      bot.handleIn = vector.rotate(-90)
+      
+    },
+    getCenter(p1, p2) {
+      let v = p1.subtract(p2).divide(2)
+      let c = p1.subtract(v)
+      // c.selected = true
+      let cc = new paper.Path.Circle({
+        center: c,
+        radius: 50,
+      })
+      
+      let neww = this.path.unite(cc) 
+      this.path.remove()
+      this.path = neww
+    },
+    modifyTrail() {
+      // let top = this.path.firstSegment
+      // let bot = this.path.lastSegment
+      let top = this.path.segments[0]
+      let bot = this.path.segments[7]
+      // top.previous = bot
+      // bot.next = top
+      console.log('top---', top)
+      console.log('bot---', bot)
+      let v = top.point.subtract(bot.point).normalize()
+      const vector = new paper.Point({
+        angle: v.angle,
+        length: Math.PI * 200 / 4
+      })
+      top.handleOut = vector.rotate(90)
+      bot.handleIn = vector.rotate(90)
+    },     
+    // 绘制三点波浪
+    drawWave() {
+      this.path = new paper.Path()
+      for ( let i = 100; i < 500;) {
+        this.path.add(new paper.Point(i, 100))
+        this.path.insert(0, new paper.Point(i, 0))
+        i = i + 100
+      }
+      // const vector = new paper.Point({
+      //   angle: -90,
+      //   length: Math.PI * 200 / 4
+      // })
+      console.log('this.path---', this.path)
+      this.getCenter(this.path.firstSegment.point, this.path.lastSegment.point)
+
+      // this.modifyHead()
+      // this.path.closed = true
+
+      // this.modifyTrail()
+      // this.path.strokeCap = 'round'
+      // this.path.strokeColor = 'red'
+      this.path.selected = true
+
+    },
+    // 根据向量vector，用户都连接两点
+    // getCir(index1, index2, vector, path) {
+    //   console.log('this.path', this.path)
+    //   path.segments[index1].handleOut = vector
+    //   // path.segments[index1].handleIn = vector.rotate(180)
+    //   // path.segments[index2].handleOut = vector.rotate(180)
+    //   path.segments[index2].handleIn = vector
+    //   path.closed = true
+    //   // path.segments[0].selected = true
+    //   // path.segments[1].selected = true
+      
+      
+    //   // const d = Math.PI * 200 / 4
+    //   // console.log('d---', d)
+    //   // const handle1 = new paper.Point({
+    //   //   angle: -90,
+    //   //   length: Number(d.toFixed(0))
+    //   // });
+            
+    //   // this.wave = new paper.Path({
+    //   //   segments: [
+    //   //     [new paper.Point(100, 0), handle1.rotate(180), handle1],
+    //   //     [new paper.Point(300, 0), handle1, handle1.rotate(180)],
+    //   //   ],
+    //   //   selected: true,
+    //   //   closed: true
+    //   // })
+    //   // this.wave.segments[0].selected = true
+    //   // this.wave.segments[1].selected = true
+    //   // this.cir = new paper.Path.Circle(new paper.Point(200, 0), 100)
+    //   // this.cir.fillColor = 'red'
+
+    // },
     test() {
       // 问题
       // this.p1 = new paper.Path.Circle(new paper.Point(0), new paper.Size(100))
@@ -155,7 +255,7 @@ export default {
       this.paper = paper
       this.paper.view.setCenter(0, 0)
       this.paper.view.onFrame = this.onFrame
-      // this.image.raster = new paper.Raster(this.urlt)
+      this.image.raster = new paper.Raster(this.urlt)
       // this.image.raster.fitBounds(this.paper.view.bounds, false)
       this.tool = new paper.Tool()
       this.tool.onMouseDown = (e) => {

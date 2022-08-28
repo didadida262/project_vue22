@@ -22,7 +22,12 @@
         class="cursor-pointer"
         :selected="activatedBrush"
         @changeBrush="changeBrush"
-      />    
+      />  
+      <killBrushNew
+        class="cursor-pointer"
+        :selected="activatedBrush"
+        @changeBrush="changeBrush"
+      />         
       <LineBrush
         class="cursor-pointer"
         :selected="activatedBrush"
@@ -50,6 +55,7 @@ import paper from 'paper'
 import Pencil from './brushes/Pencil.vue'
 import oldBrush from './brushes/oldBrush.vue'
 import killBrush from './brushes/kill_brush.vue'
+import killBrushNew from './brushes/kill_brush2.vue'
 import broomBrush from './brushes/broomBrush.vue'
 import LineBrush from './brushes/Line.vue'
 import RectBrush from './brushes/RectBrush.vue'
@@ -63,7 +69,8 @@ export default {
     killBrush,
     broomBrush,
     LineBrush,
-    RectBrush
+    RectBrush,
+    killBrushNew
   },
   data() {
     return {
