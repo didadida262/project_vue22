@@ -20,7 +20,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import paper from 'paper'
-import { getRandomColor } from '../../weapons'
+import { getRandomColor, getCirclePoint } from '@/utils/weapons'
 
 export default {
   name: 'Dashboard',
@@ -31,6 +31,7 @@ export default {
   },
   data() {
     return {
+      p: null,
       image: {
         raster: null
       },
@@ -184,25 +185,49 @@ export default {
           center: new paper.Point(0),
           radius: 100,
           fillColor: getRandomColor(),
-          name: 'hhvcg'
+          name: 'hhvcg',
         })
         this.p.on('click', (item) => {
           console.log('click?????', item.target.name)
         })
+        // 绘制图层
+        // let layerCell = new paper.Layer()
+        // layerCell.activate()
+        // for (let i = -100; i <= 100;) {
+        //   let top = getCirclePoint(i, 100)
+        //   console.log('top--', top)
+        //   let Y = new paper.Path.Line({
+        //     from: new paper.Point(i, -top),
+        //     to: new paper.Point(i, top),
+        //     strokeColor: 'black',
+        //   })
+        //   let X = new paper.Path.Line({
+        //     from: new paper.Point(-top, i),
+        //     to: new paper.Point(top, i),
+        //     strokeColor: 'black',
+        //   })          
+        //   i = i + 10
+        // }
+        // layerCell.opacity = 0
+        // this.paper.projects[0].layers[0].children[0].remove()
         // constructor(from: Point, through: Point, to: Point)
-        // const vector = new paper.Point({
-        //   angle: -135,
-        //   length: 100,
-        // })
-        // let x = Math.sqrt(100 * 100 / 2)
-        // console.log('xxx',x)
-        // this.pp = new paper.Path.Arc({
-        //   from: new paper.Point(-x,x),
-        //   through: vector,
-        //   to: new paper.Point(x,x),
-        //   strokeColor: 'red',
-        //   closed: true
-        // })
+        
+
+        let x = Math.sqrt(100 * 100 / 2)
+        let top = getCirclePoint(-80, 100)
+        console.log('>>>>>',(new paper.Point(-80, top)).subtract(new paper.Point(-x, x)).angle)
+        const vector = new paper.Point({
+          angle: (new paper.Point(-80, top)).subtract(new paper.Point(-x, x)).angle,
+          length: 100,
+        })
+        console.log('xxx',x)
+        this.pp = new paper.Path.Arc({
+          from: new paper.Point(-x,x),
+          through: vector,
+          to: new paper.Point(-80,top),
+          strokeColor: 'black',
+        })
+        console.log('this.pp',this.pp)
         // constructor(center: Point, points: number, radius1: number, radius2: number)
 
         // this.ppp = new paper.Path.Star({
@@ -218,8 +243,7 @@ export default {
         //     // fullySelected: true
         //     strokeColor: 'black'
         //   })
-
-   
+        console.log('this.paper', this.paper)
       
     },
     // 绘制snake的step
