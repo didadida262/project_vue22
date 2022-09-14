@@ -3,6 +3,10 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const path = require('path')
 const defaultSettings = require('./src/settings.js')
 const CompressionPlugin = require('compression-webpack-plugin')
+const PrerenderSPAPlugin = require('prerender-spa-plugin');
+const Renderer = PrerenderSPAPlugin.PuppeteerRenderer;
+
+
 function resolve(dir) {
   return path.join(__dirname, dir)
 }
@@ -74,15 +78,28 @@ module.exports = {
     // ]
   },
   chainWebpack(config) {
-  //   if (process.env.NODE_ENV === 'production') {
-  //     return {
-  //         plugins: [new CompressionPlugin({
-  //             test: /\.js$|\.html$|\.css/,
-  //             threshold: 10240,
-  //             deleteOriginalAssets: false
-  //         })]
-  //     }
-  // }    
+    config.plugin('prerender-spa-plugin')
+    .use(new PrerenderSPAPlugin({
+      //要求-给的WebPack-输出应用程序的路径预渲染。
+      staticDir: path.join(__dirname, 'dist'),
+      //必需，要渲染的路线。
+      routes: ['/test'],
+      //必须，要使用的实际渲染器，没有则不能预编译
+      renderer: new Renderer({
+          inject: {
+              foo: 'bar'
+          },
+          headless: false, //渲染时显示浏览器窗口。对调试很有用。  
+          //等待渲染，直到检测到指定元素。
+          //例如，在项目入口使用`document.dispatchEvent(new Event('custom-render-trigger'))` 
+          renderAfterDocumentEvent: 'render-event',
+          args: ['--no-sandbox', '--disable-setuid-sandbox']
+      })
+    }))
+    // 预渲染
+
+
+  // chunk压缩
     config.plugin('compression-webpack-plugin')
     .use(new CompressionPlugin({
       test: /\.js$|\.html$|\.css/,
@@ -96,8 +113,8 @@ module.exports = {
     //     deleteOriginalAssets: false
     // }))
     // it can improve the speed of the first screen, it is recommended to turn on preload
-    config.plugin('webpack-bundle-analyzer')
-    .use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin)
+    // config.plugin('webpack-bundle-analyzer')
+    // .use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin)
     config.plugin('preload').tap(() => [
       {
         rel: 'preload',

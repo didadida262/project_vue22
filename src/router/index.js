@@ -36,6 +36,11 @@ export const constantRoutes = [
     component: () => import('@/views/login/index'),
     hidden: true
   },
+  {
+    path: '/test',
+    component: () => import('@/views/test/index'),
+    hidden: true
+  },
   // // 创建文章
   // {
   //   name: 'createArticle',

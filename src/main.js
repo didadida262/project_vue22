@@ -84,7 +84,6 @@ const i18n = new Vuei18n({
 // 如果想要中文版 element-ui，按如下方式声明
 Vue.use(ElementUI)
 if (window) window['$t'] = (key, value) => i18n.t(key, value);
-
 Vue.config.productionTip = false
 // Vue.prototype.log = log
 new Vue({
@@ -92,5 +91,8 @@ new Vue({
   router,
   store,
   i18n,
+  mounted: () => document.dispatchEvent(new Event('render-event')),
   render: h => h(App)
 })
+
+//  document.dispatchEvent(new Event('render-event'))
