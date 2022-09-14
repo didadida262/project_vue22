@@ -2,7 +2,7 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const path = require('path')
 const defaultSettings = require('./src/settings.js')
-
+const CompressionPlugin = require('compression-webpack-plugin')
 function resolve(dir) {
   return path.join(__dirname, dir)
 }
@@ -54,6 +54,7 @@ module.exports = {
 //     disableHostCheck: true
 // },  
   configureWebpack: {
+
     // provide the app's title in webpack's name field, so that
     // it can be accessed in index.html to inject the correct title.
     name: name,
@@ -73,7 +74,30 @@ module.exports = {
     // ]
   },
   chainWebpack(config) {
+  //   if (process.env.NODE_ENV === 'production') {
+  //     return {
+  //         plugins: [new CompressionPlugin({
+  //             test: /\.js$|\.html$|\.css/,
+  //             threshold: 10240,
+  //             deleteOriginalAssets: false
+  //         })]
+  //     }
+  // }    
+    config.plugin('compression-webpack-plugin')
+    .use(new CompressionPlugin({
+      test: /\.js$|\.html$|\.css/,
+      threshold: 10240,
+      deleteOriginalAssets: false
+    }))
+    // config.plugin(new CompressionPlugin(
+    //   {
+    //     test: /\.js$|\.html$|\.css/,
+    //     threshold: 10240,
+    //     deleteOriginalAssets: false
+    // }))
     // it can improve the speed of the first screen, it is recommended to turn on preload
+    config.plugin('webpack-bundle-analyzer')
+    .use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin)
     config.plugin('preload').tap(() => [
       {
         rel: 'preload',
