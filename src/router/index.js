@@ -261,7 +261,13 @@ export const constantRoutes = [
         component: () => import('@/views/Toys/VideoPractice/index'),
         name: 'Video',
         meta: { title: 'Video', icon: 'el-icon-video-camera' }
-      }
+      },
+      {
+        path: 'Chars',
+        component: () => import('@/views/Toys/Chars/index'),
+        name: 'Chars',
+        meta: { title: 'Chars', icon: 'el-icon-video-camera' }
+      }      
     ]
 
   },

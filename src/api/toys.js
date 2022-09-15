@@ -41,5 +41,8 @@ export default {
   },
   getSongs() {
     return axios.get('/songs/list')
+  },
+  getAllChars() {
+    return axios.get('/getAllChar')
   }
 }
