@@ -11,7 +11,7 @@
         正弦波
       </span>
     </div>
-    <div class="dashboard-container pd10 flex-cc">
+    <div class="dashboard-container pd10 flex-cc" @mousewheel="mouseWheel">
       <canvas id="main_canvas" ref="main_canvas" resize class="main_canvas" />
     </div>
   </div>
@@ -31,6 +31,7 @@ export default {
   },
   data() {
     return {
+      ratio: 1.05,
       p: null,
       image: {
         raster: null
@@ -54,10 +55,6 @@ export default {
   created() {
     console.log('---Dashboard---加载完成--->')
     console.log(window.performance)
-    // jsHeapSizeLimit
-    // totalJSHeapSize
-    // usedJSHeapSize
-
   },
   mounted() {
         console.time('1')
@@ -65,11 +62,35 @@ export default {
     this.drawXY()
     // this.drawWave()
     // // this.drawSnakeStep()
-    this.test()
+    // this.test()
     console.timeEnd('1')
   },
 
   methods: {
+    mouseWheel(e) {
+      const view = this.paper.view
+      console.log('e>>>>',e)
+      // offsetX:事件触发点相对于div的边距
+      // 返回一个 double 值，该值表示滚轮的纵向滚动量。
+      console.log('触发点>>>', {x: e.offsetX, y: e.offsetY })
+      let p = new paper.Point(e.offsetX,e.offsetY)
+        let direction = e.deltaY > 0? false: true
+      if (direction) {
+        console.log('放大')
+        view.zoom = Number((view.zoom * this.ratio).toFixed(3))
+        p = p.multiply(view.zoom)
+        
+      } else{
+        console.log('缩小')
+        view.zoom = Number((view.zoom / this.ratio).toFixed(3))
+        p = p.divide(view.zoom)
+        // let center = p.divide(view.zoom)
+        // view.setCenter(center)
+      }
+      view.setCenter(p)
+      console.log('viwq>>', view.center)
+      console.log('zoom>>', view.zoom)
+    },
     modifyHead() {
       let top = this.path.segments[3]
       let bot = this.path.segments[4]
@@ -190,27 +211,7 @@ export default {
         this.p.on('click', (item) => {
           console.log('click?????', item.target.name)
         })
-        // 绘制图层
-        // let layerCell = new paper.Layer()
-        // layerCell.activate()
-        // for (let i = -100; i <= 100;) {
-        //   let top = getCirclePoint(i, 100)
-        //   console.log('top--', top)
-        //   let Y = new paper.Path.Line({
-        //     from: new paper.Point(i, -top),
-        //     to: new paper.Point(i, top),
-        //     strokeColor: 'black',
-        //   })
-        //   let X = new paper.Path.Line({
-        //     from: new paper.Point(-top, i),
-        //     to: new paper.Point(top, i),
-        //     strokeColor: 'black',
-        //   })          
-        //   i = i + 10
-        // }
-        // layerCell.opacity = 0
-        // this.paper.projects[0].layers[0].children[0].remove()
-        // constructor(from: Point, through: Point, to: Point)
+
         
 
         let x = Math.sqrt(100 * 100 / 2)
@@ -316,9 +317,12 @@ export default {
       // this.snake.y = -Math.floor(canvas.clientHeight / 2)
       paper.setup(canvas)
       this.paper = paper
-      this.paper.view.setCenter(0, 0)
+      // this.paper.view.setCenter(0, 0)
       this.paper.view.onFrame = this.onFrame
       this.image.raster = new paper.Raster(this.url)
+      this.image.raster.onLoad = () => {
+        this.image.raster.fitBounds(this.paper.view.bounds, false)
+      }
       // this.image.raster.fitBounds(this.paper.view.bounds, false)
       this.tool = new paper.Tool()
       this.tool.onMouseDown = (e) => {
