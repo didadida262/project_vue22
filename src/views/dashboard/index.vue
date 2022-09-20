@@ -6,13 +6,7 @@
 -->
 <template>
   <div class="dashboard">
-    <div class="dashboard-text flex-cc">
-      <span>
-        正弦波
-      </span>
-      <el-button @click="change">change</el-button>
-    </div>
-    <div class="dashboard-container pd10 flex-cc" @mousewheel="mouseWheel">
+    <div class="dashboard-container pd10 flex-cc" @wheel="onwheel">
       <canvas id="main_canvas" ref="main_canvas" resize class="main_canvas" />
     </div>
   </div>
@@ -22,6 +16,7 @@
 import { mapGetters } from 'vuex'
 import paper from 'paper'
 import { getRandomColor, getCirclePoint } from '@/utils/weapons'
+import { tSParenthesizedType } from '@babel/types'
 
 export default {
   name: 'Dashboard',
@@ -32,6 +27,9 @@ export default {
   },
   data() {
     return {
+      scale: 0,
+      zoom: 1,
+      // 
       ratio: 1.05,
       p: null,
       image: {
@@ -69,6 +67,49 @@ export default {
   },
 
   methods: {
+    onwheel(e) {
+      console.log('onwheel>>>', e)
+      // e.preventDefault();
+      // let currentProject = this.paper.projects.filter((item) => item.name === this.title)[0]
+      let currentProject = this.paper.project
+      let view = currentProject.view;
+      if (e.ctrlKey) {
+        // Pan up and down
+        let delta = new paper.Point(0, 0.5 * e.deltaY);
+        view.setCenter(view.center.add(delta));
+      } else if (e.shiftKey) {
+        // Pan left and right
+        let delta = new paper.Point(0.5 * e.deltaY, 0);
+        view.setCenter(view.center.add(delta));
+      } else {
+        let viewPosition = view.viewToProject(
+            new paper.Point(e.offsetX, e.offsetY)
+        );
+
+        let transform = this.changeZoom(e.deltaY, viewPosition);
+          this.scale = 1 / transform.zoom;
+          view.zoom = transform.zoom + Math.pow(Math.E, -6);
+          view.center = view.center.add(transform.offset);
+      }
+
+      // return false;
+    },    
+    // 计算鼠标滑动后的 zoom和 offset, 仅在 @onwheel 方法中用到
+    changeZoom(delta, p) {
+      // let currentProject = this.paper.projects.filter((item) => item.name === this.title)[0]
+      let currentProject = this.paper.project
+      let view = currentProject.view;      
+      let oldZoom = view.zoom;
+      let c = view.center;
+      let factor = 1 + this.zoom;
+
+      let zoom = delta < 0 ? oldZoom * factor : oldZoom / factor;
+      let beta = oldZoom / zoom;
+      let pc = p.subtract(c);
+      let a = p.subtract(pc.multiply(beta)).subtract(c);
+
+      return { zoom: zoom, offset: a };
+    },    
     change() {
       this.raster.source = this.url2
       this.raster.onLoad = () => {
@@ -76,28 +117,28 @@ export default {
       }
     },
     mouseWheel(e) {
-      const view = this.paper.view
-      console.log('e>>>>',e)
-      // offsetX:事件触发点相对于div的边距
-      // 返回一个 double 值，该值表示滚轮的纵向滚动量。
-      console.log('触发点>>>', {x: e.offsetX, y: e.offsetY })
-      let p = new paper.Point(e.offsetX,e.offsetY)
-        let direction = e.deltaY > 0? false: true
-      if (direction) {
-        console.log('放大')
-        view.zoom = Number((view.zoom * this.ratio).toFixed(3))
-        p = p.multiply(view.zoom)
+      // const view = this.paper.view
+      console.log('mouseWheel>>>>',e)
+      // // offsetX:事件触发点相对于div的边距
+      // // 返回一个 double 值，该值表示滚轮的纵向滚动量。
+      // console.log('触发点>>>', {x: e.offsetX, y: e.offsetY })
+      // let p = new paper.Point(e.offsetX,e.offsetY)
+      //   let direction = e.deltaY > 0? false: true
+      // if (direction) {
+      //   console.log('放大')
+      //   view.zoom = Number((view.zoom * this.ratio).toFixed(3))
+      //   p = p.multiply(view.zoom)
         
-      } else{
-        console.log('缩小')
-        view.zoom = Number((view.zoom / this.ratio).toFixed(3))
-        p = p.divide(view.zoom)
-        // let center = p.divide(view.zoom)
-        // view.setCenter(center)
-      }
-      view.setCenter(p)
-      console.log('viwq>>', view.center)
-      console.log('zoom>>', view.zoom)
+      // } else{
+      //   console.log('缩小')
+      //   view.zoom = Number((view.zoom / this.ratio).toFixed(3))
+      //   p = p.divide(view.zoom)
+      //   // let center = p.divide(view.zoom)
+      //   // view.setCenter(center)
+      // }
+      // view.setCenter(p)
+      // console.log('viwq>>', view.center)
+      // console.log('zoom>>', view.zoom)
     },
     modifyHead() {
       let top = this.path.segments[3]
