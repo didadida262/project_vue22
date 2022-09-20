@@ -1,3 +1,9 @@
+<!--
+ * @Author: Hhvcg
+ * @Date: 2022-09-20 09:54:00
+ * @LastEditors: -_-
+ * @Description: 纯粹处理图片--paperjs
+-->
 
 <template>
   <div class="paperpic-st">
@@ -36,9 +42,32 @@ export default {
   },
   created() {
   },
+  watch: {
+    url() {
+      console.log(`${this.title}的url变化！！！`)
+      console.log('paper>>', this.paper)
+      let project = this.paper.projects.filter((item) => item.name === this.title)[0]
+      project.activate()
+      let layer = project.layers[0]
+      layer.remove()
+      let raster = new paper.Raster(this.url)
+      raster.onLoad = () => {
+        console.log('再次加载图片!!!1')
+        raster.fitBounds(project.view.bounds, false)
+      }
+      console.log('this.paper>>>', this.paper)
+
+      // let layer = project.layers[0]
+      // let raster = layer.children[0]
+      // console.log('raster>>>',raster)
+      
+    }
+  },
   mounted() {
+    console.time('pic---time')
     this.initWorld()
     this.drawPic()
+    console.timeEnd('pic---time')
   },
 
   methods: {
@@ -48,9 +77,7 @@ export default {
       let project = paper.projects.filter((item) => item.name === this.title)[0]
       raster.onLoad = () => {
         raster.fitBounds(project.view.bounds, false)
-        console.log('load-success!!')
       }
-      console.log('paper???', paper)
     },
     initWorld() {
       // 获取
@@ -58,7 +85,9 @@ export default {
       this.WIDTH = canvas.clientWidth
       this.HEIGHT = canvas.clientHeight
       paper.setup(canvas)
-      paper.project.name = this.title
+      this.paper = paper
+      this.paper.project.name = this.title
+      this.paper.view.setCenter(0, 0);
     }
   },
   beforeDestroy() {
@@ -70,9 +99,17 @@ export default {
 
 <style lang="scss" scoped>
 .paperpic-st {
-  border: 1px solid red;
+  border: 1px solid grey;
   width: 100%;
   height: 100%;
+  .content {
+    width: 100%;
+    height: calc(100% - 20px);
+    .main_canvas {
+      width: 100%;
+      height: 100%;
+    }
+  }
 
 }
 </style>

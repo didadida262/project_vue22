@@ -10,6 +10,7 @@
       <span>
         正弦波
       </span>
+      <el-button @click="change">change</el-button>
     </div>
     <div class="dashboard-container pd10 flex-cc" @mousewheel="mouseWheel">
       <canvas id="main_canvas" ref="main_canvas" resize class="main_canvas" />
@@ -37,6 +38,7 @@ export default {
         raster: null
       },
       url: 'https://cms-assets.tutsplus.com/uploads/users/1251/posts/26530/image/BenderPaper.jpg',
+      url2: 'https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg',
       paper: null,
       tool: null,
       // 存储画布容器宽高
@@ -67,6 +69,12 @@ export default {
   },
 
   methods: {
+    change() {
+      this.raster.source = this.url2
+      this.raster.onLoad = () => {
+        console.log('change...Success!')
+      }
+    },
     mouseWheel(e) {
       const view = this.paper.view
       console.log('e>>>>',e)
