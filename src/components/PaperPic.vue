@@ -1,115 +1,249 @@
 <!--
  * @Author: Hhvcg
- * @Date: 2022-09-20 09:54:00
+ * @Date: 2022-09-02 16:28:27
  * @LastEditors: -_-
- * @Description: 纯粹处理图片--paperjs
+ * @Description: 本组件接受参数包括title、图片url，支持图片的展示缩放及缩放联动
 -->
 
+
 <template>
-  <div class="paperpic-st">
-    <span>{{ title }}</span>
-    <div class='content'>
-      <canvas id="main_canvas" ref="main_canvas" resize class="main_canvas" />
+  <div
+    @wheel="onwheel"
+    class="paperpic-st" :class="{ 
+            'black': title === 'Surface',
+            'white': title === 'PL',
+          }">
+    <div class="paperpic-st-title flex-cc" :class="{ 
+            'white': title === 'Surface',
+            'black': title === 'PL',
+          }">
+      {{ title }}
+    </div>
+    <div class="paperpic-st-picContainer">
+      <canvas
+        id="picContainer"
+        ref="picContainer"
+        resize
+        class="picContainer"
+      />
     </div>
   </div>
 </template>
-
 <script>
-import paper from 'paper'
-import CommonTemplate from '@/components/titleTemplate.vue'
-import { getRandomColor, getCirclePoint } from '@/utils/weapons'
-
-export default {
-  name: 'PaperPic',
-  components: {
-    CommonTemplate
-  },
-  props: {
-    title: {
-      type: String,
-      required: true
+  import paper from 'paper'
+  export default {
+    name: "paperpic",
+    props: {
+      title: {
+        type: String,
+        required: true
+      },
+      src: {
+        type: String,
+        required: true
+      },
+      axisFlag: {
+        type: Boolean,
+        required: true
+      },
+      nameFlag: {
+        type: Boolean,
+        required: true
+      },
+      meterFlag: {
+        type: Boolean,
+        required: true
+      }
     },
-    url: {
-      type: String,
-      required: true
-    }
-  },
-  data() {
-    return {
-      WIDTH: null,
-      HEIGHT: null,
-    }
-  },
-  created() {
-  },
-  watch: {
-    url() {
-      console.log(`${this.title}的url变化！！！`)
-      console.log('paper>>', this.paper)
+    data() {
+      return {
+        scale: 0,
+        zoom: 1,        
+        WIDTH: null,
+        HEIGHT: null,
+        transform: { zoom: null, offset: null }
+      };
+    },
+    watch: {
+      axisFlag() {
+        if (this.axisFlag) {
+          // 显示
+          console.log('显示')
+        } else {
+          // 隐藏
+          console.log('隐藏')
+        }
+      },
+      src() {
+        let project = this.paper.projects.filter((item) => item.name === this.title)[0]
+        project.activate()
+        let layer = project.layers[0]
+        layer.remove()
+        let raster = new paper.Raster(this.src)
+        raster.onLoad = () => {
+          raster.fitBounds(project.view.bounds, false)
+        }
+      }
+    },
+    methods: {
+      drawAxis(){
+        // let currentPorject = this.paper.projects.filter((project) => project.name === this.title)[0]
+        let layerAxis = new paper.Layer()
+        layerAxis.name = this.title + '-layerAxis'
+        let axisX = new paper.Path.Line({
+          form: new paper.Point(-this.WIDTH / 2, 0),
+          to: new paper.Point(this.WIDTH / 2, 0),
+          strokeColor: 'red'
+        })
+        let axisY = new paper.Path.Line({
+          form: new paper.Point(0, -this.HEIGHT / 2,),
+          to: new paper.Point(0, this.HEIGHT / 2),
+          strokeColor: 'red'
+        })
+        let t = new paper.Path.Circle({
+          center: new paper.Point(0),
+          radius: 100,
+          strokeColor: 'black'
+        })
+      },
+      onwheel(e) {
+        // console.log('onwheel>>>', e)
+        // e.preventDefault();
+        let currentProject = this.paper.projects.filter((item) => item.name === this.title)[0]
+        let view = currentProject.view;
+        // if (e.ctrlKey) {
+        //   // Pan up and down
+        //   let delta = new paper.Point(0, 0.5 * e.deltaY);
+        //   view.setCenter(view.center.add(delta));
+        // } else if (e.shiftKey) {
+        //   // Pan left and right
+        //   let delta = new paper.Point(0.5 * e.deltaY, 0);
+        //   view.setCenter(view.center.add(delta));
+        // } else {
+          let viewPosition = view.viewToProject(
+              new paper.Point(e.offsetX, e.offsetY)
+          );
+
+          let transform = this.changeZoom(e.deltaY, viewPosition);
+            view.zoom = transform.zoom
+            view.center = view.center.add(transform.offset);
+            this.transform = {
+              ...this.transform,
+              ...transform
+            }
+            this.$emit('handlePicChange',{transform: this.transform, title: this.title})
+        // }
+
+        // return false;
+      },    
+      changeZoom(delta, p) {
+        let currentProject = this.paper.projects.filter((item) => item.name === this.title)[0]
+        let view = currentProject.view;      
+        let oldZoom = view.zoom;
+        let c = view.center;
+        let factor = 1 + this.zoom;
+
+        let zoom = delta < 0 ? oldZoom * factor : oldZoom / factor;
+        let beta = oldZoom / zoom;
+        let pc = p.subtract(c);
+        let a = p.subtract(pc.multiply(beta)).subtract(c);
+
+        return { zoom: zoom, offset: a };
+      }, 
+      // 初始化画布，并确认相关参数初始值
+      init() {
+        const canvas = this.$refs.picContainer;
+        this.WIDTH = canvas.clientWidth;
+        this.HEIGHT = canvas.clientHeight;
+        paper.setup(canvas);
+        this.paper = paper;
+        this.paper.project.name = this.title
+        this.paper.view.setCenter(0, 0);
+        this.paper.view.onMouseDown = (e) => {this.onMouseDown(e)}
+        this.paper.view.onMouseMove = (e) => {this.onMouseMove(e)}
+        this.paper.view.onMouseDrag = (e) => {this.onMouseDrag(e)}
+        // console.log('paper>>>', this.paper)
+
+        // let t = new paper.Path.Circle({
+        //   center: new paper.Point(0),
+        //   radius: 100,
+        //   strokeColor: 'green'
+        // })
+      },
+      drawPic() {
+        let raster = new paper.Raster(this.src)
+        raster.onLoad = () => {
+          raster.fitBounds(this.paper.view.bounds, false)
+        }
+        // raster.fitBounds(this.paper.view.bounds, false)
+      },
+      onMouseDown(e) {
+        let currentPorject = this.paper.projects.filter((project) => project.name === this.title)[0]
+        let hitResult = currentPorject.hitTest(
+          e.point,
+        );   
+      },
+      onMouseMove(e) {
+        this.initPoint = e.point;
+      },
+      onMouseDrag(e) {
+        let delta_x = this.initPoint.x - e.point.x;
+        let delta_y = this.initPoint.y - e.point.y;
+        let center_delta = new paper.Point(delta_x, delta_y);
+        let projects = this.paper.projects.filter((project) => project.name !== 'circle')
+        projects.forEach((project) => {
+          let new_center = project.view.center.add(center_delta);
+          project.view.setCenter(new_center);
+        })
+      },
+    },
+    created() {
+    },
+    mounted () {
+      this.init()
+      this.drawPic()
+      // this.drawAxis()
+    },
+    beforeDestroy() {
       let project = this.paper.projects.filter((item) => item.name === this.title)[0]
-      project.activate()
-      let layer = project.layers[0]
-      layer.remove()
-      let raster = new paper.Raster(this.url)
-      raster.onLoad = () => {
-        console.log('再次加载图片!!!1')
-        raster.fitBounds(project.view.bounds, false)
-      }
-      console.log('this.paper>>>', this.paper)
-
-      // let layer = project.layers[0]
-      // let raster = layer.children[0]
-      // console.log('raster>>>',raster)
-      
+      project.remove()
     }
-  },
-  mounted() {
-    console.time('pic---time')
-    this.initWorld()
-    this.drawPic()
-    console.timeEnd('pic---time')
-  },
-
-  methods: {
-    drawPic() {
-      console.log('???')
-      let raster = new paper.Raster(this.url)
-      let project = paper.projects.filter((item) => item.name === this.title)[0]
-      raster.onLoad = () => {
-        raster.fitBounds(project.view.bounds, false)
-      }
-    },
-    initWorld() {
-      // 获取
-      const canvas = this.$refs.main_canvas
-      this.WIDTH = canvas.clientWidth
-      this.HEIGHT = canvas.clientHeight
-      paper.setup(canvas)
-      this.paper = paper
-      this.paper.project.name = this.title
-      this.paper.view.setCenter(0, 0);
-    }
-  },
-  beforeDestroy() {
-    let project = paper.projects.filter((item) => item.name === this.title)[0]
-    project.remove()
-  }
 }
 </script>
 
+
 <style lang="scss" scoped>
 .paperpic-st {
-  border: 1px solid grey;
   width: 100%;
   height: 100%;
-  .content {
+  position: relative;
+  &-title {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100px;
+    height: 40px;
+    color: white;
+    font-weight: bold;
+    z-index: 10;
+  }
+  .paperpic-st-picContainer {
     width: 100%;
-    height: calc(100% - 20px);
-    .main_canvas {
+    height: 100%;
+    position: relative;
+    .picContainer {
       width: 100%;
       height: 100%;
     }
-  }
 
+  }
+}
+.white{
+  background: rgb(198, 198, 198);
+  border: 1px solid black;
+}
+.black{
+  background: rgb(83, 83, 83);
+  border: 1px solid black;
 }
 </style>

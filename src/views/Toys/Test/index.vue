@@ -8,8 +8,19 @@
   <div class='test-st pd10'>
     <commonTemplate title='Test' />
     <div class='content'>
-      <canvas
-      @wheel="onwheel" id="main_canvas" ref="main_canvas" resize class="main_canvas" />
+      <div
+        v-for="(pic, index) in picList"
+        :key="index"
+        style="width: 400px; height: 400px;border: 1px solid grey;background: black">
+        <paper-pic
+           :ref="pic.title"
+           :title="pic.title" 
+           :axisFlag="true"
+           :nameFlag="true"
+           :meterFlag="true"           
+           :src="pic.url" 
+           @handlePicChange="handlePicChange"/>        
+      </div>
     </div>
   </div>
 </template>
@@ -18,7 +29,6 @@ import CommonTemplate from '@/components/titleTemplate.vue'
 import PaperPic from '@/components/PaperPic.vue'
 import paper from 'paper'
 
-import { textHeights } from 'ol/render/canvas'
 export default {
   name: 'Test',
   components: {
@@ -27,7 +37,24 @@ export default {
   },
   data() {
     return {
-      url: 'https://cms-assets.tutsplus.com/uploads/users/1251/posts/26530/image/BenderPaper.jpg',
+      picList: [
+      {
+          title: '1',
+          url: 'https://cms-assets.tutsplus.com/uploads/users/1251/posts/26530/image/BenderPaper.jpg',
+        },
+        {
+          title: '2',
+          url: 'https://cms-assets.tutsplus.com/uploads/users/1251/posts/26530/image/BenderPaper.jpg',
+        },
+        {
+          title: '3',
+          url: 'https://cms-assets.tutsplus.com/uploads/users/1251/posts/26530/image/BenderPaper.jpg',
+        },
+        {
+          title: '4',
+          url: 'https://cms-assets.tutsplus.com/uploads/users/1251/posts/26530/image/BenderPaper.jpg',
+        },
+      ],
       WIDTH: null,
       HEIGHT: null,
       scale: 0,
@@ -37,6 +64,9 @@ export default {
   created() {
   },
   methods: {
+    handlePicChange() {
+
+    },
     initWorld() {
       const canvas = this.$refs.main_canvas
       this.WIDTH = canvas.clientWidth
@@ -98,9 +128,13 @@ export default {
     },     
   },
   mounted() {
+    this.tool = new paper.Tool()
+      this.tool.onMouseDown = (e) => {
+        console.log('点击事asdasdasdasd件--->')
+      }    
     console.time('test-spendtime')
-    this.initWorld()
-    this.drawPic()
+    // this.initWorld()
+    // this.drawPic()
     console.timeEnd('test-spendtime')
   },
   beforeDestroy() {
@@ -111,11 +145,13 @@ export default {
 .test-st {
   width: 100%;
   height: 100%;
+
   .content {
     width: 100%;
     height: calc(100% - 90px);
     display: flex;
     flex-wrap: wrap;
+    justify-content: space-between;
     .main_canvas {
       width: 100%;
       height: 100%;
