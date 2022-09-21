@@ -52,9 +52,8 @@ export default {
       }
     },
     onwheel(e) {
-      console.log('onwheel>>>', e)
+      // 向下缩小，向上放大，即： dealtY > 0: 缩小，反之反之
       e.preventDefault();
-      // let currentProject = this.paper.projects.filter((item) => item.name === this.title)[0]
       let currentProject = this.paper.project
       let view = currentProject.view;
       if (e.ctrlKey) {
@@ -69,16 +68,19 @@ export default {
         let viewPosition = view.viewToProject(
             new paper.Point(e.offsetX, e.offsetY)
         );
-
+        console.log('viewPosition>>', viewPosition)
         let transform = this.changeZoom(e.deltaY, viewPosition);
-          this.scale = 1 / transform.zoom;
-          view.zoom = transform.zoom + Math.pow(Math.E, -6);
-          view.center = view.center.add(transform.offset);
+        console.log('transform>>', transform)
+        // view.zoom = transform.zoom + Math.pow(Math.E, -6);
+        
+        view.zoom = transform.zoom
+        view.center = view.center.add(transform.offset);
       }
 
       // return false;
     },    
     // 计算鼠标滑动后的 zoom和 offset, 仅在 @onwheel 方法中用到
+    // delta为鼠标滚轮的滚动量，p为触发滚轮事件的paper坐标系内的真是坐标点
     changeZoom(delta, p) {
       // let currentProject = this.paper.projects.filter((item) => item.name === this.title)[0]
       let currentProject = this.paper.project
