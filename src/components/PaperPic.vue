@@ -8,8 +8,9 @@
 
 <template>
   <div
+  class="paperpic-st"
     @wheel="onwheel">
-    <span class="label">
+    <span style="font-weight: bold;color: white;">
       {{ picInfo.title }}
     </span>
     <div class="paperpic-st-picContainer">
@@ -192,7 +193,7 @@
   }
   .paperpic-st-picContainer {
     width: 100%;
-    height: 100%;
+    height: 95%;
     position: relative;
     .picContainer {
       width: 100%;
