@@ -2,23 +2,16 @@
  * @Author: Hhvcg
  * @Date: 2022-09-02 16:28:27
  * @LastEditors: -_-
- * @Description: 本组件接受参数包括title、图片url，支持图片的展示缩放及缩放联动
+ * @Description: 本组件接受参数对象，包括title、图片url，handleOnwheel暴露滚轮数据信息，支持图片的展示缩放、缩放联动、拖动效果
 -->
 
 
 <template>
   <div
-    @wheel="onwheel"
-    class="paperpic-st" :class="{ 
-            'black': title === 'Surface',
-            'white': title === 'PL',
-          }">
-    <div class="paperpic-st-title flex-cc" :class="{ 
-            'white': title === 'Surface',
-            'black': title === 'PL',
-          }">
-      {{ title }}
-    </div>
+    @wheel="onwheel">
+    <span class="label">
+      {{ picInfo.title }}
+    </span>
     <div class="paperpic-st-picContainer">
       <canvas
         id="picContainer"
@@ -34,24 +27,8 @@
   export default {
     name: "paperpic",
     props: {
-      title: {
-        type: String,
-        required: true
-      },
-      src: {
-        type: String,
-        required: true
-      },
-      axisFlag: {
-        type: Boolean,
-        required: true
-      },
-      nameFlag: {
-        type: Boolean,
-        required: true
-      },
-      meterFlag: {
-        type: Boolean,
+      picInfo: {
+        type: Object,
         required: true
       }
     },
@@ -65,21 +42,12 @@
       };
     },
     watch: {
-      axisFlag() {
-        if (this.axisFlag) {
-          // 显示
-          console.log('显示')
-        } else {
-          // 隐藏
-          console.log('隐藏')
-        }
-      },
-      src() {
-        let project = this.paper.projects.filter((item) => item.name === this.title)[0]
+      "picInfo.src"() {
+        let project = this.paper.projects.filter((item) => item.name === this.picInfo.title)[0]
         project.activate()
         let layer = project.layers[0]
         layer.remove()
-        let raster = new paper.Raster(this.src)
+        let raster = new paper.Raster(this.picInfo.src)
         raster.onLoad = () => {
           raster.fitBounds(project.view.bounds, false)
         }
@@ -87,9 +55,8 @@
     },
     methods: {
       drawAxis(){
-        // let currentPorject = this.paper.projects.filter((project) => project.name === this.title)[0]
         let layerAxis = new paper.Layer()
-        layerAxis.name = this.title + '-layerAxis'
+        layerAxis.name = this.picInfo.title + '-layerAxis'
         let axisX = new paper.Path.Line({
           form: new paper.Point(-this.WIDTH / 2, 0),
           to: new paper.Point(this.WIDTH / 2, 0),
@@ -109,7 +76,7 @@
       onwheel(e) {
         // console.log('onwheel>>>', e)
         // e.preventDefault();
-        let currentProject = this.paper.projects.filter((item) => item.name === this.title)[0]
+        let currentProject = this.paper.projects.filter((item) => item.name === this.picInfo.title)[0]
         let view = currentProject.view;
         // if (e.ctrlKey) {
         //   // Pan up and down
@@ -131,13 +98,12 @@
               ...this.transform,
               ...transform
             }
-            this.$emit('handlePicChange',{transform: this.transform, title: this.title})
+            this.$emit('handleOnwheel',{transform: this.transform, title: this.picInfo.title})
         // }
 
-        // return false;
       },    
       changeZoom(delta, p) {
-        let currentProject = this.paper.projects.filter((item) => item.name === this.title)[0]
+        let currentProject = this.paper.projects.filter((item) => item.name === this.picInfo.title)[0]
         let view = currentProject.view;      
         let oldZoom = view.zoom;
         let c = view.center;
@@ -157,44 +123,41 @@
         this.HEIGHT = canvas.clientHeight;
         paper.setup(canvas);
         this.paper = paper;
-        this.paper.project.name = this.title
+        this.paper.project.name = this.picInfo.title
         this.paper.view.setCenter(0, 0);
         this.paper.view.onMouseDown = (e) => {this.onMouseDown(e)}
         this.paper.view.onMouseMove = (e) => {this.onMouseMove(e)}
         this.paper.view.onMouseDrag = (e) => {this.onMouseDrag(e)}
-        // console.log('paper>>>', this.paper)
 
-        // let t = new paper.Path.Circle({
-        //   center: new paper.Point(0),
-        //   radius: 100,
-        //   strokeColor: 'green'
-        // })
       },
       drawPic() {
-        let raster = new paper.Raster(this.src)
+        let raster = new paper.Raster(this.picInfo.src)
         raster.onLoad = () => {
           raster.fitBounds(this.paper.view.bounds, false)
         }
-        // raster.fitBounds(this.paper.view.bounds, false)
       },
       onMouseDown(e) {
-        let currentPorject = this.paper.projects.filter((project) => project.name === this.title)[0]
-        let hitResult = currentPorject.hitTest(
-          e.point,
-        );   
+        if (e) {
+          let currentPorject = this.paper.projects.filter((project) => project.name === this.picInfo.title)[0]
+          let hitResult = currentPorject.hitTest(
+            e.point,
+          );   
+        }
       },
       onMouseMove(e) {
         this.initPoint = e.point;
       },
       onMouseDrag(e) {
-        let delta_x = this.initPoint.x - e.point.x;
-        let delta_y = this.initPoint.y - e.point.y;
-        let center_delta = new paper.Point(delta_x, delta_y);
-        let projects = this.paper.projects.filter((project) => project.name !== 'circle')
-        projects.forEach((project) => {
-          let new_center = project.view.center.add(center_delta);
-          project.view.setCenter(new_center);
-        })
+        if (e) {
+          let delta_x = this.initPoint.x - e.point.x;
+          let delta_y = this.initPoint.y - e.point.y;
+          let center_delta = new paper.Point(delta_x, delta_y);
+          let projects = this.paper.projects.filter((project) => project.name !== 'circle')
+          projects.forEach((project) => {
+            let new_center = project.view.center.add(center_delta);
+            project.view.setCenter(new_center);
+          })
+        }
       },
     },
     created() {
@@ -205,7 +168,7 @@
       // this.drawAxis()
     },
     beforeDestroy() {
-      let project = this.paper.projects.filter((item) => item.name === this.title)[0]
+      let project = this.paper.projects.filter((item) => item.name === this.picInfo.title)[0]
       project.remove()
     }
 }

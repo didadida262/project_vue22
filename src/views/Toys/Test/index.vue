@@ -13,13 +13,9 @@
         :key="index"
         style="width: 400px; height: 400px;border: 1px solid grey;background: black">
         <paper-pic
-           :ref="pic.title"
-           :title="pic.title" 
-           :axisFlag="true"
-           :nameFlag="true"
-           :meterFlag="true"           
-           :src="pic.url" 
-           @handlePicChange="handlePicChange"/>        
+          :ref="pic.title"
+          :picInfo="pic"
+           @handleOnwheel="handleOnwheel" />        
       </div>
     </div>
   </div>
@@ -40,19 +36,19 @@ export default {
       picList: [
       {
           title: '1',
-          url: 'https://cms-assets.tutsplus.com/uploads/users/1251/posts/26530/image/BenderPaper.jpg',
+          src: 'https://cms-assets.tutsplus.com/uploads/users/1251/posts/26530/image/BenderPaper.jpg',
         },
         {
           title: '2',
-          url: 'https://cms-assets.tutsplus.com/uploads/users/1251/posts/26530/image/BenderPaper.jpg',
+          src: 'https://cms-assets.tutsplus.com/uploads/users/1251/posts/26530/image/BenderPaper.jpg',
         },
         {
           title: '3',
-          url: 'https://cms-assets.tutsplus.com/uploads/users/1251/posts/26530/image/BenderPaper.jpg',
+          src: 'https://cms-assets.tutsplus.com/uploads/users/1251/posts/26530/image/BenderPaper.jpg',
         },
         {
           title: '4',
-          url: 'https://cms-assets.tutsplus.com/uploads/users/1251/posts/26530/image/BenderPaper.jpg',
+          src: 'https://cms-assets.tutsplus.com/uploads/users/1251/posts/26530/image/BenderPaper.jpg',
         },
       ],
       WIDTH: null,
@@ -64,7 +60,7 @@ export default {
   created() {
   },
   methods: {
-    handlePicChange() {
+    handleOnwheel() {
 
     },
     initWorld() {
