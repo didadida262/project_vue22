@@ -59,7 +59,7 @@ export default {
   mounted() {
         console.time('1')
     this.initWorld()
-    this.drawXY()
+    // this.drawXY()
     // this.drawWave()
     // // this.drawSnakeStep()
     // this.test()
@@ -368,16 +368,29 @@ export default {
       this.paper = paper
       // this.paper.view.setCenter(0, 0)
       this.paper.view.onFrame = this.onFrame
-      this.image.raster = new paper.Raster(this.url)
-      this.image.raster.onLoad = () => {
-        this.image.raster.fitBounds(this.paper.view.bounds, false)
-      }
+      this.paper.view.setCenter(0,0)
+
       // this.image.raster.fitBounds(this.paper.view.bounds, false)
       this.tool = new paper.Tool()
       this.tool.onMouseDown = (e) => {
         console.log('点击事件--->', e.point)
       }
       // 初始化世界
+     
+      let raster = new paper.Raster(this.url)
+      raster.set({
+        position: new paper.Point(100, 100)
+      })
+      
+      console.log('raster>>', raster)
+      // this.image.raster.onLoad = () => {
+      //   this.image.raster.fitBounds(this.paper.view.bounds, false)
+      // }
+      let cir = new paper.Path.Circle({
+        center: new paper.Point(0),
+        radius: 10,
+        fillColor: 'black'
+      }) 
     }
   }
 }
