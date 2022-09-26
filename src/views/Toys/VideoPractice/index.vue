@@ -11,46 +11,37 @@
     <div class="Content flex-cb">
       <div class="video-container flex-cb">
         <video ref="videoContainer" controls style="width: 100%;height: 100%" autoplay="autoplay">
-          <!-- <source src="/media/cc0-videos/flower.webm"
-                  type="video/webm">
-          <source src="/media/cc0-videos/flower.mp4"
-                  type="video/mp4">
-          Sorry, your browser doesn't support embedded videos.         -->
             <source :src="url" type="video/mp4">
         </video>
       </div>      
       <div class="canvas-container pd10">
-        <h2 style="height: 30px">歌单....</h2>
+        <div style="height: 30px;width: 100%;" class="mgb10">
+          <el-button @click="handleChangeModel('mv')">MV</el-button>
+          <el-button @click="handleChangeModel('social')">Social</el-button>
+        </div>
         <div style="width: 100%;height: calc(100% - 60px);overflow: scroll;">
           <div v-for="(video, index) in videosList" :key="index"  class="flex-ca">
-            <song-item :data="video.name" @handleSelect="handleSelect"/>
-            <!-- <span>{{ video.id }}</span>
-            <span>{{ video.name }}</span> -->
+            <video-item :data="video.name" @handleSelect="handleSelect"/>
           </div>
         </div>
-        <!-- <canvas ref="canvas" resize class="canvas" /> -->
       </div>
     </div>
-    <!-- <div class="operation mgt10">
-      <el-button type="primary" size="mini" @click="queryImg">截图</el-button>
-      <el-button size="mini">下载</el-button>
-      <el-button size="mini" @click="test">test</el-button>
-    </div> -->
   </div>
 </template>
 
 <script>
 import CommonTemplate from '@/components/titleTemplate.vue'
-import songItem from '../../paper/Music/components/songItem.vue'
+import videoItem from './components/videoItem.vue'
 
 export default {
   name: "videoPractice",
   components: {
     CommonTemplate,
-    songItem
+    videoItem
   },
   data() {
     return {
+      category: 'mv',
       videosList: [],
       url: null,
       page: {
@@ -61,6 +52,10 @@ export default {
     }
   },
   methods: {
+    handleChangeModel(cate) {
+      this.category = cate
+      this.getVideosList(this.page)
+    },
     handleSelect(info) {
       console.log('播放>>', info)
       this.getVideo(info)
