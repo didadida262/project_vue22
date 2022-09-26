@@ -10,7 +10,7 @@
     <commonTemplate title="Some ge tais" />
     <div class="Content flex-cb">
       <div class="video-container flex-cb">
-        <video ref="videoContainer" controls style="width: 100%;height: 100%">
+        <video ref="videoContainer" controls style="width: 100%;height: 100%" autoplay="autoplay">
           <!-- <source src="/media/cc0-videos/flower.webm"
                   type="video/webm">
           <source src="/media/cc0-videos/flower.mp4"
