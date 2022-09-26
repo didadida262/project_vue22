@@ -6,7 +6,7 @@
 -->
 <template>
   <div class="page-container">
-    <div class="header flex-sbc pd10 mgb10">
+    <div class="header flex-cb pd10 mgb10">
       <h1>Article List</h1>
       <el-button type="primary" @click="addArticle">Write</el-button>
     </div>

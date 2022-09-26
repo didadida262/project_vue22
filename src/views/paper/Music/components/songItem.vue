@@ -5,8 +5,8 @@
  * @Description: 侧边栏组件，用于显示后端返回的歌曲
 -->
 <template>
-  <div class="song-item mgb10 cursor-pointer flex-cc">
-    <span>{{ data }}</span>
+  <div class="song-item mgb10 cursor-pointer flex-cc" @click="handleSelect">
+    <span style="color: black">{{ data }}</span>
   </div>
 </template>
 <script lang="ts">
@@ -29,6 +29,9 @@ export default {
   mounted() {
   },
   methods: {
+    handleSelect() {
+      this.$emit('handleSelect', this.data)
+    }
   },
 
   beforeDestroy() {

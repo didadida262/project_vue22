@@ -80,15 +80,20 @@ div:focus {
   align-items: center;
 }
 
-.flex-sc {
+.flex-ca {
   display: flex;
   justify-content: space-around;
   align-items: center;
 }
-.flex-sbc {
+.flex-cb {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+.flex-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .pd10 {
