@@ -10,18 +10,18 @@
     <commonTemplate title="Some ge tais" />
     <div class="Content flex-cb">
       <div class="video-container flex-cb">
-        <video ref="videoContainer" controls style="width: 100%;height: 100%" autoplay="autoplay">
+        <video ref="videoContainer" controls style="width: 100%;height: 100%" autoplay="autoplay" loop>
             <source :src="url" type="video/mp4">
         </video>
       </div>      
       <div class="canvas-container pd10">
         <div style="height: 30px;width: 100%;" class="mgb10">
-          <el-button @click="handleChangeModel('mv')">MV</el-button>
-          <el-button @click="handleChangeModel('social')">Social</el-button>
+          <el-button  type="primary" @click="handleChangeModel('mv')" :plain="currentCate !== 'mv'">MV</el-button>
+          <el-button type="primary"  @click="handleChangeModel('social')" :plain="currentCate !== 'social'">Social</el-button>
         </div>
         <div style="width: 100%;height: calc(100% - 60px);overflow: scroll;">
-          <div v-for="(video, index) in videosList" :key="index"  class="flex-ca">
-            <video-item :data="video.name" @handleSelect="handleSelect"/>
+          <div v-for="(video, index) in videosList" :key="index"  class="flex-ca video-itemContainer mgb5">
+            <video-item :data="video" @handleSelect="handleSelect"/>
           </div>
         </div>
       </div>
@@ -41,7 +41,7 @@ export default {
   },
   data() {
     return {
-      category: 'mv',
+      currentCate: 'mv',
       videosList: [],
       url: null,
       page: {
@@ -53,12 +53,19 @@ export default {
   },
   methods: {
     handleChangeModel(cate) {
-      this.category = cate
+      this.currentCate = cate
       this.getVideosList(this.page)
     },
     handleSelect(info) {
       console.log('播放>>', info)
       this.getVideo(info)
+      this.videosList.forEach(item => {
+        if (item.name === info.name) {
+          item.active = true
+        } else {
+          item.active = false
+        }
+      });
     },
     download (){
       // // 转base64格式、图片格式转换、图片质量压缩---支持两种格式image/jpeg+image/png
@@ -99,7 +106,10 @@ export default {
 
     // 获取视频列表
     async getVideo(info) {
-      const params = {name: info}
+      const params = {
+        currentCate: this.currentCate,
+        name: info.name
+      }
       const res = await this.$axios.getVideo(params)
       let blob = new Blob([res], {type: 'mp4'})
       let url = URL.createObjectURL(blob)
@@ -109,9 +119,19 @@ export default {
       
       console.log('当前url--->', this.url)
     },
-    async getVideosList(params) {
+    async getVideosList(info) {
+      const params = {
+        ...info,
+        currentCate: this.currentCate
+      }
+      
       const res = await this.$axios.getVideosList(params)
-      this.videosList = res
+      this.videosList = res.map((item) => {
+        return {
+          ...item,
+          active: false
+        }
+      })
       console.log('mvlist>>>', res)
     }
   },
@@ -137,11 +157,15 @@ export default {
       width: 65%;
       border: 1px solid gray;
       height: 100%;
+      background: 'black';
     }    
     .canvas-container {
       width: calc(35% - 10px);
       height: 100%;
       border: 1px solid gray;
+      .video-itemContainer {
+        border: 1px solid rgb(142, 68, 68);
+      }
     }
 
   }

@@ -1,7 +1,10 @@
 
 <template>
-  <div class="video-item mgb10 cursor-pointer flex-cc" @click="handleSelect">
-    <span style="color: black">{{ data }}</span>
+  <div
+   class="video-item cursor-pointer flex-cc" 
+   :class="{'is-active':data.active}"
+   @click="handleSelect">
+    <span style="color: black">{{ data.name }}</span>
   </div>
 </template>
 <script lang="ts">
@@ -45,6 +48,10 @@ export default {
     color: white;
   }
   .video-item:hover {
+    background-image: linear-gradient(120deg,#b0d2ee,#13ca75);
+    transform: scale(1.01);
+  }
+  .is-active {
     background-image: linear-gradient(120deg,#b0d2ee,#13ca75);
     transform: scale(1.01);
   }

@@ -56,7 +56,7 @@ export default {
       responseType: 'blob',
       method: 'post',
       data: {
-        name: params.name
+        ...params
       }
     })
   }
