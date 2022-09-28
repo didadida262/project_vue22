@@ -18,6 +18,7 @@
         <div style="height: 30px;width: 100%;" class="mgb10">
           <el-button  type="primary" @click="handleChangeModel('mv')" :plain="currentCate !== 'mv'">MV</el-button>
           <el-button type="primary"  @click="handleChangeModel('social')" :plain="currentCate !== 'social'">Social</el-button>
+          <el-button type="primary"  @click="handleChangeModel('intresting')" :plain="currentCate !== 'social'">Intresting</el-button>
         </div>
         <div style="width: 100%;height: calc(100% - 60px);overflow: scroll;">
           <div v-for="(video, index) in videosList" :key="index"  class="flex-ca video-itemContainer mgb5">
