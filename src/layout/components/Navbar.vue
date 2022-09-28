@@ -3,7 +3,7 @@
     <hamburger :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
     <breadcrumb class="breadcrumb-container" />
     <header-notice></header-notice>
-    <div class="right-menu flex-sc">
+    <div class="right-menu flex-ca">
      
       <!-- <el-dropdown split-button type="primary">
         切换语言

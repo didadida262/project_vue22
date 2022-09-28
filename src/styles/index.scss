@@ -67,7 +67,9 @@ div:focus {
 .mgr10 {
   margin-right: 10px
 }
-
+.mgb5 {
+  margin-bottom: 5px
+}
 .mgt10 {
   margin-top: 10px
 }
@@ -80,15 +82,20 @@ div:focus {
   align-items: center;
 }
 
-.flex-sc {
+.flex-ca {
   display: flex;
   justify-content: space-around;
   align-items: center;
 }
-.flex-sbc {
+.flex-cb {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+.flex-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .pd10 {

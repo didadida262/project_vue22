@@ -1,12 +1,10 @@
-<!--
- * @Author: Hhvcg
- * @Date: 2022-06-30 10:57:47
- * @LastEditors: -_-
- * @Description: 侧边栏组件，用于显示后端返回的歌曲
--->
+
 <template>
-  <div class="song-item mgb10 cursor-pointer flex-cc" @click="handleSelect">
-    <span style="color: black">{{ data }}</span>
+  <div
+   class="video-item cursor-pointer flex-cc" 
+   :class="{'is-active':data.active}"
+   @click="handleSelect">
+    <span style="color: black">{{ data.name }}</span>
   </div>
 </template>
 <script lang="ts">
@@ -41,7 +39,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-  .song-item {
+  .video-item {
     padding: 5px;
     width: 100%;
     height: 45px;
@@ -49,7 +47,11 @@ export default {
     box-shadow: 0px 0px 6px rgba(109, 106, 106, 0.8);
     color: white;
   }
-  .song-item:hover {
+  .video-item:hover {
+    background-image: linear-gradient(120deg,#b0d2ee,#13ca75);
+    transform: scale(1.01);
+  }
+  .is-active {
     background-image: linear-gradient(120deg,#b0d2ee,#13ca75);
     transform: scale(1.01);
   }

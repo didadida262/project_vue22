@@ -42,7 +42,22 @@ export default {
   getSongs() {
     return axios.get('/songs/list')
   },
+
   getAllChars() {
     return axios.get('/getAllChar')
+  },
+  getVideosList(params) {
+    return axios.post('/getVideosList', params)
+  },
+  getVideo(params) {
+    console.log('params', params)
+    return axios({
+      url: '/getVideo',
+      responseType: 'blob',
+      method: 'post',
+      data: {
+        ...params
+      }
+    })
   }
 }
