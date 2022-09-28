@@ -385,6 +385,7 @@ export default {
       console.log('raster>>', raster)
       // this.image.raster.onLoad = () => {
       //   this.image.raster.fitBounds(this.paper.view.bounds, false)
+      
       // }
       let cir = new paper.Path.Circle({
         center: new paper.Point(0),
