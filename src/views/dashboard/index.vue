@@ -379,7 +379,11 @@ export default {
      
       let raster = new paper.Raster(this.url)
       raster.set({
-        position: new paper.Point(100, 100)
+        position: new paper.Point(100, 100),
+        strokeColor: 'red',
+        strokeWidth: 10,
+        opacity: 0.5,
+        // fillColor: 'red'
       })
       
       console.log('raster>>', raster)

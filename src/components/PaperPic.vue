@@ -16,7 +16,7 @@
     <div class="paperpic-st-picContainer">
       <canvas
         id="picContainer"
-        ref="picContainer"
+        :ref="picContainerRef"
         resize
         class="picContainer"
       />
@@ -51,6 +51,7 @@
         let raster = new paper.Raster(this.picInfo.src)
         raster.onLoad = () => {
           raster.fitBounds(project.view.bounds, false)
+
         }
       }
     },
@@ -119,7 +120,7 @@
       }, 
       // 初始化画布，并确认相关参数初始值
       init() {
-        const canvas = this.$refs.picContainer;
+        const canvas = this.$refs[this.picContainerRef];
         this.WIDTH = canvas.clientWidth;
         this.HEIGHT = canvas.clientHeight;
         paper.setup(canvas);
@@ -135,7 +136,11 @@
         let raster = new paper.Raster(this.picInfo.src)
         raster.onLoad = () => {
           raster.fitBounds(this.paper.view.bounds, false)
+          raster.strokeColor = 'red'
+          raster.strokeWidth = 10
+          raster.opacity = 0.5
         }
+        console.log('paperScope--->', this.paper)
       },
       onMouseDown(e) {
         if (e) {
@@ -160,6 +165,11 @@
           })
         }
       },
+    },
+    computed: {
+      picContainerRef() {
+        return 'picContainerRef' + this.picInfo.title
+      }
     },
     created() {
     },
