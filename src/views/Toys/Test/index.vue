@@ -8,7 +8,10 @@
   <div class='test-st pd10'>
     <commonTemplate title='Test' />
     <div class='content'>
-      <div
+      <pic-wall
+        :picInfo="picList[0]"
+      />
+      <!-- <div
         class="content-item"
         v-for="(pic, index) in picList"
         :key="index"
@@ -16,7 +19,7 @@
         <paper-pic
           :picInfo="pic"
            />        
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -24,6 +27,7 @@
 import CommonTemplate from '@/components/titleTemplate.vue'
 import PaperPic from '@/components/PaperPic.vue'
 import PaperPicSample from '@/components/PaperPicSample.vue'
+import PicWall from '@/components/PicWall.vue'
 import paper from 'paper'
 
 export default {
@@ -31,7 +35,8 @@ export default {
   components: {
     CommonTemplate,
     PaperPic,
-    PaperPicSample
+    PaperPicSample,
+    PicWall
   },
   data() {
     return {
@@ -150,6 +155,8 @@ export default {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
+    border: 1px solid gray;
+    background: black;
     &-item {
       width: 24%;
       height: 400px;

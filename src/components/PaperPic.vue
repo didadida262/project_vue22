@@ -77,7 +77,6 @@
       },
       onMouseDown(e) {
         this.initPoint = e.point
-        console.log('down!')
       },
       onMouseDrag(e) {
         let delta = this.initPoint.subtract(e.point)
@@ -100,13 +99,12 @@
         return 'picContainer' + this.picInfo.title
       },
       currentProject() {
-        return this.paper.projects.filter((item) => item.name === this.picInfo.title)[0]
+        return this.paper.projects.filter((item) => item.name === this.picContainer)[0]
       }
     },
     mounted () {
       this.init()
       this.drawPic()
-      console.log('this.paper----', this.paper)
     },
     beforeDestroy() {
       let currentProject = this.paper.projects.filter((p) => p.name === this.picContainer)
