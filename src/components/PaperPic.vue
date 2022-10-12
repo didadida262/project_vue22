@@ -8,7 +8,7 @@
 
 <template>
   <canvas
-    id="picContainer"
+    :id="picContainer"
     :ref="picContainer"
     resize
     class="picContainer"
@@ -69,7 +69,7 @@
         this.HEIGHT = canvas.clientHeight;
         paper.setup(canvas);
         this.paper = paper;
-        this.paper.project.name = this.picInfo.title
+        this.paper.project.name = this.picContainer
         this.paper.view.setCenter(0, 0);
         this.paper.view.onMouseDown = (e) => { this.onMouseDown(e) }
         this.paper.view.onMouseDrag = (e) => { this.onMouseDrag(e) }
@@ -77,6 +77,7 @@
       },
       onMouseDown(e) {
         this.initPoint = e.point
+        console.log('down!')
       },
       onMouseDrag(e) {
         let delta = this.initPoint.subtract(e.point)
@@ -96,7 +97,7 @@
     },
     computed: {
       picContainer() {
-        return 'picContainer' + this.title
+        return 'picContainer' + this.picInfo.title
       },
       currentProject() {
         return this.paper.projects.filter((item) => item.name === this.picInfo.title)[0]
@@ -105,11 +106,11 @@
     mounted () {
       this.init()
       this.drawPic()
+      console.log('this.paper----', this.paper)
     },
     beforeDestroy() {
       let currentProject = this.paper.projects.filter((p) => p.name === this.picContainer)
       currentProject.remove()
-      console.log('this.paper----', this.paper)
     }
 };
 </script>
