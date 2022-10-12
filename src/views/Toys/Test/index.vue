@@ -9,13 +9,13 @@
     <commonTemplate title='Test' />
     <div class='content'>
       <div
+        class="content-item"
         v-for="(pic, index) in picList"
         :key="index"
-        style="width: 400px; height: 400px;border: 1px solid grey;background: black">
+        >
         <paper-pic
-          :ref="pic.title"
           :picInfo="pic"
-           @handleOnwheel="handleOnwheel" />        
+           />        
       </div>
     </div>
   </div>
@@ -23,13 +23,15 @@
 <script>
 import CommonTemplate from '@/components/titleTemplate.vue'
 import PaperPic from '@/components/PaperPic.vue'
+import PaperPicSample from '@/components/PaperPicSample.vue'
 import paper from 'paper'
 
 export default {
   name: 'Test',
   components: {
     CommonTemplate,
-    PaperPic
+    PaperPic,
+    PaperPicSample
   },
   data() {
     return {
@@ -148,6 +150,12 @@ export default {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
+    &-item {
+      width: 24%;
+      height: 400px;
+      border: 1px solid rebeccapurpled;
+      background: black;
+    }
     .main_canvas {
       width: 100%;
       height: 100%;

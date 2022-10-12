@@ -2,7 +2,7 @@
  * @Author: Hhvcg
  * @Date: 2022-09-16 11:38:49
  * @LastEditors: -_-
- * @Description: 支持图片展示、拖拽、放大缩小功能
+ * @Description: 纯粹的图片展示, 支持自适应或者完全铺满
 -->
 
 
@@ -28,7 +28,6 @@
       return {
         WIDTH: null,
         HEIGHT: null,
-        initPoint: null
       };
 
     },
@@ -42,22 +41,6 @@
         this.paper = paper;
         this.paper.project.name = this.picInfo.title
         this.paper.view.setCenter(0, 0);
-        this.paper.view.onMouseDown = (e) => { this.onMouseDown(e) }
-        this.paper.view.onMouseDrag = (e) => { this.onMouseDrag(e) }
-        this.paper.view.onMouseUp = (e) => { this.onMouseUp(e) }
-      },
-      onMouseDown(e) {
-        this.initPoint = e.point
-      },
-      onMouseDrag(e) {
-        console.log('drag')
-        let delta = this.initPoint.subtract(e.point)
-        this.paper.projects.forEach(pro => {
-          let newCenter = pro.view.center.add(delta)
-          pro.view.setCenter(newCenter)
-        });
-      },
-      onMouseUp(e) {
       },
       drawPic() {
         let raster = new paper.Raster(this.picInfo.src)
