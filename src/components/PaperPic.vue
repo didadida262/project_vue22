@@ -12,6 +12,7 @@
     :ref="picContainer"
     resize
     class="picContainer"
+    @wheel="onwheel"
   />
 </template>
 <script>
@@ -26,13 +27,41 @@
     },
     data() {
       return {
+        zoom: 1,       
         WIDTH: null,
         HEIGHT: null,
+        // 拖动的初始点
         initPoint: null
       };
 
     },
     methods: {
+      changeZoom(delta, p) {
+        let view = this.currentProject.view;      
+        let oldZoom = view.zoom;
+        let c = view.center;
+        let factor = 0.05 + this.zoom;
+
+        let zoom = delta < 0 ? oldZoom * factor : oldZoom / factor;
+        let beta = oldZoom / zoom;
+        // 计算当前点到当前视图中心点向量指向
+        let pc = p.subtract(c);
+        // a点目测是换算后的新p点
+        let a = p.subtract(pc.multiply(beta)).subtract(c);
+
+        return { zoom: zoom, offset: a };
+      },       
+      onwheel(e) {
+        let view = this.currentProject.view;
+        let viewPosition = view.viewToProject(
+            new paper.Point(e.offsetX, e.offsetY)
+        );
+        let transform = this.changeZoom(e.deltaY, viewPosition);
+        this.paper.projects.forEach((project) => {
+          project.view.zoom = transform.zoom
+          project.view.center = project.view.center.add(transform.offset);
+        })
+      },
       // 初始化画布，并确认相关参数初始值
       init() {
         const canvas = this.$refs[this.picContainer]
@@ -50,7 +79,6 @@
         this.initPoint = e.point
       },
       onMouseDrag(e) {
-        console.log('drag')
         let delta = this.initPoint.subtract(e.point)
         this.paper.projects.forEach(pro => {
           let newCenter = pro.view.center.add(delta)
@@ -69,6 +97,9 @@
     computed: {
       picContainer() {
         return 'picContainer' + this.title
+      },
+      currentProject() {
+        return this.paper.projects.filter((item) => item.name === this.picInfo.title)[0]
       }
     },
     mounted () {
