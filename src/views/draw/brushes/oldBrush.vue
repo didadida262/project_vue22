@@ -26,7 +26,7 @@
 
 <script>
 import paper from "paper";
-import { getRandomColor } from '@/weapons'
+import { getRandomColor } from '@/utils/weapons.js'
 
 export default {
   name: "oldBrush",

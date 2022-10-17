@@ -5,7 +5,7 @@
  * @Description: B2----Class
  */
 import paper from 'paper'
-import { getRandomColor } from '@/weapons'
+import { getRandomColor } from '@/utils/weapons.js'
 
 // Ariplane暂时拥有position，color自有属性
 export class Ariplane {

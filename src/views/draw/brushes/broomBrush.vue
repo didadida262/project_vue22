@@ -25,7 +25,7 @@
 
 <script>
 import paper from "paper";
-import { getRandomColor } from '@/weapons'
+import { getRandomColor } from '@/utils/weapons.js'
 
 // 色调         hue: Math.random() * 360,
 // 饱和度    saturation: 1,

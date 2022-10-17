@@ -27,6 +27,7 @@ export default {
   },
   data() {
     return {
+      title: 'airplane',
       Ship: null,
       tool: null,
       myPath: null
@@ -35,6 +36,11 @@ export default {
   watch: {},
   mounted() {
     this.init();
+  },
+  computed: {
+    currentProject() {
+      return this.paper.projects.filter((_p) => _p.name === this.title)[0]
+    }
   },
   methods: {
     onFrame() {
@@ -71,6 +77,7 @@ export default {
       this.paper = paper;
       this.paper.setup(canvas);
       this.paper.view.setCenter(0, 0);
+      this.paper.project.name = this.title
       this.paper.view.onFrame = this.onFrame;
       this.paper.view.onMouseDown = this.onMouseDown
       this.tool = new paper.Tool()
@@ -87,12 +94,6 @@ export default {
       console.log('paperScope---', this.paper)
     },
   },
-  beforeDestroyed() {
-    console.log('销毁前')
-    this.paper = null
-  }
-
-
 };
 </script>
 <style scoped lang="scss">
