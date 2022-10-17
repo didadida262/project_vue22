@@ -64,6 +64,7 @@ export default {
     // // this.drawSnakeStep()
     // this.test()
     console.timeEnd('1')
+    console.log('paperScope--->', this.paper)
   },
 
   methods: {
@@ -386,7 +387,6 @@ export default {
         // fillColor: 'red'
       })
       
-      console.log('raster>>', raster)
       // this.image.raster.onLoad = () => {
       //   this.image.raster.fitBounds(this.paper.view.bounds, false)
       

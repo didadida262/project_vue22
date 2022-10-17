@@ -16,7 +16,7 @@
 <script>
 import paper from "paper";
 import commonTemplate from '@/components/titleTemplate.vue'
-import { getRandomColor } from '@/weapons'
+import { getRandomColor } from '@/utils/weapons'
 import tool from '@/components/tool'
 // import { Ariplane } from './myAriplane'
 export default {
@@ -81,7 +81,6 @@ export default {
       console.log("初始化世界!!!");
       // this.ari = new Ariplane()
       // this.myPath = new paper.Path.Rectangle(new paper.Point(-400,-400), new paper.Size(100))
-      // this.myPath.strokeColor = getRandomColor()
       this.Ship = new paper.Path([0, 0], [20, 20],[16, 22], [11, 15], [8, 16], [4, 12], [0, 20], [-4, 12], [-8, 16], [-11, 15], [-16, 22], [-20, 20])
       this.Ship.strokeColor = getRandomColor()
       this.Ship.closed = true
