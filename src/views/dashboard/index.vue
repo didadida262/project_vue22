@@ -16,7 +16,7 @@
 import { mapGetters } from 'vuex'
 import paper from 'paper'
 import { getRandomColor, getCirclePoint } from '@/utils/weapons'
-import { tSParenthesizedType } from '@babel/types'
+import { thisExpression, tSParenthesizedType } from '@babel/types'
 
 export default {
   name: 'Dashboard',
@@ -358,6 +358,14 @@ export default {
         strokeColor: 'black'
       })
     },
+    onMouseMove(e) {
+      console.log('move>>>>', e)
+      console.log('xxxx>>>>', this.X)
+      this.X.set({
+        position: e.point,
+        length: 10000
+      })
+    },
     initWorld() {
       // 获取
       const canvas = this.$refs.main_canvas
@@ -370,6 +378,7 @@ export default {
       // this.paper.view.setCenter(0, 0)
       this.paper.view.onFrame = this.onFrame
       this.paper.view.setCenter(0,0)
+      this.paper.view.onMouseMove = (e) => { this.onMouseMove(e) }
 
       // this.image.raster.fitBounds(this.paper.view.bounds, false)
       this.tool = new paper.Tool()
@@ -377,15 +386,14 @@ export default {
         console.log('点击事件--->', e.point)
       }
       // 初始化世界
-     
-      let raster = new paper.Raster(this.url)
-      raster.set({
-        position: new paper.Point(100, 100),
-        strokeColor: 'red',
-        strokeWidth: 10,
-        opacity: 0.5,
-        // fillColor: 'red'
-      })
+     const from = new paper.Point(0)
+     const to = new paper.Point(100, 0)
+      this.X = new paper.Path.Line({
+        from: from, 
+        to: to, 
+        strokeColor: '#650D65'
+      })  
+      console.log('>>>', this.X)
       
       // this.image.raster.onLoad = () => {
       //   this.image.raster.fitBounds(this.paper.view.bounds, false)
@@ -393,8 +401,8 @@ export default {
       // }
       let cir = new paper.Path.Circle({
         center: new paper.Point(0),
-        radius: 10,
-        fillColor: 'black'
+        radius: 100,
+        strokeColor: 'black'
       }) 
     }
   }
