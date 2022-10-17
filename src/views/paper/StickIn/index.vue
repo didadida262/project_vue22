@@ -24,6 +24,7 @@ export default {
   },
   data() {
     return {
+      title: 'stickin',
       rotateFlag: true,
       paper: null,
       tool: null,
@@ -34,6 +35,11 @@ export default {
   watch: {},
   mounted() {
     this.init();
+  },
+  computed: {
+    currentProject() {
+      return this.paper.projects.filter((_p) => _p.name === this.title)[0]
+    }
   },
   methods: {
     removeItem(item) {
@@ -58,6 +64,7 @@ export default {
       this.paper.setup(canvas);
       // 将视图的远点置于底部中间，方便后续炮塔等的向量计算
       this.paper.view.setCenter(0, 0);
+      this.paper.project.name = 'stickin'
       this.paper.view.onFrame = this.onFrame;
       this.tool = new this.paper.Tool();
       this.tool.onKeyDown = (e) => {
@@ -86,9 +93,9 @@ export default {
       });
     },
   },
-  beforeDestroyed() {
-    console.log('销毁前')
-    this.paper = null
+  beforeDestroy() {
+    console.log('beforeDestroyed>>>radio')
+    this.currentProject.remove()
   }
 
 

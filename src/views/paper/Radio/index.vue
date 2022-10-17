@@ -25,6 +25,7 @@ export default {
   },
   data() {
     return {
+      title: 'radio',
       colors: [],
       cycles: 4,
       point: null,
@@ -38,6 +39,11 @@ export default {
     };
   },
   watch: {},
+  computed: {
+    currentProject() {
+      return this.paper.projects.filter((_p) => _p.name === this.title)[0]
+    }
+  },  
   mounted() {
     this.init();
     this.createRadio()
@@ -102,6 +108,7 @@ export default {
       const canvas = this.$refs.canvas;
       this.paper = paper;
       this.paper.setup(canvas);
+      this.paper.project.name = this.title
       this.paper.view.setCenter(0, 0);
       this.paper.view.onFrame = this.onFrame;
       this.paper.view.onMouseDown = this.onMouseDown
@@ -109,13 +116,13 @@ export default {
       this.tool.onMouseDown = (e) => {
         console.log('tool的鼠标点击事件---->', e)
       }
+      console.log(`${this.title}的paperScope---`, this.paper)
     },
   },
-  beforeDestroyed() {
-    console.log('销毁前')
-    this.paper = null
+  beforeDestroy() {
+    console.log('beforeDestroyed>>>radio')
+    this.currentProject.remove()
   }
-
 
 };
 </script>

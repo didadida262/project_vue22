@@ -1213,6 +1213,7 @@ import { Boid } from "./myBoid.js";
 export default {
   data() {
     return {
+      title: 'tadpole',
       boids: null,
       paper: null,
       // 心形图案
@@ -1226,14 +1227,16 @@ export default {
       test: null
     };
   },
+  computed: {
+    currentProject() {
+      return this.paper.projects.filter((_p) => _p.name === this.title)[0]
+    }    
+  },
   mounted() {
     this.initWorld();
     this.tadpole();
     // this.testTiger();
     // this.testPaper()
-  },
-  beforeDestroy() {
-    this.paper = null;
   },
   methods: {
     testPaper() {
@@ -1273,6 +1276,7 @@ export default {
       // canvas的dom节点给到paper装载
       this.paper = paper;
       this.paper.setup(canvas);
+      this.apper.project.name = 'tadpole'
       this.canvasWidth = this.paper.view.size.width
       this.canvasHeight = this.paper.view.size.height
       // 加装各类事件
@@ -1348,6 +1352,10 @@ export default {
       this.groupTogether = !this.groupTogether;
     },
   },
+  beforeDestroy() {
+    console.log('beforeDestroyed>>>tadpole')
+    this.currentProject.remove()
+  }
 };
 </script>
 
