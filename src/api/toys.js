@@ -68,5 +68,8 @@ export default {
         ...params
       }
     })
+  },
+  changeFileName(params) {
+    return axios.post('/changeFileName', params)
   }
 }

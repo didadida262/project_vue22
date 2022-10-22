@@ -25,9 +25,6 @@
            >
             {{ cate }}
           </el-button>
-          <!-- <el-button  type="primary" @click="handleChangeModel('mv')" :plain="currentCate !== 'mv'">MV</el-button>
-          <el-button type="primary"  @click="handleChangeModel('social')" :plain="currentCate !== 'social'">Social</el-button>
-          <el-button type="primary"  @click="handleChangeModel('intresting')" :plain="currentCate !== 'social'">Intresting</el-button> -->
         </div>
         <div style="width: 100%;height: calc(100% - 60px);overflow: scroll;">
           <div v-for="(video, index) in videosList" :key="index"  class="flex-ca video-itemContainer mgb5">
@@ -67,16 +64,20 @@ export default {
       this.currentCate = cate
       this.getVideosList(this.page)
     },
-    handleSelect(info) {
+    async handleSelect(info) {
       console.log('播放>>', info)
-      this.getVideo(info)
-      this.videosList.forEach(item => {
-        if (item.name === info.name) {
-          item.active = true
-        } else {
-          item.active = false
-        }
-      });
+      if (info.type === 'click') {
+        await this.getVideo(info.data)
+        this.videosList.forEach(item => {
+          if (item.name === info.name) {
+            item.active = true
+          } else {
+            item.active = false
+          }
+        });
+      } else if (info.type === 'refreshData'){
+        this.getVideosList()
+      }  
     },
     download (){
       // // 转base64格式、图片格式转换、图片质量压缩---支持两种格式image/jpeg+image/png
@@ -140,9 +141,11 @@ export default {
       this.videosList = res.map((item) => {
         return {
           ...item,
-          active: false
+          active: false,
+          currentCate: this.currentCate
         }
       })
+      console.log('this.videosList>>>',this.videosList)
       console.log('mvlist>>>', res)
     },
     async getCates() {
@@ -171,13 +174,13 @@ export default {
     height: calc(100% - 100px);
     // flex: 1;
     .video-container {
-      width: 85%;
+      width: calc(100% - 510px);
       border: 1px solid gray;
       height: 100%;
       background: 'black';
     }    
     .option-container {
-      width: calc(15% - 10px);
+      width: 500px;
       height: 100%;
       border: 1px solid gray;
       .video-itemContainer {
