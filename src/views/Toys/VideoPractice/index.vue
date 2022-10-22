@@ -14,11 +14,20 @@
             <source :src="url" type="video/mp4">
         </video>
       </div>      
-      <div class="canvas-container pd10">
+      <div class="option-container pd10">
         <div style="height: 30px;width: 100%;" class="mgb10">
-          <el-button  type="primary" @click="handleChangeModel('mv')" :plain="currentCate !== 'mv'">MV</el-button>
+          <el-button
+           v-for="(cate, index) in categories"
+           :key="index"
+           type="primary"
+           @click="handleChangeModel(cate)"
+           :plain="currentCate !== cate"
+           >
+            {{ cate }}
+          </el-button>
+          <!-- <el-button  type="primary" @click="handleChangeModel('mv')" :plain="currentCate !== 'mv'">MV</el-button>
           <el-button type="primary"  @click="handleChangeModel('social')" :plain="currentCate !== 'social'">Social</el-button>
-          <el-button type="primary"  @click="handleChangeModel('intresting')" :plain="currentCate !== 'social'">Intresting</el-button>
+          <el-button type="primary"  @click="handleChangeModel('intresting')" :plain="currentCate !== 'social'">Intresting</el-button> -->
         </div>
         <div style="width: 100%;height: calc(100% - 60px);overflow: scroll;">
           <div v-for="(video, index) in videosList" :key="index"  class="flex-ca video-itemContainer mgb5">
@@ -42,7 +51,8 @@ export default {
   },
   data() {
     return {
-      currentCate: 'mv',
+      categories: [],
+      currentCate: null,
       videosList: [],
       url: null,
       page: {
@@ -134,9 +144,15 @@ export default {
         }
       })
       console.log('mvlist>>>', res)
+    },
+    async getCates() {
+      this.categories = await this.$axios.getCates()
+      this.currentCate = this.categories[0]
     }
+
   },
-  created() {
+  async created() {
+    await this.getCates()
     this.getVideosList(this.page)
     // this.getVideos()
   },
@@ -155,13 +171,13 @@ export default {
     height: calc(100% - 100px);
     // flex: 1;
     .video-container {
-      width: 65%;
+      width: 85%;
       border: 1px solid gray;
       height: 100%;
       background: 'black';
     }    
-    .canvas-container {
-      width: calc(35% - 10px);
+    .option-container {
+      width: calc(15% - 10px);
       height: 100%;
       border: 1px solid gray;
       .video-itemContainer {

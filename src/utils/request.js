@@ -50,6 +50,7 @@ service.interceptors.response.use(
    * You can also judge the status by HTTP Status Code
    */
   res => {
+    console.log('res>>>', res)
     return Promise.resolve(res.data)
 
     // if (res.code !== 20000) {

@@ -17,11 +17,9 @@
 import paper from "paper";
 import commonTemplate from '@/components/titleTemplate.vue'
 import { getRandomColor } from '@/weapons'
-import tool from '@/components/tool'
 import { Ariplane } from './myAriplane'
 export default {
   name: 'Airplane',
-  mixins: [tool],
   components: {
     commonTemplate
   },
@@ -74,19 +72,19 @@ export default {
       const canvas = this.$refs.canvas;
       this.paper = paper;
       this.paper.setup(canvas);
+      this.paper.project.name = 'airplane'
       this.paper.view.setCenter(0, 0);
       this.paper.view.onFrame = this.onFrame;
       this.paper.view.onMouseDown = this.onMouseDown
       this.tool = new paper.Tool()
       this.tool.onMouseDown = (e) => {
-        // console.log('tool的鼠标点击事件---->', e)
-        const res = this.myPath.contains(e.point)
-        console.log('res--->', res)
+        console.log('tool的鼠标点击事件---->', e)
+        // const res = this.myPath.contains(e.point)
       }
-      console.log("初始化世界!!!");
-      this.ari = new Ariplane()
-      this.myPath = new paper.Path.Rectangle(new paper.Point(-400,-400), new paper.Size(100))
-      this.myPath.strokeColor = getRandomColor()
+      console.log("初始化世界!!!", this.paper);
+      // this.ari = new Ariplane()
+      // this.myPath = new paper.Path.Rectangle(new paper.Point(-400,-400), new paper.Size(100))
+      // this.myPath.strokeColor = getRandomColor()
       
 
 
@@ -95,9 +93,10 @@ export default {
       
     },
   },
-  beforeDestroyed() {
-    console.log('销毁前')
-    this.paper = null
+  beforeDestroy() {
+    let currentProject = this.paper.projects.filter((_p) => _p.name === 'airplane')[0]
+    currentProject.remove()
+    currentProject = null
   }
 
 
@@ -112,7 +111,6 @@ export default {
     width: 100%;
     height: calc(100% - 80px);
     border: 1px solid rgb(118, 118, 122, 0.5);
-
     .canvas {
       width: 100%;
       height: 100%;
