@@ -14,11 +14,17 @@
             <source :src="url" type="video/mp4">
         </video>
       </div>      
-      <div class="canvas-container pd10">
+      <div class="option-container pd10">
         <div style="height: 30px;width: 100%;" class="mgb10">
-          <el-button  type="primary" @click="handleChangeModel('mv')" :plain="currentCate !== 'mv'">MV</el-button>
-          <el-button type="primary"  @click="handleChangeModel('social')" :plain="currentCate !== 'social'">Social</el-button>
-          <el-button type="primary"  @click="handleChangeModel('intresting')" :plain="currentCate !== 'social'">Intresting</el-button>
+          <el-button
+           v-for="(cate, index) in categories"
+           :key="index"
+           type="primary"
+           @click="handleChangeModel(cate)"
+           :plain="currentCate !== cate"
+           >
+            {{ cate }}
+          </el-button>
         </div>
         <div style="width: 100%;height: calc(100% - 60px);overflow: scroll;">
           <div v-for="(video, index) in videosList" :key="index"  class="flex-ca video-itemContainer mgb5">
@@ -42,7 +48,8 @@ export default {
   },
   data() {
     return {
-      currentCate: 'mv',
+      categories: [],
+      currentCate: null,
       videosList: [],
       url: null,
       page: {
@@ -57,16 +64,20 @@ export default {
       this.currentCate = cate
       this.getVideosList(this.page)
     },
-    handleSelect(info) {
+    async handleSelect(info) {
       console.log('播放>>', info)
-      this.getVideo(info)
-      this.videosList.forEach(item => {
-        if (item.name === info.name) {
-          item.active = true
-        } else {
-          item.active = false
-        }
-      });
+      if (info.type === 'click') {
+        await this.getVideo(info.data)
+        this.videosList.forEach(item => {
+          if (item.name === info.name) {
+            item.active = true
+          } else {
+            item.active = false
+          }
+        });
+      } else if (info.type === 'refreshData'){
+        this.getVideosList()
+      }  
     },
     download (){
       // // 转base64格式、图片格式转换、图片质量压缩---支持两种格式image/jpeg+image/png
@@ -130,13 +141,21 @@ export default {
       this.videosList = res.map((item) => {
         return {
           ...item,
-          active: false
+          active: false,
+          currentCate: this.currentCate
         }
       })
+      console.log('this.videosList>>>',this.videosList)
       console.log('mvlist>>>', res)
+    },
+    async getCates() {
+      this.categories = await this.$axios.getCates()
+      this.currentCate = this.categories[0]
     }
+
   },
-  created() {
+  async created() {
+    await this.getCates()
     this.getVideosList(this.page)
     // this.getVideos()
   },
@@ -155,13 +174,13 @@ export default {
     height: calc(100% - 100px);
     // flex: 1;
     .video-container {
-      width: 65%;
+      width: calc(100% - 510px);
       border: 1px solid gray;
       height: 100%;
       background: 'black';
     }    
-    .canvas-container {
-      width: calc(35% - 10px);
+    .option-container {
+      width: 500px;
       height: 100%;
       border: 1px solid gray;
       .video-itemContainer {

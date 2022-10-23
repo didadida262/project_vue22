@@ -46,11 +46,20 @@ export default {
   getAllChars() {
     return axios.get('/getAllChar')
   },
+
+
+
+
+
+
+  getCates() {
+    return axios.get('/getCates')
+  },
+
   getVideosList(params) {
     return axios.post('/getVideosList', params)
   },
   getVideo(params) {
-    console.log('params', params)
     return axios({
       url: '/getVideo',
       responseType: 'blob',
@@ -59,5 +68,8 @@ export default {
         ...params
       }
     })
+  },
+  changeFileName(params) {
+    return axios.post('/changeFileName', params)
   }
 }
