@@ -84,7 +84,6 @@ export default {
       this.paper.view.onMouseDown = this.onMouseDown
       this.tool = new paper.Tool()
       this.tool.onMouseDown = (e) => {
-<<<<<<< HEAD
         // console.log('tool的鼠标点击事件---->', e)
         // const res = this.myPath.contains(e.point)
       }
@@ -100,11 +99,8 @@ export default {
   beforeDestroy() {
     console.log('beforeDestroyed>>>airplane')
     this.currentProject.remove()
-=======
         console.log('tool的鼠标点击事件---->', e)
         // const res = this.myPath.contains(e.point)
-      }
-      console.log("初始化世界!!!", this.paper);
       // this.ari = new Ariplane()
       // this.myPath = new paper.Path.Rectangle(new paper.Point(-400,-400), new paper.Size(100))
       // this.myPath.strokeColor = getRandomColor()
@@ -114,13 +110,11 @@ export default {
       // console.log(this.Ship)
       // this.showOperations()
       
-    },
   },
   beforeDestroy() {
     let currentProject = this.paper.projects.filter((_p) => _p.name === 'airplane')[0]
     currentProject.remove()
     currentProject = null
->>>>>>> f0a4a7a90c0ffb514504ab46200bed1126d3ea45
   }
 };
 </script>
