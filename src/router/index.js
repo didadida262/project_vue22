@@ -80,14 +80,21 @@ export const constantRoutes = [
   {
     path: '/openlayer',
     component: Layout,
-    redirect: '/openlayer',
+    redirect: '/openlayer/gd',
+    meta: { title: 'Map', icon: 'el-icon-s-help' },
     children: [
       {
-        path: 'openlayer',
-        name: 'openlayer',
-        component: () => import('@/views/openLayer/index'),
-        meta: { title: 'OpenLayer', icon: 'el-icon-brush'}
-      }
+        path: 'bd',
+        name: 'baidu',
+        component: () => import('@/views/openLayer/BaiduMap/index'),
+        meta: { title: 'BaiduMap', icon: 'el-icon-brush'}
+      },
+      {
+        path: 'gd',
+        name: 'gaode',
+        component: () => import('@/views/openLayer/GaodeMap/index'),
+        meta: { title: 'GaodeMap', icon: 'el-icon-brush'}
+      }      
     ]
   },
   // article

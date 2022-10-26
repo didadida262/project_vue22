@@ -6,7 +6,7 @@
 -->
 <template>
   <div class="openLayer-container pd10">
-    <commonTemplate title="OpenLayer" />
+    <commonTemplate title="BaiduMap" />
     <div class="openLayer-container-content">
       <!-- <canvas ref="canvas" resize class="canvas" id="canvas"/> -->
 			<baidu-map class="bm-view" :center="markerPoint" :zoom="16" :dragging="true" :scroll-wheel-zoom="true" @ready="handler">
