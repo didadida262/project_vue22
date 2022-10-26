@@ -39,13 +39,16 @@ import router from './router'
 import '@/icons' // icon
 import '@/permission' // permission control
 import _ from 'lodash'
-
+import BaiduMap from 'vue-baidu-map'
 // 日期处理
 import dayjs from 'dayjs'
 Vue.prototype.$dayjs = dayjs
 Vue.prototype._ = _
 Vue.prototype.$axios = apis
 
+Vue.use(BaiduMap, {
+  ak: 'wGw7PCvWQ01VHxr9yFyAXZtHnUGvnsY4'
+})
 // Vue.config.silent = true
 // 引入语言包
 Vue.use(Vuei18n)
