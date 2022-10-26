@@ -39,8 +39,8 @@
         @changeBrush="changeBrush"
       />    
      </div>
+     <!-- :class="[{'cursorpointerNone-st': activatedBrush !== 'pencil' && activatedBrush !== 'line' && activatedBrush !== 'rect_brush'}]" -->
     <Content
-      :class="[{'cursorpointerNone-st': activatedBrush !== 'pencil' && activatedBrush !== 'line' && activatedBrush !== 'rect_brush'}]"
       ref="Content"
       @shortCut="onWheel"
     />
@@ -74,8 +74,8 @@ export default {
   },
   data() {
     return {
-      XY: {},
-
+      WIDTH: null,
+      HEIGHT: null,
       // 当前激活工具
       activatedBrush: '',
       tool: null,
@@ -105,7 +105,7 @@ export default {
 
   mounted() {
     this.init()
-    console.log('this.paper---', this.paper)
+    console.log('Draw--->>>>', this.paper)
   },
   methods: {
     test() {
@@ -163,16 +163,13 @@ export default {
       }
     },     
     
-    // 。。。。。。。。。。。。。。
-    // 。。。。。。。。。。。。。。
-    // 。。。。。。。。。。。。。。
-    // 。。。。。。。。。。。。。。
     init() {
       const canvas = this.$refs.Content.$refs.main_canvas
-      this.XY.x = canvas.clientWidth
-      this.XY.y = canvas.clientHeight
+      this.WIDTH = canvas.clientWidth
+      this.HEIGHT = canvas.clientHeight
       paper.setup(canvas)
       this.paper = paper
+      this.paper.project.name = 'Draw'
       // this.image.raster = new paper.Raster(this.image.url)
       this.image.raster = new paper.Raster(this.$refs['image'])
       this.tool = new paper.Tool()
@@ -180,10 +177,9 @@ export default {
       this.image.raster.smoothing = false
       this.image.raster.onLoad = () => {
         // 让图片raster的宽高自适应view这个容器
-        this.image.raster.fitBounds(this.paper.view.bounds, false)
+        this.image.raster.fitBounds(this.paper.view.bounds, true)
         console.log('??', this.image.raster)
       }
-
       // 绑定各种事件函数
       this.paper.view.setCenter(0, 0)
       this.paper.view.onKeyDown = (e) => {
@@ -192,13 +188,7 @@ export default {
           layer.selected = !layer.selected
         }
       }
-      // const vector = x2Center.subtract(x1Center)
-      // for (let i = 1; i < vector.length; i++) {
-      //   const newPoint = x1Center.add(vector.normalize().multiply(i))
-      //   this.x3 = new paper.Path.Circle(newPoint, new paper.Size(10))
-      //   this.x3.fillColor = 'green'
-      // }
-    },    // // 笔刷跟随鼠标移动
+    },
 
     addStrokes(point, delta) {
       // 原版的齿轮状
@@ -221,10 +211,6 @@ export default {
 
       // this.selection.insert(0, point.add(delta.normalize().multiply(10)));
     },
-    unite(path) {
-      // console.log('输出path:', path)
-    },
-
     // 以当前滚轮方向及真实坐标数据为输入
     changeZoom(delta, viewPosition) {
       const oldZoom = this.paper.view.zoom
@@ -277,6 +263,11 @@ export default {
   },
   created() {
   },
+  beforeDestroy() {
+    let currentProject = this.paper.projects.filter((_p) => _p.name === 'Draw')[0]
+    currentProject.remove()
+    currentProject = null
+  }
 }
 </script>
 
