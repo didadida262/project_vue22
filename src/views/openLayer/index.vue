@@ -33,11 +33,13 @@ export default {
   },
   data() {
     return {
-			markerPoint:{lng: 108.951, lat:34.3285},
+      // 119.969662,30.287883: company
+      // 119.928106,30.244833: home
+			markerPoint:{lng: 119.928106, lat: 30.244833},
 			show:false,
 			isBig:false,
 			values:[],
-			position:{lng: 108.951, lat:34.3285}
+			position:{lng: 119.928106, lat: 30.244833}
     };
   },
   watch: {},
@@ -46,7 +48,6 @@ export default {
   },
   methods: {
     init() {
-
       console.log(this.map)
     },
     handler ({BMap, map}) {
