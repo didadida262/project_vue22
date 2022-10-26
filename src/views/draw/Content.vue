@@ -12,7 +12,9 @@
       type="datetime"
       placeholder="选择日期时间">
     </el-date-picker>  -->
-
+    <!-- xy轴 -->
+    <div ref="divX" class="content-divX"></div>
+    <div ref="divY" class="content-divY"></div>    
   </div>
 </template>
 
@@ -47,10 +49,26 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
   .main_canvas {
     width: 100%;
     height: 100%;
     background: gray;
   }
+  &-divX {
+    width: 100%;
+    height: 1px;
+    background:  red;
+    position: absolute;
+    top: calc(50% - 0.5px)
+  }
+  &-divY {
+    width: 1px;
+    height: 100%;
+    background:  red;
+    position: absolute;
+    top: 0;
+    left: calc(50% - 0.5px)
+  } 
 }
 </style>

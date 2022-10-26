@@ -105,27 +105,11 @@ export default {
 
   mounted() {
     this.init()
-    this.drawXY()
     console.log('this.paper---', this.paper)
   },
   methods: {
     test() {
 
-    },
-    // 绘制当前paperjs画布的坐标系
-    drawXY() {
-      this.X = new this.paper.Path()
-      this.X.strokeColor = 'black'
-      this.Y = new this.paper.Path()
-      this.Y.strokeColor = 'black'
-      for (let i = 0; i < this.XY.x / 2; i++) {
-        this.X.add(new paper.Point(i, 0))
-        this.X.add(new paper.Point(-i, 0))
-      }
-      for (let i = 0; i < this.XY.y / 2; i++) {
-        this.Y.add(new paper.Point(0, i))
-        this.Y.add(new paper.Point(0, -i))
-      }
     },
     changeBrush(brush) {
       this.activatedBrush = brush
