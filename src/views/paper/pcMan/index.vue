@@ -16,7 +16,8 @@
 <script>
 import paper from "paper";
 import commonTemplate from '@/components/titleTemplate.vue'
-import { getRandomColor } from '@/weapons'
+import { getRandomColor } from '@/utils/weapons.js'
+
 export default {
   name: 'MatchStick',
   components: {
