@@ -11,24 +11,24 @@
     <div class="Content flex-cb">
       <div class="video-container flex-cb">
         <video ref="videoContainer" controls style="width: 100%;height: 100%" autoplay="autoplay" loop>
-            <source :src="url" type="video/mp4">
+          <source :src="url" type="video/mp4">
         </video>
-      </div>      
+      </div>
       <div class="option-container pd10">
         <div style="height: 30px;width: 100%;" class="mgb10">
           <el-button
-           v-for="(cate, index) in categories"
-           :key="index"
-           type="primary"
-           @click="handleChangeModel(cate)"
-           :plain="currentCate !== cate"
-           >
+            v-for="(cate, index) in categories"
+            :key="index"
+            type="primary"
+            :plain="currentCate !== cate"
+            @click="handleChangeModel(cate)"
+          >
             {{ cate }}
           </el-button>
         </div>
         <div style="width: 100%;height: calc(100% - 60px);overflow: scroll;">
-          <div v-for="(video, index) in videosList" :key="index"  class="flex-ca video-itemContainer mgb5">
-            <video-item :data="video" @handleSelect="handleSelect"/>
+          <div v-for="(video, index) in videosList" :key="index" class="flex-ca video-itemContainer mgb5">
+            <video-item :data="video" @handleSelect="handleSelect" />
           </div>
         </div>
       </div>
@@ -41,7 +41,7 @@ import CommonTemplate from '@/components/titleTemplate.vue'
 import videoItem from './components/videoItem.vue'
 
 export default {
-  name: "videoPractice",
+  name: 'VideoPractice',
   components: {
     CommonTemplate,
     videoItem
@@ -59,6 +59,13 @@ export default {
 
     }
   },
+  async created() {
+    await this.getCates()
+    this.getVideosList(this.page)
+    // this.getVideos()
+  },
+  beforeDestroy() {
+  },
   methods: {
     handleChangeModel(cate) {
       this.currentCate = cate
@@ -74,12 +81,12 @@ export default {
           } else {
             item.active = false
           }
-        });
-      } else if (info.type === 'refreshData'){
+        })
+      } else if (info.type === 'refreshData') {
         this.getVideosList()
-      }  
+      }
     },
-    download (){
+    download() {
       // // 转base64格式、图片格式转换、图片质量压缩---支持两种格式image/jpeg+image/png
       const imgBase64 = canvasRef.value.toDataURL('image/jpeg', 0.7)
       console.log(imgBase64)
@@ -95,11 +102,11 @@ export default {
       ADOM.download = new Date().getTime() + '.jpeg'
       console.log('adom:', ADOM)
       ADOM.click()
-    },  
-    // 打开摄像头获取视频流 
+    },
+    // 打开摄像头获取视频流
     async openVideo() {
       console.info('初始化世界！！1')
-      const constraints = { audio: true}
+      const constraints = { audio: true }
       navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
         /* 使用这个stream视频流... */
         const video = this.$refs['videoContainer']
@@ -107,13 +114,13 @@ export default {
         video.srcObject = stream
         const ctx = canvas.getContext('2d')
         // 截图功能
-        ctx.drawImage(stream, 0,0,300,200)
+        ctx.drawImage(stream, 0, 0, 300, 200)
         video.onloadedmetadata = (e) => {
           video.play()
         }
       }).catch((err) => {
         console.log('err:', err)
-      })      
+      })
     },
 
     // 获取视频列表
@@ -123,12 +130,12 @@ export default {
         name: info.name
       }
       const res = await this.$axios.getVideo(params)
-      let blob = new Blob([res], {type: 'mp4'})
-      let url = URL.createObjectURL(blob)
+      const blob = new Blob([res], { type: 'mp4' })
+      const url = URL.createObjectURL(blob)
       this.url = url
-      let videoContainer = this.$refs['videoContainer']
+      const videoContainer = this.$refs['videoContainer']
       videoContainer.src = url
-      
+
       console.log('当前url--->', this.url)
     },
     async getVideosList(info) {
@@ -136,7 +143,7 @@ export default {
         ...info,
         currentCate: this.currentCate
       }
-      
+
       const res = await this.$axios.getVideosList(params)
       this.videosList = res.map((item) => {
         return {
@@ -145,7 +152,7 @@ export default {
           currentCate: this.currentCate
         }
       })
-      console.log('this.videosList>>>',this.videosList)
+      console.log('this.videosList>>>', this.videosList)
       console.log('mvlist>>>', res)
     },
     async getCates() {
@@ -153,17 +160,9 @@ export default {
       this.currentCate = this.categories[0]
     }
 
-  },
-  async created() {
-    await this.getCates()
-    this.getVideosList(this.page)
-    // this.getVideos()
-  },
-  beforeDestroy() {
   }
 }
 </script>
-
 
 <style scoped lang="scss">
 .VideoPractice {
@@ -178,7 +177,7 @@ export default {
       border: 1px solid gray;
       height: 100%;
       background: 'black';
-    }    
+    }
     .option-container {
       width: 500px;
       height: 100%;

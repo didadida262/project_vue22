@@ -2,28 +2,29 @@
  * @Author: Hhvcg
  * @Date: 2022-02-20 15:26:48
  * @LastEditors: -_-
- * @Description: 
+ * @Description:
 -->
 <template>
   <div class="articleForm-container">
     <el-form ref="articleForm" :model="articleForm" label-width="80px">
       <el-form-item label="文章标题">
-        <el-input v-model="articleForm.title"></el-input>
+        <el-input v-model="articleForm.title" />
       </el-form-item>
       <el-form-item label="内容">
-        <el-input v-model="articleForm.content"
+        <el-input
+          v-model="articleForm.content"
           type="textarea"
           :rows="15"
-        ></el-input>
-      </el-form-item>      
+        />
+      </el-form-item>
       <el-form-item label="创建时间">
         <el-date-picker
           v-model="articleForm.create_date"
           type="datetime"
           format="yyyy-MM-dd"
-          placeholder="选择日期时间">
-        </el-date-picker>
-      </el-form-item>  
+          placeholder="选择日期时间"
+        />
+      </el-form-item>
 
       <el-form-item>
         <el-button type="primary" @click="onSubmit">立即创建</el-button>
@@ -35,7 +36,7 @@
 
 <script>
 export default {
-  name: 'createArticle',
+  name: 'CreateArticle',
 
   data() {
     return {
@@ -43,7 +44,7 @@ export default {
         title: null,
         content: null,
         create_date: null,
-        iamge: '',
+        iamge: ''
       }
     }
   },

@@ -9,12 +9,12 @@
     <commonTemplate title="BaiduMap" />
     <div class="openLayer-container-content">
       <!-- <canvas ref="canvas" resize class="canvas" id="canvas"/> -->
-			<baidu-map class="bm-view" :center="markerPoint" :zoom="16" :dragging="true" :scroll-wheel-zoom="true" @ready="handler">
-				<bm-map-type :map-types="['BMAP_NORMAL_MAP', 'BMAP_HYBRID_MAP']" anchor="BMAP_ANCHOR_TOP_RIGHT"></bm-map-type>
-				<bm-marker :position="position" :dragging="false" animation="BMAP_ANIMATION_BOUNCE">
-					<bm-info-window :show="show" style="font-size:13px"></bm-info-window>
-				</bm-marker> 
-			</baidu-map>      
+      <baidu-map class="bm-view" :center="markerPoint" :zoom="16" :dragging="true" :scroll-wheel-zoom="true" @ready="handler">
+        <bm-map-type :map-types="['BMAP_NORMAL_MAP', 'BMAP_HYBRID_MAP']" anchor="BMAP_ANCHOR_TOP_RIGHT" />
+        <bm-marker :position="position" :dragging="false" animation="BMAP_ANIMATION_BOUNCE">
+          <bm-info-window :show="show" style="font-size:13px" />
+        </bm-marker>
+      </baidu-map>
     </div>
   </div>
 </template>
@@ -35,30 +35,29 @@ export default {
     return {
       // 119.969662,30.287883: company
       // 119.928106,30.244833: home
-			markerPoint:{lng: 119.928106, lat: 30.244833},
-			show:false,
-			isBig:false,
-			values:[],
-			position:{lng: 119.928106, lat: 30.244833}
-    };
+      markerPoint: { lng: 119.928106, lat: 30.244833 },
+      show: false,
+      isBig: false,
+      values: [],
+      position: { lng: 119.928106, lat: 30.244833 }
+    }
   },
   watch: {},
   mounted() {
-    this.init();
+    this.init()
   },
   methods: {
     init() {
       console.log(this.map)
     },
-    handler ({BMap, map}) {
+    handler({ BMap, map }) {
 		  // console.log(BMap, map)
-		},
+    }
   },
   beforeDestroyed() {
   }
 
-
-};
+}
 </script>
 <style scoped lang="scss">
 .openLayer-container {

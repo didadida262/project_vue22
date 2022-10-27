@@ -2,7 +2,7 @@
  * @Author: Hhvcg
  * @Date: 2022-02-20 15:26:48
  * @LastEditors: -_-
- * @Description: 
+ * @Description:
 -->
 <template>
   <div class="page-container">
@@ -10,7 +10,7 @@
       <h1>Article List</h1>
       <el-button type="primary" @click="addArticle">Write</el-button>
     </div>
-    <diary-card v-for="(item, index) in articleList" :key="index" :info="item"/>
+    <diary-card v-for="(item, index) in articleList" :key="index" :info="item" />
   </div>
 </template>
 
@@ -24,7 +24,7 @@ export default {
   data() {
     return {
       timer: null,
-      articleList: [],
+      articleList: []
       // info: {
       //   title: '测试',
       //   image: '',
@@ -51,9 +51,9 @@ export default {
         ...res.data
       ]
     },
-    addArticle () {
+    addArticle() {
       console.log('新增文章')
-      this.$router.push({name: 'createArticle'})
+      this.$router.push({ name: 'createArticle' })
     }
   }
 }

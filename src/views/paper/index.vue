@@ -1207,9 +1207,9 @@
 </template>
 
 <script>
-import paper from "paper";
+import paper from 'paper'
 // import {Boid} from './Boid.js'
-import { Boid } from "./myBoid.js";
+import { Boid } from './myBoid.js'
 export default {
   data() {
     return {
@@ -1225,26 +1225,30 @@ export default {
       canvasWidth: null,
       canvasHeight: null,
       test: null
-    };
+    }
   },
   computed: {
     currentProject() {
       return this.paper.projects.filter((_p) => _p.name === this.title)[0]
-    }    
+    }
   },
   mounted() {
-    this.initWorld();
-    this.tadpole();
+    this.initWorld()
+    this.tadpole()
     // this.testTiger();
     // this.testPaper()
+  },
+  beforeDestroy() {
+    console.log('beforeDestroyed>>>tadpole')
+    this.currentProject.remove()
   },
   methods: {
     testPaper() {
       this.head = new paper.Shape.Ellipse({
         center: [100, 100],
         size: [15, 10],
-        fillColor: "orange",
-      });
+        fillColor: 'orange'
+      })
       // const head = new paper.Shape.Ellipse({
       //   center: [100, 200],
       //     size: [13, 8],
@@ -1265,34 +1269,33 @@ export default {
       const myRectangle = new paper.Rectangle(
         new paper.Point(450, 30),
         new paper.Point(720, 170)
-      );
-      const cornerSize = new paper.Size(10, 60);
-      const d = new paper.Path.RoundRectangle(myRectangle, cornerSize);
-      d.fillColor = "lightgreen";
+      )
+      const cornerSize = new paper.Size(10, 60)
+      const d = new paper.Path.RoundRectangle(myRectangle, cornerSize)
+      d.fillColor = 'lightgreen'
     },
     initWorld() {
-      console.log("$-_------------初始化世界---------------$-_-");
-      const canvas = this.$refs.tadpole;
+      console.log('$-_------------初始化世界---------------$-_-')
+      const canvas = this.$refs.tadpole
       // canvas的dom节点给到paper装载
-      this.paper = paper;
-      this.paper.setup(canvas);
+      this.paper = paper
+      this.paper.setup(canvas)
       this.apper.project.name = 'tadpole'
       this.canvasWidth = this.paper.view.size.width
       this.canvasHeight = this.paper.view.size.height
       // 加装各类事件
-      this.paper.view.onResize = this.onResize;
-      this.paper.view.onFrame = this.onFrame;
-      this.paper.view.onKeyDown = this.onKeyDown;
-      this.paper.view.onMouseDown = this.onMouseDown;
-
+      this.paper.view.onResize = this.onResize
+      this.paper.view.onFrame = this.onFrame
+      this.paper.view.onKeyDown = this.onKeyDown
+      this.paper.view.onMouseDown = this.onMouseDown
     },
     testTiger() {
-      console.log("测试老虎");
-      console.log("this.paper:", this.paper);
-      this.svg = this.paper.project.importSVG(document.getElementById("svg"));
-      this.svg.visible = true; // Turn off display: none;
-      this.svg.fitBounds(this.paper.view.bounds);
-      console.log("this.svg:", this.svg);
+      console.log('测试老虎')
+      console.log('this.paper:', this.paper)
+      this.svg = this.paper.project.importSVG(document.getElementById('svg'))
+      this.svg.visible = true // Turn off display: none;
+      this.svg.fitBounds(this.paper.view.bounds)
+      console.log('this.svg:', this.svg)
     },
     // 生成画布内的随机坐标点，作为蝌蚪军团的出生点
     tadpole() {
@@ -1300,11 +1303,11 @@ export default {
       this.boids = new Buffer()
       // // 创建蝌蚪军团
       for (let i = 0; i < 200; i++) {
-        const location = paper.Point.random();
-        location.x = location.x * this.canvasWidth;
-        location.y = location.y * this.canvasHeight;
-        this.boids.push(new Boid(location, 10, 0.05));
-        console.log(this.boids);
+        const location = paper.Point.random()
+        location.x = location.x * this.canvasWidth
+        location.y = location.y * this.canvasHeight
+        this.boids.push(new Boid(location, 10, 0.05))
+        console.log(this.boids)
       }
       this.test = new paper.Path({
         strokeColor: 'red'
@@ -1312,7 +1315,7 @@ export default {
       this.boids.forEach(boid => this.test.add(boid.position))
     },
     onResize() {
-      console.log("窗口变化！！！");
+      console.log('窗口变化！！！')
       // this.heartPath.fitBounds(this.paper.view.bounds);
       // this.heartPath.scale(0.8);
     },
@@ -1323,40 +1326,36 @@ export default {
         // 是否合拢
         if (this.groupTogether) {
           const length =
-            (((i + event.count / 30) % l) / l) * this.heartPath.length;
-          var point = this.heartPath.getPointAt(length);
+            (((i + event.count / 30) % l) / l) * this.heartPath.length
+          var point = this.heartPath.getPointAt(length)
           if (point) {
-            this.boids[i].arrive(point);
+            this.boids[i].arrive(point)
           }
         }
-        this.boids[i].run(this.boids, this.groupTogether);
+        this.boids[i].run(this.boids, this.groupTogether)
       }
       this.test.remove()
-         this.test = new paper.Path({
+      this.test = new paper.Path({
         strokeColor: 'red'
       })
-      this.boids.forEach(boid => this.test.add(boid.position))    
+      this.boids.forEach(boid => this.test.add(boid.position))
     },
     onKeyDown(e) {
       // 展示layer
-      console.log("按键：", e);
-      if (e.key === "space") {
-        const layer = this.paper.project.activeLayer;
-        layer.selected = !layer.selected;
-        return false;
+      console.log('按键：', e)
+      if (e.key === 'space') {
+        const layer = this.paper.project.activeLayer
+        layer.selected = !layer.selected
+        return false
       }
     },
     // ⭐形合拢
     onMouseDown(e) {
-      console.log("点击", e.point);
-      this.groupTogether = !this.groupTogether;
-    },
-  },
-  beforeDestroy() {
-    console.log('beforeDestroyed>>>tadpole')
-    this.currentProject.remove()
+      console.log('点击', e.point)
+      this.groupTogether = !this.groupTogether
+    }
   }
-};
+}
 </script>
 
 <style scoped>

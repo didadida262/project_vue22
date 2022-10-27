@@ -2,19 +2,19 @@
  * @Author: Hhvcg
  * @Date: 2022-02-20 15:26:48
  * @LastEditors: -_-
- * @Description: 
+ * @Description:
 -->
 <template>
   <div ref="content" class="content" @wheel="onwheel">
     <canvas id="main_canvas" ref="main_canvas" resize class="main_canvas" />
-        <!-- <el-date-picker
+    <!-- <el-date-picker
       v-model="value1"
       type="datetime"
       placeholder="选择日期时间">
     </el-date-picker>  -->
     <!-- xy轴 -->
-    <div ref="divX" class="content-divX"></div>
-    <div ref="divY" class="content-divY"></div>    
+    <div ref="divX" class="content-divX" />
+    <div ref="divY" class="content-divY" />
   </div>
 </template>
 
@@ -29,14 +29,14 @@ export default {
 
     }
   },
-  methods: {
-    onwheel(e) {
-      this.$emit('shortCut', e)
-    },
-  },
   created() {
   },
   mounted() {
+  },
+  methods: {
+    onwheel(e) {
+      this.$emit('shortCut', e)
+    }
   }
 }
 </script>
@@ -69,6 +69,6 @@ export default {
     position: absolute;
     top: 0;
     left: calc(50% - 0.5px)
-  } 
+  }
 }
 </style>

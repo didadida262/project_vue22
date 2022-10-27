@@ -7,8 +7,6 @@
 import Vue from 'vue'
 import apis from '@/api/index'
 
-
-
 import Vuei18n from 'vue-i18n'
 // 引入jQuery、bootstrap----->虽然很不想装jquery，但还是tm的被迫装了
 // import $ from 'jquery'
@@ -19,9 +17,6 @@ import Vuei18n from 'vue-i18n'
 
 // 全局注册 $
 // Vue.prototype.$ = $
-
-
-
 
 // import i18n from '@/i18n'
 import 'normalize.css/normalize.css' // A modern alternative to CSS resets
@@ -86,7 +81,7 @@ const i18n = new Vuei18n({
 // Vue.use(ElementUI, 'en')
 // 如果想要中文版 element-ui，按如下方式声明
 Vue.use(ElementUI)
-if (window) window['$t'] = (key, value) => i18n.t(key, value);
+if (window) window['$t'] = (key, value) => i18n.t(key, value)
 Vue.config.productionTip = false
 // Vue.prototype.log = log
 new Vue({

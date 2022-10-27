@@ -6,21 +6,22 @@
 -->
 <template>
   <div>
-    <div class="music_songs_list" v-if="showFlag">
+    <div v-if="showFlag" class="music_songs_list">
       <div class="flex-cc mgb10">
         <el-input
-          placeholder="请输入内容"
           v-model="songName"
-          clearable>
-        </el-input>
+          placeholder="请输入内容"
+          clearable
+        />
         <el-button
           class="mgl10"
-         @click="searchSong">
+          @click="searchSong"
+        >
           查询
         </el-button>
       </div>
       <div v-for="(item, index) in songsList" :key="index" @click="handleClick(index)">
-        <song-item :data="item"  :class="{'selected-song': currentSongIndex === index}"/>
+        <song-item :data="item" :class="{'selected-song': currentSongIndex === index}" />
       </div>
     </div>
   </div>
@@ -29,14 +30,14 @@
 
 import songItem from './songItem.vue'
 export default {
-  name: "songlist",
+  name: 'Songlist',
   components: {
     songItem
   },
   props: {
     showFlag: {
       type: Boolean,
-      required: true  
+      required: true
     },
     songsList: {
       type: Array,
@@ -50,12 +51,8 @@ export default {
   },
   data() {
     return {
-      songName:'',
+      songName: ''
     }
-  },
-  created() {
-  },
-  mounted() {
   },
   watch: {
     currentSongIndex() {
@@ -63,6 +60,13 @@ export default {
       //   this.$emit('changeSong', this.currentSongIndex)
       // }
     }
+  },
+  created() {
+  },
+  mounted() {
+  },
+
+  beforeDestroy() {
   },
   methods: {
     searchSong() {
@@ -74,14 +78,11 @@ export default {
     },
     changeSong(index) {
       // this.currentSongIndex = index
-      console.log('this.currentSongIndex--->',this.currentSongIndex)
-    },
+      console.log('this.currentSongIndex--->', this.currentSongIndex)
+    }
 
-  },
-
-  beforeDestroy() {
   }
-};
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -108,14 +109,10 @@ export default {
         transform: translateX(0);
         opacity: 1;
       }
-    }    
+    }
     .selected-song {
       background-image: linear-gradient(120deg,#b0d2ee,#13ca75);
     }
-  }  
+  }
 </style>
-
-
-
-
 

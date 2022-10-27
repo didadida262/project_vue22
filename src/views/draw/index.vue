@@ -12,39 +12,39 @@
         class="cursor-pointer"
         :selected="activatedBrush"
         @changeBrush="changeBrush"
-      />  
+      />
       <broomBrush
         class="cursor-pointer"
         :selected="activatedBrush"
         @changeBrush="changeBrush"
-      />           
+      />
       <killBrush
         class="cursor-pointer"
         :selected="activatedBrush"
         @changeBrush="changeBrush"
-      />  
+      />
       <killBrushNew
         class="cursor-pointer"
         :selected="activatedBrush"
         @changeBrush="changeBrush"
-      />         
+      />
       <LineBrush
         class="cursor-pointer"
         :selected="activatedBrush"
         @changeBrush="changeBrush"
-      />     
+      />
       <RectBrush
         class="cursor-pointer"
         :selected="activatedBrush"
         @changeBrush="changeBrush"
-      />    
-     </div>
-     <!-- :class="[{'cursorpointerNone-st': activatedBrush !== 'pencil' && activatedBrush !== 'line' && activatedBrush !== 'rect_brush'}]" -->
+      />
+    </div>
+    <!-- :class="[{'cursorpointerNone-st': activatedBrush !== 'pencil' && activatedBrush !== 'line' && activatedBrush !== 'rect_brush'}]" -->
     <Content
       ref="Content"
       @shortCut="onWheel"
     />
-    <img src="@/assets/rick.jpg" srcset="" style="display: none" ref="image">
+    <img ref="image" src="@/assets/rick.jpg" srcset="" style="display: none">
   </div>
 </template>
 
@@ -107,6 +107,13 @@ export default {
     this.init()
     console.log('Draw--->>>>', this.paper)
   },
+  created() {
+  },
+  beforeDestroy() {
+    let currentProject = this.paper.projects.filter((_p) => _p.name === 'Draw')[0]
+    currentProject.remove()
+    currentProject = null
+  },
   methods: {
     test() {
 
@@ -125,11 +132,10 @@ export default {
           // for (let i = this.lastDragPoint.x; i < )
         }
         this.lastDragPoint = point
-        let newSelection = this.selection.unite(this.brush.path);
-        this.selection.remove();
-        this.selection = newSelection;
+        const newSelection = this.selection.unite(this.brush.path)
+        this.selection.remove()
+        this.selection = newSelection
         // this.selection.intersect(this.brush.path)
-
       }
     },
     createSelection() {
@@ -137,32 +143,32 @@ export default {
       this.selection = new paper.Path({
         strokeColor: this.brush.pathOptions.strokeColor,
         strokeWidth: this.brush.pathOptions.strokeWidth
-      });
+      })
     },
     moveBrush(point) {
-      if (this.brush.path == null) this.createBrush();
-      this.brush.path.bringToFront();
-      this.brush.path.position = point;
+      if (this.brush.path == null) this.createBrush()
+      this.brush.path.bringToFront()
+      this.brush.path.position = point
     },
     createBrush(center) {
-      center = center || new paper.Point(0, 0);
-      if (this.brush.pathOptions.btype==='circle'){
+      center = center || new paper.Point(0, 0)
+      if (this.brush.pathOptions.btype === 'circle') {
         this.brush.path = new paper.Path.Circle({
           strokeColor: this.brush.pathOptions.strokeColor,
           strokeWidth: this.brush.pathOptions.strokeWidth,
           radius: this.brush.pathOptions.radius,
           center: center
-        });
-      }else {
+        })
+      } else {
         this.brush.path = new paper.Path.Rectangle({
           size: [this.brush.pathOptions.radius * 2, this.brush.pathOptions.radius * 2],
           strokeColor: this.brush.pathOptions.strokeColor,
           strokeWidth: this.brush.pathOptions.strokeWidth,
           center: center
-        });
+        })
       }
-    },     
-    
+    },
+
     init() {
       const canvas = this.$refs.Content.$refs.main_canvas
       this.WIDTH = canvas.clientWidth
@@ -260,13 +266,6 @@ export default {
       return [top, bot]
     }
 
-  },
-  created() {
-  },
-  beforeDestroy() {
-    let currentProject = this.paper.projects.filter((_p) => _p.name === 'Draw')[0]
-    currentProject.remove()
-    currentProject = null
   }
 }
 </script>

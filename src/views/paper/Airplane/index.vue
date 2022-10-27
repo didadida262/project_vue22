@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import paper from "paper";
+import paper from 'paper'
 import commonTemplate from '@/components/titleTemplate.vue'
 import { getRandomColor } from '@/utils/weapons'
 import tool from '@/components/tool'
@@ -32,16 +32,33 @@ export default {
       Ship: null,
       tool: null,
       myPath: null
-    };
-  },
-  watch: {},
-  mounted() {
-    this.init();
+    }
   },
   computed: {
     currentProject() {
       return this.paper.projects.filter((_p) => _p.name === this.title)[0]
     }
+  },
+  watch: {},
+  mounted() {
+    this.init()
+  },
+  beforeDestroy() {
+    console.log('beforeDestroyed>>>airplane')
+    this.currentProject.remove()
+    console.log('tool的鼠标点击事件---->', e)
+    // const res = this.myPath.contains(e.point)
+    // this.ari = new Ariplane()
+    // this.myPath = new paper.Path.Rectangle(new paper.Point(-400,-400), new paper.Size(100))
+    // this.myPath.strokeColor = getRandomColor()
+
+    // console.log(this.Ship)
+    // this.showOperations()
+  },
+  beforeDestroy() {
+    let currentProject = this.paper.projects.filter((_p) => _p.name === 'airplane')[0]
+    currentProject.remove()
+    currentProject = null
   },
   methods: {
     onFrame() {
@@ -52,19 +69,19 @@ export default {
       switch (e.key) {
         case 'z':
           this.fire()
-          break;
+          break
         case 'left':
           this.Ship.rotate(-10)
-          break;
+          break
         case 'right':
           this.Ship.rotate(10)
-          break;
+          break
         case 'up':
           this.Ship.position = this.Ship.position.subtract(new paper.Point(0, 5)).clone()
-          break;
+          break
         case 'down':
           this.Ship.position = this.Ship.position.add(new paper.Point(0, 5)).clone()
-          break;                    
+          break
       }
     },
     onMouseDown(e) {
@@ -74,49 +91,29 @@ export default {
     showOperations() {
     },
     init() {
-      const canvas = this.$refs.canvas;
-      this.paper = paper;
-      this.paper.setup(canvas);
+      const canvas = this.$refs.canvas
+      this.paper = paper
+      this.paper.setup(canvas)
       this.paper.project.name = 'airplane'
-      this.paper.view.setCenter(0, 0);
+      this.paper.view.setCenter(0, 0)
       this.paper.project.name = this.title
-      this.paper.view.onFrame = this.onFrame;
+      this.paper.view.onFrame = this.onFrame
       this.paper.view.onMouseDown = this.onMouseDown
       this.tool = new paper.Tool()
       this.tool.onMouseDown = (e) => {
         // console.log('tool的鼠标点击事件---->', e)
         // const res = this.myPath.contains(e.point)
       }
-      console.log("初始化世界!!!");
+      console.log('初始化世界!!!')
       // this.ari = new Ariplane()
       // this.myPath = new paper.Path.Rectangle(new paper.Point(-400,-400), new paper.Size(100))
-      this.Ship = new paper.Path([0, 0], [20, 20],[16, 22], [11, 15], [8, 16], [4, 12], [0, 20], [-4, 12], [-8, 16], [-11, 15], [-16, 22], [-20, 20])
+      this.Ship = new paper.Path([0, 0], [20, 20], [16, 22], [11, 15], [8, 16], [4, 12], [0, 20], [-4, 12], [-8, 16], [-11, 15], [-16, 22], [-20, 20])
       this.Ship.strokeColor = getRandomColor()
       this.Ship.closed = true
       console.log(`${this.title}的paperScope---`, this.paper)
-    },
-  },
-  beforeDestroy() {
-    console.log('beforeDestroyed>>>airplane')
-    this.currentProject.remove()
-        console.log('tool的鼠标点击事件---->', e)
-        // const res = this.myPath.contains(e.point)
-      // this.ari = new Ariplane()
-      // this.myPath = new paper.Path.Rectangle(new paper.Point(-400,-400), new paper.Size(100))
-      // this.myPath.strokeColor = getRandomColor()
-      
-
-
-      // console.log(this.Ship)
-      // this.showOperations()
-      
-  },
-  beforeDestroy() {
-    let currentProject = this.paper.projects.filter((_p) => _p.name === 'airplane')[0]
-    currentProject.remove()
-    currentProject = null
+    }
   }
-};
+}
 </script>
 <style scoped lang="scss">
 .container {

@@ -12,12 +12,12 @@
 <script lang="ts">
 
 export default {
-  name: "songItem",
+  name: 'SongItem',
 
   props: {
     data: {
       type: String,
-      required: true  
+      required: true
     }
   },
   data() {
@@ -28,15 +28,15 @@ export default {
   },
   mounted() {
   },
+
+  beforeDestroy() {
+  },
   methods: {
     handleSelect() {
       this.$emit('handleSelect', this.data)
     }
-  },
-
-  beforeDestroy() {
   }
-};
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -55,8 +55,4 @@ export default {
   }
 
 </style>
-
-
-
-
 

@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import paper from "paper";
+import paper from 'paper'
 import commonTemplate from '@/components/titleTemplate.vue'
 import { getRandomColor } from '@/utils/weapons.js'
 
@@ -25,11 +25,11 @@ export default {
   },
   data() {
     return {
-    };
+    }
   },
   watch: {},
   mounted() {
-    this.init();
+    this.init()
   },
   methods: {
     removeItem(item) {
@@ -48,32 +48,30 @@ export default {
       }
     },
     init() {
-      console.log("初始化世界!!!");
-      const canvas = this.$refs.canvas;
-      this.paper = paper;
-      this.paper.setup(canvas);
+      console.log('初始化世界!!!')
+      const canvas = this.$refs.canvas
+      this.paper = paper
+      this.paper.setup(canvas)
       // 将视图的远点置于底部中间，方便后续炮塔等的向量计算
-      this.paper.view.setCenter(0, 0);
-      this.paper.view.onFrame = this.onFrame;
-      this.tool = new this.paper.Tool();
+      this.paper.view.setCenter(0, 0)
+      this.paper.view.onFrame = this.onFrame
+      this.tool = new this.paper.Tool()
       this.tool.onKeyDown = (e) => {
         switch (e.key) {
           case 'space':
             this.rotateFlag = !this.rotateFlag
         }
-        
       }
       this.tool.onMouseDown = (e) => {
-      };
-    },
+      }
+    }
   },
   beforeDestroyed() {
     console.log('销毁前')
     this.paper = null
   }
 
-
-};
+}
 </script>
 <style scoped lang="scss">
 .MatchStick-container {

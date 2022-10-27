@@ -1,29 +1,29 @@
 
 <template>
   <div
-   class="video-item cursor-pointer flex-cc pd5" 
-   :class="{'is-active':this.data.active}"
-   >
-   <div class="video-item-name flex-cb">
-    <span v-if="!this.editFlag" style="color: black" @click="this.handleSelect">{{ this.data.name }}</span>
-    <el-input v-if="this.editFlag" v-model="this.data.name" />
+    class="video-item cursor-pointer flex-cc pd5"
+    :class="{'is-active':this.data.active}"
+  >
+    <div class="video-item-name flex-cb">
+      <span v-if="!this.editFlag" style="color: black" @click="this.handleSelect">{{ this.data.name }}</span>
+      <el-input v-if="this.editFlag" v-model="this.data.name" />
 
-   </div>
-   <div class="video-item-operate">
-      <el-button v-if="!this.editFlag" @click="() => { this.editFlag = true}" size="mini">编辑</el-button>
-      <el-button v-if="this.editFlag" @click="this.changeName" size="mini">提交</el-button>    
-   </div>
+    </div>
+    <div class="video-item-operate">
+      <el-button v-if="!this.editFlag" size="mini" @click="() => { this.editFlag = true}">编辑</el-button>
+      <el-button v-if="this.editFlag" size="mini" @click="this.changeName">提交</el-button>
+    </div>
   </div>
 </template>
 <script lang="ts">
 
 export default {
-  name: "songItem",
+  name: 'SongItem',
 
   props: {
     data: {
       type: String,
-      required: true  
+      required: true
     }
   },
   data() {
@@ -35,6 +35,9 @@ export default {
   },
   mounted() {
   },
+
+  beforeDestroy() {
+  },
   methods: {
     async changeName() {
       // 发送请求修改目标文件名称
@@ -45,7 +48,6 @@ export default {
         data: ''
       })
       this.editFlag = false
-      
     },
     handleSelect() {
       this.$emit('handleSelect', {
@@ -53,11 +55,8 @@ export default {
         data: this.data
       })
     }
-  },
-
-  beforeDestroy() {
   }
-};
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -87,8 +86,4 @@ export default {
   }
 
 </style>
-
-
-
-
 

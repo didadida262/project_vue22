@@ -1,9 +1,3 @@
-<!--
- * @Author: Hhvcg
- * @Date: 2022-07-27 14:52:03
- * @LastEditors: -_-
- * @Description: radio-rainball
--->
 
 <template>
   <div class="container pd10">
@@ -15,7 +9,7 @@
 </template>
 
 <script>
-import paper from "paper";
+import paper from 'paper'
 import commonTemplate from '@/components/titleTemplate.vue'
 import { getRandomColor } from '@/utils/weapons.js'
 export default {
@@ -36,36 +30,40 @@ export default {
       grow: false,
       vector: null,
       mouseDown: false
-    };
+    }
   },
-  watch: {},
   computed: {
     currentProject() {
       return this.paper.projects.filter((_p) => _p.name === this.title)[0]
     }
-  },  
+  },
+  watch: {},
   mounted() {
-    this.init();
+    this.init()
     this.createRadio()
+  },
+  beforeDestroy() {
+    console.log('beforeDestroyed>>>radio')
+    this.currentProject.remove()
   },
   methods: {
     createColors() {
       for (let i = 0; i < 6; i++) {
-          let brightness = 1 - (i / 6) * 1.5;
-          let hue = i / 6 * this.cycles * 360;
-          let color = {
-              hue: hue,
-              saturation: 1,
-              brightness: brightness
-          };
-          this.colors.push(color);
+        const brightness = 1 - (i / 6) * 1.5
+        const hue = i / 6 * this.cycles * 360
+        const color = {
+          hue: hue,
+          saturation: 1,
+          brightness: brightness
+        }
+        this.colors.push(color)
       }
     },
     // 针对给定path，color，上梯度色
     colorFul() {
       this.gradient = new paper.Gradient(this.colors, true)
-      this.radius = Math.max(paper.view.size.width, paper.view.size.height) * 0.75;
-      this.path.fillColor = new paper.Color(this.gradient, this.point, this.point.add([this.radius, 0]));
+      this.radius = Math.max(paper.view.size.width, paper.view.size.height) * 0.75
+      this.path.fillColor = new paper.Color(this.gradient, this.point, this.point.add([this.radius, 0]))
     },
     createRadio() {
       this.point = paper.view.center
@@ -74,24 +72,22 @@ export default {
       this.path.strokeColor = 'red'
       this.path.strokeWidth = 5
       this.colorFul()
-      this.gradientColor = this.path.fillColor;
-
+      this.gradientColor = this.path.fillColor
     },
     onFrame() {
-      for (let i = 0, l = this.gradient.stops.length; i < l; i++)
-          this.gradient.stops[i].color.hue -= 20;
+      for (let i = 0, l = this.gradient.stops.length; i < l; i++) { this.gradient.stops[i].color.hue -= 20 }
       if (this.grow && this.vector.length > 300) {
-          this.grow = false;
+        this.grow = false
       } else if (!this.grow && this.vector.length < 75) {
-          this.grow = true;
+        this.grow = true
       }
       if (this.mouseDown) {
-          point = point + (mousePoint - point) / 10;
+        point = point + (mousePoint - point) / 10
       } else {
-          this.vector.length += (this.grow ? 1 : -1);
-          this.vector.angle += 5;
+        this.vector.length += (this.grow ? 1 : -1)
+        this.vector.angle += 5
       }
-      this.gradientColor.highlight = this.mouseDown ? this.point : this.point.add(this.vector);
+      this.gradientColor.highlight = this.mouseDown ? this.point : this.point.add(this.vector)
     },
 
     onKeyDown(e) {
@@ -101,30 +97,26 @@ export default {
       // console.log('view的鼠标点击事件---->', e)
     },
     init() {
-      this.grow = false;
-      this.vector = new paper.Point(150, 0);
-      console.log("初始化世界!!!");
+      this.grow = false
+      this.vector = new paper.Point(150, 0)
+      console.log('初始化世界!!!')
       console.log('黑色死光启动------=====-_-')
-      const canvas = this.$refs.canvas;
-      this.paper = paper;
-      this.paper.setup(canvas);
+      const canvas = this.$refs.canvas
+      this.paper = paper
+      this.paper.setup(canvas)
       this.paper.project.name = this.title
-      this.paper.view.setCenter(0, 0);
-      this.paper.view.onFrame = this.onFrame;
+      this.paper.view.setCenter(0, 0)
+      this.paper.view.onFrame = this.onFrame
       this.paper.view.onMouseDown = this.onMouseDown
       this.tool = new paper.Tool()
       this.tool.onMouseDown = (e) => {
         console.log('tool的鼠标点击事件---->', e)
       }
       console.log(`${this.title}的paperScope---`, this.paper)
-    },
-  },
-  beforeDestroy() {
-    console.log('beforeDestroyed>>>radio')
-    this.currentProject.remove()
+    }
   }
 
-};
+}
 </script>
 <style scoped lang="scss">
 .container {

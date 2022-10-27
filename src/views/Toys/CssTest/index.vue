@@ -1,8 +1,7 @@
 <template>
-  <div class='csstest-st pd10'>
-    <commonTemplate title='CssTest' />
-    <div class='content'>
-    </div>
+  <div class="csstest-st pd10">
+    <commonTemplate title="CssTest" />
+    <div class="content" />
   </div>
 </template>
 <script>
@@ -19,13 +18,13 @@ export default {
   created() {
     this.getData()
   },
-  methods: {
-    async getData() {
-    }
-  },
   mounted() {
   },
   beforeDestroy() {
+  },
+  methods: {
+    async getData() {
+    }
   }
 }
 </script>

@@ -14,7 +14,7 @@
 <script>
 import CommonTemplate from '@/components/titleTemplate.vue'
 export default {
-  name: "Chars",
+  name: 'Chars',
   components: {
     CommonTemplate
   },
@@ -26,19 +26,18 @@ export default {
   created() {
     this.getData()
   },
+  mounted() {
+  },
+  beforeDestroy() {
+  },
   methods: {
     async getData() {
       const res = await this.$axios.getAllChars()
       this.chars = res.data
     }
-  },
-  mounted() {
-  },
-  beforeDestroy() {
   }
 }
 </script>
-
 
 <style scoped lang="scss">
 .Chars-st {
