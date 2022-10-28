@@ -6,6 +6,7 @@
 -->
 <template>
   <div class="openLayer-container pd10">
+    <!-- <svg-icon icon-class="datacenter" /> -->
     <commonTemplate title="GaodeMap" />
     <div class="openLayer-container-content">
       <baidu-map id="gdmap-view" class="bm-view" :center="markerPoint" :zoom="16" :dragging="true" :scroll-wheel-zoom="true" @ready="handler">

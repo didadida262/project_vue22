@@ -87,14 +87,14 @@ export const constantRoutes = [
         path: 'bd',
         name: 'baidu',
         component: () => import('@/views/openLayer/BaiduMap/index'),
-        meta: { title: 'BaiduMap', icon: 'el-icon-brush'}
+        meta: { title: 'BaiduMap', icon: 'datacenter' }
       },
       {
         path: 'gd',
         name: 'gaode',
         component: () => import('@/views/openLayer/GaodeMap/index'),
-        meta: { title: 'GaodeMap', icon: 'el-icon-brush'}
-      }      
+        meta: { title: 'GaodeMap', icon: 'el-icon-brush' }
+      }
     ]
   },
   // article
@@ -107,7 +107,7 @@ export const constantRoutes = [
         name: 'articleList',
         path: 'articleList',
         component: () => import('@/views/form/index'),
-        meta: { title: 'ArticleList', icon: 'form' },
+        meta: { title: 'ArticleList', icon: 'form' }
       },
       {
         name: 'createArticle',
@@ -121,7 +121,7 @@ export const constantRoutes = [
       }
     ]
   },
-// paperjs
+  // paperjs
   {
     path: '/paperjs',
     component: Layout,
@@ -274,13 +274,13 @@ export const constantRoutes = [
         component: () => import('@/views/Toys/Chars/index'),
         name: 'Chars',
         meta: { title: 'Chars', icon: 'el-icon-video-camera' }
-      },  
+      },
       {
         path: 'test',
         component: () => import('@/views/Toys/Test/index'),
         name: 'Test',
         meta: { title: 'Test', icon: 'el-icon-video-camera' }
-      },  
+      }
     ]
 
   },
