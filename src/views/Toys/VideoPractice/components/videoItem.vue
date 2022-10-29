@@ -56,7 +56,10 @@ export default {
         data: this.data,
         edit: flag 
       })
-      this.data.editFlag = true
+      this.$nextTick(() => {
+        this.$refs[this.inputRef].focus()
+      })
+      // this.data.editFlag = true
     },
     async changeName() {
       // 发送请求修改目标文件名称
