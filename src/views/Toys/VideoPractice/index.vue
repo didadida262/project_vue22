@@ -29,7 +29,7 @@
         </div>
         <div style="width: 100%;height: calc(100% - 60px);overflow: scroll;">
           <div v-for="(video, index) in videosList" :key="index" class="flex-ca video-itemContainer mgb5">
-            <video-item :data="video" @handleSelect="handleSelect" />
+            <video-item :data="video" @handleVideoOperate="handleVideoOperate" />
           </div>
         </div>
       </div>
@@ -71,20 +71,23 @@ export default {
       this.currentCate = cate
       this.getVideosList(this.page)
     },
-    async handleSelect(info) {
-      console.log('播放>>', info)
+    async handleVideoOperate(info) {
+      console.log('当前>>', info)
       if (info.type === 'click') {
         await this.getVideoData(info.data)
         this.videosList.forEach(item => {
+          item.editFlag = false
           if (item.name === info.data.name) {
             item.active = true
-            console.log('item>>', item)
           } else {
             item.active = false
           }
         })
       } else if (info.type === 'refreshData') {
         this.getVideosList()
+      } else if (info.type === 'handleEdit') {
+        const t = this.videosList.filter((item) => item.name === info.data.name)[0]
+        t.editFlag = info.edit
       }
     },
     download() {
@@ -148,7 +151,8 @@ export default {
         return {
           ...item,
           active: false,
-          currentCate: this.currentCate
+          currentCate: this.currentCate,
+          editFlag: false
         }
       })
       console.log('this.videosList>>>', this.videosList)
