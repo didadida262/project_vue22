@@ -1,15 +1,21 @@
 
-<template>
+<template slot-scope="scope">
   <div
     class="video-item cursor-pointer flex-cc pd5"
     :class="{'is-active':this.data.active}"
   >
     <div class="video-item-name flex-cb">
       <span v-if="!this.editFlag" style="color: black" @click="this.handleSelect">{{ this.data.name }}</span>
-      <el-input v-if="this.editFlag" v-model="this.data.name" />
+      <input
+       v-if="this.editFlag"  
+       @keyup.enter="changeName"
+       :ref="this.inputRef"  
+       type="text" 
+       style="color: black" 
+       :value="this.inputName">
     </div>
     <div class="video-item-operate">
-      <el-button v-if="!this.editFlag" size="mini" @click="() => { this.editFlag = true}">编辑</el-button>
+      <el-button v-if="!this.editFlag" size="mini" @click="this.handleEdit">编辑</el-button>
       <el-button v-if="this.editFlag" size="mini" @click="this.changeName">提交</el-button>
     </div>
   </div>
@@ -26,7 +32,9 @@ export default {
   },
   data() {
     return {
-      editFlag: false
+      editFlag: false,
+      inputName: '',
+      xx: ''
     }
   },
   created() {
@@ -35,10 +43,23 @@ export default {
   },
   beforeDestroy() {
   },
+  computed: {
+    inputRef() {
+      this.inputName = this.data.name
+      return this.data.id
+    }
+  },
   methods: {
+    handleEdit() {
+      this.editFlag = true
+    },
     async changeName() {
       // 发送请求修改目标文件名称
-      const res = await this.$axios.changeFileName(this.data)
+      const params = {
+        ...this.data,
+        inputName: this.$refs[this.inputRef].value
+      }
+      const res = await this.$axios.changeFileName(params)
       this.$message.info(res.message)
       this.$emit('handleSelect', {
         type: 'refreshData',

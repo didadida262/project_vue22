@@ -25,6 +25,11 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 // import localeEI from 'element-ui/lib/locale/lang/en' // lang i18n
 
+import Antd from 'ant-design-vue'
+import 'ant-design-vue/dist/antd.css'
+Vue.use(Antd)
+
+
 import '@/styles/index.scss' // global css
 
 import App from './App'

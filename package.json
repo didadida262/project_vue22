@@ -17,6 +17,7 @@
     "@amap/amap-jsapi-loader": "^1.0.1",
     "@better-scroll/core": "^2.4.2",
     "@kazupon/vue-i18n-loader": "0.3.0",
+    "ant-design-vue": "^1.7.8",
     "axios": "0.18.1",
     "better-scroll": "^2.4.2",
     "bootstrap": "4.1.3",
