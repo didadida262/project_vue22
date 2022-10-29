@@ -62,7 +62,6 @@ export default {
   async created() {
     await this.getCates()
     this.getVideosList(this.page)
-    // this.getVideos()
   },
   beforeDestroy() {
   },
@@ -74,10 +73,11 @@ export default {
     async handleSelect(info) {
       console.log('播放>>', info)
       if (info.type === 'click') {
-        await this.getVideo(info.data)
+        await this.getVideoData(info.data)
         this.videosList.forEach(item => {
-          if (item.name === info.name) {
+          if (item.name === info.data.name) {
             item.active = true
+            console.log('item>>', item)
           } else {
             item.active = false
           }
@@ -124,7 +124,7 @@ export default {
     },
 
     // 获取视频列表
-    async getVideo(info) {
+    async getVideoData(info) {
       const params = {
         currentCate: this.currentCate,
         name: info.name
@@ -135,7 +135,6 @@ export default {
       this.url = url
       const videoContainer = this.$refs['videoContainer']
       videoContainer.src = url
-
       console.log('当前url--->', this.url)
     },
     async getVideosList(info) {
@@ -143,7 +142,6 @@ export default {
         ...info,
         currentCate: this.currentCate
       }
-
       const res = await this.$axios.getVideosList(params)
       this.videosList = res.map((item) => {
         return {
@@ -153,7 +151,6 @@ export default {
         }
       })
       console.log('this.videosList>>>', this.videosList)
-      console.log('mvlist>>>', res)
     },
     async getCates() {
       this.categories = await this.$axios.getCates()

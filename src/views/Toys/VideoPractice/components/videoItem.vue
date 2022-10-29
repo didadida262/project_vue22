@@ -7,7 +7,6 @@
     <div class="video-item-name flex-cb">
       <span v-if="!this.editFlag" style="color: black" @click="this.handleSelect">{{ this.data.name }}</span>
       <el-input v-if="this.editFlag" v-model="this.data.name" />
-
     </div>
     <div class="video-item-operate">
       <el-button v-if="!this.editFlag" size="mini" @click="() => { this.editFlag = true}">编辑</el-button>
@@ -19,10 +18,9 @@
 
 export default {
   name: 'SongItem',
-
   props: {
     data: {
-      type: String,
+      type: Object,
       required: true
     }
   },
@@ -35,7 +33,6 @@ export default {
   },
   mounted() {
   },
-
   beforeDestroy() {
   },
   methods: {
