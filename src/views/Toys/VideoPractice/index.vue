@@ -25,6 +25,7 @@
           >
             {{ cate }}
           </el-button>
+          <span class="mgl10">当前类别文件数目: <span style="color: red">{{ videosList.length }}</span></span>
         </div>
         <div style="width: 100%;height: calc(100% - 60px);overflow: scroll;">
           <div v-for="(video, index) in videosList" :key="index" class="flex-ca video-itemContainer mgb5">
