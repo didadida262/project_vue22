@@ -6,12 +6,18 @@
  */
 module.exports = {
   root: true,
+  // parserOptions: {
+  //   parser: 'babel-eslint',
+  //   sourceType: 'module'
+  // },
   env: {
-    node: true
+    node: true,
+    es6: true,
+    browser: true
   },
   'extends': [
     'plugin:vue/essential',
-    '@vue/standard'
+    // '@vue/standard'
   ],
   rules: {
     'accessor-pairs': 2, // getter/setter 一起使用
