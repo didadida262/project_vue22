@@ -353,8 +353,6 @@ export default {
       })
     },
     onMouseMove(e) {
-      console.log('move>>>>', e)
-      console.log('xxxx>>>>', this.X)
       this.X.set({
         position: e.point,
         length: 10000
