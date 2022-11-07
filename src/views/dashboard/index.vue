@@ -16,7 +16,6 @@
 import { mapGetters } from 'vuex'
 import paper from 'paper'
 import { getRandomColor, getCirclePoint } from '@/utils/weapons'
-import { thisExpression, tSParenthesizedType } from '@babel/types'
 
 export default {
   name: 'Dashboard',
