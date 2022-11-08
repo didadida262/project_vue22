@@ -173,8 +173,13 @@ export const constantRoutes = [
         name: 'radio',
         component: () => import('@/views/paper/Radio/index'),
         meta: { title: 'Radio', icon: 'el-icon-headset' }
+      },
+      {
+        path: 'watch',
+        name: 'watch',
+        component: () => import('@/views/paper/Watch/index'),
+        meta: { title: 'Watch', icon: 'el-icon-headset' }
       }
-
     ]
   },
   // threejs
