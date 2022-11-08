@@ -16,7 +16,6 @@
 import { mapGetters } from 'vuex'
 import paper from 'paper'
 import { getRandomColor, getCirclePoint } from '@/utils/weapons'
-import { thisExpression, tSParenthesizedType } from '@babel/types'
 
 export default {
   name: 'Dashboard',
@@ -353,8 +352,6 @@ export default {
       })
     },
     onMouseMove(e) {
-      console.log('move>>>>', e)
-      console.log('xxxx>>>>', this.X)
       this.X.set({
         position: e.point,
         length: 10000

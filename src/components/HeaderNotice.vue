@@ -1,3 +1,9 @@
+<!--
+ * @Author: Hhvcg
+ * @Date: 2022-02-20 15:34:09
+ * @LastEditors: -_-
+ * @Description:
+-->
 <template>
   <div class="header-notice">
     <!-- {{ showData }} -->
@@ -6,15 +12,15 @@
 
 <script>
 export default {
-    name: 'Header-Notice',
-    computed: {
-      showData() {
-        return '初始化'
-      }
-    },
-    create() {
-        console.log('i am notice')
+  name: 'Header-Notice',
+  computed: {
+    showData() {
+      return '初始化'
     }
+  },
+  create() {
+    console.log('i am notice')
+  }
 }
 </script>
 

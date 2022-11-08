@@ -6,7 +6,7 @@
 -->
 <template>
   <div class="title-st flex-cc mgb10">
-    <h1>{{ title }}</h1>
+    <span style="font-weight: bold;font-size: 40px">{{ title }}</span>
   </div>
 </template>
 
@@ -22,17 +22,16 @@ export default {
   data() {
     return {
 
-    };
+    }
   },
-  watch: {},
+  watch: {}
 
-
-};
+}
 </script>
 <style scoped lang="scss">
 .title-st {
   margin: 5px auto;
-  width: 100%; 
+  width: 100%;
   height: 72px;
   background: gray;
   border-radius: 4px;

@@ -5,7 +5,8 @@
 @import './sidebar.scss';
 
 body {
-  height: 100%;
+  height: 100vh;
+  width: 100vw;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
@@ -18,6 +19,7 @@ label {
 
 html {
   height: 100%;
+  // 浏览器默认是标准盒模型
   box-sizing: border-box;
 }
 

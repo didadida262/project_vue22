@@ -17,6 +17,7 @@ import { Bomb } from './Bomb'
 export default {
   data() {
     return {
+      title: 'tank',
       colors: ['#80FFA5'],
       GUNWIDTH: 10,
       GUNHEIGHT: 100,
@@ -40,9 +41,12 @@ export default {
   watch: {},
   mounted() {
     this.init()
-    console.log('this.role.gun', this.role.gun)
   },
-
+  computed: {
+    currentProject() {
+      return this.paper.projects.filter((_p) => _p.name === this.title)[0]
+    }
+  },
   methods: {
     // 变更gun的火力(速度)
     changeSpeed(flag) {
@@ -126,15 +130,16 @@ export default {
         this.GUNHEIGHT
       )
       this.role.gun.fillColor = this.colors[0]
-      console.log('.....', this.role.gun)
     },
     onFrame() {
       this.role.gun.rotate(this.role.speed, this.role.gun.position)
-      console.log(this.role.gun)
       for (const bomb of this.bombs) {
         bomb.update(this.role.speed)
       }
     }
+  },
+  beforeDestroy() {
+    this.currentProject.remove()
   }
 }
 </script>
