@@ -24,11 +24,12 @@ import 'normalize.css/normalize.css' // A modern alternative to CSS resets
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 // import localeEI from 'element-ui/lib/locale/lang/en' // lang i18n
+// 自定义了elementui的默认配置
+import '../theme/index.css'
 
 import Antd from 'ant-design-vue'
 import 'ant-design-vue/dist/antd.css'
 Vue.use(Antd)
-
 
 import '@/styles/index.scss' // global css
 

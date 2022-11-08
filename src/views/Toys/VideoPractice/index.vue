@@ -90,23 +90,23 @@ export default {
         t.editFlag = info.edit
       }
     },
-    download() {
-      // // 转base64格式、图片格式转换、图片质量压缩---支持两种格式image/jpeg+image/png
-      const imgBase64 = canvasRef.value.toDataURL('image/jpeg', 0.7)
-      console.log(imgBase64)
-      // 由字节转换为KB 判断大小
-      const str = imgBase64.replace('data:image/jpeg;base64,', '')
-      // let strLength = str.length;
-      // let fileLength = parseInt(strLength - (strLength / 8) * 2); // 图片尺寸  用于判断
-      // let size = (fileLength / 1024).toFixed(2);
-      // console.log(size); // 上传拍照信息  调用接口上传图片 .........
-      // 保存到本地
-      const ADOM = document.createElement('a')
-      ADOM.href = str
-      ADOM.download = new Date().getTime() + '.jpeg'
-      console.log('adom:', ADOM)
-      ADOM.click()
-    },
+    // download() {
+    //   // // 转base64格式、图片格式转换、图片质量压缩---支持两种格式image/jpeg+image/png
+    //   const imgBase64 = canvasRef.value.toDataURL('image/jpeg', 0.7)
+    //   console.log(imgBase64)
+    //   // 由字节转换为KB 判断大小
+    //   const str = imgBase64.replace('data:image/jpeg;base64,', '')
+    //   // let strLength = str.length;
+    //   // let fileLength = parseInt(strLength - (strLength / 8) * 2); // 图片尺寸  用于判断
+    //   // let size = (fileLength / 1024).toFixed(2);
+    //   // console.log(size); // 上传拍照信息  调用接口上传图片 .........
+    //   // 保存到本地
+    //   const ADOM = document.createElement('a')
+    //   ADOM.href = str
+    //   ADOM.download = new Date().getTime() + '.jpeg'
+    //   console.log('adom:', ADOM)
+    //   ADOM.click()
+    // },
     // 打开摄像头获取视频流
     async openVideo() {
       console.info('初始化世界！！1')
