@@ -168,6 +168,7 @@ export const constantRoutes = [
         component: () => import('@/views/paper/Airplane/index'),
         meta: { title: 'Airplane', icon: 'el-icon-s-promotion' }
       },
+
       {
         path: 'pcman',
         name: 'pcman',
@@ -185,6 +186,13 @@ export const constantRoutes = [
         name: 'watch',
         component: () => import('@/views/paper/Watch/index'),
         meta: { title: 'Watch', icon: 'el-icon-headset' }
+      },
+      // picturewall
+      {
+        path: 'picturewall',
+        name: 'Picturewall',
+        component: () => import('@/views/paper/PictureWall/index'),
+        meta: { title: 'Picturewall', icon: 'el-icon-s-promotion' }
       }
     ]
   },

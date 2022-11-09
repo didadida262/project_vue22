@@ -26,17 +26,13 @@
 <script>
 import CommonTemplate from '@/components/titleTemplate.vue'
 import PaperPic from '@/components/PaperPic.vue'
-import PaperPicSample from '@/components/PaperPicSample.vue'
-import PicWall from '@/components/PicWall.vue'
 import paper from 'paper'
 
 export default {
   name: 'Test',
   components: {
     CommonTemplate,
-    PaperPic,
-    PaperPicSample,
-    PicWall
+    PaperPic
   },
   data() {
     return {
