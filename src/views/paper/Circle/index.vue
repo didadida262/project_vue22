@@ -8,7 +8,10 @@
   <div class="Circlle-container pd10">
     <commonTemplate title="Circle" />
     <div class="Circlle-container-content">
-      <canvas ref="canvas" resize class="canvas" />
+      <review-circle
+       :defectList="circleData.dotData"
+       :waferInfo="circleData.waferInfo"
+      />
     </div>
   </div>
 </template>
@@ -29,7 +32,7 @@ export default {
       title: 'Circlle',
       paper: null,
       tool: null,
-      // defectList: require('@/utils/')
+      circleData: require('@/api/circleData')
     }
   },
   computed: {
@@ -40,11 +43,15 @@ export default {
   watch: {},
   mounted() {
     this.init()
+    this.drawData()
   },
   beforeDestroy() {
     this.currentProject.remove()
   },
   methods: {
+    drawData() {
+      console.log('this.circleData>>>', this.circleData)
+    },
     removeItem(item) {
       if (item) {
         item.remove()

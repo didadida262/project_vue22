@@ -141,7 +141,6 @@ export const constantRoutes = [
         component: () => import('@/views/paper/Tank/index'),
         meta: { title: 'Tank', icon: 'el-icon-aim' }
       },
-
       {
         path: 'music',
         name: 'Music',
@@ -154,6 +153,13 @@ export const constantRoutes = [
         name: 'StickIn',
         component: () => import('@/views/paper/StickIn/index'),
         meta: { title: 'StickIn', icon: 'table' }
+      },
+      // cricle点
+      {
+        path: 'circle',
+        name: 'Circle',
+        component: () => import('@/views/paper/Circle/index'),
+        meta: { title: 'Circle', icon: 'table' }
       },
       // airplane
       {
