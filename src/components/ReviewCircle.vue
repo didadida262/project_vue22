@@ -32,6 +32,10 @@ export default {
     },
     otherLayersInfo: {
       type: Object
+    },
+    typeList: {
+      type: Array,
+      required: true
     }
   },
   data() {
@@ -99,8 +103,8 @@ export default {
         const p = new paper.Path.Circle({
           center: new paper.Point(item.pos_x, item.pos_y),
           radius: 1.5,
-          // fillColor: this.classColors[item.class_id]
-          fillColor: getRandomColor()
+          fillColor: this.classColors[item.class_id]
+          // fillColor: getRandomColor()
         })
         p.class_id = item.class_id
         p.data_id = item.id
@@ -474,6 +478,13 @@ export default {
   computed: {
     currentProject() {
       return this.paper.projects.filter((_p) => _p.name === this.title)[0]
+    },
+    classColors() {
+      const obj = {}
+      this.typeList.forEach((type) => {
+        obj[type.class_id] = type.color
+      })
+      return obj
     }
   },
   watch: {

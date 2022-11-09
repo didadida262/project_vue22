@@ -12,6 +12,7 @@
        :defectList="circleData.dotData"
        :waferInfo="circleData.waferInfo"
        :otherLayersInfo="otherLayersInfo"
+       :typeList="circleData.dotClass"
       />
     </div>
   </div>
