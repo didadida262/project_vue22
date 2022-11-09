@@ -7,15 +7,15 @@
 -->
 <template>
   <div class="review-circle-container">
-    <canvas id="main_canvas" ref="main_canvas" resize class="main_canvas" :style="showPointer"
+    <canvas id="main_canvas" ref="main_canvas" resize class="main_canvas"
     hidpi="off"
     />
   </div>
 </template>
 <script>
 import paper from 'paper'
-import { getAnotherPoint } from '@/utils/index'
-// import { getRandomColor } from '@/utils/weapons.js'
+import { getAnotherPoint } from '@/utils/weapons'
+import { getRandomColor } from '@/utils/weapons'
 
 export default {
   name: 'review-circle',
@@ -31,13 +31,6 @@ export default {
       required: true
     },
     otherLayersInfo: {
-      type: Object
-    },
-    defectCompData: {
-      type: Array
-    },
-    // 扫描位置
-    realtimeScanningBoxInfo: {
       type: Object
     }
   },
@@ -69,8 +62,8 @@ export default {
       this.paper = paper
       this.paper.view.setCenter(0, 0)
       this.paper.project.name = 'circle'
-      this.paper.view.onMouseMove = (e) => { this.onMouseMove(e) }
-      this.paper.view.onMouseDown = (e) => { this.onClickChip(e) }
+      // this.paper.view.onMouseMove = (e) => { this.onMouseMove(e) }
+      // this.paper.view.onMouseDown = (e) => { this.onClickChip(e) }
     },
     // 外圆
     drawCircle() {
@@ -107,7 +100,7 @@ export default {
           center: new paper.Point(item.pos_x, item.pos_y),
           radius: 1.5,
           // fillColor: this.classColors[item.class_id]
-          fillColor: 'red'
+          fillColor: getRandomColor()
         })
         p.class_id = item.class_id
         p.data_id = item.id
@@ -470,7 +463,7 @@ export default {
     console.time('Circle-time')
     this.init()
     this.drawCircle()
-    this.drawInnerCircle()
+    this.drawInnerCircle(this.waferInfo.DOWN, this.innerRadius)
     this.drawDot()
     console.timeEnd('Circle-time')
     console.log('circel-paperscope--->', this.paper)

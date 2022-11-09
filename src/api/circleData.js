@@ -11,7 +11,7 @@ const dotClass = [{ 'id': 1, 'class_id': 'unclassified', 'name': 'Unclassified',
 
 const waferInfo = {
   radius: 75,
-  DOWN: 20,
+  DOWN: 45.6,
   edge_exclusion: 3
 }
 module.exports = {

@@ -18,7 +18,7 @@
  *      ...:::           ::::::::::::'              ``::.
  *     ````':.          ':::::::::'                  ::::..
  *                        '.:::::'                    ':'````..
- * 
+ *
  * @Author: Hhvcg
  * @Date: 2022-02-28 10:07:23
  * @LastEditors: -_-
@@ -47,44 +47,42 @@
 // }
 
 /**
- * @description: 比特转换器  
+ * @description: 比特转换器
  * @param {*} name 名称
  * @param {*} bytes 比特值大小
  * @return {*} MB单位值
  */
- export const formatBytes = (name, bytes) => {
-    return name + ': '+ (bytes / 1024 / 1024 ).toFixed(2) + ' MB '
+export const formatBytes = (name, bytes) => {
+  return name + ': ' + (bytes / 1024 / 1024).toFixed(2) + ' MB '
 }
 
 export const formatTime = (name, time) => {
-    return time / 1000 + 's'
+  return time / 1000 + 's'
 }
 
 /**
- * @description: 程序耗时检测器 
+ * @description: 程序耗时检测器
  * @param {*} 输出名称
  * @param {*} fn
  * @return {*} 输出程序用时
  */
- export const costTime = (name, fn) => {
-    console.time(name)
-    fn()
-    console.timeEnd(name)
-  }
-
-
+export const costTime = (name, fn) => {
+  console.time(name)
+  fn()
+  console.timeEnd(name)
+}
 
 // 返回media目录下的文件
 const getAllSongs = () => {
-    const mediaPath = path.join(__dirname, 'media')
-    let res = null
-    res = fs.readdirSync(mediaPathir).filter((item) => item.includes('.mp3'))
-    return res
+  const mediaPath = path.join(__dirname, 'media')
+  let res = null
+  res = fs.readdirSync(mediaPathir).filter((item) => item.includes('.mp3'))
+  return res
 }
 
 // 中心点在坐标原点的圆，给定一个x值，返回上下点坐标
-export const getCirclePoint = (val, radius) =>  {
-    return Math.sqrt(Math.pow(radius, 2) - Math.pow(Math.abs(val), 2))
+export const getCirclePoint = (val, radius) => {
+  return Math.sqrt(Math.pow(radius, 2) - Math.pow(Math.abs(val), 2))
 }
 
 /*
@@ -95,11 +93,15 @@ export const getCirclePoint = (val, radius) =>  {
  */
 
 export const getRandomColor = () => {
-    // rgba(x,y,z,透明度)
-    let r = Math.floor(Math.random() * 256)
-    let g = Math.floor(Math.random() * 256)
-    let b = Math.floor(Math.random() * 256)
-    let t = Math.random().toFixed(1)
-    return `rgba(${r}, ${g}, ${b}, ${t})`
-  }
+  // rgba(x,y,z,透明度)
+  const r = Math.floor(Math.random() * 256)
+  const g = Math.floor(Math.random() * 256)
+  const b = Math.floor(Math.random() * 256)
+  const t = Math.random().toFixed(1)
+  return `rgba(${r}, ${g}, ${b}, ${t})`
+}
 
+// 中心点在坐标原点的圆，给定一个坐标值及radius，返回另一坐标值
+export const getAnotherPoint = (val, radius) => {
+  return Math.sqrt(Math.pow(radius, 2) - Math.pow(Math.abs(val), 2))
+}
