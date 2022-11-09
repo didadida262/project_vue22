@@ -7,11 +7,11 @@
 <template>
   <div class="test-st pd10">
     <commonTemplate title="Test" />
-    <div class="content">
-      <pic-wall
+    <div class="content pd10">
+      <!-- <pic-wall
         :pic-info="picList[0]"
-      />
-      <!-- <div
+      /> -->
+      <div
         class="content-item"
         v-for="(pic, index) in picList"
         :key="index"
@@ -19,7 +19,7 @@
         <paper-pic
           :picInfo="pic"
            />
-      </div> -->
+      </div>
     </div>
   </div>
 </template>
@@ -43,25 +43,42 @@ export default {
       picList: [
         {
           title: '1',
-          src: 'https://cms-assets.tutsplus.com/uploads/users/1251/posts/26530/image/BenderPaper.jpg'
+          src: require('@/assets/Sam.webp')
         },
         {
           title: '2',
-          src: 'https://cms-assets.tutsplus.com/uploads/users/1251/posts/26530/image/BenderPaper.jpg'
+          src: require('@/assets/Sam.webp')
         },
         {
           title: '3',
-          src: 'https://cms-assets.tutsplus.com/uploads/users/1251/posts/26530/image/BenderPaper.jpg'
+          src: require('@/assets/Sam.webp')
         },
         {
           title: '4',
-          src: 'https://cms-assets.tutsplus.com/uploads/users/1251/posts/26530/image/BenderPaper.jpg'
+          src: require('@/assets/Sam.webp')
+        },
+        {
+          title: '5',
+          src: require('@/assets/Sam.webp')
+        },
+        {
+          title: '6',
+          src: require('@/assets/Sam.webp')
+        },
+        {
+          title: '7',
+          src: require('@/assets/Sam.webp')
+        },
+        {
+          title: '8',
+          src: require('@/assets/Sam.webp')
         }
       ],
       WIDTH: null,
       HEIGHT: null,
       scale: 0,
-      zoom: 1
+      zoom: 1,
+      url: require('@/assets/Sam.webp')
     }
   },
   created() {
@@ -156,12 +173,12 @@ export default {
     flex-wrap: wrap;
     justify-content: space-between;
     border: 1px solid gray;
-    background: black;
+    background: white;
     &-item {
       width: 24%;
       height: 400px;
-      border: 1px solid rebeccapurpled;
-      background: black;
+      border: 1px solid grey;
+      background: white;
     }
     .main_canvas {
       width: 100%;

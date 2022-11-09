@@ -40,7 +40,7 @@ export default {
     this.init()
   },
   beforeDestroy() {
-    // this.currentProject.remove()
+    this.currentProject.remove()
   },
   methods: {
     removeItem(item) {
