@@ -30,7 +30,7 @@ export default {
   },
   data() {
     return {
-      paper: null,
+      loaded: false,
       WIDTH: null,
       HEIGHT: null,
       title: 'PictureWall',
@@ -45,9 +45,13 @@ export default {
       return this.paper.projects.filter((p) => p.name === this.picContainer)[0]
     }
   },
+  created() {
+  },
   mounted() {
+    this.raster = null
     this.init()
     this.drawPic()
+    this.lastPos = this.currentProject.view.center
   },
   watch: {},
 
@@ -62,10 +66,26 @@ export default {
       this.paper.view.setCenter(0, 0)
     },
     drawPic() {
-      const raster = new paper.Raster(this.url)
-      raster.onLoad = () => {
-        raster.fitBounds(this.currentProject.view.bounds, false)
+      this.raster = new paper.Raster(this.url)
+      this.raster.onLoad = () => {
+        this.loaded = true
+        this.onResize()
       }
+    },
+    moveHandler() {
+
+    },
+    onResize() {
+      if (!this.loaded) {
+        return
+      }
+      this.currentProject.activeLayer.removeChildren()
+      this.raster.fitBounds(this.currentProject.view.bounds, true)
+      new paper.Path.Rectangle({
+        rectangle: this.currentProject.view.bounds,
+        fillColor: this.raster.getAverageColor(this.currentProject.view.bounds),
+        onMouseMove: this.moveHandler
+      })
     }
   }
 }

@@ -40,10 +40,26 @@ export default {
       this.paper.view.setCenter(0, 0)
     },
     drawPic() {
-      const raster = new paper.Raster(this.picInfo.src)
-      raster.onLoad = () => {
-        raster.fitBounds(this.paper.view.bounds, false)
+      this.raster = new paper.Raster(this.picInfo.src)
+      this.raster.onLoad = () => {
+        this.loaded = true
+        this.onResize()
       }
+    },
+    moveHandler() {
+
+    },
+    onResize() {
+      if (!this.loaded) {
+        return
+      }
+      this.currentProject.activeLayer.removeChildren()
+      this.raster.fitBounds(this.currentProject.view.bounds, true)
+      new paper.Path.Rectangle({
+        rectangle: this.currentProject.view.bounds,
+        fillColor: this.raster.getAverageColor(this.currentProject.view.bounds),
+        onMouseMove: this.moveHandler
+      })
     }
   },
   computed: {
@@ -53,6 +69,9 @@ export default {
     currentProject() {
       return this.paper.projects.filter((p) => p.name === this.picContainer)[0]
     }
+  },
+  created() {
+    this.raster = null
   },
   mounted() {
     this.init()
