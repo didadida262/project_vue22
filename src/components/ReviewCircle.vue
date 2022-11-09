@@ -477,7 +477,7 @@ export default {
   },
   computed: {
     currentProject() {
-      return this.paper.projects.filter((_p) => _p.name === this.title)[0]
+      return this.paper.projects.filter((_p) => _p.name === 'circle')[0]
     },
     classColors() {
       const obj = {}
