@@ -144,7 +144,7 @@ export default {
       }
       const raster = new paper.Raster(layerInfo.url)
       raster.onLoad = () => {
-        const layerInnerCircle = this.currentProject.layers['layerInnerCircle']
+        const layerInnerCircle = this.currentProject.layers['layerCircleOut']
         raster.fitBounds(layerInnerCircle.children[0].bounds, true)
         targetLayer.opacity = layerInfo.checkBoxData ? layerInfo.sliderData : 0
       }
