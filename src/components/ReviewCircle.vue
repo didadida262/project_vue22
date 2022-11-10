@@ -132,6 +132,28 @@ export default {
       })
       pp.strokeWidth = '2'
     },
+    // 根据置顶图层数据，绘制到dot图层
+    drawTargetLayer(layerInfo) {
+      this.currentProject.activate()
+      let targetLayer = this.currentProject.layers[layerInfo.name]
+      if (!targetLayer) {
+        targetLayer = new paper.Layer()
+        targetLayer.name = layerInfo.name
+      } else {
+        targetLayer.activate()
+      }
+      const raster = new paper.Raster(layerInfo.url)
+      raster.onLoad = () => {
+        const layerInnerCircle = this.currentProject.layers['layerInnerCircle']
+        raster.fitBounds(layerInnerCircle.children[0].bounds, true)
+        targetLayer.opacity = layerInfo.checkBoxData ? layerInfo.sliderData : 0
+      }
+    },
+    drawOtherLayers() {
+      this.otherLayersInfo.forEach((layer) => {
+        this.drawTargetLayer(layer)
+      })
+    }
     // // 添加并绘制网格层，默认隐藏,暂由后端图片替代，废弃
     // drawChip() {
     //   if (this.chipInputInfo) {
@@ -444,28 +466,6 @@ export default {
     //     layerBf.opacity = this.defectCompData ? this.defectCompData[3].checkBoxData ? this.defectCompData[3].sliderData : 0 : 0
     //   }
     // },
-    // drawPlLayer() {
-    //   const currentProject = this.paper.projects.filter((item) => item.name === 'circle')[0]
-    //   currentProject.activate()
-    //   let layerPl = currentProject.layers['layerPl']
-    //   if (!layerPl) {
-    //     layerPl = new paper.Layer()
-    //     layerPl.name = 'layerPl'
-    //   } else {
-    //     layerPl.activate()
-    //   }
-    //   const raster = new paper.Raster(this.otherLayersInfo.plImg)
-    //   raster.onLoad = () => {
-    //     const layerData = currentProject.layers[0]
-    //     raster.fitBounds(layerData.bounds, false)
-    //     layerPl.opacity = this.defectCompData ? this.defectCompData[4].checkBoxData ? this.defectCompData[4].sliderData : 0 : 0
-    //   }
-    // },
-    drawOtherLayers() {
-      this.otherLayersInfo.forEach((layer) => {
-        console.log('需要绘制图层>>', layer.name)
-      })
-    }
 
   },
   mounted() {

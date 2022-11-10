@@ -19,6 +19,7 @@
       </div>
       <div class="Circlle-container-content-circle">
         <review-circle
+          ref="circle"
           :defectList="circleData.dotData"
           :waferInfo="circleData.waferInfo"
           :otherLayersInfo="otherLayersInfo"
@@ -46,16 +47,20 @@ export default {
       circleData: require('@/api/circleData'),
       otherLayersInfo: [
         {
-          name: 'chipImg',
-          url: require('@/assets/map.png')
+          name: 'layerChip',
+          url: require('@/assets/chip.png')
         },
         {
-          name: 'plImg',
-          url: require('@/assets/map2.png')
+          name: 'layerDestiny',
+          url: require('@/assets/destiny.png')
         },
         {
-          name: 'bfImg',
-          url: require('@/assets/map3.png')
+          name: 'layerBf',
+          url: require('@/assets/bf.png')
+        },
+        {
+          name: 'layerPl',
+          url: require('@/assets/bf.png')
         }
       ],
       sliderCompData: [
@@ -63,7 +68,7 @@ export default {
           title: 'Defect Map',
           checkBoxData: true,
           sliderData: 1,
-          layer: 'layerData',
+          layer: 'layerDot',
           loading: false
         },
         {
@@ -111,6 +116,13 @@ export default {
   methods: {
     handleSliderCompOperatiopn(data) {
       console.log('收到数据>>', data)
+      const circleProject = this.$refs['circle'].paper.projects.filter((project) => project.name === 'circle')[0]
+      const targetLayer = circleProject.layers[data.layer]
+      console.log('circleProject>>', circleProject)
+      console.log('targetLayer>>', targetLayer)
+      if (targetLayer) {
+        targetLayer.opacity = data.data
+      }
     }
   },
   created() {
