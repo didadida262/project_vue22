@@ -31,7 +31,7 @@ export default {
       required: true
     },
     otherLayersInfo: {
-      type: Object
+      type: Array
     },
     typeList: {
       type: Array,
@@ -131,7 +131,7 @@ export default {
         closed: true
       })
       pp.strokeWidth = '2'
-    }
+    },
     // // 添加并绘制网格层，默认隐藏,暂由后端图片替代，废弃
     // drawChip() {
     //   if (this.chipInputInfo) {
@@ -460,7 +460,12 @@ export default {
     //     raster.fitBounds(layerData.bounds, false)
     //     layerPl.opacity = this.defectCompData ? this.defectCompData[4].checkBoxData ? this.defectCompData[4].sliderData : 0 : 0
     //   }
-    // }
+    // },
+    drawOtherLayers() {
+      this.otherLayersInfo.forEach((layer) => {
+        console.log('需要绘制图层>>', layer.name)
+      })
+    }
 
   },
   mounted() {
@@ -469,6 +474,7 @@ export default {
     this.drawCircle()
     this.drawInnerCircle(this.waferInfo.DOWN, this.innerRadius)
     this.drawDot()
+    this.drawOtherLayers()
     console.timeEnd('Circle-time')
     console.log('circel-paperscope--->', this.paper)
   },
