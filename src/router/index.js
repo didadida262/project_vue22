@@ -81,7 +81,7 @@ export const constantRoutes = [
     path: '/openlayer',
     component: Layout,
     redirect: '/openlayer/gd',
-    meta: { title: 'Map', icon: 'el-icon-s-help' },
+    meta: { title: 'Map', icon: 'map' },
     children: [
       {
         path: 'bd',
@@ -133,13 +133,13 @@ export const constantRoutes = [
         path: 'tadpole',
         name: 'tadpole',
         component: () => import('@/views/paper/index'),
-        meta: { title: 'Tadpole', icon: 'table' }
+        meta: { title: 'Tadpole', icon: 'tadpole' }
       },
       {
         path: 'tank',
         name: 'Tank',
         component: () => import('@/views/paper/Tank/index'),
-        meta: { title: 'Tank', icon: 'el-icon-aim' }
+        meta: { title: 'Tank', icon: 'tank' }
       },
       {
         path: 'music',
@@ -152,14 +152,14 @@ export const constantRoutes = [
         path: 'stickIn',
         name: 'StickIn',
         component: () => import('@/views/paper/StickIn/index'),
-        meta: { title: 'StickIn', icon: 'table' }
+        meta: { title: 'StickIn', icon: 'line' }
       },
       // cricle点
       {
         path: 'circle',
         name: 'Circle',
         component: () => import('@/views/paper/Circle/index'),
-        meta: { title: 'Circle', icon: 'table' }
+        meta: { title: 'Circle', icon: 'circle' }
       },
       // airplane
       {
@@ -173,7 +173,7 @@ export const constantRoutes = [
         path: 'pcman',
         name: 'pcman',
         component: () => import('@/views/paper/pcMan/index'),
-        meta: { title: 'PcMan', icon: 'table' }
+        meta: { title: 'PcMan', icon: 'man' }
       },
       {
         path: 'radio',
@@ -185,14 +185,14 @@ export const constantRoutes = [
         path: 'watch',
         name: 'watch',
         component: () => import('@/views/paper/Watch/index'),
-        meta: { title: 'Watch', icon: 'el-icon-headset' }
+        meta: { title: 'Watch', icon: 'watch' }
       },
       // picturewall
       {
         path: 'picturewall',
         name: 'Picturewall',
         component: () => import('@/views/paper/PictureWall/index'),
-        meta: { title: 'Picturewall', icon: 'el-icon-s-promotion' }
+        meta: { title: 'Picturewall', icon: 'table' }
       }
     ]
   },
@@ -209,7 +209,7 @@ export const constantRoutes = [
         path: 'circleEarth',
         name: 'circleEarth',
         component: () => import('@/views/threeJs/circleEarth'),
-        meta: { title: 'CircleEarth', icon: 'el-icon-s-help' }
+        meta: { title: 'CircleEarth', icon: 'earth' }
       }
     ]
   },

@@ -12,6 +12,7 @@ module.exports = {
       'fix',
       'style',
       'fire',
+      'modify',
       'del',
       'refactor',
       'docs',

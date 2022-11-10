@@ -73,7 +73,7 @@ export default {
     drawCircle() {
       const layerCircleOut = new paper.Layer()
       layerCircleOut.name = 'layerCircleOut'
-      const circleOut = new paper.Path.Circle({
+      new paper.Path.Circle({
         center: 0,
         radius: this.radius,
         strokeColor: 'grey',

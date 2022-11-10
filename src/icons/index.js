@@ -1,3 +1,9 @@
+/*
+ * @Author: Hhvcg
+ * @Date: 2022-02-20 15:26:48
+ * @LastEditors: -_-
+ * @Description: 加载svg图标
+ */
 import Vue from 'vue'
 import SvgIcon from '@/components/SvgIcon'// svg component
 

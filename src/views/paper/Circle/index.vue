@@ -7,8 +7,8 @@
 <template>
   <div class="Circlle-container pd10">
     <commonTemplate title="Circle" />
-    <div class="Circlle-container-content flex-cb pd5">
-      <div class="Circlle-container-content-operateLayer">
+    <div class="Circlle-container-content flex-cb">
+      <div class="Circlle-container-content-operateLayer pd10">
         <slider-comp
          class="mgb20"
          v-for="(item, index) in sliderCompData"
@@ -137,10 +137,10 @@ export default {
   &-content {
     width: 100%;
     height: calc(100% - 80px);
-    border: 1px solid rgb(118, 118, 122, 0.5);
     &-operateLayer {
       width: 300px;
       height: 100%;
+      border: 1px solid rgb(118, 118, 122, 0.5);
     }
     &-circle {
       width: calc(100% - 320px);
