@@ -72,8 +72,8 @@ export default {
         this.onResize()
       }
     },
-    moveHandler() {
-
+    moveHandler(name) {
+      console.log('moveHandler>>>', name)
     },
     onResize() {
       if (!this.loaded) {
@@ -84,7 +84,8 @@ export default {
       new paper.Path.Rectangle({
         rectangle: this.currentProject.view.bounds,
         fillColor: this.raster.getAverageColor(this.currentProject.view.bounds),
-        onMouseMove: this.moveHandler
+        // onMouseMove: this.moveHandler
+        onClick: this.moveHandler
       })
     }
   }
