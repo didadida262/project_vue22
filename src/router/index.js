@@ -87,13 +87,13 @@ export const constantRoutes = [
         path: 'bd',
         name: 'baidu',
         component: () => import('@/views/openLayer/BaiduMap/index'),
-        meta: { title: 'BaiduMap', icon: 'datacenter' }
+        meta: { title: 'BaiduMap', icon: 'map' }
       },
       {
         path: 'gd',
         name: 'gaode',
         component: () => import('@/views/openLayer/GaodeMap/index'),
-        meta: { title: 'GaodeMap', icon: 'el-icon-brush' }
+        meta: { title: 'GaodeMap', icon: 'map' }
       }
     ]
   },
