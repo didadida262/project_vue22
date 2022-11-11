@@ -1,8 +1,10 @@
 <!--
  * @Author: Hhvcg
- * @Date: 2022-09-16 11:38:49
+ * @Date: 2022-11-11 10:56:57
  * @LastEditors: -_-
- * @Description: 支持图片展示、拖拽、放大缩小功能
+ * @Description: paperPic v2.0版本，即“感知图片版本---谷歌地图的丐版
+  1. 新增papercope外的十字准星
+  2. 图片感知功能，自动感知视图内图片是否未完整铺满视图
 -->
 
 <template>
@@ -85,7 +87,7 @@ export default {
     drawPic() {
       const raster = new paper.Raster(this.picInfo.src)
       raster.onLoad = () => {
-        raster.fitBounds(this.paper.view.bounds, false)
+        raster.fitBounds(this.paper.view.bounds, true)
       }
     }
   },

@@ -8,6 +8,9 @@
   <div class="test-st pd10">
     <commonTemplate title="Test" />
     <div class="content pd10">
+      <!-- <paper-pic-version-two
+          :picInfo="picList[0]"
+           /> -->
       <!-- <pic-wall
         :pic-info="picList[0]"
       /> -->
@@ -16,7 +19,7 @@
         v-for="(pic, index) in picList"
         :key="index"
         >
-        <paper-pic
+        <paper-pic-version-two
           :picInfo="pic"
            />
       </div>
@@ -25,21 +28,21 @@
 </template>
 <script>
 import CommonTemplate from '@/components/titleTemplate.vue'
-import PaperPic from '@/components/PaperPic.vue'
+import PaperPicVersionTwo from '@/components/PaperPicVerisonTwo.vue'
 import paper from 'paper'
 
 export default {
   name: 'Test',
   components: {
     CommonTemplate,
-    PaperPic
+    PaperPicVersionTwo
   },
   data() {
     return {
       picList: [
         {
           title: '1',
-          src: require('@/assets/Sam.webp')
+          src: 'https://cms-assets.tutsplus.com/uploads/users/1251/posts/26530/image/BenderPaper.jpg'
         },
         {
           title: '2',
