@@ -78,25 +78,32 @@ export default {
     },
     testEvent() {
       const t1 = new paper.Path.Circle({
-        center: new paper.Point(0),
-        radius: 100,
+        center: new paper.Point(-200, 0),
+        radius: 50,
         dashArray: [2],
         fillColor: 'black',
         shadowColor: 'white',
         shadowOffset: new paper.Point(1),
         // 模糊距离
-        shadowBlur: new paper.Point(50)
+        shadowBlur: new paper.Point(50),
+        opacity: 0.8
+
       })
       t1.name = 't1'
       const t2 = new paper.Path.Circle({
-        center: new paper.Point(400, 0),
-        radius: 100,
+        center: new paper.Point(200, 0),
+        radius: 50,
         dashArray: [2],
-        fillColor: 'black',
-        shadowColor: 'red',
+        opacity: 0.8,
+        fillColor: 'white',
+        shadowColor: 'black',
         shadowOffset: new paper.Point(1),
         // 模糊距离
-        shadowBlur: new paper.Point(50)
+        shadowBlur: new paper.Point(50),
+        onMouseEnter: (e) => {
+        },
+        onMouseLeave: (e) => {
+        }
       })
       t2.name = 't2'
     },
@@ -116,8 +123,12 @@ export default {
       this.paper.view.onMouseDrag = (e) => { this.onMouseDrag(e) }
       this.paper.view.setCenter(0, 0)
     },
+    onFrame(e) {
+      this.currentProject.layers[0].children.forEach((_p) => {
+        _p.rotate(3, new paper.Point(0))
+      })
+    },
     onMouseDrag(e) {
-      console.log('onMouseDrag>>>', e)
       if (this.hitResult) {
         this.hitResult.set({
           position: e.point
@@ -125,7 +136,6 @@ export default {
       }
     },
     onMouseDown(e) {
-      console.log('onMouseDown>>>', e)
       this.hitResult = this.currentProject.hitTest(e.point).item
     }
 
