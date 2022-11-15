@@ -1,71 +1,52 @@
 <!--
  * @Author: Hhvcg
- * @Date: 2022-02-20 15:26:48
+ * @Date: 2022-11-15 15:50:22
  * @LastEditors: -_-
- * @Description:
+ * @Description: 仿照行星系统
 -->
+
 <template>
-  <div class="dashboard">
-    <div class="dashboard-container pd10 flex-cc">
+  <div class="darkball">
+    <div class="darkball-text">
+      <commonTemplate title="Dark-Ball" />
+    </div>
+    <div class="darkball-container flex-cc">
       <canvas id="main_canvas" ref="main_canvas" resize class="main_canvas" />
     </div>
-    <!-- <div class="sq"></div> -->
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import paper from 'paper'
-// import { getRandomColor, getCirclePoint } from '@/utils/weapons'
+import commonTemplate from '@/components/titleTemplate.vue'
+import { getRandomColor } from '@/utils/weapons'
 
 export default {
-  name: 'Dashboard',
+  name: 'darkball',
+  components: {
+    commonTemplate
+  },
   computed: {
-    ...mapGetters([
-      'name'
-    ]),
     currentProject() {
       return this.paper.projects.filter((_p) => _p.name === this.title)[0]
     }
   },
   data() {
     return {
-      hitResult: null,
-      title: 'dashBoard',
-      scale: 0,
-      zoom: 1,
-      //
-      ratio: 1.05,
-      p: null,
-      image: {
-        raster: null
-      },
-      url: 'https://cms-assets.tutsplus.com/uploads/users/1251/posts/26530/image/BenderPaper.jpg',
-      url2: 'https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg',
-      tool: null,
+      title: 'darkball',
       // 存储画布容器宽高
       WIDTH: null,
-      HEIGHT: null,
-      SIZE: 100,
-      snake: {
-        x: null,
-        y: null,
-        direction: 1,
-        respo: []
-      }
-
+      HEIGHT: null
     }
   },
   created() {
-    console.log('---Dashboard---加载完成--->')
+    console.log('---darkball---加载完成--->')
     console.log(window.performance)
     this.paper = null
   },
   mounted() {
-    console.time('1')
     this.initWorld()
-    this.testEvent()
-    console.timeEnd('1')
+    this.draw()
     console.log('paperScope--->', this.paper)
   },
   beforeDestroy() {
@@ -73,10 +54,7 @@ export default {
   },
 
   methods: {
-    t(e) {
-      console.log('eeee', e)
-    },
-    testEvent() {
+    draw() {
       const t1 = new paper.Path.Circle({
         center: new paper.Point(0),
         radius: 100,
@@ -88,17 +66,17 @@ export default {
         shadowBlur: new paper.Point(50)
       })
       t1.name = 't1'
-      const t2 = new paper.Path.Circle({
-        center: new paper.Point(400, 0),
-        radius: 100,
-        dashArray: [2],
-        fillColor: 'black',
-        shadowColor: 'red',
-        shadowOffset: new paper.Point(1),
-        // 模糊距离
-        shadowBlur: new paper.Point(50)
-      })
-      t2.name = 't2'
+      for (let i = 0; i < 5; i++) {
+        new paper.Path.Circle({
+          center: new paper.Point(Math.random() * this.WIDTH / 2 - 80, Math.random() * this.HEIGHT / 2 - 80),
+          radius: Math.random() * 80,
+          fillColor: getRandomColor(),
+          shadowColor: getRandomColor(),
+          shadowOffset: new paper.Point(1),
+          // 模糊距离
+          shadowBlur: new paper.Point(50)
+        })
+      }
     },
     initWorld() {
       // 获取
@@ -118,15 +96,19 @@ export default {
     },
     onMouseDrag(e) {
       console.log('onMouseDrag>>>', e)
-      if (this.hitResult) {
-        this.hitResult.set({
-          position: e.point
-        })
-      }
     },
     onMouseDown(e) {
-      console.log('onMouseDown>>>', e)
-      this.hitResult = this.currentProject.hitTest(e.point).item
+
+    },
+    onFrame(e) {
+      console.log('fram++')
+      const paths = this.currentProject.layers[0].children
+      const t1 = paths['t1']
+      paths.forEach((t) => {
+        if (t.name !== 't1') {
+          t.rotate(3, t1.position)
+        }
+      })
     }
 
   }
@@ -134,38 +116,26 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.dashboard {
-  border: 1px solid gray;
+.darkball {
   width: 100%;
-  background: black;
-  height: calc(100vh - 250px);
-  padding: 10px;
+  height: calc(100vh - 70px);
   display: flex;
   // justify-content: center;
   align-items: center;
   flex-direction: column;
   &-text {
     width: 100%;
-    height: 100px;
-    border: 1px solid ghostwhite;
+    height: 72px;
+    margin-bottom: 10px;
   }
   &-container {
     height: calc(100% - 100px);
     width: 100%;
+    background: black;
     .main_canvas {
-      width: 90%;
-      height: 90%;
-      background: gray;
+      width: 100%;
+      height: 100%;
     }
   }
-}
-.sq {
-  width: 100px;
-  height: 50px;
-  background: grey;
-}
-.sq:hover {
-  cursor: pointer;
-
 }
 </style>
