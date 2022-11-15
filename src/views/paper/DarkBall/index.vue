@@ -20,6 +20,7 @@
 import paper from 'paper'
 import commonTemplate from '@/components/titleTemplate.vue'
 import { getRandomColor } from '@/utils/weapons'
+import { Ball } from './Ball'
 
 export default {
   name: 'darkball',
@@ -36,7 +37,8 @@ export default {
       title: 'darkball',
       // 存储画布容器宽高
       WIDTH: null,
-      HEIGHT: null
+      HEIGHT: null,
+      balls: []
     }
   },
   created() {
@@ -67,16 +69,22 @@ export default {
       })
       t1.name = 't1'
       for (let i = 0; i < 5; i++) {
-        new paper.Path.Circle({
-          center: new paper.Point(Math.random() * this.WIDTH / 2 - 80, Math.random() * this.HEIGHT / 2 - 80),
-          radius: Math.random() * 80,
-          fillColor: getRandomColor(),
-          shadowColor: getRandomColor(),
-          shadowOffset: new paper.Point(1),
-          // 模糊距离
-          shadowBlur: new paper.Point(50)
-        })
+        const position = new paper.Point(Math.random() * this.WIDTH / 2 - 80, Math.random() * this.HEIGHT / 2 - 80)
+        const speed = Math.random() * 20
+        const radius = Math.random() * 50
+        const color = getRandomColor()
+        this.balls.push(new Ball(position, speed, radius, color))
+        // new paper.Path.Circle({
+        //   center:
+        //   radius: Math.random() * 80,
+        //   fillColor: getRandomColor(),
+        //   shadowColor: getRandomColor(),
+        //   shadowOffset: new paper.Point(1),
+        //   // 模糊距离
+        //   shadowBlur: new paper.Point(50)
+        // })
       }
+      console.log('ball---', this.balls)
     },
     initWorld() {
       // 获取
@@ -101,13 +109,8 @@ export default {
 
     },
     onFrame(e) {
-      console.log('fram++')
-      const paths = this.currentProject.layers[0].children
-      const t1 = paths['t1']
-      paths.forEach((t) => {
-        if (t.name !== 't1') {
-          t.rotate(3, t1.position)
-        }
+      this.balls.forEach((ball) => {
+        ball.rotate()
       })
     }
 
