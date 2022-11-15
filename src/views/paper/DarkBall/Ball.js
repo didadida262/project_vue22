@@ -13,6 +13,7 @@ export class Ball {
     this.radius = radius
     this.color = color
     this.createBall()
+    this.addArbit()
   }
   createBall() {
     this.path = new paper.Path.Circle({
@@ -27,5 +28,14 @@ export class Ball {
   }
   rotate() {
     this.path.rotate(this.speed, new paper.Point(0))
+  }
+  addArbit() {
+    new paper.Path.Circle({
+      radius: this.position.getDistance(new paper.Point(0)),
+      center: new paper.Point(0),
+      strokeColor: 'white',
+      dashArray: [2],
+      opacity: 0.5
+    })
   }
 }

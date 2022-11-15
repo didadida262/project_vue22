@@ -69,8 +69,8 @@ export default {
       })
       t1.name = 't1'
       for (let i = 0; i < 5; i++) {
-        const position = new paper.Point(Math.random() * this.WIDTH / 2 - 80, Math.random() * this.HEIGHT / 2 - 80)
-        const speed = Math.random() * 20
+        const position = new paper.Point(Math.random() * this.WIDTH / 4 - 80, Math.random() * this.HEIGHT / 4 - 80)
+        const speed = Math.random() * 5
         const radius = Math.random() * 50
         const color = getRandomColor()
         this.balls.push(new Ball(position, speed, radius, color))
