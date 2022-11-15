@@ -9,7 +9,7 @@
     <div class="dashboard-container pd10 flex-cc">
       <canvas id="main_canvas" ref="main_canvas" resize class="main_canvas" />
     </div>
-    <div class="sq"></div>
+    <!-- <div class="sq"></div> -->
   </div>
 </template>
 
@@ -30,6 +30,7 @@ export default {
   },
   data() {
     return {
+      hitResult: null,
       title: 'dashBoard',
       scale: 0,
       zoom: 1,
@@ -41,7 +42,6 @@ export default {
       },
       url: 'https://cms-assets.tutsplus.com/uploads/users/1251/posts/26530/image/BenderPaper.jpg',
       url2: 'https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg',
-      paper: null,
       tool: null,
       // 存储画布容器宽高
       WIDTH: null,
@@ -59,6 +59,7 @@ export default {
   created() {
     console.log('---Dashboard---加载完成--->')
     console.log(window.performance)
+    this.paper = null
   },
   mounted() {
     console.time('1')
@@ -76,7 +77,7 @@ export default {
       console.log('eeee', e)
     },
     testEvent() {
-      const t = new paper.Path.Circle({
+      const t1 = new paper.Path.Circle({
         center: new paper.Point(0),
         radius: 100,
         dashArray: [2],
@@ -84,12 +85,20 @@ export default {
         shadowColor: 'red',
         shadowOffset: new paper.Point(1),
         // 模糊距离
-        shadowBlur: new paper.Point(50),
-        onClick: (e) => {
-          console.log('black')
-        }
+        shadowBlur: new paper.Point(50)
       })
-      console.log('t>>', t)
+      t1.name = 't1'
+      const t2 = new paper.Path.Circle({
+        center: new paper.Point(400, 0),
+        radius: 100,
+        dashArray: [2],
+        fillColor: 'black',
+        shadowColor: 'red',
+        shadowOffset: new paper.Point(1),
+        // 模糊距离
+        shadowBlur: new paper.Point(50)
+      })
+      t2.name = 't2'
     },
     initWorld() {
       // 获取
@@ -103,8 +112,23 @@ export default {
       this.paper.project.name = this.title
       // this.paper.view.setCenter(0, 0)
       this.paper.view.onFrame = this.onFrame
+      this.paper.view.onMouseDown = (e) => { this.onMouseDown(e) }
+      this.paper.view.onMouseDrag = (e) => { this.onMouseDrag(e) }
       this.paper.view.setCenter(0, 0)
+    },
+    onMouseDrag(e) {
+      console.log('onMouseDrag>>>', e)
+      if (this.hitResult) {
+        this.hitResult.set({
+          position: e.point
+        })
+      }
+    },
+    onMouseDown(e) {
+      console.log('onMouseDown>>>', e)
+      this.hitResult = this.currentProject.hitTest(e.point).item
     }
+
   }
 }
 </script>
