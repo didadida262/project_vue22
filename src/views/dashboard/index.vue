@@ -9,13 +9,14 @@
     <div class="dashboard-container pd10 flex-cc">
       <canvas id="main_canvas" ref="main_canvas" resize class="main_canvas" />
     </div>
+    <div class="sq"></div>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import paper from 'paper'
-import { getRandomColor, getCirclePoint } from '@/utils/weapons'
+// import { getRandomColor, getCirclePoint } from '@/utils/weapons'
 
 export default {
   name: 'Dashboard',
@@ -75,35 +76,20 @@ export default {
       console.log('eeee', e)
     },
     testEvent() {
-      // 初始化世界
-      // const p = new paper.Path.Circle({
-      //   center: new paper.Point(0, 0),
-      //   radius: 150,
-      //   fillColor: 'red'
-      // })
-      // p.onClick = (e) => {
-      //   console.log('>>>>>>>>>>>>>')
-      // }
-      new paper.Path.Circle({
+      const t = new paper.Path.Circle({
         center: new paper.Point(0),
         radius: 100,
+        dashArray: [2],
         fillColor: 'black',
+        shadowColor: 'red',
+        shadowOffset: new paper.Point(1),
+        // 模糊距离
+        shadowBlur: new paper.Point(50),
         onClick: (e) => {
-          console.log('p1>>>>>>>>>>>>>')
+          console.log('black')
         }
       })
-      new paper.Layer({
-        name: 'dddd'
-      })
-      new paper.Path.Circle({
-        center: new paper.Point(100),
-        radius: 100,
-        strokeColor: 'red',
-        opacity: 0.5,
-        onClick: (e) => {
-          console.log('p2>>>>>>>>>>>>>')
-        }
-      })
+      console.log('t>>', t)
     },
     initWorld() {
       // 获取
@@ -127,7 +113,8 @@ export default {
 .dashboard {
   border: 1px solid gray;
   width: 100%;
-  height: calc(100vh - 50px);
+  background: black;
+  height: calc(100vh - 250px);
   padding: 10px;
   display: flex;
   // justify-content: center;
@@ -147,5 +134,14 @@ export default {
       background: gray;
     }
   }
+}
+.sq {
+  width: 100px;
+  height: 50px;
+  background: grey;
+}
+.sq:hover {
+  cursor: pointer;
+
 }
 </style>
