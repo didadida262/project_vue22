@@ -1,8 +1,8 @@
 <!--
  * @Author: Hhvcg
- * @Date: 2022-11-15 15:50:22
+ * @Date: 2022-11-16 09:53:20
  * @LastEditors: -_-
- * @Description: 仿照行星系统
+ * @Description: 八卦阵列
 -->
 
 <template>
