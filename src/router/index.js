@@ -130,6 +130,12 @@ export const constantRoutes = [
     meta: { title: 'PaperJs', icon: 'el-icon-s-help' },
     children: [
       {
+        path: 'diagram',
+        name: 'diagram',
+        component: () => import('@/views/paper/Diagram/index'),
+        meta: { title: 'DiaGram', icon: 'tadpole' }
+      },
+      {
         path: 'darkball',
         name: 'darkball',
         component: () => import('@/views/paper/DarkBall/index'),
