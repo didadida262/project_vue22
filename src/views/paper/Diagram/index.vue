@@ -54,6 +54,12 @@ export default {
 
   methods: {
     draw() {
+      new paper.Path.Circle({
+        center: new paper.Point(0),
+        strokeColor: 'white',
+        radius: 200,
+        opacity: 0.5
+      })
       const t1 = new paper.Path.Circle({
         center: new paper.Point(-200, 0),
         radius: 50,
