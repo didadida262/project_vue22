@@ -48,11 +48,13 @@ export default {
   },
   methods: {
     createColors() {
-      for (let i = 0; i < 6; i++) {
-        const brightness = 1 - (i / 6) * 1.5
+      for (let i = 0; i < 60; i++) {
+        const brightness = 1 - (i / 60) * 1.5
         const hue = i / 6 * this.cycles * 360
         const color = {
+          // 色调
           hue: hue,
+          // 饱和
           saturation: 1,
           brightness: brightness
         }
@@ -61,33 +63,34 @@ export default {
     },
     // 针对给定path，color，上梯度色
     colorFul() {
+      console.log(this.colors)
       this.gradient = new paper.Gradient(this.colors, true)
-      this.radius = Math.max(paper.view.size.width, paper.view.size.height) * 0.75
+      this.radius = Math.max(paper.view.size.width, paper.view.size.height)
       this.path.fillColor = new paper.Color(this.gradient, this.point, this.point.add([this.radius, 0]))
     },
     createRadio() {
       this.point = paper.view.center
       this.createColors()
       this.path = new paper.Path.Rectangle(paper.view.bounds)
-      this.path.strokeColor = 'red'
+      this.path.strokeColor = 'blue'
       this.path.strokeWidth = 5
       this.colorFul()
       this.gradientColor = this.path.fillColor
     },
     onFrame() {
-      for (let i = 0, l = this.gradient.stops.length; i < l; i++) { this.gradient.stops[i].color.hue -= 20 }
-      if (this.grow && this.vector.length > 300) {
-        this.grow = false
-      } else if (!this.grow && this.vector.length < 75) {
-        this.grow = true
-      }
-      if (this.mouseDown) {
-        point = point + (mousePoint - point) / 10
-      } else {
-        this.vector.length += (this.grow ? 1 : -1)
-        this.vector.angle += 5
-      }
-      this.gradientColor.highlight = this.mouseDown ? this.point : this.point.add(this.vector)
+      // for (let i = 0, l = this.gradient.stops.length; i < l; i++) { this.gradient.stops[i].color.hue -= 20 }
+      // if (this.grow && this.vector.length > 300) {
+      //   this.grow = false
+      // } else if (!this.grow && this.vector.length < 75) {
+      //   this.grow = true
+      // }
+      // if (this.mouseDown) {
+      //   point = point + (mousePoint - point) / 10
+      // } else {
+      //   this.vector.length += (this.grow ? 1 : -1)
+      //   this.vector.angle += 5
+      // }
+      // this.gradientColor.highlight = this.mouseDown ? this.point : this.point.add(this.vector)
     },
 
     onKeyDown(e) {

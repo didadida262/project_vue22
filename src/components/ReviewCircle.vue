@@ -73,12 +73,21 @@ export default {
     drawCircle() {
       const layerCircleOut = new paper.Layer()
       layerCircleOut.name = 'layerCircleOut'
-      new paper.Path.Circle({
+      const o = new paper.Path.Circle({
         center: 0,
         radius: this.radius,
         strokeColor: 'grey',
-        fillColor: 'white',
+        
         name: 'circleOut'
+      })
+      o.set({
+        fillColor: {
+          gradient: {
+              stops: [['yellow', 0.05], ['red', 0.2], ['black', 1]],
+          },
+          origin: new paper.Point(0),
+          destination: o.view.bounds.rightCenter
+        },
       })
     },
     // 先批量处理点数据坐标信息，再绘制数据点
