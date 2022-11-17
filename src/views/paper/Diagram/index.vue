@@ -1,71 +1,51 @@
 <!--
  * @Author: Hhvcg
- * @Date: 2022-02-20 15:26:48
+ * @Date: 2022-11-16 09:53:20
  * @LastEditors: -_-
- * @Description:
+ * @Description: 八卦阵列
 -->
+
 <template>
-  <div class="dashboard">
-    <div class="dashboard-container pd10 flex-cc">
+  <div class="diagram">
+    <div class="diagram-text">
+      <commonTemplate title="Diagram" />
+    </div>
+    <div class="diagram-container flex-cc">
       <canvas id="main_canvas" ref="main_canvas" resize class="main_canvas" />
     </div>
-    <!-- <div class="sq"></div> -->
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import paper from 'paper'
-// import { getRandomColor, getCirclePoint } from '@/utils/weapons'
+import commonTemplate from '@/components/titleTemplate.vue'
 
 export default {
-  name: 'Dashboard',
+  name: 'diagram',
+  components: {
+    commonTemplate
+  },
   computed: {
-    ...mapGetters([
-      'name'
-    ]),
     currentProject() {
       return this.paper.projects.filter((_p) => _p.name === this.title)[0]
     }
   },
   data() {
     return {
-      hitResult: null,
-      title: 'dashBoard',
-      scale: 0,
-      zoom: 1,
-      //
-      ratio: 1.05,
-      p: null,
-      image: {
-        raster: null
-      },
-      url: 'https://cms-assets.tutsplus.com/uploads/users/1251/posts/26530/image/BenderPaper.jpg',
-      url2: 'https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg',
-      tool: null,
+      title: 'diagram',
       // 存储画布容器宽高
       WIDTH: null,
-      HEIGHT: null,
-      SIZE: 100,
-      snake: {
-        x: null,
-        y: null,
-        direction: 1,
-        respo: []
-      }
-
+      HEIGHT: null
     }
   },
   created() {
-    console.log('---Dashboard---加载完成--->')
+    console.log('---diagram---加载完成--->')
     console.log(window.performance)
     this.paper = null
   },
   mounted() {
-    console.time('1')
     this.initWorld()
-    this.testEvent()
-    console.timeEnd('1')
+    this.draw()
     console.log('paperScope--->', this.paper)
   },
   beforeDestroy() {
@@ -73,10 +53,7 @@ export default {
   },
 
   methods: {
-    t(e) {
-      console.log('eeee', e)
-    },
-    testEvent() {
+    draw() {
       const t1 = new paper.Path.Circle({
         center: new paper.Point(-200, 0),
         radius: 50,
@@ -123,20 +100,14 @@ export default {
       this.paper.view.onMouseDrag = (e) => { this.onMouseDrag(e) }
       this.paper.view.setCenter(0, 0)
     },
+    onMouseDrag(e) {
+
+    },
+
     onFrame(e) {
       this.currentProject.layers[0].children.forEach((_p) => {
         _p.rotate(3, new paper.Point(0))
       })
-    },
-    onMouseDrag(e) {
-      if (this.hitResult) {
-        this.hitResult.set({
-          position: e.point
-        })
-      }
-    },
-    onMouseDown(e) {
-      this.hitResult = this.currentProject.hitTest(e.point).item
     }
 
   }
@@ -144,38 +115,26 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.dashboard {
-  border: 1px solid gray;
+.diagram {
   width: 100%;
-  background: black;
-  height: calc(100vh - 250px);
-  padding: 10px;
+  height: calc(100vh - 70px);
   display: flex;
   // justify-content: center;
   align-items: center;
   flex-direction: column;
   &-text {
     width: 100%;
-    height: 100px;
-    border: 1px solid ghostwhite;
+    height: 72px;
+    margin-bottom: 10px;
   }
   &-container {
     height: calc(100% - 100px);
     width: 100%;
+    background: black;
     .main_canvas {
-      width: 90%;
-      height: 90%;
-      background: gray;
+      width: 100%;
+      height: 100%;
     }
   }
-}
-.sq {
-  width: 100px;
-  height: 50px;
-  background: grey;
-}
-.sq:hover {
-  cursor: pointer;
-
 }
 </style>
