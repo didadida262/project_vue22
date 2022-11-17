@@ -77,35 +77,11 @@ export default {
       console.log('eeee', e)
     },
     testEvent() {
-      const t1 = new paper.Path.Circle({
-        center: new paper.Point(-200, 0),
-        radius: 50,
-        dashArray: [2],
-        fillColor: 'black',
-        shadowColor: 'white',
-        shadowOffset: new paper.Point(1),
-        // 模糊距离
-        shadowBlur: new paper.Point(50),
-        opacity: 0.8
-
+      const t = new paper.Path.Line(new paper.Point(0, 0), new paper.Point(100, 100))
+      t.set({
+        strokeColor: 'red',
+        strokeWidth: 10
       })
-      t1.name = 't1'
-      const t2 = new paper.Path.Circle({
-        center: new paper.Point(200, 0),
-        radius: 50,
-        dashArray: [2],
-        opacity: 0.8,
-        fillColor: 'white',
-        shadowColor: 'black',
-        shadowOffset: new paper.Point(1),
-        // 模糊距离
-        shadowBlur: new paper.Point(50),
-        onMouseEnter: (e) => {
-        },
-        onMouseLeave: (e) => {
-        }
-      })
-      t2.name = 't2'
     },
     initWorld() {
       // 获取
