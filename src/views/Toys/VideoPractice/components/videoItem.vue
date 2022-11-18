@@ -5,7 +5,25 @@
     :class="{'is-active':this.data.active}"
   >
     <div class="video-item-name flex-cb">
-      <span v-if="!this.data.editFlag" style="color: black" @click="this.handleSelect">{{ this.data.name }}</span>
+      <span v-if="!this.data.editFlag" style="color: black" @click="this.handleSelect">
+        <span
+          v-if="this.data.name.length <= 20"
+        >
+          {{ this.data.name }}
+        </span>
+        <!-- <span
+        >
+          {{ this.data.name.slice(0, 20) + '...' }}
+        </span> -->
+        <el-tooltip
+          v-else
+          class="item" 
+          effect="dark" 
+          :content="this.data.name" 
+          placement="bottom">
+          <span>{{ this.data.name.slice(0, 20) + '...' }}</span>
+        </el-tooltip>
+      </span>
       <input
        v-if="this.data.editFlag"  
        @keyup.enter="changeName"

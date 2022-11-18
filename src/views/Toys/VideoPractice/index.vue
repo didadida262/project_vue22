@@ -15,7 +15,7 @@
         </video>
       </div>
       <div class="option-container pd10">
-        <div style="height: 30px;width: 100%;" class="mgb10">
+        <div class="option-container-cate">
           <el-button
             v-for="(cate, index) in categories"
             :key="index"
@@ -27,7 +27,7 @@
           </el-button>
           <span class="mgl10">当前类别文件数目: <span style="color: red">{{ videosList.length }}</span></span>
         </div>
-        <div style="width: 100%;height: calc(100% - 60px);overflow: scroll;">
+        <div class="option-container-list">
           <div v-for="(video, index) in videosList" :key="index" class="flex-ca video-itemContainer mgb5">
             <video-item :data="video" @handleVideoOperate="handleVideoOperate" />
           </div>
@@ -179,11 +179,21 @@ export default {
       border: 1px solid gray;
       height: 100%;
       background: 'black';
+
     }
     .option-container {
       width: 500px;
       height: 100%;
       border: 1px solid gray;
+      &-cate {
+        height: 80px;
+        width: 100%;
+      }
+      &-list {
+        width: 100%;
+        height: calc(100% - 90px);
+        overflow: scroll;
+      }      
       .video-itemContainer {
         border: 1px solid rgb(142, 68, 68);
       }

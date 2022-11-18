@@ -35,7 +35,9 @@ module.exports = {
   lintOnSave: process.env.NODE_ENV === 'development',
   productionSourceMap: false,
   devServer: {
-    port: port,
+    host: '192.168.0.106',
+    port: 9528,
+    // port: port,
     // open为true，运行完后能自动帮我们打开站点
     open: true,
     overlay: {
