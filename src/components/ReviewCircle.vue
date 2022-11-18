@@ -53,6 +53,25 @@ export default {
   created() {
   },
   methods: {
+    test() {
+      const c = new paper.Path.Circle({
+        center: new paper.Point(500, 400),
+        radius: 50,
+        fillColor: 'red'
+      })
+      const r = new paper.Path.Rectangle(new paper.Point(600, 400), 100, 100)
+      r.set({
+        fillColor: {
+          gradient: {
+            stops: ['yellow', 'green', 'black'],
+            radial: false
+          },
+          origin: r.bounds.topLeft,
+          destination: r.bounds.bottomRight
+        }
+      })
+      console.log('r>>', r)
+    },
     // 初始化画布，并确认相关参数初始值
     init() {
       const canvas = this.$refs.main_canvas
@@ -66,6 +85,7 @@ export default {
       this.paper = paper
       this.paper.view.setCenter(0, 0)
       this.paper.project.name = 'circle'
+      this.test()
       // this.paper.view.onMouseMove = (e) => { this.onMouseMove(e) }
       // this.paper.view.onMouseDown = (e) => { this.onClickChip(e) }
     },
@@ -77,17 +97,16 @@ export default {
         center: 0,
         radius: this.radius,
         strokeColor: 'grey',
-
         name: 'circleOut'
       })
       o.set({
         fillColor: {
           gradient: {
-            stops: [['yellow', 0.3], ['red', 0.5], ['black', 1]],
+            stops: [['yellow', 0.2], ['red', 0.3], ['black', 1]],
             radial: true
           },
           // origin: o.view.bounds.leftCenter
-          origin: new paper.Point(100, 0),
+          origin: new paper.Point(0, 0),
           destination: new paper.Point(200, 0)
           // destination: o.view.bounds.rightCenter
         }
