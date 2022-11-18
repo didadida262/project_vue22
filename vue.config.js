@@ -6,7 +6,6 @@ const defaultSettings = require('./src/settings.js')
 // const PrerenderSPAPlugin = require('prerender-spa-plugin');
 // const Renderer = PrerenderSPAPlugin.PuppeteerRenderer;
 
-
 function resolve(dir) {
   return path.join(__dirname, dir)
 }
@@ -35,30 +34,30 @@ module.exports = {
   lintOnSave: process.env.NODE_ENV === 'development',
   productionSourceMap: false,
   devServer: {
-    host: '192.168.0.106',
-    port: 9528,
-    // port: port,
+    // host: '192.168.0.106',
+    // port: 9528,
+    port: port,
     // open为true，运行完后能自动帮我们打开站点
     open: true,
     overlay: {
       warnings: false,
       errors: true
-    },
+    }
     // before: require('./mock/mock-server.js')
   },
-//   devServer: {
-//     // publicPath: Setting.publicPath,
-//     // 配置前端转发
-//     open: true,
-//     proxy: {
-//         '/api/v1': {
-//             target: process.env.VUE_APP_BASE_API,
-//             // target: 'http://192.168.10.12:10801',
-//             changeOrigin: true
-//         },
-//     },
-//     disableHostCheck: true
-// },  
+  //   devServer: {
+  //     // publicPath: Setting.publicPath,
+  //     // 配置前端转发
+  //     open: true,
+  //     proxy: {
+  //         '/api/v1': {
+  //             target: process.env.VUE_APP_BASE_API,
+  //             // target: 'http://192.168.10.12:10801',
+  //             changeOrigin: true
+  //         },
+  //     },
+  //     disableHostCheck: true
+  // },
   configureWebpack: {
 
     // provide the app's title in webpack's name field, so that
@@ -68,7 +67,7 @@ module.exports = {
       alias: {
         '@': resolve('src')
       }
-    },
+    }
     // plugins
     // plugins: [
     //   new webpack.ProvidePlugin({
@@ -91,17 +90,16 @@ module.exports = {
     //       inject: {
     //           foo: 'bar'
     //       },
-    //       headless: false, //渲染时显示浏览器窗口。对调试很有用。  
+    //       headless: false, //渲染时显示浏览器窗口。对调试很有用。
     //       //等待渲染，直到检测到指定元素。
-    //       //例如，在项目入口使用`document.dispatchEvent(new Event('custom-render-trigger'))` 
+    //       //例如，在项目入口使用`document.dispatchEvent(new Event('custom-render-trigger'))`
     //       renderAfterDocumentEvent: 'render-event',
     //       args: ['--no-sandbox', '--disable-setuid-sandbox']
     //   })
     // }))
     // 预渲染
 
-
-  // chunk压缩
+    // chunk压缩
     // config.plugin('compression-webpack-plugin')
     // .use(new CompressionPlugin({
     //   test: /\.js$|\.html$|\.css/,
@@ -116,7 +114,7 @@ module.exports = {
     // }))
     // it can improve the speed of the first screen, it is recommended to turn on preload
     config.plugin('webpack-bundle-analyzer')
-    .use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin)
+      .use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin)
     config.plugin('preload').tap(() => [
       {
         rel: 'preload',
@@ -147,12 +145,12 @@ module.exports = {
       })
       .end()
       // i18n
-      config.module
-          .rule('i18n')
-          .resourceQuery(/blockType=i18n/)
-          .use('i18n')
-          .loader('@kazupon/vue-i18n-loader')
-          .end();      
+    config.module
+      .rule('i18n')
+      .resourceQuery(/blockType=i18n/)
+      .use('i18n')
+      .loader('@kazupon/vue-i18n-loader')
+      .end()
 
     config
       .when(process.env.NODE_ENV !== 'development',

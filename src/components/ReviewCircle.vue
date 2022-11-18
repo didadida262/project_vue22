@@ -77,17 +77,21 @@ export default {
         center: 0,
         radius: this.radius,
         strokeColor: 'grey',
-        
+
         name: 'circleOut'
       })
       o.set({
         fillColor: {
           gradient: {
-              stops: [['yellow', 0.05], ['red', 0.2], ['black', 1]],
+            stops: [['yellow', 0.3], ['red', 0.5], ['black', 1]],
+            radial: true
           },
-          origin: new paper.Point(0),
-          destination: o.view.bounds.rightCenter
-        },
+          // origin: o.view.bounds.leftCenter
+          origin: new paper.Point(100, 0),
+          destination: new paper.Point(200, 0)
+          // destination: o.view.bounds.rightCenter
+        }
+        // fillRule: 'evenodd'
       })
     },
     // 先批量处理点数据坐标信息，再绘制数据点
