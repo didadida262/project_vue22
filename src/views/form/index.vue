@@ -30,12 +30,6 @@ export default {
       },
       timer: null,
       articleList: []
-      // info: {
-      //   title: '测试',
-      //   image: '',
-      //   content: '',
-      //   create_date: '2022.10'
-      // }
     }
   },
   created() {

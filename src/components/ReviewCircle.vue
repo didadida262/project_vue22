@@ -57,16 +57,27 @@ export default {
       const c = new paper.Path.Circle({
         center: new paper.Point(500, 400),
         radius: 50,
-        fillColor: 'red'
+        fillColor: 'green',
+        // fillColor: {
+        //   // 色调
+        //   green: 1,
+        //   // 饱和
+        //   saturation: 0.1,
+        //   brightness: 0.5
+        shadowColor: 'black',
+        shadowOffset: new paper.Point(1),
+        // 模糊距离
+        shadowBlur: new paper.Point(30)
+        // }
       })
       const r = new paper.Path.Rectangle(new paper.Point(600, 400), 100, 100)
       r.set({
         fillColor: {
           gradient: {
-            stops: ['yellow', 'green', 'black'],
+            stops: ['red', 'green', 'black'],
             radial: false
           },
-          origin: r.bounds.topLeft,
+          origin: r.bounds.center,
           destination: r.bounds.bottomRight
         }
       })
@@ -99,19 +110,19 @@ export default {
         strokeColor: 'grey',
         name: 'circleOut'
       })
-      o.set({
-        fillColor: {
-          gradient: {
-            stops: [['yellow', 0.2], ['red', 0.3], ['black', 1]],
-            radial: true
-          },
-          // origin: o.view.bounds.leftCenter
-          origin: new paper.Point(0, 0),
-          destination: new paper.Point(200, 0)
-          // destination: o.view.bounds.rightCenter
-        }
-        // fillRule: 'evenodd'
-      })
+      // o.set({
+      //   fillColor: {
+      //     gradient: {
+      //       stops: [['yellow', 0.2], ['red', 0.3], ['black', 1]],
+      //       radial: true
+      //     },
+      //     // origin: o.view.bounds.leftCenter
+      //     origin: new paper.Point(0, 0),
+      //     destination: new paper.Point(200, 0)
+      //     // destination: o.view.bounds.rightCenter
+      //   }
+      //   // fillRule: 'evenodd'
+      // })
     },
     // 先批量处理点数据坐标信息，再绘制数据点
     // 内圆同数据处于同一图层
@@ -134,10 +145,24 @@ export default {
       dotData.forEach((item) => {
         const p = new paper.Path.Circle({
           center: new paper.Point(item.pos_x, item.pos_y),
-          radius: 1.5,
+          radius: 2,
+          shadowColor: this.classColors[item.class_id],
+          shadowOffset: new paper.Point(1),
+          // 模糊距离
+          shadowBlur: new paper.Point(2),
           fillColor: this.classColors[item.class_id]
-          // fillColor: getRandomColor()
         })
+        // p.set({
+        //   fillColor: {
+        //     gradient: {
+        //       stops: [['black', 0.4], ['white', 0.5]],
+        //       radial: true
+        //     },
+        //     origin: p.bounds.center,
+        //     destination: p.bounds.bottomRight
+        //   }
+
+        // })
         p.class_id = item.class_id
         p.data_id = item.id
         p.channel = item.channel
