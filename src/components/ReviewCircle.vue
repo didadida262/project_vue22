@@ -47,10 +47,19 @@ export default {
       radius: null,
       realRadius: null,
       innerRadius: null,
-      ratio: null
+      ratio: null,
+      newData: {}
     }
   },
   created() {
+    this.defectList.forEach((d) => {
+      if (!this.newData[d.class_id]) {
+        this.newData[d.class_id] = 1
+      } else {
+        this.newData[d.class_id]++
+      }
+    })
+    console.log('this.newData>>>', this.newData)
   },
   methods: {
     test() {
@@ -147,27 +156,31 @@ export default {
       dotData.forEach((item) => {
         const p = new paper.Path.Circle({
           center: new paper.Point(item.pos_x, item.pos_y),
-          radius: 2,
+          radius: 3,
           shadowColor: this.classColors[item.class_id],
+          // shadowColor: 'black',
           shadowOffset: new paper.Point(1),
           // 模糊距离
-          shadowBlur: new paper.Point(2),
+          shadowBlur: new paper.Point(20),
           fillColor: this.classColors[item.class_id]
+          // fillColor: 'black'
         })
-        // p.set({
-        //   fillColor: {
-        //     red: p.fillColor.red,
-        //     green: p.fillColor.green,
-        //     blue: p.fillColor.blue
-        //     // alpha: Math.random()
-        //     // gradient: {
-        //     //   stops: [['black', 0.4], ['white', 0.5]],
-        //     //   radial: true
-        //     // },
-        //     // origin: p.bounds.center,
-        //     // destination: p.bounds.bottomRight
-        //   }
-        // })
+        p.set({
+          fillColor: {
+            red: p.fillColor.red,
+            green: p.fillColor.green,
+            blue: p.fillColor.blue
+            // alpha: item.class_id === 'unclassified' ? 1 : 0.1
+            // alpha: this.newData[item.class_id] / this.defectList.length
+            // alpha: p.alpha
+            // gradient: {
+            //   stops: [['black', 0.4], ['white', 0.5]],
+            //   radial: true
+            // },
+            // origin: p.bounds.center,
+            // destination: p.bounds.bottomRight
+          }
+        })
         p.class_id = item.class_id
         p.data_id = item.id
         p.channel = item.channel
