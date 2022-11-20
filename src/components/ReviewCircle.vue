@@ -57,25 +57,26 @@ export default {
       const c = new paper.Path.Circle({
         center: new paper.Point(500, 400),
         radius: 50,
-        fillColor: 'green',
-        // fillColor: {
-        //   // 色调
-        //   green: 1,
-        //   // 饱和
-        //   saturation: 0.1,
-        //   brightness: 0.5
-        shadowColor: 'black',
-        shadowOffset: new paper.Point(1),
-        // 模糊距离
-        shadowBlur: new paper.Point(30)
-        // }
+        // shadowColor: 'black',
+        // shadowOffset: new paper.Point(1),
+        // // 模糊距离
+        // shadowBlur: new paper.Point(30)
+        fillColor: {
+          // 色调
+          hue: 120,
+          // 饱和,alpha和saturation貌似没区别
+          alpha: 1,
+          saturation: 1,
+          brightness: 1
+        }
       })
+      console.log('c>>', c)
       const r = new paper.Path.Rectangle(new paper.Point(600, 400), 100, 100)
       r.set({
         fillColor: {
           gradient: {
             stops: ['red', 'green', 'black'],
-            radial: false
+            radial: true
           },
           origin: r.bounds.center,
           destination: r.bounds.bottomRight
@@ -113,13 +114,14 @@ export default {
       // o.set({
       //   fillColor: {
       //     gradient: {
-      //       stops: [['yellow', 0.2], ['red', 0.3], ['black', 1]],
+      //       stops: [['yellow', 0.1], ['red', 0.3], ['black', 1]],
       //       radial: true
       //     },
       //     // origin: o.view.bounds.leftCenter
-      //     origin: new paper.Point(0, 0),
-      //     destination: new paper.Point(200, 0)
-      //     // destination: o.view.bounds.rightCenter
+      //     origin: o.bounds.center,
+      //     destination: o.view.bounds.rightCenter,
+      //     highlight: o.view.bounds.center
+
       //   }
       //   // fillRule: 'evenodd'
       // })
@@ -154,14 +156,17 @@ export default {
         })
         // p.set({
         //   fillColor: {
-        //     gradient: {
-        //       stops: [['black', 0.4], ['white', 0.5]],
-        //       radial: true
-        //     },
-        //     origin: p.bounds.center,
-        //     destination: p.bounds.bottomRight
+        //     red: p.fillColor.red,
+        //     green: p.fillColor.green,
+        //     blue: p.fillColor.blue
+        //     // alpha: Math.random()
+        //     // gradient: {
+        //     //   stops: [['black', 0.4], ['white', 0.5]],
+        //     //   radial: true
+        //     // },
+        //     // origin: p.bounds.center,
+        //     // destination: p.bounds.bottomRight
         //   }
-
         // })
         p.class_id = item.class_id
         p.data_id = item.id
