@@ -137,7 +137,7 @@ export default {
     async getMedia(index) {
       console.log('当前歌曲id--->', index)
       const res = await this.$axios.getMedia(index)
-      const blob = new Blob([res], { type: 'mp3' })
+      const blob = new Blob(res, { type: 'mp3' })
       const url = URL.createObjectURL(blob)
       this.musicBox.url = url
       console.log('当前url--->', this.musicBox.url)

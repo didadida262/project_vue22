@@ -66,7 +66,7 @@ export default {
     createSnake() {
       this.snake = new paper.Path({
         strokeColor: '#E4141B',
-        strokeWidth: 20,
+        strokeWidth: 5,
         strokeCap: 'round'
       })
       for (let i = 0; i < 25; i++) {
@@ -74,15 +74,16 @@ export default {
       }
     },
     onMouseMove(e) {
-      this.snake.firstSegment.point = e.point
-      for (let i = 0; i < 25 - 1; i++) {
-        const segment = this.snake.segments[i]
-        const nextSegment = segment.next
-        const vector = segment.point.subtract(nextSegment.point)
-        vector.length = 35
-        nextSegment.point = segment.point.subtract(vector)
-      }
-      this.snake.smooth({ type: 'continuous' })
+      this.snake.position = e.point
+      // this.snake.firstSegment.point = e.point
+      // for (let i = 0; i < 25 - 1; i++) {
+      //   const segment = this.snake.segments[i]
+      //   const nextSegment = segment.next
+      //   const vector = segment.point.subtract(nextSegment.point)
+      //   vector.length = 35
+      //   nextSegment.point = segment.point.subtract(vector)
+      // }
+      // this.snake.smooth({ type: 'continuous' })
     },
     onMouseDown(e) {
       this.snake.fullySelected = true

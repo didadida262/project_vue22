@@ -81,28 +81,10 @@ export default {
       // this.paper.view.onMouseDown = (e) => { this.onClickChip(e) }
     },
     createPath(e) {
-      console.log('createPath')
-      const layerXY = new paper.Layer()
-      layerXY.name = 'layerXY'
-      this.XYLine = new paper.Path.Circle({
-        center: e.point,
-        radius: 10,
-        fillColor: 'red',
-        strokeColor: 'red'
-      })
+
     },
     onMouseMove(e) {
-      console.log('e>>', e)
-      if (!this.XYLine) {
-        this.createPath(e)
-      }
-      // cancelAnimationFrame(this.handle2)
-      // this.raf = requestAnimationFrame(() => {
-      this.XYLine.set({
-        position: e.point
-      })
-      // })
-      // console.log(this.paper)
+
     },
     // 外圆
     drawCircle() {
@@ -536,6 +518,15 @@ export default {
     this.drawOtherLayers()
     console.timeEnd('Circle-time')
     console.log('circel-paperscope--->', this.paper)
+    const x = this.paper.project.exportSVG({
+      asString: true
+    })
+    const blob = new Blob([x], { type: 'svg' })
+    const a = document.createElement('a')
+    a.href = URL.createObjectURL(blob)
+    a.download = 'test.svg'
+    a.click()
+    // console.log('x>>>', x)
   },
   beforeDestroy() {
     this.currentProject.remove()
