@@ -48,7 +48,9 @@ export default {
       realRadius: null,
       innerRadius: null,
       ratio: null,
-      newData: {}
+      newData: {},
+      XYLine: null,
+      raf: null
     }
   },
   created() {
@@ -62,37 +64,6 @@ export default {
     console.log('this.newData>>>', this.newData)
   },
   methods: {
-    test() {
-      const c = new paper.Path.Circle({
-        center: new paper.Point(500, 400),
-        radius: 50,
-        // shadowColor: 'black',
-        // shadowOffset: new paper.Point(1),
-        // // 模糊距离
-        // shadowBlur: new paper.Point(30)
-        fillColor: {
-          // 色调
-          hue: 120,
-          // 饱和,alpha和saturation貌似没区别
-          alpha: 1,
-          saturation: 1,
-          brightness: 1
-        }
-      })
-      console.log('c>>', c)
-      const r = new paper.Path.Rectangle(new paper.Point(600, 400), 100, 100)
-      r.set({
-        fillColor: {
-          gradient: {
-            stops: ['red', 'green', 'black'],
-            radial: true
-          },
-          origin: r.bounds.center,
-          destination: r.bounds.bottomRight
-        }
-      })
-      console.log('r>>', r)
-    },
     // 初始化画布，并确认相关参数初始值
     init() {
       const canvas = this.$refs.main_canvas
@@ -106,9 +77,32 @@ export default {
       this.paper = paper
       this.paper.view.setCenter(0, 0)
       this.paper.project.name = 'circle'
-      this.test()
-      // this.paper.view.onMouseMove = (e) => { this.onMouseMove(e) }
+      this.paper.view.onMouseMove = (e) => { this.onMouseMove(e) }
       // this.paper.view.onMouseDown = (e) => { this.onClickChip(e) }
+    },
+    createPath(e) {
+      console.log('createPath')
+      const layerXY = new paper.Layer()
+      layerXY.name = 'layerXY'
+      this.XYLine = new paper.Path.Circle({
+        center: e.point,
+        radius: 10,
+        fillColor: 'red',
+        strokeColor: 'red'
+      })
+    },
+    onMouseMove(e) {
+      console.log('e>>', e)
+      if (!this.XYLine) {
+        this.createPath(e)
+      }
+      // cancelAnimationFrame(this.handle2)
+      // this.raf = requestAnimationFrame(() => {
+      this.XYLine.set({
+        position: e.point
+      })
+      // })
+      // console.log(this.paper)
     },
     // 外圆
     drawCircle() {
@@ -356,16 +350,6 @@ export default {
     //     strokeColor: '#650D65'
     //   })
     //   currentProject.insertLayer(currentProject.layers.length - 2, layerXY)
-    // },
-    // onMouseMove(e) {
-    //   const point = preDealPoint(e.point, this.ratio)
-    //   if (e.point.getDistance(new paper.Point(0)) <= this.innerRadius) {
-    //     this.$emit('handleCircleOperation', {
-    //       type: 'mouseMove',
-    //       data: point
-    //     })
-    //     this.drawXY(e)
-    //   }
     // },
 
     // onClickChip(e, chipIndex = null) {

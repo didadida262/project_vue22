@@ -48,7 +48,7 @@ export default {
   },
   methods: {
     createColors() {
-      for (let i = 0; i < 60; i++) {
+      for (let i = 0; i < 6; i++) {
         const brightness = 1 - (i / 60) * 1.5
         const hue = i / 6 * this.cycles * 360
         const color = {
@@ -78,19 +78,19 @@ export default {
       this.gradientColor = this.path.fillColor
     },
     onFrame() {
-      // for (let i = 0, l = this.gradient.stops.length; i < l; i++) { this.gradient.stops[i].color.hue -= 20 }
-      // if (this.grow && this.vector.length > 300) {
-      //   this.grow = false
-      // } else if (!this.grow && this.vector.length < 75) {
-      //   this.grow = true
-      // }
-      // if (this.mouseDown) {
-      //   point = point + (mousePoint - point) / 10
-      // } else {
-      //   this.vector.length += (this.grow ? 1 : -1)
-      //   this.vector.angle += 5
-      // }
-      // this.gradientColor.highlight = this.mouseDown ? this.point : this.point.add(this.vector)
+      for (let i = 0, l = this.gradient.stops.length; i < l; i++) { this.gradient.stops[i].color.hue -= 20 }
+      if (this.grow && this.vector.length > 300) {
+        this.grow = false
+      } else if (!this.grow && this.vector.length < 75) {
+        this.grow = true
+      }
+      if (this.mouseDown) {
+        point = point + (mousePoint - point) / 10
+      } else {
+        this.vector.length += (this.grow ? 1 : -1)
+        this.vector.angle += 5
+      }
+      this.gradientColor.highlight = this.mouseDown ? this.point : this.point.add(this.vector)
     },
 
     onKeyDown(e) {
