@@ -157,13 +157,13 @@ export default {
         const p = new paper.Path.Circle({
           center: new paper.Point(item.pos_x, item.pos_y),
           radius: 3,
-          shadowColor: this.classColors[item.class_id],
-          // shadowColor: 'black',
-          shadowOffset: new paper.Point(1),
+          // shadowColor: this.classColors[item.class_id],
+          shadowColor: 'black',
+          shadowOffset: new paper.Point(0.1),
           // 模糊距离
           shadowBlur: new paper.Point(20),
-          fillColor: this.classColors[item.class_id]
-          // fillColor: 'black'
+          // fillColor: this.classColors[item.class_id]
+          fillColor: 'black'
         })
         p.set({
           fillColor: {
