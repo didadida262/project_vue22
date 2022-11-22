@@ -50,7 +50,8 @@ export default {
       ratio: null,
       newData: {},
       XYLine: null,
-      raf: null
+      raf: null,
+      worker: null
     }
   },
   created() {
@@ -510,22 +511,30 @@ export default {
 
   },
   mounted() {
-    console.time('Circle-time')
     this.init()
     this.drawCircle()
     this.drawInnerCircle(this.waferInfo.DOWN, this.innerRadius)
     this.drawDot()
     this.drawOtherLayers()
-    console.timeEnd('Circle-time')
     console.log('circel-paperscope--->', this.paper)
-    const x = this.paper.project.exportSVG({
-      asString: true
+    this.worker = new Worker('../views/paper/Circle/worker.js')
+    this.worker.addEventListener('message', (e) => {
+      console.log('主线程接收消息', e.data)
     })
-    const blob = new Blob([x], { type: 'svg' })
-    const a = document.createElement('a')
-    a.href = URL.createObjectURL(blob)
-    a.download = 'test.svg'
-    a.click()
+    const testData = {
+      name: 'hhvcg',
+      old: 18
+    }
+    this.worker.postMessage(testData)
+    // 1m多的svg，耗时78s，下载耗时3ms..
+    // const x = this.paper.project.exportSVG({
+    //   asString: true
+    // })
+    // const blob = new Blob([x], { type: 'svg' })
+    // const a = document.createElement('a')
+    // a.href = URL.createObjectURL(blob)
+    // a.download = 'test.svg'
+    // a.click()
     // console.log('x>>>', x)
   },
   beforeDestroy() {
