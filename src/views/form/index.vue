@@ -41,10 +41,6 @@ export default {
   created() {
     this.getData()
     this.updateTime()
-    // console.log('form....')
-    // this.timer = setInterval(() => {
-    //   console.log('来自轮询的伺候....')
-    // }, 1000)
   },
   beforeDestroy() {
     // clearInterval(this.timer)
@@ -54,7 +50,6 @@ export default {
     updateTime() {
       cancelAnimationFrame(this.RAF)
       this.RAF = requestAnimationFrame(() => {
-        console.log('frame》》》')
         this.currentTime = (new Date()).toLocaleString()
         this.updateTime()
       })
