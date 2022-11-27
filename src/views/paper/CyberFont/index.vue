@@ -19,6 +19,7 @@ import paper from 'paper'
 import commonTemplate from '@/components/titleTemplate.vue'
 import { getRandomColor } from '@/utils/weapons'
 import { CyberFont } from './cyberfont'
+import words from './words.json'
 
 export default {
   name: 'cyberFont',
@@ -30,8 +31,7 @@ export default {
       title: 'cyberFont',
       resp: [],
       WIDTH: null,
-      HEIGHT: null,
-      document: require('./testData')
+      HEIGHT: null
     }
   },
   computed: {
@@ -43,20 +43,25 @@ export default {
   mounted() {
     this.init()
     this.drawFont()
+    this.addAudio()
   },
   beforeDestroy() {
     const currentProject = this.paper.projects.filter((_p) => _p.name === this.title)[0]
     currentProject.remove()
   },
   methods: {
+    // 创建背景音乐
+    addAudio() {
+
+    },
     // 根据当前paperscope宽高，返回一个范围内的随机坐标
     random() {
       // return paper.Point.random() * this.WIDTH
       return paper.Point.random().multiply(this.WIDTH, this.HEIGHT)
     },
     drawFont() {
-      for (let i = 0; i < this.document.document.length; i++) {
-        this.resp.push(new CyberFont(Math.random() * 100, getRandomColor(), new paper.Point(this.random(), this.random()), this.document.document[i], Math.random() * 20))
+      for (let i = 0; i < words.length; i++) {
+        this.resp.push(new CyberFont(Math.random() * 100, getRandomColor(), new paper.Point(this.random(), this.random()), words[i], Math.random() * 20))
       }
     },
     onFrame() {
@@ -79,7 +84,6 @@ export default {
       this.tool.onMouseDown = (e) => {
       }
       console.log('初始化世界!!!')
-      console.log('this.document>>>', this.document)
     }
   }
 }

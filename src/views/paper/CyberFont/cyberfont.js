@@ -25,7 +25,7 @@ export class CyberFont {
   }
   run() {
     const WIDTH = paper.project.view.viewSize.width
-    if (this.path.position.x + this.speed >= WIDTH) {
+    if (this.path.position.x + this.speed + 50 >= WIDTH) {
       this.path.position = this.path.position.subtract(WIDTH, 0)
     } else {
       this.path.position = this.path.position.add(this.speed, 0)
