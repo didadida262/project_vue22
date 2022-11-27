@@ -51,7 +51,7 @@ export default {
     // 根据当前paperscope宽高，返回一个范围内的随机坐标
     random() {
       // return paper.Point.random() * this.WIDTH
-      return paper.Point.random().multiply(this.HEIGHT / 2)
+      return paper.Point.random().multiply(this.WIDTH, this.HEIGHT)
     },
     drawFont() {
       for (let i = 0; i < 10; i++) {
@@ -69,7 +69,6 @@ export default {
       this.paper = paper
       this.paper.setup(canvas)
       this.paper.project.name = this.title
-      this.paper.view.setCenter(0, 0)
       this.paper.view.onFrame = this.onFrame
       this.paper.view.onMouseDown = this.onMouseDown
       this.tool = new paper.Tool()
