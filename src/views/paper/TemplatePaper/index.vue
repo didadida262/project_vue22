@@ -26,7 +26,9 @@ export default {
   },
   data() {
     return {
-      title: 'cyberFont'
+      title: 'cyberFont',
+      WIDTH: null,
+      HEIGHT: null
     }
   },
   computed: {
@@ -52,6 +54,8 @@ export default {
     },
     init() {
       const canvas = this.$refs.canvas
+      this.WIDTH = canvas.clientWidth
+      this.HEIGHT = canvas.clientHeight
       this.paper = paper
       this.paper.setup(canvas)
       this.paper.project.name = this.title
