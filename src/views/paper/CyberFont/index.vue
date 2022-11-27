@@ -28,7 +28,9 @@ export default {
   data() {
     return {
       title: 'cyberFont',
-      resp: []
+      resp: [],
+      WIDTH: null,
+      HEIGHT: null
     }
   },
   computed: {
@@ -46,8 +48,15 @@ export default {
     currentProject.remove()
   },
   methods: {
+    // 根据当前paperscope宽高，返回一个范围内的随机坐标
+    random() {
+      // return paper.Point.random() * this.WIDTH
+      return paper.Point.random().multiply(this.HEIGHT / 2)
+    },
     drawFont() {
-      this.resp.push(new CyberFont(100, getRandomColor(), new paper.Point(0), 'test'))
+      for (let i = 0; i < 10; i++) {
+        this.resp.push(new CyberFont(100, paper.Color.random(), new paper.Point(this.random(), this.random()), 'test'))
+      }
     },
     onFrame() {
     },
@@ -55,6 +64,8 @@ export default {
     },
     init() {
       const canvas = this.$refs.canvas
+      this.WIDTH = canvas.clientWidth
+      this.HEIGHT = canvas.clientHeight
       this.paper = paper
       this.paper.setup(canvas)
       this.paper.project.name = this.title
