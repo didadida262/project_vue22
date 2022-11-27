@@ -11,6 +11,16 @@
     <div class="cyberFont-container-content">
       <canvas ref="canvas" resize class="canvas" />
     </div>
+    <div class="video-container flex-cb">
+        <video
+         ref="videoContainer"
+         controls
+         style="width: 100%;height: 100%;display: none"
+         autoplay="autoplay"
+         loop>
+          <source :src="url" type="video/mp4">
+        </video>
+    </div>
   </div>
 </template>
 
@@ -31,7 +41,8 @@ export default {
       title: 'cyberFont',
       resp: [],
       WIDTH: null,
-      HEIGHT: null
+      HEIGHT: null,
+      url: null
     }
   },
   computed: {
