@@ -42,7 +42,7 @@ export default {
       resp: [],
       WIDTH: null,
       HEIGHT: null,
-      url: null
+      source: require('./test.mkv')
     }
   },
   computed: {
@@ -54,7 +54,7 @@ export default {
   mounted() {
     this.init()
     this.drawFont()
-    this.addAudio()
+    this.addVideo()
   },
   beforeDestroy() {
     const currentProject = this.paper.projects.filter((_p) => _p.name === this.title)[0]
@@ -62,8 +62,12 @@ export default {
   },
   methods: {
     // 创建背景音乐
-    addAudio() {
+    addVideo() {
+      const blob = new Blob([this.source], { type: 'mp4' })
+      const url = URL.createObjectURL(blob)
 
+      console.log('blob>>', blob)
+      console.log('url>>', url)
     },
     // 根据当前paperscope宽高，返回一个范围内的随机坐标
     random() {
