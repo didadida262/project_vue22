@@ -54,11 +54,15 @@ export default {
       return paper.Point.random().multiply(this.WIDTH, this.HEIGHT)
     },
     drawFont() {
-      for (let i = 0; i < 10; i++) {
-        this.resp.push(new CyberFont(100, paper.Color.random(), new paper.Point(this.random(), this.random()), 'test'))
+      for (let i = 0; i < 50; i++) {
+        this.resp.push(new CyberFont(Math.random() * 100, paper.Color.random(), new paper.Point(this.random(), this.random()), 'test', Math.random() * 50))
       }
+      console.log(this.resp)
     },
     onFrame() {
+      this.resp.forEach((f) => {
+        f.run()
+      })
     },
     onMouseDown(e) {
     },

@@ -6,11 +6,12 @@
  */
 import paper from 'paper'
 export class CyberFont {
-  constructor(size, color, position, content) {
+  constructor(size, color, position, content, speed) {
     this.size = size
     this.color = color
     this.position = position
     this.content = content
+    this.speed = speed
     this.createPath()
   }
   createPath() {
@@ -21,6 +22,14 @@ export class CyberFont {
       justification: 'right',
       fillColor: this.color
     })
+  }
+  run() {
+    const WIDTH = paper.project.view.viewSize.width
+    if (this.path.position.x + this.speed >= WIDTH) {
+      this.path.position = this.path.position.subtract(WIDTH, 0)
+    } else {
+      this.path.position = this.path.position.add(this.speed, 0)
+    }
   }
 }
 
