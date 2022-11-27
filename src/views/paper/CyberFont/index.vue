@@ -30,7 +30,8 @@ export default {
       title: 'cyberFont',
       resp: [],
       WIDTH: null,
-      HEIGHT: null
+      HEIGHT: null,
+      document: require('./testData')
     }
   },
   computed: {
@@ -54,10 +55,9 @@ export default {
       return paper.Point.random().multiply(this.WIDTH, this.HEIGHT)
     },
     drawFont() {
-      for (let i = 0; i < 50; i++) {
-        this.resp.push(new CyberFont(Math.random() * 100, paper.Color.random(), new paper.Point(this.random(), this.random()), 'test', Math.random() * 50))
+      for (let i = 0; i < this.document.document.length; i++) {
+        this.resp.push(new CyberFont(Math.random() * 100, getRandomColor(), new paper.Point(this.random(), this.random()), this.document.document[i], Math.random() * 20))
       }
-      console.log(this.resp)
     },
     onFrame() {
       this.resp.forEach((f) => {
@@ -79,6 +79,7 @@ export default {
       this.tool.onMouseDown = (e) => {
       }
       console.log('初始化世界!!!')
+      console.log('this.document>>>', this.document)
     }
   }
 }
