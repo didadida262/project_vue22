@@ -18,6 +18,7 @@
 import paper from 'paper'
 import commonTemplate from '@/components/titleTemplate.vue'
 import { getRandomColor } from '@/utils/weapons'
+import { CyberFont } from './cyberfont'
 
 export default {
   name: 'cyberFont',
@@ -26,7 +27,8 @@ export default {
   },
   data() {
     return {
-      title: 'cyberFont'
+      title: 'cyberFont',
+      resp: []
     }
   },
   computed: {
@@ -45,6 +47,7 @@ export default {
   },
   methods: {
     drawFont() {
+      this.resp.push(new CyberFont(100, getRandomColor(), new paper.Point(0), 'test'))
     },
     onFrame() {
     },
