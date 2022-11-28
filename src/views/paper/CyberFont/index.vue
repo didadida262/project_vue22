@@ -41,8 +41,8 @@ export default {
       title: 'cyberFont',
       resp: [],
       WIDTH: null,
-      HEIGHT: null,
-      source: require('./test.mkv')
+      HEIGHT: null
+      // source: new Blob([require('./test.mkv')], { type: 'video/mp4' })
     }
   },
   computed: {
@@ -63,11 +63,10 @@ export default {
   methods: {
     // 创建背景音乐
     addVideo() {
-      const blob = new Blob([this.source], { type: 'mp4' })
-      const url = URL.createObjectURL(blob)
+      // // const buff = new ArrayBuffer(this.source)
+      // const url = URL.createObjectURL(this.source)
 
-      console.log('blob>>', blob)
-      console.log('url>>', url)
+      // console.log('url>>', url)
     },
     // 根据当前paperscope宽高，返回一个范围内的随机坐标
     random() {
