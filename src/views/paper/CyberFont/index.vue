@@ -11,7 +11,7 @@
     <div class="cyberFont-container-content">
       <canvas ref="canvas" resize class="canvas" />
     </div>
-    <div class="video-container flex-cb">
+    <!-- <div class="video-container flex-cb">
         <video
          ref="videoContainer"
          controls
@@ -20,7 +20,19 @@
          loop>
           <source :src="url" type="video/mp4">
         </video>
-    </div>
+    </div> -->
+  <div>
+    <audio
+      ref="audio"
+      class="audio"
+      style="display: none"
+      muted="“muted”"
+      loop
+      :src="musicUrl"
+      controls="controls"
+      @timeupdate="updateTime"
+    />
+  </div>
   </div>
 </template>
 
@@ -41,7 +53,8 @@ export default {
       title: 'cyberFont',
       resp: [],
       WIDTH: null,
-      HEIGHT: null
+      HEIGHT: null,
+      musicUrl: null
       // source: new Blob([require('./test.mkv')], { type: 'video/mp4' })
     }
   },
@@ -54,6 +67,7 @@ export default {
   mounted() {
     this.init()
     this.drawFont()
+    this.addAudio()
     this.addVideo()
   },
   beforeDestroy() {
@@ -62,6 +76,9 @@ export default {
   },
   methods: {
     // 创建背景音乐
+    addAudio() {
+
+    },
     addVideo() {
       // // const buff = new ArrayBuffer(this.source)
       // const url = URL.createObjectURL(this.source)
