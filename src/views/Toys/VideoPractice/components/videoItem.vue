@@ -30,7 +30,7 @@
        :ref="this.inputRef"  
        type="text" 
        style="color: black" 
-       :value="this.inputName">
+       :value="this.inputName.slice(0, this.inputName.length - 4)">
     </div>
     <div class="video-item-operate">
       <el-button v-if="!this.data.editFlag" size="mini" @click="handleEdit(true)">编辑</el-button>
