@@ -87,7 +87,7 @@ export default {
       }
       console.log('params',params)
       const res = await this.$axios.changeFileName(params)
-      this.$message.info(res.message)
+      this.$message.success(res.message)
       this.$emit('handleVideoOperate', {
         type: 'refreshData',
         data: ''
@@ -112,6 +112,7 @@ export default {
     border-radius: 2px;
     box-shadow: 0px 0px 6px rgba(109, 106, 106, 0.8);
     color: white;
+    user-select:none
     &-name {
       width: calc(100% - 55px);
       height: 100%;
