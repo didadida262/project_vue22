@@ -8,20 +8,22 @@
 <template>
   <div class="cyberFont-container pd10">
     <commonTemplate title="CyberFont" />
+
     <div class="cyberFont-container-content">
-      <canvas ref="canvas" resize class="canvas" />
-    </div>
-    <!-- <div class="video-container flex-cb">
+      <div class="cyberFont-container-content-video flex-cb">
         <video
          ref="videoContainer"
          controls
          style="width: 100%;height: 100%;display: none"
          autoplay="autoplay"
          loop>
-          <source :src="url" type="video/mp4">
+          <source :src="videoUrl" type="video/mp4">
         </video>
-    </div> -->
-  <div>
+    </div>
+      <canvas ref="canvas" resize class="canvas" />
+    </div>
+
+  <!-- <div class="cyberFont-container-audio flex-cb">
     <audio
       ref="audio"
       class="audio"
@@ -29,10 +31,8 @@
       muted="“muted”"
       loop
       :src="musicUrl"
-      controls="controls"
-      @timeupdate="updateTime"
     />
-  </div>
+  </div> -->
   </div>
 </template>
 
@@ -54,7 +54,8 @@ export default {
       resp: [],
       WIDTH: null,
       HEIGHT: null,
-      musicUrl: null
+      musicUrl: null,
+      videoUrl: null
       // source: new Blob([require('./test.mkv')], { type: 'video/mp4' })
     }
   },
@@ -124,6 +125,7 @@ export default {
   width: 100%;
   height: 100%;
   &-content {
+    position: relative;
     width: 100%;
     height: calc(100% - 80px);
     border: 1px solid rgb(118, 118, 122, 0.5);
@@ -132,6 +134,15 @@ export default {
       height: 100%;
       background: black;
     }
+    &-video {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      border: 1px solid red;
+    }
   }
+
 }
 </style>
