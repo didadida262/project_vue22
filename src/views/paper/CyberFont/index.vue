@@ -12,12 +12,12 @@
     <div class="cyberFont-container-content">
       <div class="cyberFont-container-content-video flex-cb">
         <video
-         ref="videoContainer"
-         controls
-         style="width: 100%;height: 100%;display: none"
-         autoplay="autoplay"
-         loop>
-          <source :src="videoUrl" type="video/mp4">
+          class="video-st"
+          ref="videoContainer"
+          controls
+          autoplay="autoplay"
+          loop>
+          <source src="./清帝逊位.mp4" type="video/mp4">
         </video>
     </div>
       <canvas ref="canvas" resize class="canvas" />
@@ -132,7 +132,7 @@ export default {
     .canvas {
       width: 100%;
       height: 100%;
-      background: black;
+      // background: white;
     }
     &-video {
       position: absolute;
@@ -140,8 +140,14 @@ export default {
       height: 100%;
       top: 0;
       left: 0;
-      border: 1px solid red;
+      .video-st {
+        width: 100%;
+        height: 100%;
+        z-index: -1
+        // display: none
+      }
     }
+
   }
 
 }
