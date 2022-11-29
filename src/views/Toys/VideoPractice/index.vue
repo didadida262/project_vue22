@@ -18,12 +18,12 @@
         <div class="option-container-cate">
           <el-button
             v-for="(cate, index) in categories"
-            :key="index"
+            :key="categories.key"
             type="primary"
-            :plain="currentCate !== cate"
+            :plain="currentCate.key !== cate.key"
             @click="handleChangeModel(cate)"
           >
-            {{ cate }}
+            {{ cate.key }}
           </el-button>
           <span class="mgl10">当前类别文件数目: <span style="color: red">{{ videosList.length }}</span></span>
         </div>
@@ -62,7 +62,7 @@ export default {
   },
   async created() {
     await this.getCates()
-    this.getVideosList(this.page)
+    // this.getVideosList(this.page)
   },
   beforeDestroy() {
   },
@@ -127,13 +127,10 @@ export default {
       })
     },
 
-    // 获取视频列表
+    // 获取目标视频
     async getVideoData(info) {
-      const params = {
-        currentCate: this.currentCate,
-        name: info.name
-      }
-      const res = await this.$axios.getVideo(params)
+      console.log('info',info)
+      const res = await this.$axios.getVideo(info)
       const blob = new Blob([res], { type: 'mp4' })
       const url = URL.createObjectURL(blob)
       this.url = url
@@ -141,6 +138,7 @@ export default {
       videoContainer.src = url
       console.log('当前url--->', this.url)
     },
+    // 获取目标目录下的所有文件
     async getVideosList(info) {
       const params = {
         ...info,
@@ -157,6 +155,7 @@ export default {
       })
       console.log('this.videosList>>>', this.videosList)
     },
+    // 获取所有目录
     async getCates() {
       this.categories = await this.$axios.getCates()
       this.currentCate = this.categories[0]
