@@ -62,7 +62,7 @@ export default {
   },
   async created() {
     await this.getCates()
-    // this.getVideosList(this.page)
+    this.getVideosList(this.page)
   },
   beforeDestroy() {
   },

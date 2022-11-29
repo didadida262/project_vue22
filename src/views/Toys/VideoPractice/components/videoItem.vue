@@ -85,6 +85,7 @@ export default {
         ...this.data,
         inputName: this.$refs[this.inputRef].value
       }
+      console.log('params',params)
       const res = await this.$axios.changeFileName(params)
       this.$message.info(res.message)
       this.$emit('handleVideoOperate', {
