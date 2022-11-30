@@ -47,11 +47,6 @@ export default {
     return axios.get('/getAllChar')
   },
 
-
-
-
-
-
   getCates() {
     return axios.get('/getCates')
   },
@@ -71,5 +66,10 @@ export default {
   },
   changeFileName(params) {
     return axios.post('/changeFileName', params)
+  },
+
+  // Records模块
+  subMitRecords(params) {
+    return axios.post('/subMitRecords', params)
   }
 }

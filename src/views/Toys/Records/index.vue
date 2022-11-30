@@ -9,7 +9,8 @@
   <div class="Records-container pd10">
     <commonTemplate title="Records" />
     <div class="Records-container-content">
-      <canvas ref="canvas" resize class="canvas" />
+      <el-input type="area" v-model="content"></el-input>
+      <el-button type="primary" @click="handleSubmit">Submit</el-button>
     </div>
   </div>
 </template>
@@ -25,8 +26,7 @@ export default {
   data() {
     return {
       title: 'Records',
-      WIDTH: null,
-      HEIGHT: null
+      content: ''
     }
   },
   computed: {
@@ -39,7 +39,16 @@ export default {
 
   },
   methods: {
-
+    async handleSubmit() {
+      const params = {
+        content: this.content
+      }
+      console.log('提交数据>>', params)
+      await this.$axios.subMitRecords(params).catch((err) => {
+        this.$message.error(err)
+      })
+      this.$message.success('success！！！')
+    }
   }
 }
 </script>
