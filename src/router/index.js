@@ -259,7 +259,7 @@ export const constantRoutes = [
         path: 'records',
         component: () => import('@/views/Toys/Records/index'),
         name: 'Records',
-        meta: { title: 'Records', icon: 'el-icon-video-camera' }
+        meta: { title: 'Records', icon: 'record' }
       },
       {
         path: 'video',
