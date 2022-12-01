@@ -111,9 +111,9 @@ export default {
     },
 
     onFrame(e) {
-      this.currentProject.layers[0].children.forEach((_p) => {
-        _p.rotate(3, new paper.Point(0))
-      })
+      // this.currentProject.layers[0].children.forEach((_p) => {
+      //   _p.rotate(3, new paper.Point(0))
+      // })
     }
 
   }

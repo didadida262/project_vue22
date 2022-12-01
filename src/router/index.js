@@ -151,7 +151,7 @@ export const constantRoutes = [
         path: 'diagram',
         name: 'diagram',
         component: () => import('@/views/paper/Diagram/index'),
-        meta: { title: 'DiaGram', icon: 'tadpole' }
+        meta: { title: 'DiaGram', icon: 'Taichi' }
       },
       {
         path: 'darkball',

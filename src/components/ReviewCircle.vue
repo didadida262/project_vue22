@@ -15,7 +15,7 @@
 <script>
 import paper from 'paper'
 import { getAnotherPoint } from '@/utils/weapons'
-import { getRandomColor } from '@/utils/weapons'
+import { getRandomColor, getLineData } from '@/utils/weapons'
 
 export default {
   name: 'review-circle',
@@ -79,13 +79,58 @@ export default {
       this.paper.view.setCenter(0, 0)
       this.paper.project.name = 'circle'
       this.paper.view.onMouseMove = (e) => { this.onMouseMove(e) }
+      this.paper.view.onFrame = (e) => { this.onFrame() }
       // this.paper.view.onMouseDown = (e) => { this.onClickChip(e) }
+    },
+    // 在circle项目中的指定位置点e，绘制layerXY图层, 若存在，直接覆盖
+    drawXY(e) {
+      const currentProject = this.paper.projects.filter((item) => item.name === 'circle')[0]
+      if (currentProject.layers['layerXY']) {
+        console.log('图层已存在', currentProject.layers['layerXY'])
+        currentProject.layers['layerXY'].children.forEach((line) => {
+          line.set({
+            position: e.point
+          })
+        })
+        return
+      }
+      currentProject.activate()
+      const data = getLineData(e.point, this.innerRadius)
+
+      const layerXY = new paper.Layer()
+      layerXY.name = 'layerXY'
+      const xBot = this.waferInfo.DOWN * this.ratio / 2
+      const yBot = getAnotherPoint(xBot, this.innerRadius)
+      if (data[1].two[1] > yBot) {
+        data[1].two[1] = yBot
+      }
+      if (data[0].one[1] > yBot) {
+        data[0].one[1] = yBot
+        data[0].two[1] = yBot
+      }
+      const X = new paper.Path.Line({
+        from: new paper.Point(data[0].one[0], data[0].one[1]),
+        to: new paper.Point(data[0].two[0], data[0].two[1]),
+        strokeColor: '#650D65'
+      })
+      const Y = new paper.Path.Line({
+        from: new paper.Point(data[1].one[0], data[1].one[1]),
+        to: new paper.Point(data[1].two[0], data[1].two[1]),
+        strokeColor: '#650D65'
+      })
     },
     createPath(e) {
 
     },
     onMouseMove(e) {
-
+      this.drawXY(e)
+    },
+    onFrame() {
+      // console.log('帧动')
+      // console.log('this.xy>>', this.xy)
+      // if (!this.xy.point.equals(this.xy.initPoint)) {
+      //   this.drawXY({ point: this.xy.point })
+      // }
     },
     // 外圆
     drawCircle() {
@@ -302,37 +347,6 @@ export default {
     //     this.creatpointer(_point)
     //   }
     //   this.pointerData.pointer.position = _point
-    // },
-    // // 在circle项目中的指定位置点e，绘制layerXY图层, 若存在，直接覆盖
-    // drawXY(e) {
-    //   const currentProject = this.paper.projects.filter((item) => item.name === 'circle')[0]
-    //   currentProject.activate()
-    //   const data = getLineData(e.point, this.innerRadius)
-    //   if (currentProject.layers['layerXY']) {
-    //     currentProject.layers['layerXY'].remove()
-    //   }
-    //   const layerXY = new paper.Layer()
-    //   layerXY.name = 'layerXY'
-    //   const xBot = this.waferInfo.flat_edge.DOWN * this.ratio / 2
-    //   const yBot = getAnotherPoint(xBot, this.innerRadius)
-    //   if (data[1].two[1] > yBot) {
-    //     data[1].two[1] = yBot
-    //   }
-    //   if (data[0].one[1] > yBot) {
-    //     data[0].one[1] = yBot
-    //     data[0].two[1] = yBot
-    //   }
-    //   const X = new paper.Path.Line({
-    //     from: new paper.Point(data[0].one[0], data[0].one[1]),
-    //     to: new paper.Point(data[0].two[0], data[0].two[1]),
-    //     strokeColor: '#650D65'
-    //   })
-    //   const Y = new paper.Path.Line({
-    //     from: new paper.Point(data[1].one[0], data[1].one[1]),
-    //     to: new paper.Point(data[1].two[0], data[1].two[1]),
-    //     strokeColor: '#650D65'
-    //   })
-    //   currentProject.insertLayer(currentProject.layers.length - 2, layerXY)
     // },
 
     // onClickChip(e, chipIndex = null) {

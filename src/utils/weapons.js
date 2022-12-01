@@ -100,6 +100,24 @@ export const getRandomColor = () => {
   const t = Math.random().toFixed(1)
   return `rgba(${r}, ${g}, ${b}, ${t})`
 }
+// 给定圆内任意一点，返回两条以该点原中心点的两条直线数据
+export const getLineData = (point, radius) => {
+  // 通过点坐标的y，获得塬上的两点(-x, y) (x, y)
+  const X = getAnotherPoint(point.y, radius)
+  const Y = getAnotherPoint(point.x, radius)
+  return [
+    // 横轴
+    {
+      one: [-X, point.y],
+      two: [X, point.y]
+    },
+    // 纵轴
+    {
+      one: [point.x, -Y],
+      two: [point.x, Y]
+    }
+  ]
+}
 
 // 中心点在坐标原点的圆，给定一个坐标值及radius，返回另一坐标值
 export const getAnotherPoint = (val, radius) => {
