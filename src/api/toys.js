@@ -69,7 +69,13 @@ export default {
   },
 
   // Records模块
+  // 提交records
   subMitRecords(params) {
     return axios.post('/subMitRecords', params)
+  },
+  // 获取所有records
+  getRecordsList(params) {
+    return axios.get('/getRecordsList')
   }
+
 }

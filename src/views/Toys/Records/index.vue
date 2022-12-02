@@ -9,14 +9,19 @@
   <div class="Records-container pd10">
     <commonTemplate title="Records" />
     <div class="Records-container-content pd10">
-      <el-input
-       type="area"
-       class="Records-container-content-input mgb10"
-       v-model="content"></el-input>
-      <el-button
-       class="Records-container-content-btn"
-       type="primary"
-       @click="handleSubmit">Submit</el-button>
+      <div class="Records-container-content-operation">
+        <el-input
+          type="area"
+          class="Records-container-content-operation-input mgb10"
+          v-model="content"></el-input>
+        <el-button
+          class="Records-container-content-operation-btn"
+          type="primary"
+          @click="handleSubmit">Submit</el-button>
+      </div>
+      <div class="Records-container-content-list">
+
+      </div>
     </div>
   </div>
 </template>
@@ -38,6 +43,9 @@ export default {
   computed: {
   },
   watch: {},
+  created() {
+    this.getData()
+  },
   mounted() {
 
   },
@@ -45,6 +53,10 @@ export default {
 
   },
   methods: {
+    async getData() {
+      const res = await this.$axios.getRecordsList()
+      console.log('res>>', res)
+    },
     async handleSubmit() {
       const params = {
         content: this.content
@@ -54,6 +66,7 @@ export default {
         this.$message.error(err)
       })
       this.$message.success('success！！！')
+      this.getData()
     }
   }
 }
@@ -66,11 +79,18 @@ export default {
     width: 100%;
     height: calc(100% - 80px);
     border: 1px solid rgb(118, 118, 122, 0.5);
-    &-input {
-      width: 100%;
+    &-operation {
+      height: 100px;
+      &-input {
+        width: 100%;
+      }
+      &-btn {
+        width: 100%;
+      }
     }
-    &-btn {
-      width: 100%;
+    &-list {
+      height: calc(100% - 100px);
+      border: 1px solid rgba(0,0,0, 0.2);
     }
   }
 }
