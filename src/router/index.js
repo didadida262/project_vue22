@@ -130,6 +130,12 @@ export const constantRoutes = [
     meta: { title: 'PaperJs', icon: 'el-icon-s-help' },
     children: [
       {
+        path: 'tiles',
+        name: 'tiles',
+        component: () => import('@/views/openLayer/TilesMap/index'),
+        meta: { title: 'Tiles', icon: 'tiles' }
+      },
+      {
         path: 'cyberfont',
         name: 'cyberfont',
         component: () => import('@/views/paper/CyberFont/index'),
