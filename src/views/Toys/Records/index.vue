@@ -37,7 +37,8 @@ export default {
   data() {
     return {
       title: 'Records',
-      content: ''
+      content: '',
+      recordList: []
     }
   },
   computed: {
@@ -55,7 +56,9 @@ export default {
   methods: {
     async getData() {
       const res = await this.$axios.getRecordsList()
-      console.log('res>>', res)
+      this.recordList = [
+        ...res
+      ]
     },
     async handleSubmit() {
       const params = {
