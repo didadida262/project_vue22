@@ -8,9 +8,15 @@
 <template>
   <div class="Records-container pd10">
     <commonTemplate title="Records" />
-    <div class="Records-container-content">
-      <el-input type="area" v-model="content"></el-input>
-      <el-button type="primary" @click="handleSubmit">Submit</el-button>
+    <div class="Records-container-content pd10">
+      <el-input
+       type="area"
+       class="Records-container-content-input mgb10"
+       v-model="content"></el-input>
+      <el-button
+       class="Records-container-content-btn"
+       type="primary"
+       @click="handleSubmit">Submit</el-button>
     </div>
   </div>
 </template>
@@ -60,6 +66,12 @@ export default {
     width: 100%;
     height: calc(100% - 80px);
     border: 1px solid rgb(118, 118, 122, 0.5);
+    &-input {
+      width: 100%;
+    }
+    &-btn {
+      width: 100%;
+    }
   }
 }
 </style>
