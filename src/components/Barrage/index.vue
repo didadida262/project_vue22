@@ -6,7 +6,7 @@
 -->
 
 <template>
-  <div class="Barrage-container pd10">
+  <div class="Barrage-container">
       <canvas ref="canvas" resize class="canvas" />
   </div>
 </template>
@@ -15,7 +15,6 @@
 import paper from 'paper'
 import { getRandomColor } from '@/utils/weapons'
 import { CyberFont } from './cyberfont'
-import words from './words.json'
 
 export default {
   name: 'Barrage',
@@ -43,6 +42,9 @@ export default {
     this.init()
     this.drawFont()
   },
+  created() {
+    console.log('收到的数据>>', this.dataList)
+  },
   beforeDestroy() {
     const currentProject = this.paper.projects.filter((_p) => _p.name === this.title)[0]
     currentProject.remove()
@@ -56,7 +58,7 @@ export default {
     drawFont() {
       this.resp = []
       for (let i = 0; i < this.dataList.length; i++) {
-        this.resp.push(new CyberFont(Math.random() * 100, getRandomColor(), new paper.Point(this.random(), this.random()), words[i], Math.random() * 20))
+        this.resp.push(new CyberFont(Math.random() * 100, getRandomColor(), new paper.Point(this.random(), this.random()), this.dataList[i], Math.random() * 20))
       }
     },
     onFrame() {

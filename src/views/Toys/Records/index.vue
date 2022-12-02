@@ -20,7 +20,14 @@
           @click="handleSubmit">Submit</el-button>
       </div>
       <div class="Records-container-content-list">
-
+        <paper-pic-sample
+         v-if="!dataLoaded"
+         :picInfo="noDataInfo"
+        />
+        <barrage-template
+          v-if="dataLoaded"
+          :dataList="recordList"
+         />
       </div>
     </div>
   </div>
@@ -28,17 +35,27 @@
 
 <script>
 import commonTemplate from '@/components/titleTemplate.vue'
+import BarrageTemplate from '@/components/Barrage'
+import PaperPicSample from '@/components/PaperPicSample.vue'
 
 export default {
   name: 'Records',
   components: {
-    commonTemplate
+    commonTemplate,
+    BarrageTemplate,
+    PaperPicSample
   },
   data() {
     return {
       title: 'Records',
       content: '',
-      recordList: []
+      recordList: [],
+      dataLoaded: true,
+      noDataInfo: {
+        title: 'noData',
+        src: require('@/assets/noData.jpg')
+        // src: ''
+      }
     }
   },
   computed: {
@@ -55,10 +72,12 @@ export default {
   },
   methods: {
     async getData() {
+      this.dataLoaded = false
       const res = await this.$axios.getRecordsList()
       this.recordList = [
         ...res
       ]
+      this.dataLoaded = true
     },
     async handleSubmit() {
       const params = {
