@@ -81,34 +81,27 @@ export default {
       this.paper = paper
       this.paper.view.setCenter(0, 0)
       this.paper.project.name = 'circle'
-      this.paper.view.onMouseMove = (e) => { this.onMouseMove(e) }
-      this.paper.view.onFrame = (e) => { this.onFrame() }
+      this.movePaperScope.view.onMouseMove = (e) => { this.onMouseMove(e) }
+      // this.movePaperScope.view.onFrame = (e) => { this.onFrame() }
       // this.paper.view.onMouseDown = (e) => { this.onClickChip(e) }
     },
     initMovePaper() {
       const canvas = this.$refs.move_canvas
-      const movePaperScope = new paper.PaperScope()
-      movePaperScope.setup(canvas)
-      console.log('movePaperScope>>', movePaperScope)
+      this.movePaperScope = new paper.PaperScope()
+      this.movePaperScope.setup(canvas)
+      console.log('movePaperScope>>', this.movePaperScope)
     },
     // 在circle项目中的指定位置点e，绘制layerXY图层, 若存在，直接覆盖
     drawXY(e) {
-      const currentProject = this.paper.projects.filter((item) => item.name === 'circle')[0]
-      if (currentProject.layers['layerXY']) {
-        console.log('图层已存在', currentProject.layers['layerXY'])
-        currentProject.layers['layerXY'].children.forEach((line) => {
-          line.set({
-            position: e.point
-          })
-        })
-        return
-      }
-      currentProject.activate()
+      this.movePaperScope.activate()
+      const movePaperScopeProject = this.movePaperScope.projects[0]
       const data = getLineData(e.point, this.innerRadius)
-
+      if (movePaperScopeProject.layers['layerXY']) {
+        movePaperScopeProject.layers['layerXY'].remove()
+      }
       const layerXY = new paper.Layer()
       layerXY.name = 'layerXY'
-      const xBot = this.waferInfo.DOWN * this.ratio / 2
+      const xBot = this.waferInfo.orientation_mark_length[0] * this.ratio / 2
       const yBot = getAnotherPoint(xBot, this.innerRadius)
       if (data[1].two[1] > yBot) {
         data[1].two[1] = yBot
@@ -127,6 +120,7 @@ export default {
         to: new paper.Point(data[1].two[0], data[1].two[1]),
         strokeColor: '#650D65'
       })
+      this.paper.activate()
     },
     createPath(e) {
 
@@ -590,6 +584,15 @@ export default {
   .main_canvas {
     width: 100%; // 让出右侧列表的位置
     height: 100%;
+  }
+  .move_canvas {
+    position: absolute;
+    top: 0;
+    right: 10px;
+    bottom: 20px;
+    left: 10px;
+    width: calc(100% - 20px);
+    height: calc(100% - 20px);
   }
 }
 </style>
