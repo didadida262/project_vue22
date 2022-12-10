@@ -9,6 +9,17 @@
     <div class="dashboard-container pd10 flex-cc">
       <canvas id="main_canvas" ref="main_canvas" resize class="main_canvas" />
     </div>
+    <el-upload
+      name="sqlite_file"
+      class="upload-demo"
+      action="https://jsonplaceholder.typicode.com/posts/"
+      :before-upload="beforeAvatarUpload"
+      multiple
+      :limit="3"
+      :file-list="fileList">
+      <el-button size="small" type="primary">点击上传</el-button>
+      <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+    </el-upload>
     <!-- <div class="sq"></div> -->
   </div>
 </template>
@@ -30,6 +41,7 @@ export default {
   },
   data() {
     return {
+      fileList: [],
       hitResult: null,
       title: 'dashBoard',
       scale: 0,
@@ -73,15 +85,23 @@ export default {
   },
 
   methods: {
+    beforeAvatarUpload(file) {
+      console.log('file>>', file)
+    },
     t(e) {
       console.log('eeee', e)
     },
     testEvent() {
+      const layerLine = new paper.Layer()
+      layerLine.name = 'layerLine'
+      layerLine.opacity = 0
       const t = new paper.Path.Line(new paper.Point(0, 0), new paper.Point(100, 100))
       t.set({
         strokeColor: 'red',
-        strokeWidth: 10
+        strokeWidth: 10,
+        opacity: 1
       })
+      t.opacity = 1
     },
     initWorld() {
       // 获取
@@ -98,7 +118,9 @@ export default {
       this.paper.view.onMouseDown = (e) => { this.onMouseDown(e) }
       this.paper.view.onMouseDrag = (e) => { this.onMouseDrag(e) }
       this.paper.view.setCenter(0, 0)
+      console.log('this.paper', this.paper)
     },
+
     onFrame(e) {
       this.currentProject.layers[0].children.forEach((_p) => {
         _p.rotate(3, new paper.Point(0))

@@ -10,6 +10,9 @@
     <canvas id="main_canvas" ref="main_canvas" resize class="main_canvas"
     hidpi="off"
     />
+    <canvas id="move_canvas" ref="move_canvas" resize class="move_canvas"
+    hidpi="off"
+    />
   </div>
 </template>
 <script>
@@ -81,6 +84,12 @@ export default {
       this.paper.view.onMouseMove = (e) => { this.onMouseMove(e) }
       this.paper.view.onFrame = (e) => { this.onFrame() }
       // this.paper.view.onMouseDown = (e) => { this.onClickChip(e) }
+    },
+    initMovePaper() {
+      const canvas = this.$refs.move_canvas
+      const movePaperScope = new paper.PaperScope()
+      movePaperScope.setup(canvas)
+      console.log('movePaperScope>>', movePaperScope)
     },
     // 在circle项目中的指定位置点e，绘制layerXY图层, 若存在，直接覆盖
     drawXY(e) {
@@ -525,6 +534,7 @@ export default {
 
   },
   mounted() {
+    this.initMovePaper()
     this.init()
     this.drawCircle()
     this.drawInnerCircle(this.waferInfo.DOWN, this.innerRadius)
