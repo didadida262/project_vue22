@@ -9,10 +9,11 @@
     <div class="dashboard-container pd10 flex-cc">
       <canvas id="main_canvas" ref="main_canvas" resize class="main_canvas" />
     </div>
+    <!-- name="sqlite_file" -->
     <el-upload
-      name="sqlite_file"
+      ref="uploadFile"
       class="upload-demo"
-      action="https://jsonplaceholder.typicode.com/posts/"
+      action="http://localhost:3000/uploadFile"
       :before-upload="beforeAvatarUpload"
       multiple
       :limit="3"
@@ -20,7 +21,6 @@
       <el-button size="small" type="primary">点击上传</el-button>
       <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
     </el-upload>
-    <!-- <div class="sq"></div> -->
   </div>
 </template>
 
@@ -76,34 +76,54 @@ export default {
   mounted() {
     console.time('1')
     this.initWorld()
-    this.testEvent()
+    this.initPicPosition()
     console.timeEnd('1')
     console.log('paperScope--->', this.paper)
+    this.$nextTick(() => {
+      this.$refs.uploadFile.$children[0].$refs.input.webkitdirectory = true
+      // console.log(this.$refs.uploadFile.$children[0].$refs.input.webkitdirectory)
+    })
   },
   beforeDestroy() {
     this.currentProject.remove()
   },
 
   methods: {
+    initPicPosition() {
+      for (let i = -1; i < 2; i++) {
+        new paper.Path.Rectangle({
+          center: new paper.Point(i * 500, 0),
+          size: [400, 400],
+          strokeColor: 'yellow'
+        })
+      }
+    },
     beforeAvatarUpload(file) {
-      console.log('file>>', file)
+      console.log('files>>', file)
+      const bin = []
+      bin.push(file)
+      const t = URL.createObjectURL(new Blob(bin))
+      const r = new paper.Raster({
+        position: this.paper.projects[0].layers[0].children[this.i].position,
+        source: t
+      })
+      r.kk = this.i
+      r.onLoad = () => {
+        r.fitBounds(this.paper.projects[0].layers[0].children[r.kk].bounds, false)
+      }
+
+      console.log('t>>', t)
+      console.log('t>>', this.paper)
+      this.i++
+
+      return false
     },
     t(e) {
       console.log('eeee', e)
     },
-    testEvent() {
-      const layerLine = new paper.Layer()
-      layerLine.name = 'layerLine'
-      layerLine.opacity = 0
-      const t = new paper.Path.Line(new paper.Point(0, 0), new paper.Point(100, 100))
-      t.set({
-        strokeColor: 'red',
-        strokeWidth: 10,
-        opacity: 1
-      })
-      t.opacity = 1
-    },
+
     initWorld() {
+      this.i = 0
       // 获取
       const canvas = this.$refs.main_canvas
       this.WIDTH = canvas.clientWidth
@@ -115,16 +135,16 @@ export default {
       this.paper.project.name = this.title
       // this.paper.view.setCenter(0, 0)
       this.paper.view.onFrame = this.onFrame
-      this.paper.view.onMouseDown = (e) => { this.onMouseDown(e) }
-      this.paper.view.onMouseDrag = (e) => { this.onMouseDrag(e) }
+      // this.paper.view.onMouseDown = (e) => { this.onMouseDown(e) }
+      // this.paper.view.onMouseDrag = (e) => { this.onMouseDrag(e) }
       this.paper.view.setCenter(0, 0)
       console.log('this.paper', this.paper)
     },
 
     onFrame(e) {
-      this.currentProject.layers[0].children.forEach((_p) => {
-        _p.rotate(3, new paper.Point(0))
-      })
+      // this.currentProject.layers[0].children.forEach((_p) => {
+      //   _p.rotate(3, new paper.Point(0))
+      // })
     },
     onMouseDrag(e) {
       if (this.hitResult) {
@@ -145,7 +165,7 @@ export default {
 .dashboard {
   border: 1px solid gray;
   width: 100%;
-  background: black;
+  // background: black;
   height: calc(100vh - 250px);
   padding: 10px;
   display: flex;
@@ -166,14 +186,5 @@ export default {
       background: gray;
     }
   }
-}
-.sq {
-  width: 100px;
-  height: 50px;
-  background: grey;
-}
-.sq:hover {
-  cursor: pointer;
-
 }
 </style>
