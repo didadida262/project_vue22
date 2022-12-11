@@ -17,7 +17,8 @@
           controls
           autoplay="autoplay"
           loop>
-          <source src="./清帝逊位.mp4" type="video/mp4">
+          <!-- <source src="./清帝逊位.mp4" type="video/mp4"> -->
+          <source :src="videoUrl" type="video/mp4">
         </video>
     </div>
       <canvas ref="canvas" resize class="canvas" />
@@ -67,6 +68,7 @@ export default {
   watch: {},
   mounted() {
     this.init()
+    this.getVideoData()
     this.drawFont()
     this.addAudio()
     this.addVideo()
@@ -76,6 +78,16 @@ export default {
     currentProject.remove()
   },
   methods: {
+    async getVideoData(info) {
+      console.log('info', info)
+      const res = await this.$axios.getVideoCyberFont(info)
+      const blob = new Blob([res], { type: 'mp4' })
+      const url = URL.createObjectURL(blob)
+      this.videoUrl = url
+      const videoContainer = this.$refs['videoContainer']
+      videoContainer.src = url
+      console.log('当前url--->', this.videoUrl)
+    },
     // 创建背景音乐
     addAudio() {
 

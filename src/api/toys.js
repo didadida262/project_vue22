@@ -64,6 +64,13 @@ export default {
       }
     })
   },
+  getVideoCyberFont() {
+    return axios({
+      url: '/getVideoCyberFont',
+      responseType: 'blob',
+      method: 'get'
+    })
+  },
   changeFileName(params) {
     return axios.post('/changeFileName', params)
   },
