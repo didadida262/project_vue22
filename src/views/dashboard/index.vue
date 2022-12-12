@@ -41,6 +41,7 @@ export default {
   },
   data() {
     return {
+      respBlob: [],
       fileList: [],
       hitResult: null,
       title: 'dashBoard',
@@ -99,22 +100,23 @@ export default {
       }
     },
     beforeAvatarUpload(file) {
-      console.log('files>>', file)
+      console.log('file>>', file)
       const bin = []
       bin.push(file)
       const t = URL.createObjectURL(new Blob(bin))
-      const r = new paper.Raster({
-        position: this.paper.projects[0].layers[0].children[this.i].position,
-        source: t
-      })
-      r.kk = this.i
-      r.onLoad = () => {
-        r.fitBounds(this.paper.projects[0].layers[0].children[r.kk].bounds, false)
-      }
+      this.respBlob.push(t)
+      // const r = new paper.Raster({
+      //   position: this.paper.projects[0].layers[0].children[this.i].position,
+      //   source: t
+      // })
+      // r.kk = this.i
+      // r.onLoad = () => {
+      //   r.fitBounds(this.paper.projects[0].layers[0].children[r.kk].bounds, false)
+      // }
 
-      console.log('t>>', t)
-      console.log('t>>', this.paper)
-      this.i++
+      // console.log('t>>', t)
+      // console.log('t>>', this.paper)
+      // this.i++
 
       return false
     },
