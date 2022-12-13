@@ -15,8 +15,8 @@
       class="upload-demo"
       action="http://localhost:3000/uploadFile"
       :before-upload="beforeAvatarUpload"
+      :on-change="handleFileChange"
       multiple
-      :limit="3"
       :file-list="fileList">
       <el-button size="small" type="primary">点击上传</el-button>
       <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
@@ -87,12 +87,27 @@ export default {
   },
 
   methods: {
-    beforeAvatarUpload(file) {
-      console.log('file>>', file)
+    handleFileChange(file, fileList) {
+      console.log('handleFileChange>>', fileList)
       const bin = []
-      bin.push(file)
+      bin.push(fileList[0].raw)
       const t = URL.createObjectURL(new Blob(bin))
       this.respBlob.push(t)
+      console.log('respBlob>>>', this.respBlob)
+      if (this.raster) {
+        this.raster.remove()
+      }
+      // this.raster = new paper.Raster({
+      //   position: 0,
+      //   source: t
+      // })
+    },
+    beforeAvatarUpload(file) {
+      // console.log('beforeAvatarUpload>>', file)
+      // const bin = []
+      // bin.push(file)
+      // const t = URL.createObjectURL(new Blob(bin))
+      // this.respBlob.push(t)
       // const r = new paper.Raster({
       //   position: this.paper.projects[0].layers[0].children[this.i].position,
       //   source: t
