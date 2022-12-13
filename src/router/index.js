@@ -84,6 +84,12 @@ export const constantRoutes = [
     meta: { title: 'Map', icon: 'map' },
     children: [
       {
+        path: 'tiles',
+        name: 'tiles',
+        component: () => import('@/views/openLayer/TilesMap/index'),
+        meta: { title: 'Tiles', icon: 'tiles' }
+      },
+      {
         path: 'bd',
         name: 'baidu',
         component: () => import('@/views/openLayer/BaiduMap/index'),
@@ -129,12 +135,7 @@ export const constantRoutes = [
     name: 'paperjs',
     meta: { title: 'PaperJs', icon: 'el-icon-s-help' },
     children: [
-      {
-        path: 'tiles',
-        name: 'tiles',
-        component: () => import('@/views/openLayer/TilesMap/index'),
-        meta: { title: 'Tiles', icon: 'tiles' }
-      },
+
       {
         path: 'cyberfont',
         name: 'cyberfont',

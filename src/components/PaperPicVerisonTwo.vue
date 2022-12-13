@@ -3,8 +3,7 @@
  * @Date: 2022-11-11 10:56:57
  * @LastEditors: -_-
  * @Description: paperPic v2.0版本，即“感知图片版本---谷歌地图的丐版
-  1. 新增papercope外的十字准星
-  2. 图片感知功能，自动感知视图内图片是否未完整铺满视图
+  1. 图片感知功能，自动感知视图内图片是否未完整铺满视图
 -->
 
 <template>
@@ -57,10 +56,9 @@ export default {
         new paper.Point(e.offsetX, e.offsetY)
       )
       const transform = this.changeZoom(e.deltaY, viewPosition)
-      this.paper.projects.forEach((project) => {
-        project.view.zoom = transform.zoom
-        project.view.center = project.view.center.add(transform.offset)
-      })
+      view.zoom = transform.zoom
+      view.center = view.center.add(transform.offset)
+      this.checkCurrentRastersCannotCoverView()
     },
     // 初始化画布，并确认相关参数初始值
     init() {
@@ -83,11 +81,48 @@ export default {
         const newCenter = pro.view.center.add(delta)
         pro.view.setCenter(newCenter)
       })
+      this.checkCurrentRastersCannotCoverView()
+    },
+    checkCurrentRastersCannotCoverView() {
+      const view = this.currentProject.view
+      const topLeftView = view.bounds.topLeft
+      const topRightView = view.bounds.topRight
+      const bottomLeftView = view.bounds.bottomLeft
+      const bottomRightView = view.bounds.bottomRight
+      const tLVector = this.imgInfo.topLeft.subtract(topLeftView)
+      if (tLVector.quadrant === 1 && tLVector.length !== 0) {
+        this.$message.warning('顶部左无')
+        return
+      }
+      const tRVector = this.imgInfo.topRight.subtract(topRightView)
+      if (tRVector.quadrant === 2 && tLVector.length !== 0) {
+        this.$message.warning('顶部右无')
+        return
+      }
+      const bLVector = this.imgInfo.bottomLeft.subtract(bottomLeftView)
+      if (bLVector.quadrant === 4 && tLVector.length !== 0) {
+        this.$message.warning('底部左无')
+        return
+      }
+      const bRVector = this.imgInfo.bottomRight.subtract(bottomRightView)
+      if (bRVector.quadrant === 3 && tLVector.length !== 0) {
+        this.$message.warning('底部右无')
+        return
+      }
     },
     drawPic() {
       const raster = new paper.Raster(this.picInfo.src)
       raster.onLoad = () => {
-        raster.fitBounds(this.paper.view.bounds, true)
+        // raster.fitBounds(this.currentProject.view.bounds, false)
+        console.log('>>>>>>>>>>>>', raster)
+        this.imgInfo = {
+          topLeft: raster.bounds.topLeft,
+          topRight: raster.bounds.topRight,
+          bottomLeft: raster.bounds.bottomLeft,
+          bottomRight: raster.bounds.bottomRight
+        }
+        this.checkCurrentRastersCannotCoverView()
+        // raster.fitBounds(this.paper.view.bounds, false)
       }
     }
   },

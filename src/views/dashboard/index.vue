@@ -27,11 +27,11 @@
 <script>
 import { mapGetters } from 'vuex'
 import paper from 'paper'
-import { thisTypeAnnotation } from '@babel/types'
 // import { getRandomColor, getCirclePoint } from '@/utils/weapons'
 
 export default {
   name: 'Dashboard',
+
   computed: {
     ...mapGetters([
       'name'
