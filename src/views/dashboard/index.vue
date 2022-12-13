@@ -27,6 +27,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import paper from 'paper'
+import { thisTypeAnnotation } from '@babel/types'
 // import { getRandomColor, getCirclePoint } from '@/utils/weapons'
 
 export default {
@@ -75,11 +76,7 @@ export default {
     this.paper = null
   },
   mounted() {
-    console.time('1')
     this.initWorld()
-    this.initPicPosition()
-    console.timeEnd('1')
-    console.log('paperScope--->', this.paper)
     this.$nextTick(() => {
       this.$refs.uploadFile.$children[0].$refs.input.webkitdirectory = true
       // console.log(this.$refs.uploadFile.$children[0].$refs.input.webkitdirectory)
@@ -90,15 +87,6 @@ export default {
   },
 
   methods: {
-    initPicPosition() {
-      for (let i = -1; i < 2; i++) {
-        new paper.Path.Rectangle({
-          center: new paper.Point(i * 500, 0),
-          size: [400, 400],
-          strokeColor: 'yellow'
-        })
-      }
-    },
     beforeAvatarUpload(file) {
       console.log('file>>', file)
       const bin = []
