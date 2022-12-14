@@ -77,6 +77,9 @@ export default {
   },
   mounted() {
     this.initWorld()
+    console.time('test')
+    this.test()
+    console.timeEnd('test')
     this.$nextTick(() => {
       this.$refs.uploadFile.$children[0].$refs.input.webkitdirectory = true
       // console.log(this.$refs.uploadFile.$children[0].$refs.input.webkitdirectory)
@@ -87,6 +90,26 @@ export default {
   },
 
   methods: {
+    test() {
+      const r = []
+      for (let i = 0; i < 500;) {
+        const rec = new paper.Rectangle({
+          position: new paper.Point(0, i * 50),
+          size: [50],
+          fillColor: 'red'
+        })
+        r.push(rec)
+        i = i + 50
+      }
+      console.log('r>>>>>>>>>', r)
+      const layer = new paper.Layer()
+      layer.addChildren({
+        children: r
+      })
+      layer.activate()
+      // this.currentProject.layers[0].insertChildren(r)
+      console.log('this.currentProject>>>', this.currentProject)
+    },
     handleFileChange(file, fileList) {
       console.log('handleFileChange>>', fileList)
       const bin = []
@@ -95,12 +118,18 @@ export default {
       this.respBlob.push(t)
       console.log('respBlob>>>', this.respBlob)
       if (this.raster) {
-        this.raster.remove()
+        this.raster.set({
+          source: t
+        })
+        return
       }
-      // this.raster = new paper.Raster({
-      //   position: 0,
-      //   source: t
-      // })
+      this.raster = new paper.Raster({
+        position: 0,
+        source: t
+      })
+      // this.raster.onLoad = () => {
+      //   this.raster.fitBounds(this.currentProject.view.bounds, false)
+      // }
     },
     beforeAvatarUpload(file) {
       // console.log('beforeAvatarUpload>>', file)

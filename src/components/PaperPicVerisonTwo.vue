@@ -124,6 +124,7 @@ export default {
         this.checkCurrentRastersCannotCoverView()
         // raster.fitBounds(this.paper.view.bounds, false)
       }
+      console.log('>>>>>>>>', raster.getImageData())
     }
   },
   computed: {
