@@ -135,7 +135,12 @@ export const constantRoutes = [
     name: 'paperjs',
     meta: { title: 'PaperJs', icon: 'el-icon-s-help' },
     children: [
-
+      {
+        path: 'space',
+        name: 'space',
+        component: () => import('@/views/paper/Space/index'),
+        meta: { title: 'Space', icon: 'Space' }
+      },
       {
         path: 'cyberfont',
         name: 'cyberfont',

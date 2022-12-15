@@ -91,24 +91,35 @@ export default {
 
   methods: {
     test() {
-      const r = []
-      for (let i = 0; i < 500;) {
-        const rec = new paper.Rectangle({
-          position: new paper.Point(0, i * 50),
-          size: [50],
-          fillColor: 'red'
-        })
-        r.push(rec)
-        i = i + 50
-      }
-      console.log('r>>>>>>>>>', r)
-      const layer = new paper.Layer()
-      layer.addChildren({
-        children: r
+      const raster = new paper.Raster({
+        position: 0,
+        source: require('@/assets/Sam.webp')
       })
-      layer.activate()
-      // this.currentProject.layers[0].insertChildren(r)
-      console.log('this.currentProject>>>', this.currentProject)
+      const bound = new paper.Path.Rectangle({
+        center: raster.bounds.center,
+        size: [raster.bounds.width, raster.bounds.height],
+        strokeColor: 'green',
+        strokeWidth: 10
+      })
+      console.log('bounds>>>', bound)
+      // bound.strokeColor = 'green'
+      // bound.strokeWidth = 10
+      raster.onLoad = () => {
+        raster.fitBounds(this.currentProject.view.bounds, false)
+        // 方案一
+        // raster.selected = true
+        // raster.selectedColor = 'red'
+
+        // raster.fillColor = 'red'
+        // raster.visible = false
+        // const bound = new paper.Path.Rectangle({
+        //   center: raster.bounds.center,
+        //   size: [raster.bounds.width, raster.bounds.height],
+        //   strokeColor: 'green',
+        //   strokeWidth: 1
+        // })
+      }
+      console.log('raster>>>', raster)
     },
     handleFileChange(file, fileList) {
       console.log('handleFileChange>>', fileList)
