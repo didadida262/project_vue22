@@ -145,20 +145,20 @@ export default {
         strokeColor: 'grey',
         name: 'circleOut'
       })
-      // o.set({
-      //   fillColor: {
-      //     gradient: {
-      //       stops: [['yellow', 0.1], ['red', 0.3], ['black', 1]],
-      //       radial: true
-      //     },
-      //     // origin: o.view.bounds.leftCenter
-      //     origin: o.bounds.center,
-      //     destination: o.view.bounds.rightCenter,
-      //     highlight: o.view.bounds.center
+      o.set({
+        fillColor: {
+          gradient: {
+            stops: [['yellow', 0.1], ['red', 0.3], ['black', 1]],
+            radial: true
+          },
+          // origin: o.view.bounds.leftCenter
+          origin: o.bounds.center,
+          destination: o.view.bounds.rightCenter,
+          highlight: o.view.bounds.center
 
-      //   }
-      //   // fillRule: 'evenodd'
-      // })
+        }
+        // fillRule: 'evenodd'
+      })
     },
     // 先批量处理点数据坐标信息，再绘制数据点
     // 内圆同数据处于同一图层

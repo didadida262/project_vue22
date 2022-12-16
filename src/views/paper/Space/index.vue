@@ -30,7 +30,8 @@ export default {
       title: 'Space',
       WIDTH: null,
       HEIGHT: null,
-      resp: []
+      resp: [],
+      colors: []
     }
   },
   computed: {
@@ -40,6 +41,7 @@ export default {
   },
   watch: {},
   mounted() {
+    this.createColors()
     this.init()
     this.draw()
   },
@@ -48,30 +50,67 @@ export default {
     currentProject.remove()
   },
   methods: {
+    createColors() {
+      for (let i = 0; i < 6; i++) {
+        const brightness = 1 - (i / 60) * 1.5
+        const hue = i / 6 * this.cycles * 360
+        const color = {
+          // 色调
+          hue: hue,
+          // 饱和
+          saturation: 1,
+          brightness: brightness
+        }
+        this.colors.push(color)
+      }
+    },
     getRandomPoint() {
       return new paper.Point(Math.random() * this.WIDTH, Math.random() * this.HEIGHT)
     },
     draw() {
-      const rec = new paper.Path.Rectangle({
-        center: new paper.Point(this.WIDTH / 2, this.HEIGHT / 2),
-        size: [500, 300],
-        selected: true
-      })
-      console.log('rec>>>', rec)
-      // for (let i = 0; i < 100; i++) {
-      // this.resp.push(new Dot(new paper.Point(0), 100, getRandomColor()))
-      const dot = new Dot(this.getRandomPoint(), 20, 'green')
-      this.resp.push(dot)
-      console.log('dot>>>', dot)
-      this.vector = rec.position.subtract(dot.path.position)
-      console.log('this.vector>>>', this.vector)
-      // }
+      // this.rec = new paper.Path.Rectangle({
+      //   center: new paper.Point(this.WIDTH / 2, this.HEIGHT / 2),
+      //   size: [300, 300],
+      //   strokeColor: 'red'
+      // })
+      // console.log('rec>>>', this.rec)
+      // this.rec.set({
+      //   fillColor: {
+      //     gradient: {
+      //       stops: [['yellow', 0.1], ['red', 0.3], ['black', 1]],
+      //       radial: true
+      //     },
+      //     origin: this.rec.bounds.center,
+      //     destination: this.rec.view.bounds.rightCenter,
+      //     highlight: this.rec.view.bounds.center
+
+      //   }
+      // })
+      for (let i = 0; i < 100; i++) {
+      // this.gradient = new paper.Gradient(this.colors, true)
+      // this.radius = Math.max(paper.view.size.width, paper.view.size.height)
+        const dot = new Dot(this.getRandomPoint(), 10, getRandomColor(), this.rec)
+        // const dot = new Dot(this.getRandomPoint(), 20, 'green')
+
+      // dot.path.fillColor = new paper.Color(this.gradient, dot.path.bounds.leftCenter, dot.path.bounds.rightCenter)
+      // this.resp.push(dot)
+      // this.vector = this.rec.position.subtract(dot.path.position)
+      }
     },
     onFrame() {
-      const dot = this.resp[0]
-      dot.path.set({
-        position: dot.path.position.add(this.vector.normalize())
-      })
+      // const dot = this.resp[0]
+      // const newCenter = dot.path.position.add(this.vector.normalize())
+      // contains
+      // if (this.rec.contains(newCenter)) {
+      //   console.log('contains>>>>>>>')
+      // }
+      // isInside
+      // dot.path.set({
+      //   position: newCenter
+      // })
+      // if (dot.path.isInside(this.rec)) {
+      //   console.log('isInside>>>')
+      // }
     },
     onMouseDown(e) {
     },
