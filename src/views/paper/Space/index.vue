@@ -52,15 +52,26 @@ export default {
       return new paper.Point(Math.random() * this.WIDTH, Math.random() * this.HEIGHT)
     },
     draw() {
-      // for (let i = 0; i < 10; i++) {
+      const rec = new paper.Path.Rectangle({
+        center: new paper.Point(this.WIDTH / 2, this.HEIGHT / 2),
+        size: [500, 300],
+        selected: true
+      })
+      console.log('rec>>>', rec)
+      // for (let i = 0; i < 100; i++) {
       // this.resp.push(new Dot(new paper.Point(0), 100, getRandomColor()))
-      console.log('getRandomPoint>>>', this.getRandomPoint())
-      const dot = new Dot(this.getRandomPoint(), 50, 'green')
-      console.log('dot>>>', dot)
+      const dot = new Dot(this.getRandomPoint(), 20, 'green')
       this.resp.push(dot)
+      console.log('dot>>>', dot)
+      this.vector = rec.position.subtract(dot.path.position)
+      console.log('this.vector>>>', this.vector)
       // }
     },
     onFrame() {
+      const dot = this.resp[0]
+      dot.path.set({
+        position: dot.path.position.add(this.vector.normalize())
+      })
     },
     onMouseDown(e) {
     },

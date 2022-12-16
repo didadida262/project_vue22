@@ -6,6 +6,8 @@
  * }
  */
 import paper from 'paper'
+import { getRandomColor } from '@/utils/weapons'
+
 export class Dot {
   constructor(center, radius, color) {
     this.center = center
@@ -18,10 +20,10 @@ export class Dot {
       center: this.center,
       radius: this.radius,
       fillColor: this.color,
-      shadowColor: 'red',
+      shadowColor: getRandomColor(),
       shadowOffset: new paper.Point(1),
       // 模糊距离
-      shadowBlur: new paper.Point(50)
+      shadowBlur: new paper.Point(20)
     })
   }
 }
