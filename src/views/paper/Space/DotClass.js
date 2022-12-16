@@ -13,6 +13,7 @@ export class Dot {
     this.center = center
     this.radius = radius
     this.color = color
+    this.blurFlag = 1
     this.create()
   }
   create() {
@@ -25,12 +26,6 @@ export class Dot {
       // 模糊距离
       shadowBlur: new paper.Point(this.radius * 2)
     })
-    // this.path.onFram = () => {
-    //   const newCenter = this.path.position.add(this.vector.normalize())
-    //   dot.path.set({
-    //     position: newCenter
-    //   })
-    // }
     this.path.set({
       fillColor: {
         gradient: {
@@ -42,5 +37,22 @@ export class Dot {
         destination: this.path.bounds.rightCenter
       }
     })
+  }
+  run() {
+    const currentBlur = this.path.shadowBlur
+    if (currentBlur.x < 0) {
+      this.blurFlag = -1
+    }
+    if (currentBlur.x > this.radius * 2) {
+      this.blurFlag = 1
+    }
+    this.path.set({
+      shadowBlur: currentBlur.subtract(1 * this.blurFlag)
+    })
+
+    // const newCenter = this.path.position.add(this.vector.normalize())
+    // this.path.set({
+    //   position: newCenter
+    // })
   }
 }

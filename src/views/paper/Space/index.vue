@@ -86,18 +86,21 @@ export default {
 
       //   }
       // })
-      for (let i = 0; i < 100; i++) {
+      for (let i = 0; i < 500; i++) {
       // this.gradient = new paper.Gradient(this.colors, true)
       // this.radius = Math.max(paper.view.size.width, paper.view.size.height)
-        const dot = new Dot(this.getRandomPoint(), 10, getRandomColor(), this.rec)
+        const dot = new Dot(this.getRandomPoint(), 8, getRandomColor(), this.rec)
         // const dot = new Dot(this.getRandomPoint(), 20, 'green')
 
-      // dot.path.fillColor = new paper.Color(this.gradient, dot.path.bounds.leftCenter, dot.path.bounds.rightCenter)
-      // this.resp.push(dot)
+        // dot.path.fillColor = new paper.Color(this.gradient, dot.path.bounds.leftCenter, dot.path.bounds.rightCenter)
+        this.resp.push(dot)
       // this.vector = this.rec.position.subtract(dot.path.position)
       }
     },
     onFrame() {
+      this.resp.forEach((dot) => {
+        dot.run()
+      })
       // const dot = this.resp[0]
       // const newCenter = dot.path.position.add(this.vector.normalize())
       // contains
