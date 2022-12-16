@@ -39,14 +39,17 @@ export default {
   watch: {},
   mounted() {
     this.init()
-    this.drawFont()
+    this.draw()
   },
   beforeDestroy() {
     const currentProject = this.paper.projects.filter((_p) => _p.name === this.title)[0]
     currentProject.remove()
   },
   methods: {
-    drawFont() {
+    getRandomPoint() {
+      return new paper.Point(Math.random() * this.WIDTH, Math.random() * this.HEIGHT)
+    },
+    draw() {
     },
     onFrame() {
     },

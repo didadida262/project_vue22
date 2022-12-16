@@ -11,12 +11,17 @@ export class Dot {
     this.center = center
     this.radius = radius
     this.color = color
+    this.create()
   }
   create() {
-    new paper.Path.Circle({
+    this.path = new paper.Path.Circle({
       center: this.center,
       radius: this.radius,
-      fillColor: this.color
+      fillColor: this.color,
+      shadowColor: 'red',
+      shadowOffset: new paper.Point(1),
+      // 模糊距离
+      shadowBlur: new paper.Point(50)
     })
   }
 }

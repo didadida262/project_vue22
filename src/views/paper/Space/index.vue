@@ -16,6 +16,7 @@
 
 <script>
 import paper from 'paper'
+import { Dot } from './DotClass.js'
 import commonTemplate from '@/components/titleTemplate.vue'
 import { getRandomColor } from '@/utils/weapons'
 
@@ -28,7 +29,8 @@ export default {
     return {
       title: 'Space',
       WIDTH: null,
-      HEIGHT: null
+      HEIGHT: null,
+      resp: []
     }
   },
   computed: {
@@ -39,14 +41,24 @@ export default {
   watch: {},
   mounted() {
     this.init()
-    this.drawFont()
+    this.draw()
   },
   beforeDestroy() {
     const currentProject = this.paper.projects.filter((_p) => _p.name === this.title)[0]
     currentProject.remove()
   },
   methods: {
-    drawFont() {
+    getRandomPoint() {
+      return new paper.Point(Math.random() * this.WIDTH, Math.random() * this.HEIGHT)
+    },
+    draw() {
+      // for (let i = 0; i < 10; i++) {
+      // this.resp.push(new Dot(new paper.Point(0), 100, getRandomColor()))
+      console.log('getRandomPoint>>>', this.getRandomPoint())
+      const dot = new Dot(this.getRandomPoint(), 50, 'green')
+      console.log('dot>>>', dot)
+      this.resp.push(dot)
+      // }
     },
     onFrame() {
     },
@@ -59,7 +71,6 @@ export default {
       this.paper = paper
       this.paper.setup(canvas)
       this.paper.project.name = this.title
-      this.paper.view.setCenter(0, 0)
       this.paper.view.onFrame = this.onFrame
       this.paper.view.onMouseDown = this.onMouseDown
       this.tool = new paper.Tool()
