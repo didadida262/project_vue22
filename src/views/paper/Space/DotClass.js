@@ -40,10 +40,10 @@ export class Dot {
   }
   run() {
     const currentBlur = this.path.shadowBlur
-    if (currentBlur.x < 0) {
+    if (currentBlur.x < 5) {
       this.blurFlag = -1
     }
-    if (currentBlur.x > this.radius * 2) {
+    if (currentBlur.x > this.radius * 3) {
       this.blurFlag = 1
     }
     this.path.set({
