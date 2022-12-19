@@ -2,7 +2,7 @@
  * @Author: Hhvcg
  * @Date: 2022-06-12 21:17:03
  * @LastEditors: -_-
- * @Description: 
+ * @Description:
 -->
 <template>
   <el-tooltip
@@ -24,20 +24,19 @@
 </template>
 
 <script>
-import paper from "paper";
+import paper from 'paper'
 import { getRandomColor } from '@/utils/weapons.js'
-
 
 // 色调         hue: Math.random() * 360,
 // 饱和度    saturation: 1,
 // 亮度       brightness: 1
 export default {
-  name: "rect_brush",
+  name: 'rect_brush',
   props: {
     selected: {
       type: String,
-      required: true,
-    },
+      required: true
+    }
   },
   data() {
     return {
@@ -46,7 +45,7 @@ export default {
       myPath: null,
       resp: [],
       colors: []
-    };
+    }
   },
   computed: {},
   watch: {
@@ -56,7 +55,7 @@ export default {
       } else {
         this.tool = null
       }
-    },
+    }
   },
   mounted() {},
   methods: {
@@ -65,82 +64,81 @@ export default {
       this.createColors()
       this.tool = this.$parent.tool
       this.tool.onKeyDown = this.onKeyDown
-      this.tool.onMouseDown = this.onMouseDown    
-      this.tool.onMouseDrag = this.onMouseDrag    
-      this.tool.onMouseMove = this.onMouseMove    
+      this.tool.onMouseDown = this.onMouseDown
+      this.tool.onMouseDrag = this.onMouseDrag
+      this.tool.onMouseMove = this.onMouseMove
       this.tool.onMouseUp = this.onMouseUp
-    },    
+    },
     changeBrush() {
       this.$emit('changeBrush', 'rect_brush')
     },
     onKeyDown(e) {
     },
-        // 针对给定path，color，上梯度色
+    // 针对给定path，color，上梯度色
     colorFul(item) {
       console.log('item---->', item.bounds)
       this.gradient = new paper.Gradient(this.colors, false)
-      this.radius = Math.max(item.bounds.width, item.bounds.height) * 0.75;
-      item.fillColor = new paper.Color(this.gradient, item.bounds.leftCenter, item.bounds.rightCenter.add(this.radius));
+      this.radius = Math.max(item.bounds.width, item.bounds.height) * 0.75
+      item.fillColor = new paper.Color(this.gradient, item.bounds.leftCenter, item.bounds.rightCenter.add(this.radius))
     },
     createColors() {
       for (let i = 0; i < 60; i++) {
-          let brightness = 1 - (i / 60) * 1.5;
-          let hue = i / 60 * 4 * 360;
-          let color = {
-              hue: hue,
-              saturation: 1,
-              brightness: brightness
-          };
-          this.colors.push(color);
+        const brightness = 1 - (i / 60) * 1.5
+        const hue = i / 60 * 4 * 360
+        const color = {
+          hue: hue,
+          saturation: 1,
+          brightness: brightness
+        }
+        this.colors.push(color)
       }
       console.log(this.colors)
     },
     onMouseUp(e) {
-      this.selection.selected = false
-      this.colorFul(this.selection)
+      // this.colorFul(this.selection)
+      this.selection.fillColor = getRandomColor()
       this.resp.push(this.selection.clone())
       const left = this.selection.curves[0].point1
       const right = this.selection.curves[0].point2
-      let t1 = new paper.PointText({
+      const t1 = new paper.PointText({
         content: 'left',
         point: left,
         fontSize: 5
-      });
-      let t2 = new paper.PointText({
+      })
+      const t2 = new paper.PointText({
         content: 'right',
         point: right,
         fontSize: 5
-      });      
+      })
       this.removeSelection()
     },
 
     onMouseDown(e) {
       this.first = e.point
-
-    }, 
+    },
     onMouseDrag(e) {
       this.removeSelection()
       const width = e.point.x - this.first.x
       const height = e.point.y - this.first.y
-      this.selection = new paper.Path.Rectangle(this.first.x,this.first.y, width, height)
+      this.selection = new paper.Path.Rectangle(this.first.x, this.first.y, width, height)
       this.selection.selected = true
     },
     // 若path存在，清除第二个点，加上当前点
     onMouseMove(e) {
 
-    },    
+    },
     removeSelection() {
       if (this.selection) {
         this.selection.remove()
         this.selection = null
       }
-    },
+    }
 
   },
 
   created() {
-  },
-};
+  }
+}
 </script>
 
 <style lang="scss" scoped>
