@@ -96,21 +96,24 @@ export default {
     },
     onMouseUp(e) {
       // this.colorFul(this.selection)
-      this.selection.fillColor = getRandomColor()
-      this.resp.push(this.selection.clone())
-      const left = this.selection.curves[0].point1
-      const right = this.selection.curves[0].point2
-      const t1 = new paper.PointText({
-        content: 'left',
-        point: left,
-        fontSize: 5
-      })
-      const t2 = new paper.PointText({
-        content: 'right',
-        point: right,
-        fontSize: 5
-      })
-      this.removeSelection()
+      if (this.selection) {
+        this.selection.selected = false
+        this.selection.fillColor = getRandomColor()
+        this.resp.push(this.selection.clone())
+        const left = this.selection.curves[0].point1
+        const right = this.selection.curves[0].point2
+        const t1 = new paper.PointText({
+          content: 'left',
+          point: left,
+          fontSize: 5
+        })
+        const t2 = new paper.PointText({
+          content: 'right',
+          point: right,
+          fontSize: 5
+        })
+        this.removeSelection()
+      }
     },
 
     onMouseDown(e) {
