@@ -21,6 +21,8 @@
 
 <script>
 import diaryCard from './components/diaryCard.vue'
+import bus from '@/api/eventBus'
+
 export default {
   name: 'Form',
   components: {
@@ -62,8 +64,8 @@ export default {
       // ]
     },
     addArticle() {
-      console.log('新增文章')
-      this.$router.push({ name: 'createArticle' })
+      bus.$emit('click', '数据！！！！！！！！！！！')
+      // this.$router.push({ name: 'createArticle' })
     }
   }
 }

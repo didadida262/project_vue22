@@ -27,6 +27,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import paper from 'paper'
+import bus from '@/api/eventBus'
 // import { getRandomColor, getCirclePoint } from '@/utils/weapons'
 
 export default {
@@ -74,6 +75,9 @@ export default {
     console.log('---Dashboard---加载完成--->')
     console.log(window.performance)
     this.paper = null
+    bus.$on('click', (data) => {
+      console.log('dashboard---->', data)
+    })
   },
   mounted() {
     this.initWorld()
