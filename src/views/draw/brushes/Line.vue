@@ -72,17 +72,6 @@ export default {
     onKeyDown(e) {
     },
     onMouseUp(e) {
-      // if (this.selection.segments.length === 2) {
-      //   this.selection.remove()
-      // }
-      // this.selection.segments.pop()
-      // this.selection.add(e.point)
-
-      // const temp = this.selection.unite(this.brush.path)
-      // this.removeSelection()
-
-      // this.selection = temp.clone()
-      // this.selection.closed = true
     },
 
     onMouseDown(e) {
@@ -115,11 +104,6 @@ export default {
         } else {
           this.selection.add(e.point)
         }
-        // if (this.selection.segments.length === 2) {
-        //   this.selection.segments.pop()
-        // } else if (this.selection.segments.length === 1) {
-        //   this.selection.add(e.point)
-        // }
       }
     },
     removeSelection() {
