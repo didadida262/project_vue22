@@ -86,7 +86,7 @@ export default {
 
       //   }
       // })
-      for (let i = 0; i < 500; i++) {
+      for (let i = 0; i < 50; i++) {
       // this.gradient = new paper.Gradient(this.colors, true)
       // this.radius = Math.max(paper.view.size.width, paper.view.size.height)
         const dot = new Dot(this.getRandomPoint(), 8, getRandomColor(), this.rec)
@@ -129,7 +129,7 @@ export default {
       this.tool = new paper.Tool()
       this.tool.onMouseDown = (e) => {
       }
-      console.log('初始化世界!!!')
+      console.log(`初始化---${this.title}--成功!!!`, this.paper)
     }
   }
 }

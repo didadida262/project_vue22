@@ -123,6 +123,7 @@ export default {
         //   strokeWidth: 1
         // })
       }
+      // console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>', raster.getImageData(raster.bounds))
       console.log('raster>>>', raster)
     },
     handleFileChange(file, fileList) {
@@ -175,6 +176,8 @@ export default {
       this.i = 0
       // 获取
       const canvas = this.$refs.main_canvas
+
+      // canvas.getContext('2d' [, { [ alpha: true ] [, desynchronized: false ] [, colorSpace: 'srgb'] [, willReadFrequently: false ]} ])
       this.WIDTH = canvas.clientWidth
       this.HEIGHT = canvas.clientHeight
       // this.snake.x = -Math.floor(canvas.clientWidth / 2)
@@ -188,6 +191,9 @@ export default {
       // this.paper.view.onMouseDrag = (e) => { this.onMouseDrag(e) }
       this.paper.view.setCenter(0, 0)
       console.log('this.paper', this.paper)
+      const ctx = canvas.getContext('2d')
+      console.log('ctx>>>', ctx)
+      // console.log('ctx.gggg', ctx.getImageData(this.currentProject.view.bounds))
     },
 
     onFrame(e) {

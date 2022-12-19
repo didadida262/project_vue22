@@ -29,7 +29,7 @@ export class Dot {
     this.path.set({
       fillColor: {
         gradient: {
-          stops: [['white', 0.1], [this.color, 0.6], ['black', 1]],
+          stops: [['white', 0.01], [this.color, 0.6], ['black', 1]],
           // stops: [['white', 0.1], [this.color, 1]],
           radial: true
         },
@@ -49,6 +49,7 @@ export class Dot {
     this.path.set({
       shadowBlur: currentBlur.subtract(1 * this.blurFlag)
     })
+    // this.path.rotate(this.radius, this.center)
 
     // const newCenter = this.path.position.add(this.vector.normalize())
     // this.path.set({
