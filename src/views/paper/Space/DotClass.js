@@ -9,11 +9,12 @@ import paper from 'paper'
 import { getRandomColor } from '@/utils/weapons'
 
 export class Dot {
-  constructor(center, radius, color, thePath) {
+  constructor(center, radius, color, speed) {
     this.center = center
     this.radius = radius
     this.color = color
     this.blurFlag = 1
+    this.speed = speed
     this.create()
   }
   create() {
@@ -37,6 +38,9 @@ export class Dot {
         destination: this.path.bounds.rightCenter
       }
     })
+  }
+  arrive(point) {
+    this.path.rotate(this.speed, point)
   }
   run() {
     const currentBlur = this.path.shadowBlur
