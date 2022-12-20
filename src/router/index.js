@@ -136,6 +136,12 @@ export const constantRoutes = [
     meta: { title: 'PaperJs', icon: 'el-icon-s-help' },
     children: [
       {
+        path: 'rainfallen',
+        name: 'rainfallen',
+        component: () => import('@/views/paper/RainFallen/index'),
+        meta: { title: 'RainFallen', icon: 'Rain' }
+      },
+      {
         path: 'space',
         name: 'space',
         component: () => import('@/views/paper/Space/index'),
