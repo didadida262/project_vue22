@@ -94,10 +94,10 @@ export default {
 
       //   }
       // })
-      for (let i = 0; i < 1; i++) {
+      for (let i = 0; i < 50; i++) {
       // this.gradient = new paper.Gradient(this.colors, true)
       // this.radius = Math.max(paper.view.size.width, paper.view.size.height)
-        const dot = new Dot(this.getRandomPoint(), 30 * Math.random() + 10, getRandomColor(), 2)
+        const dot = new Dot(this.getRandomPoint(), 3 * Math.random() + 10, getRandomColor(), 2 * Math.random())
         // const dot = new Dot(this.getRandomPoint(), 20, 'green')
 
         // dot.path.fillColor = new paper.Color(this.gradient, dot.path.bounds.leftCenter, dot.path.bounds.rightCenter)
