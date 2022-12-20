@@ -268,6 +268,12 @@ export const constantRoutes = [
     },
     children: [
       {
+        path: 'lifetime',
+        component: () => import('@/views/Toys/LifeTime/index'),
+        name: 'lifetime',
+        meta: { title: 'LifeTime', icon: 'time' }
+      },
+      {
         path: 'records',
         component: () => import('@/views/Toys/Records/index'),
         name: 'Records',
