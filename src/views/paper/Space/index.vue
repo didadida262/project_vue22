@@ -130,6 +130,9 @@ export default {
       this.tool.onMouseDown = (e) => {
       }
       console.log(`初始化---${this.title}--成功!!!`, this.paper)
+      const ctx = canvas.getContext('2d', { willReadFrequently: true })
+      console.log('ctx>', ctx)
+      // console.log('ctx>', ctx.getImageData(this.currentProject.view.bounds))
     }
   }
 }
