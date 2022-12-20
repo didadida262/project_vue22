@@ -32,7 +32,7 @@
 
 <script>
 import commonTemplate from '@/components/titleTemplate.vue'
-import ReviewCircle from '@/components/ReviewCircle.vue'
+import ReviewCircle from './components/ReviewCircle.vue'
 import sliderComp from './components/sliderComp.vue'
 export default {
   name: 'Circlle',
