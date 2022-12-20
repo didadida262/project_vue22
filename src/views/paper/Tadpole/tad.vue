@@ -1280,7 +1280,7 @@ export default {
       // canvas的dom节点给到paper装载
       this.paper = paper
       this.paper.setup(canvas)
-      this.apper.project.name = 'tadpole'
+      this.paper.project.name = 'tadpole'
       this.canvasWidth = this.paper.view.size.width
       this.canvasHeight = this.paper.view.size.height
       // 加装各类事件

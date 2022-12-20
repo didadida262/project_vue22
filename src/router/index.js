@@ -180,7 +180,7 @@ export const constantRoutes = [
       {
         path: 'tadpole',
         name: 'tadpole',
-        component: () => import('@/views/paper/index'),
+        component: () => import('@/views/paper/Tadpole/index'),
         meta: { title: 'Tadpole', icon: 'tadpole' }
       },
       {
