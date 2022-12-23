@@ -67,6 +67,12 @@ export default {
         y: null,
         direction: 1,
         respo: []
+      },
+      hitOptions: {
+        segments: true,
+        stroke: true,
+        fill: true,
+        tolerance: 5
       }
 
     }
@@ -95,36 +101,61 @@ export default {
 
   methods: {
     test() {
-      const raster = new paper.Raster({
-        position: 0,
-        source: require('@/assets/Sam.webp')
+      const path = new paper.Path.Rectangle({
+        name: 'test',
+        center: this.currentProject.view.center,
+        size: [100, 100],
+        fillColor: 'rgb(153, 0, 255)',
+        selected: true,
+        onMouseDown: this.handleTestDown,
+        onMouseDrag: this.handleTestDrag
       })
-      const bound = new paper.Path.Rectangle({
-        center: raster.bounds.center,
-        size: [raster.bounds.width, raster.bounds.height],
-        strokeColor: 'green',
-        strokeWidth: 10
-      })
-      console.log('bounds>>>', bound)
-      // bound.strokeColor = 'green'
-      // bound.strokeWidth = 10
-      raster.onLoad = () => {
-        raster.fitBounds(this.currentProject.view.bounds, false)
-        // 方案一
-        // raster.selected = true
-        // raster.selectedColor = 'red'
-
-        // raster.fillColor = 'red'
-        // raster.visible = false
-        // const bound = new paper.Path.Rectangle({
-        //   center: raster.bounds.center,
-        //   size: [raster.bounds.width, raster.bounds.height],
-        //   strokeColor: 'green',
-        //   strokeWidth: 1
+    },
+    handleTestDrag(e) {
+      e.stopPropagation()
+      const target = this.currentProject.layers[0].children.filter((item) => item.name === 'test')[0]
+      if (target) {
+        // target.set({
+        //   position: e.point
         // })
+        // target.position = target.position.add(e.delta)
       }
-      // console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>', raster.getImageData(raster.bounds))
-      console.log('raster>>>', raster)
+      if (this.segment) {
+        // const isCounterClock =
+        //     this.segment.previous.point.x === this.segment.point.x
+        // const prev = isCounterClock ? this.segment.previous : this.segment.next
+        // const next = !isCounterClock
+        //   ? this.segment.previous
+        //   : this.segment.next
+
+        // prev.point = new paper.Point(e.point.x, prev.point.y)
+        // next.point = new paper.Point(next.point.x, e.point.y)
+        const previous = this.segment.previous
+        const next = this.segment.next
+        if (this.segment.index === 1 || this.segment.index === 3) {
+          previous.point = previous.point.add(e.delta.x, 0)
+          next.point = next.point.add(0, e.delta.y)
+        } else if (this.segment.index === 0 || this.segment.index === 2) {
+          previous.point = previous.point.add(0, e.delta.y)
+          next.point = next.point.add(e.delta.x, 0)
+        }
+        this.segment.point = this.segment.point.add(e.delta)
+      }
+    },
+    handleTestDown(e) {
+      e.stopPropagation()
+      const hitResult = this.currentProject.hitTest(e.point, this.hitOptions)
+      console.log('hitResult>>', hitResult)
+      if (hitResult) {
+        if (hitResult.type === 'segment') {
+          console.warn('segment>>')
+          this.segment = hitResult.segment
+        } else if (hitResult.type === 'stroke') {
+          // var location = hitResult.location
+          // segment = path.insert(location.index + 1, event.point)
+          // path.smooth()
+        }
+      }
     },
     handleFileChange(file, fileList) {
       console.log('handleFileChange>>', fileList)
