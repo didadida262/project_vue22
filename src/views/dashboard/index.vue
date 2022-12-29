@@ -89,6 +89,7 @@ export default {
     this.initWorld()
     console.time('test')
     this.test()
+    this.testWebSocket()
     console.timeEnd('test')
     this.$nextTick(() => {
       this.$refs.uploadFile.$children[0].$refs.input.webkitdirectory = true
@@ -100,6 +101,31 @@ export default {
   },
 
   methods: {
+    testWebSocket() {
+      const wsuri = 'ws://localhost:3000'
+      this.websock = new WebSocket(wsuri)
+      this.websock.onmessage = this.websocketonmessage
+      this.websock.onopen = this.websocketonopen
+      this.websock.onerror = this.websocketonerror
+      this.websock.onclose = this.websocketclose
+    },
+    websocketonopen() { // 连接建立之后执行send方法发送数据
+      const actions = { 'test': '12345' }
+      this.websocketsend(JSON.stringify(actions))
+    },
+    websocketonerror() { // 连接建立失败重连
+      console.log('errr>>>>>>>>>>')
+      // this.initWebSocket()
+    },
+    websocketonmessage(e) { // 数据接收
+      const redata = JSON.parse(e.data)
+    },
+    websocketsend(Data) { // 数据发送
+      this.websock.send(Data)
+    },
+    websocketclose(e) { // 关闭
+      console.log('断开连接', e)
+    },
     test() {
       const path = new paper.Path.Rectangle({
         name: 'test',
@@ -222,9 +248,14 @@ export default {
       // this.paper.view.onMouseDrag = (e) => { this.onMouseDrag(e) }
       this.paper.view.setCenter(0, 0)
       console.log('this.paper', this.paper)
-      const ctx = canvas.getContext('2d')
-      console.log('ctx>>>', ctx)
       // console.log('ctx.gggg', ctx.getImageData(this.currentProject.view.bounds))
+      const testLayer = new paper.Layer({
+        name: 'test'
+      })
+      const testLayer2 = new paper.Layer({
+        name: 'test2'
+      })
+      testLayer2.remove()
     },
 
     onFrame(e) {

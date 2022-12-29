@@ -20,7 +20,7 @@ export default {
   methods: {
     getSysInfo() {
       console.log('---App---加载完成--->')
-      console.log('window.performance----', window.performance)
+      // console.log('window.performance----', window.performance)
       const timeObj = {}
       for (const key in window.performance.timing) {
         timeObj[key] = formatTime(key, window.performance.timing[key])
