@@ -7,9 +7,12 @@
 
 <template>
   <div class="matchMan-container pd10">
-    <commonTemplate title="matchMan" />
+    <commonTemplate title="Match-Man" />
     <div class="matchMan-container-content">
-      <canvas ref="canvas" resize class="canvas" />
+      <canvas
+       ref="canvas"
+       resize
+       class="canvas" />
     </div>
   </div>
 </template>
@@ -39,6 +42,7 @@ export default {
   watch: {},
   mounted() {
     this.init()
+    this.drawMap()
     this.draw()
   },
   beforeDestroy() {
@@ -46,6 +50,14 @@ export default {
     currentProject.remove()
   },
   methods: {
+    drawMap() {
+      const line = new paper.Path.Line({
+        form: new paper.Point(-this.WIDTH / 2, 0),
+        to: new paper.Point(this.WIDTH / 2, 0),
+        strokeColor: 'white',
+        strokeWidth: 1
+      })
+    },
     getRandomPoint() {
       return new paper.Point(Math.random() * this.WIDTH, Math.random() * this.HEIGHT)
     },
@@ -54,6 +66,13 @@ export default {
     onFrame() {
     },
     onMouseDown(e) {
+      this.downPoint = e.point
+    },
+    onMouseDrag(e) {
+      console.log('this.currentProject', this.currentProject)
+      const delta = this.downPoint.subtract(e.point)
+      const newCenter = this.currentProject.view.center.add(delta)
+      this.currentProject.view.setCenter(newCenter)
     },
     init() {
       const canvas = this.$refs.canvas
@@ -64,6 +83,7 @@ export default {
       this.paper.project.name = this.title
       this.paper.view.setCenter(0, 0)
       this.paper.view.onFrame = this.onFrame
+      this.paper.view.onMouseDrag = this.onMouseDrag
       this.paper.view.onMouseDown = this.onMouseDown
       this.tool = new paper.Tool()
       this.tool.onMouseDown = (e) => {
