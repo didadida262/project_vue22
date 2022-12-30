@@ -7,9 +7,9 @@
 
 <template>
   <div class="Channel-container pd10">
-    <commonTemplate title="Channel1" />
+    <commonTemplate title="Channel2" />
     <div class="Channel-container-content">
-      频道1
+      频道2
     </div>
   </div>
 </template>
@@ -29,10 +29,10 @@ export default {
   },
   computed: {
   },
-  watch: {},
   created() {
     this.connectWebSocket()
   },
+  watch: {},
   mounted() {
 
   },
@@ -50,7 +50,7 @@ export default {
       this.websock.onclose = this.websocketclose
     },
     websocketonopen() { // 连接建立之后执行send方法发送数据
-      const actions = { 'c1': '12345' }
+      const actions = { 'c2': '12345' }
       this.websocketsend(JSON.stringify(actions))
     },
     websocketonerror() { // 连接建立失败重连
@@ -58,14 +58,15 @@ export default {
       // this.initWebSocket()
     },
     websocketonmessage(e) { // 数据接收
-      console.log('c1接收返回数据1>>>', e.data)
+      console.log('c2接收返回数据1>>>', e.data)
     },
     websocketsend(Data) { // 数据发送
       this.websock.send(Data)
     },
     websocketclose(e) { // 关闭
-      console.log('c1断开连接', e)
+      console.log('c2断开连接', e)
     }
+
   }
 }
 </script>

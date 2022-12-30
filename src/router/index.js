@@ -127,6 +127,31 @@ export const constantRoutes = [
       }
     ]
   },
+  // websockt
+  {
+    path: '/chat',
+    component: Layout,
+    redirect: '/chat/channelone',
+    name: 'chat',
+    meta: {
+      title: 'Chat',
+      icon: 'el-icon-s-help'
+    },
+    children: [
+      {
+        path: 'channelone',
+        name: 'channelone',
+        component: () => import('@/views/WebSocket/channelOne'),
+        meta: { title: 'channelone', icon: 'Raster' }
+      },
+      {
+        path: 'channeltwo',
+        name: 'channeltwo',
+        component: () => import('@/views/WebSocket/channelTwo'),
+        meta: { title: 'channeltwo', icon: 'Raster' }
+      }
+    ]
+  },
   // paperjs
   {
     path: '/paperjs',
