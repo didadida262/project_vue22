@@ -161,6 +161,12 @@ export const constantRoutes = [
     meta: { title: 'PaperJs', icon: 'el-icon-s-help' },
     children: [
       {
+        path: 'matchman',
+        name: 'matchman',
+        component: () => import('@/views/paper/matchMan/index'),
+        meta: { title: 'MatchMan', icon: 'Raster' }
+      },
+      {
         path: 'raster',
         name: 'raster',
         component: () => import('@/views/paper/Raster/index'),
