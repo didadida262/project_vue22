@@ -16,10 +16,10 @@ export default {
   name: 'App',
   mounted() {
     this.getSysInfo()
+    console.log('---App---mounted--->')
   },
   methods: {
     getSysInfo() {
-      console.log('---App---加载完成--->')
       // console.log('window.performance----', window.performance)
       const timeObj = {}
       for (const key in window.performance.timing) {

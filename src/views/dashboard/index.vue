@@ -102,7 +102,8 @@ export default {
 
   methods: {
     testWebSocket() {
-      const wsuri = 'ws://localhost:3000'
+      // console.log('http://localhost:3000')
+      const wsuri = 'ws://127.0.0.1:3001'
       this.websock = new WebSocket(wsuri)
       this.websock.onmessage = this.websocketonmessage
       this.websock.onopen = this.websocketonopen
@@ -118,7 +119,8 @@ export default {
       // this.initWebSocket()
     },
     websocketonmessage(e) { // 数据接收
-      const redata = JSON.parse(e.data)
+      console.log('sockect返回数据1>>>', e.data)
+      console.log('sockect返回数据2>>>', typeof e.data)
     },
     websocketsend(Data) { // 数据发送
       this.websock.send(Data)
