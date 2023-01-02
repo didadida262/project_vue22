@@ -10,7 +10,7 @@
     <commonTemplate title="Some ge tais" />
     <div class="Content flex-cb">
       <div class="video-container flex-cb">
-        <video ref="videoContainer" controls style="width: 100%;height: 100%" autoplay="autoplay" loop>
+        <video id="videoContainer" ref="videoContainer" controls style="width: 100%;height: 100%" autoplay="autoplay">
           <source :src="url" type="video/mp4">
         </video>
       </div>
@@ -64,9 +64,20 @@ export default {
     await this.getCates()
     this.getVideosList(this.page)
   },
+  mounted() {
+    const elevideo = document.getElementById("videoContainer")
+    console.log('elevideo', elevideo)
+    elevideo.addEventListener('ended', () =>  { //结束
+      this.handleVideoEnded()
+    }, false);
+  },
   beforeDestroy() {
   },
   methods: {
+    handleVideoEnded() {
+      const index = this.videosList.findIndex((item) => item.id === this.currentVideoInfo.id)
+      this.getVideoData(this.videosList[index + 1])
+    },
     handleChangeModel(cate) {
       this.currentCate = cate
       this.getVideosList(this.page)
@@ -129,7 +140,11 @@ export default {
 
     // 获取目标视频
     async getVideoData(info) {
-      console.log('info',info)
+      // 打点
+      this.currentVideoInfo = {
+        ...info
+      }
+      console.log('目标视频信息',info)
       const res = await this.$axios.getVideo(info)
       const blob = new Blob([res], { type: 'mp4' })
       const url = URL.createObjectURL(blob)
