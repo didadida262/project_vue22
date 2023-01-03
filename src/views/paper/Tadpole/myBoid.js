@@ -1,3 +1,4 @@
+/* eslint-disable new-cap */
 /*
  * @Author: Hhvcg
  * @Date: 2022-03-11 17:26:22
@@ -11,7 +12,7 @@ export class Boid {
   constructor(position, maxSpeed, maxForce) {
     // 小蝌蚪坐标信息
     this.position = position.clone()
-    // 尾巴点数【10， 15）
+    // 尾巴点数[10， 15）
     this.tailAmount = Math.random() * 5 + 10
     // 蝌蚪移动速度，此值极其重要，关系到蝌蚪实例的生命力
     this.acceleration = new paper.Point()
@@ -84,11 +85,11 @@ export class Boid {
     return color
   }
   changeColor() {
-    const colors = ['red', 'orange', 'yellow', 'green']
-    const newC = this.randomColor()
-    this.head.fillColor = newC
-    this.shortPath.strokeColor = newC
-    this.path.strokeColor = newC
+    // const colors = ['red', 'orange', 'yellow', 'green']
+    // const newC = this.randomColor()
+    // this.head.fillColor = newC
+    // this.shortPath.strokeColor = newC
+    // this.path.strokeColor = newC
   }
   // We accumulate a new acceleration each time based on three rules
   flock(boids) {
