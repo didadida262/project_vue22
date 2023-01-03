@@ -34,10 +34,13 @@ module.exports = {
   lintOnSave: process.env.NODE_ENV === 'development',
   productionSourceMap: false,
   devServer: {
-    host: '192.168.0.106',
-    port: 9528,
-    // port: port,
-    // open为true，运行完后能自动帮我们打开站点
+    // home
+    // host: '192.168.0.106',
+    // host: 'localhost',
+
+    // comp
+    host: '10.0.20.66',
+    port: port,
     open: true,
     overlay: {
       warnings: false,
