@@ -84,18 +84,29 @@ export default {
   beforeDestroy() {
   },
   methods: {
+    updateItemSelected(tartget) {
+      this.videosList.forEach(item => {
+          item.editFlag = false
+          if (item.name === tartget.id) {
+            item.active = true
+          } else {
+            item.active = false
+          }
+        })
+    },
     changePlayWay() {
       this.currentPlayWay = this.currentPlayWay === 'random'? 'sequence': 'random'
+      this.$message.info(this.playWayCate[this.currentPlayWay])
     },
     randomPlay() {
-      this.$message.info('随机播放')
       const next = (Math.random() * (this.videosList.length - 1)).toFixed(0)
       this.getVideoData(this.videosList[next])
+      this.updateItemSelected(this.videosList[next])
     },
     sequencePlay() {
-      this.$message.info('顺序播放')
       const index = this.videosList.findIndex((item) => item.id === this.currentVideoInfo.id)
       this.getVideoData(this.videosList[index + 1])
+      this.updateItemSelected(this.videosList[index + 1])
     },
     handleVideoEnded() {
       switch (this.currentPlayWay) {
@@ -104,8 +115,8 @@ export default {
           break
         case 'sequence':
           this.sequencePlay()
+          break;
       }
-
     },
     handleChangeModel(cate) {
       this.currentCate = cate
