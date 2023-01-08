@@ -9,10 +9,11 @@
   <div class="VideoPractice pd10 flex-col">
     <commonTemplate title="Some ge tais" />
     <div class="Content flex-cb">
-      <div class="video-container flex-cb">
-        <video id="videoContainer" ref="videoContainer" controls style="width: 100%;height: 100%" autoplay="autoplay">
+      <div class="video-container flex-col">
+        <video id="videoContainer" ref="videoContainer" controls style="width: 100%;height: 90%" autoplay="autoplay">
           <source :src="url" type="video/mp4">
         </video>
+        <el-button @click="changePlayWay">{{ playWayShowContent }}</el-button>
       </div>
       <div class="option-container pd10">
         <div class="option-container-cate">
@@ -49,6 +50,11 @@ export default {
   },
   data() {
     return {
+      currentPlayWay: 'random',
+      playWayCate: {
+        random: '随机播放',
+        sequence: '顺序播放'
+      },
       categories: [],
       currentCate: null,
       videosList: [],
@@ -57,7 +63,11 @@ export default {
         page_index: 1,
         page_num: 10
       }
-
+    }
+  },
+  computed: {
+    playWayShowContent() {
+      return this.playWayCate[this.currentPlayWay]
     }
   },
   async created() {
@@ -74,9 +84,28 @@ export default {
   beforeDestroy() {
   },
   methods: {
-    handleVideoEnded() {
+    changePlayWay() {
+      this.currentPlayWay = this.currentPlayWay === 'random'? 'sequence': 'random'
+    },
+    randomPlay() {
+      this.$message.info('随机播放')
+      const next = (Math.random() * (this.videosList.length - 1)).toFixed(0)
+      this.getVideoData(this.videosList[next])
+    },
+    sequencePlay() {
+      this.$message.info('顺序播放')
       const index = this.videosList.findIndex((item) => item.id === this.currentVideoInfo.id)
       this.getVideoData(this.videosList[index + 1])
+    },
+    handleVideoEnded() {
+      switch (this.currentPlayWay) {
+        case 'random':
+          this.randomPlay()
+          break
+        case 'sequence':
+          this.sequencePlay()
+      }
+
     },
     handleChangeModel(cate) {
       this.currentCate = cate
@@ -193,7 +222,6 @@ export default {
       border: 1px solid gray;
       height: 100%;
       background: 'black';
-
     }
     .option-container {
       width: 500px;
