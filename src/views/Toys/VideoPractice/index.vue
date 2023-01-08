@@ -29,8 +29,14 @@
           <span class="mgl10">当前类别文件数目: <span style="color: red">{{ videosList.length }}</span></span>
         </div>
         <div class="option-container-list">
-          <div v-for="(video, index) in videosList" :key="index" class="flex-ca video-itemContainer mgb5">
-            <video-item :data="video" @handleVideoOperate="handleVideoOperate" />
+          <div
+           v-for="(video, index) in videosList" 
+           :key="index" 
+           :id="'test' + video.id"
+           class="flex-ca video-itemContainer mgb5">
+            <video-item 
+            :data="video" 
+            @handleVideoOperate="handleVideoOperate" />
           </div>
         </div>
       </div>
@@ -84,10 +90,12 @@ export default {
   beforeDestroy() {
   },
   methods: {
-    updateItemSelected(tartget) {
+    // 根据当前输入item，更新选中信息
+    updateItemSelected(target) {
+      console.log('target>',target)
       this.videosList.forEach(item => {
           item.editFlag = false
-          if (item.name === tartget.id) {
+          if (item.id === target.id) {
             item.active = true
           } else {
             item.active = false
@@ -98,15 +106,17 @@ export default {
       this.currentPlayWay = this.currentPlayWay === 'random'? 'sequence': 'random'
       this.$message.info(this.playWayCate[this.currentPlayWay])
     },
-    randomPlay() {
+    async randomPlay() {
       const next = (Math.random() * (this.videosList.length - 1)).toFixed(0)
-      this.getVideoData(this.videosList[next])
+      await this.getVideoData(this.videosList[next])
       this.updateItemSelected(this.videosList[next])
+      this.scrollToTarget(this.videosList[next])
     },
-    sequencePlay() {
+    async sequencePlay() {
       const index = this.videosList.findIndex((item) => item.id === this.currentVideoInfo.id)
-      this.getVideoData(this.videosList[index + 1])
+      await this.getVideoData(this.videosList[index + 1])
       this.updateItemSelected(this.videosList[index + 1])
+      this.scrollToTarget(this.videosList[index + 1])
     },
     handleVideoEnded() {
       switch (this.currentPlayWay) {
@@ -122,6 +132,14 @@ export default {
       this.currentCate = cate
       this.getVideosList(this.page)
     },
+    // 定位到当前播放item
+    scrollToTarget(target) {
+      const targetDom = document.querySelector('#test' + target.id)
+      if (targetDom) {
+        targetDom.scrollIntoView(true);
+      }
+      
+    },
     async handleVideoOperate(info) {
       console.log('当前>>', info)
       if (info.type === 'click') {
@@ -134,6 +152,7 @@ export default {
             item.active = false
           }
         })
+        // this.scrollToTarget(info.data)
       } else if (info.type === 'refreshData') {
         this.getVideosList()
       } else if (info.type === 'handleEdit') {
