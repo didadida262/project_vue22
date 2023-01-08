@@ -13,7 +13,10 @@
         <video id="videoContainer" ref="videoContainer" controls style="width: 100%;height: 90%" autoplay="autoplay">
           <source :src="url" type="video/mp4">
         </video>
-        <el-button @click="changePlayWay">{{ playWayShowContent }}</el-button>
+        <div>
+          <el-button @click="changePlayWay">{{ playWayShowContent }}</el-button>
+          <el-button @click="switchVideo('right')">下一个</el-button>
+        </div>
       </div>
       <div class="option-container pd10">
         <div class="option-container-cate">
@@ -90,6 +93,16 @@ export default {
   beforeDestroy() {
   },
   methods: {
+    nextVideo() {
+      this.handleVideoEnded()
+    },
+    switchVideo(flag) {
+      switch (flag) {
+        case 'right':
+          this.nextVideo()
+          break
+      }
+    },
     // 根据当前输入item，更新选中信息
     updateItemSelected(target) {
       console.log('target>',target)
