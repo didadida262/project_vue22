@@ -91,15 +91,19 @@
       @searchSong="searchSong"
     />
     <audio
+      id="audioContainer"
       ref="audio"
       class="audio"
       style="display: none"
       muted="“muted”"
-      loop
       :src="musicBox.url"
       controls="controls"
       @timeupdate="updateTime"
     />
+    <div class="operation">
+      <el-button @click="changePlayWay">{{ playWayShowContent }}</el-button>
+      <el-button @click="switchMusic('right')">下一个</el-button>
+    </div>
   </div>
 </template>
 <script lang="ts">
@@ -115,6 +119,12 @@ export default {
   },
   data() {
     return {
+      currentMusicInfo: null,
+      currentPlayWay: 'random',
+      playWayCate: {
+        random: '随机播放',
+        sequence: '顺序播放'
+      },
       currentCate: {},
       songlistData: [],
       songsList: [],
@@ -129,18 +139,63 @@ export default {
       // imgUrl: ''
     }
   },
+  computed: {
+    playWayShowContent() {
+      return this.playWayCate[this.currentPlayWay]
+    }
+  },
   async created() {
     await this.getMusicCates()
     // await this.getSongData(this.musicBox.currentSongIndex)
     window.addEventListener('keydown', this.handleKeyDown)
   },
   async mounted() {
-    // this.initMusic();
+    this.addEndedEvent()
+
   },
   beforeDestroy() {
     window.removeEventListener('keydown', this.handleKeyDown)
   },
   methods: {
+    addEndedEvent() {
+      const elevideo = document.getElementById("audioContainer")
+      console.log('elevideo', elevideo)
+      elevideo.addEventListener('ended', () =>  { //结束
+        this.handleMusicEnded()
+      }, false);
+    },
+    handleMusicEnded() {
+      this.$message.info('播放结束--->切歌')
+      switch (this.currentPlayWay) {
+        case 'random':
+          this.randomPlay()
+          break
+        case 'sequence':
+          this.sequencePlay()
+          break;
+      }
+    },
+    async randomPlay() {
+      const next = (Math.random() * (this.songlistData.length - 1)).toFixed(0)
+      await this.changeSong(this.songlistData[next])
+      // this.updateItemSelected(this.videosList[next])
+      // this.scrollToTarget(this.videosList[next])
+    },
+    async sequencePlay() {
+      const next = this.songlistData.findIndex((item) => item.id === this.currentMusicInfo.id)
+      await this.changeSong(this.songlistData[next + 1])
+    },
+    switchMusic(direction) {
+      switch (direction) {
+        case 'right':
+        this.handleMusiceEnded()
+        break
+      }
+    },
+    changePlayWay() {
+      this.currentPlayWay = this.currentPlayWay === 'random'? 'sequence': 'random'
+      this.$message.info(this.playWayCate[this.currentPlayWay])
+    },
     async getSongsList(cate) {
       this.currentCate = {
         ...cate
@@ -177,6 +232,9 @@ export default {
 
 
     async changeSong(song) {
+      this.currentMusicInfo = {
+        ...song
+      }
       this.playOrStopSong('paused')
       this.musicBox.currentSongIndex = song.id
       await this.getSongData(song)
