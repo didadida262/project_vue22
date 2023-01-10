@@ -39,6 +39,7 @@ module.exports = {
     port: 9528,
     // port: port,
     // open为true，运行完后能自动帮我们打开站点
+
     open: true,
     overlay: {
       warnings: false,
