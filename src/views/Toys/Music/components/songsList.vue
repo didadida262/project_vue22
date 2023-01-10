@@ -20,8 +20,10 @@
           查询
         </el-button>
       </div>
-      <div v-for="(item, index) in songsList" :key="index" @click="handleClick(index)">
-        <song-item :data="item" :class="{'selected-song': currentSongIndex === index}" />
+      <div v-for="(item, index) in songsList" :key="index" @click="handleClick(item)">
+        <song-item
+         :data="item" 
+         :class="{'selected-song': currentSongIndex === index}" />
       </div>
     </div>
   </div>
@@ -72,8 +74,8 @@ export default {
     searchSong() {
       this.$emit('searchSong', this.songName)
     },
-    handleClick(index) {
-      this.$emit('changeSong', index)
+    handleClick(item) {
+      this.$emit('handleSongListOperate', { type: 'selectSong', data: item})
       // this.currentSongIndex = index
     },
     changeSong(index) {
@@ -100,6 +102,7 @@ export default {
     box-shadow: 0 0 6px rgba(18, 180, 153, 0.8);
     padding: 10px;
     background-color: rgba(45, 45, 45, 0.8);
+    overflow: auto;
     @keyframes slideUp {
       0% {
         transform: translateX(200px);

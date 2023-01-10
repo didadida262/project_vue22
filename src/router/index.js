@@ -226,12 +226,7 @@ export const constantRoutes = [
         component: () => import('@/views/paper/Tank/index'),
         meta: { title: 'Tank', icon: 'tank' }
       },
-      {
-        path: 'music',
-        name: 'Music',
-        component: () => import('@/views/paper/Music/index'),
-        meta: { title: 'Music', icon: 'el-icon-headset' }
-      },
+
       // 见缝插针
       {
         path: 'stickIn',
@@ -315,6 +310,12 @@ export const constantRoutes = [
         component: () => import('@/views/Toys/LifeTime/index'),
         name: 'lifetime',
         meta: { title: 'LifeTime', icon: 'time' }
+      },
+      {
+        path: 'music',
+        name: 'Music',
+        component: () => import('@/views/Toys/Music/index'),
+        meta: { title: 'Music', icon: 'el-icon-headset' }
       },
       {
         path: 'records',
