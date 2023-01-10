@@ -11,6 +11,7 @@
         <el-button
           v-for="(item, index) in this.musicCates" 
           @click="getSongsList(item)"
+          :plain="currentCate.key !== item.key"
           :key="index">{{ item.key }}</el-button>
       </div>
     </div>
@@ -114,7 +115,7 @@ export default {
   },
   data() {
     return {
-      currentCate: null,
+      currentCate: {},
       songlistData: [],
       songsList: [],
       musicCates: [],
@@ -141,7 +142,9 @@ export default {
   },
   methods: {
     async getSongsList(cate) {
-      this.currentCate = cate.key
+      this.currentCate = {
+        ...cate
+      }
       console.log('cate>>', cate)
       this.songlistData = await this.$axios.getSongsList({
         ...cate
@@ -162,11 +165,9 @@ export default {
     },
     // 根据当前song的id获取音频资源
     async getSongData(song) {
-      console.log('播放歌曲---->', song)
       const res = await this.$axios.getSongData(song)
       console.log('res>>', res)
       const blob = new Blob([res], { type: 'mp3' })
-      console.log('blobblob>>', blob)
       const url = URL.createObjectURL(blob)
       this.musicBox.url = url
       console.log('当前url--->', this.musicBox.url)
