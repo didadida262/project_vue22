@@ -6,6 +6,15 @@
 -->
 <template>
   <div class="music">
+    <div class="music-cate flex-col">
+      <div class="music-cate-container flex-ca">
+        <el-button
+          v-for="(item, index) in this.musicCates" 
+          @click="getSongsList(item)"
+          :plain="currentCate.key !== item.key"
+          :key="index">{{ item.key }}</el-button>
+      </div>
+    </div>
     <div class="music-player">
       <div class="info">
         <div class="left" style="color: gray">
@@ -74,79 +83,161 @@
         </div>
       </div>
     </div>
-    <songs-component
-      :show-flag="musicBox.songsListFlag"
-      :songs-list="songsList"
-      :current-song-index="musicBox.currentSongIndex"
-      @changeSong="changeSong"
+    <songs-list
+      :showFlag="musicBox.songsListFlag"
+      :songsList="songlistData"
+      :currentSongIndex="musicBox.currentSongIndex"
+      @handleSongListOperate="handleSongListOperate"
       @searchSong="searchSong"
     />
     <audio
+      id="audioContainer"
       ref="audio"
       class="audio"
       style="display: none"
       muted="“muted”"
-      loop
       :src="musicBox.url"
       controls="controls"
       @timeupdate="updateTime"
     />
+    <div class="operation">
+      <el-button @click="changePlayWay">{{ playWayShowContent }}</el-button>
+      <el-button @click="switchMusic('right')">下一个</el-button>
+    </div>
   </div>
 </template>
 <script lang="ts">
 
 import { _arrayBufferToBase64 } from '@/utils/index'
-import songsComponent from './components/songsList.vue'
+import songsList from './components/songsList.vue'
+// import songsComponent from './components/songsList.vue'
 export default {
   name: 'Music',
   components: {
-    songsComponent
+    // songsComponent,
+    songsList
   },
   data() {
     return {
+      currentMusicInfo: null,
+      currentPlayWay: 'random',
+      playWayCate: {
+        random: '随机播放',
+        sequence: '顺序播放'
+      },
+      currentCate: {},
+      songlistData: [],
       songsList: [],
+      musicCates: [],
       musicBox: {
         timer: '00:00',
         status: 'paused',
         url: '',
-        songsListFlag: false,
+        songsListFlag: true,
         currentSongIndex: 0
       }
       // imgUrl: ''
     }
   },
+  computed: {
+    playWayShowContent() {
+      return this.playWayCate[this.currentPlayWay]
+    }
+  },
   async created() {
-    await this.getSongs()
-    await this.getMedia(this.musicBox.currentSongIndex)
+    await this.getMusicCates()
+    // await this.getSongData(this.musicBox.currentSongIndex)
     window.addEventListener('keydown', this.handleKeyDown)
   },
   async mounted() {
-    // this.initMusic();
+    this.addEndedEvent()
+
   },
   beforeDestroy() {
     window.removeEventListener('keydown', this.handleKeyDown)
   },
   methods: {
-    async getSongs() {
-      this.songsList = await this.$axios.getSongs()
-      this.musicBox.currentSongIndex = Math.floor(Math.random() * this.songsList.length)
-      console.log('随机值--->', this.musicBox.currentSongIndex)
-      console.log('当前所有songs--->', this.songsList)
+    addEndedEvent() {
+      const elevideo = document.getElementById("audioContainer")
+      console.log('elevideo', elevideo)
+      elevideo.addEventListener('ended', () =>  { //结束
+        this.handleMusicEnded()
+      }, false);
+    },
+    handleMusicEnded() {
+      this.$message.info('播放结束--->切歌')
+      switch (this.currentPlayWay) {
+        case 'random':
+          this.randomPlay()
+          break
+        case 'sequence':
+          this.sequencePlay()
+          break;
+      }
+    },
+    async randomPlay() {
+      const next = (Math.random() * (this.songlistData.length - 1)).toFixed(0)
+      await this.changeSong(this.songlistData[next])
+      // this.updateItemSelected(this.videosList[next])
+      // this.scrollToTarget(this.videosList[next])
+    },
+    async sequencePlay() {
+      const next = this.songlistData.findIndex((item) => item.id === this.currentMusicInfo.id)
+      await this.changeSong(this.songlistData[next + 1])
+    },
+    switchMusic(direction) {
+      switch (direction) {
+        case 'right':
+        this.handleMusiceEnded()
+        break
+      }
+    },
+    changePlayWay() {
+      this.currentPlayWay = this.currentPlayWay === 'random'? 'sequence': 'random'
+      this.$message.info(this.playWayCate[this.currentPlayWay])
+    },
+    async getSongsList(cate) {
+      this.currentCate = {
+        ...cate
+      }
+      console.log('cate>>', cate)
+      this.songlistData = await this.$axios.getSongsList({
+        ...cate
+      })
+      console.log('songlistData>>', this.songlistData)
+    },
+    async getMusicCates() {
+      this.musicCates = await this.$axios.getMusicCates()
+      console.log('当前所有cate--->', this.musicCates)
+      // this.musicBox.currentSongIndex = Math.floor(Math.random() * this.songsList.length)
+      // console.log('随机值--->', this.musicBox.currentSongIndex)
+    },
+    handleSongListOperate(info) {
+     switch (info.type) {
+      case 'selectSong':
+        this.changeSong(info.data)
+     }
     },
     // 根据当前song的id获取音频资源
-    async getMedia(index) {
-      console.log('当前歌曲id--->', index)
-      const res = await this.$axios.getMedia(index)
-      const blob = new Blob(res, { type: 'mp3' })
+    async getSongData(song) {
+      const res = await this.$axios.getSongData(song)
+      console.log('res>>', res)
+      const blob = new Blob([res], { type: 'mp3' })
       const url = URL.createObjectURL(blob)
       this.musicBox.url = url
       console.log('当前url--->', this.musicBox.url)
     },
-    async changeSong(index) {
-      console.log('子组件传回来的值index---->', index)
+
+
+
+
+    async changeSong(song) {
+      this.currentMusicInfo = {
+        ...song
+      }
       this.playOrStopSong('paused')
-      this.musicBox.currentSongIndex = index
-      await this.getMedia(index)
+      this.musicBox.currentSongIndex = song.id
+      await this.getSongData(song)
       this.initMusic()
       this.playOrStopSong('playing')
     },
@@ -180,7 +271,7 @@ export default {
     async switchSong(flag) {
       this.getNextSong(flag)
       console.log('this.musicBox.currentSongIndex--->', this.musicBox.currentSongIndex)
-      this.musicBox.url = await this.$axios.getMedia(this.musicBox.currentSongIndex)
+      this.musicBox.url = await this.$axios.getSongData(this.musicBox.currentSongIndex)
       console.log('music--->', this.musicBox.url)
       // this.playOrStopSong('paused')
       this.initMusic()
@@ -265,7 +356,24 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
   background-image: linear-gradient(120deg,#487399,#994515);
+  &-cate {
+    width: 20%;
+    height: 100%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    &-container {
+      height: 80px;
+      border: 1px solid white;
+    }
+    &-songlist {
+      height: calc(100% - 100px);
+      border: 1px solid red;
+    }
+  }
+
   .music-player {
     position: relative;
     width: 350px;

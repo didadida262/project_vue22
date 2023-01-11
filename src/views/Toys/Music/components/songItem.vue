@@ -6,7 +6,7 @@
 -->
 <template>
   <div class="song-item mgb10 cursor-pointer flex-cc" @click="handleSelect">
-    <span style="color: black">{{ data }}</span>
+    <span style="color: black">{{ data.name }}</span>
   </div>
 </template>
 <script lang="ts">
@@ -16,7 +16,7 @@ export default {
 
   props: {
     data: {
-      type: String,
+      type: Object,
       required: true
     }
   },
@@ -33,7 +33,7 @@ export default {
   },
   methods: {
     handleSelect() {
-      this.$emit('handleSelect', this.data)
+      // this.$emit('handleSelect', this.data)
     }
   }
 }

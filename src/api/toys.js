@@ -29,19 +29,31 @@ export default {
       url: '/img'
     })
   },
-  getMedia(index) {
+
+
+  // music
+  getMusicCates() {
+    // return axios.get('/songs/list')
+    return axios.get('/getMusicCates')
+  },
+  getSongsList(params) {
+    return axios.post('/getSongsList', params)
+  },
+  getSongData(params) {
     return axios({
-      method: 'get',
+      method: 'post',
       responseType: 'blob',
-      url: '/music/',
-      params: {
-        index: index
+      url: '/getSongData',
+      data: {
+        ...params
       }
     })
   },
-  getSongs() {
-    return axios.get('/songs/list')
-  },
+
+
+
+
+
 
   getAllChars() {
     return axios.get('/getAllChar')
@@ -51,6 +63,8 @@ export default {
     return axios.get('/getCates')
   },
 
+
+// video
   getVideosList(params) {
     return axios.post('/getVideosList', params)
   },
