@@ -1,8 +1,12 @@
 <template>
   <div class="draw-container">
-
     <!-- 所有笔刷 -->
     <div class="tool">
+      <el-button
+       type="primary"
+       size="mini"
+       @click="handleExport"
+       >Export</el-button>
       <Pencil
         class="cursor-pointer"
         :selected="activatedBrush"
@@ -44,7 +48,6 @@
       ref="Content"
       @shortCut="onWheel"
     />
-    <img ref="image" src="@/assets/rick.jpg" srcset="" style="display: none">
   </div>
 </template>
 
@@ -74,6 +77,7 @@ export default {
   },
   data() {
     return {
+      url: '@/assets/rick.jpg',
       WIDTH: null,
       HEIGHT: null,
       // 当前激活工具
@@ -87,7 +91,6 @@ export default {
       paper: null,
       image: {
         // url: 'https://cms-assets.tutsplus.com/uploads/users/1251/posts/26530/image/BenderPaper.jpg'
-        url: '@/assets/rick.jpg'
       },
       testInfo: {
         plan: {
@@ -100,7 +103,10 @@ export default {
   computed: {
     ...mapGetters([
       'name'
-    ])
+    ]),
+    currentProject() {
+      return this.paper.projects.filter((_p) => _p.name === 'Draw')[0]
+    }
   },
 
   mounted() {
@@ -115,8 +121,21 @@ export default {
     currentProject = null
   },
   methods: {
-    test() {
+    handleExport() {
+      console.log('this.currentProject>>', this.currentProject)
 
+      // 通过 API 获取目标 canvas 元素
+      // const canvas = this.$refs.Content.$refs.main_canvas
+      const x = this.currentProject.exportSVG({
+        asString: true
+      })
+      const blob = new Blob([x], { type: 'svg' })
+      const a = document.createElement('a')
+      a.href = URL.createObjectURL(blob)
+      a.download = 'test.svg'
+      a.click()
+      console.log('x>>>', x)
+      this.$message.success('Export Success!!!')
     },
     changeBrush(brush) {
       this.activatedBrush = brush
@@ -176,11 +195,10 @@ export default {
       paper.setup(canvas)
       this.paper = paper
       this.paper.project.name = 'Draw'
-      // this.image.raster = new paper.Raster(this.image.url)
-      this.image.raster = new paper.Raster(this.$refs['image'])
-      this.tool = new paper.Tool()
-      // this.mask_png = new paper.Raster('http://zhuoxilab.com:10444/file_0/2,035e7ca1c5d1ae?rend=1649939540571');
-      this.image.raster.smoothing = false
+      this.image.raster = new paper.Raster({
+        position: 0,
+        source: this.url
+      })
       this.image.raster.onLoad = () => {
         // 让图片raster的宽高自适应view这个容器
         this.image.raster.fitBounds(this.paper.view.bounds, true)
