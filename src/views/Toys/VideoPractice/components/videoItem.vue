@@ -112,13 +112,13 @@ export default {
     border-radius: 2px;
     box-shadow: 0px 0px 6px rgba(109, 106, 106, 0.8);
     color: white;
-    user-select:none
+    user-select:none;
     &-name {
-      width: calc(100% - 55px);
+      width: calc(100% - 85px);
       height: 100%;
     }
     &-operate {
-      width: 50px;
+      width: 80px;
       height: 100%;
     }
   }
