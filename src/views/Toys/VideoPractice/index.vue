@@ -10,7 +10,13 @@
     <commonTemplate title="Some ge tais" />
     <div class="Content flex-cb">
       <div class="video-container flex-col">
-        <video id="videoContainer" ref="videoContainer" controls style="width: 100%;height: 90%" autoplay="autoplay">
+        <video
+         id="videoContainer" 
+         ref="videoContainer" 
+         controls 
+         style="width: 100%;height: 90%" 
+         controlslist="nodownload"
+         autoplay="autoplay">
           <source :src="url" type="video/mp4">
         </video>
         <div>
