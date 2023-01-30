@@ -1,8 +1,5 @@
 // js的继承
 
-
-
-
 // const Parent = function () {
 //     this.name = 'parent'
 //     this.children = ['son1', 'son2']
@@ -13,7 +10,6 @@
 // Parent.prototype.say = function () {
 //     console.log('say>>>',this.name)
 // }
-
 
 // 1.原型链继承
 // const Children = function () {
@@ -26,10 +22,6 @@
 // const child2 = new Children()
 // child.getChildren()
 // 假继承，因为属性不是私有的
-
-
-
-
 
 // 2.构造函数继承 --》call.实现私有化的需求
 // const Children = function (...args) {
@@ -48,29 +40,24 @@
 // child2.getChildren()
 // console.log(child2.name)
 
-
-
-
-
-
 // 组合继承
 // 组合继承改进版本
 // es6标准
 
 class Parent {
-    constructor(name) {
-        this.name = name
-    }
-    say() {
-        console.log(this.name)
-    }
+  constructor(name) {
+    this.name = name
+  }
+  say() {
+    console.log(this.name)
+  }
 }
 
 class Children extends Parent {
-    constructor(name) {
-        super(name)
-        this.old = 100
-    }
+  constructor(name) {
+    super(name)
+    this.old = 100
+  }
 }
 
 const child = new Children('hhvcg')
