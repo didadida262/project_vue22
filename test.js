@@ -44,24 +44,32 @@
 // 组合继承改进版本
 // es6标准
 
-class Parent {
-  constructor(name) {
-    this.name = name
-  }
-  say() {
-    console.log(this.name)
+// 合并两数组
+
+// 给定一个整数数组 temperatures ，表示每天的温度，返回一个数组 answer ，其中 answer[i] 是指对于第 i 天，下一个更高温度出现在几天后。如果气温在这之后都不会升高，请在该位置用 0 来代替。
+
+// 示例 1:
+
+// 输入: temperatures = [73,74,75,71,69,72,76,73]
+// 输出: [1,1,4,2,1,1,0,0]
+// 示例 2:
+
+// 输入: temperatures = [30,40,50,60]
+// 输出: [1,1,1,0]
+// 示例 3:
+
+// 输入: temperatures = [30,60,90]
+// 输出: [1,1,0]
+// 被判定超时
+const temperatures = [73, 74, 75, 71, 69, 72, 76, 73]
+const answer = []
+for (let i = 0; i < temperatures.length; i++) {
+  const end = temperatures.slice(i + 1)
+  const targetIndex = end.findIndex((item) => item > temperatures[i])
+  if (targetIndex === -1) {
+    answer[i] = 0
+  } else {
+    answer[i] = 1 + targetIndex
   }
 }
-
-class Children extends Parent {
-  constructor(name) {
-    super(name)
-    this.old = 100
-  }
-}
-
-const child = new Children('hhvcg')
-const child22 = new Children('hhvcg22222222')
-child.name = 'asdasd'
-child.say()
-child22.say()
+console.log(answer)
