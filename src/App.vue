@@ -16,11 +16,9 @@ export default {
   name: 'App',
   mounted() {
     this.getSysInfo()
-    console.log('---App---mounted--->')
   },
   methods: {
     getSysInfo() {
-      // console.log('window.performance----', window.performance)
       const timeObj = {}
       for (const key in window.performance.timing) {
         timeObj[key] = formatTime(key, window.performance.timing[key])
@@ -30,8 +28,8 @@ export default {
         usedJSHeapSize: formatBytes('usedJSHeapSize', window.performance.memory.usedJSHeapSize),
         totalJSHeapSize: formatBytes('totalJSHeapSize', window.performance.memory.totalJSHeapSize)
       }
-      console.log('memoryObj----', memoryObj)
-      console.log('timeObj----', timeObj)
+      // console.log('memoryObj----', memoryObj)
+      // console.log('timeObj----', timeObj)
     }
   }
 }
