@@ -36,7 +36,7 @@ import { mapGetters, mapState } from 'vuex'
 import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
 import HeaderNotice from '@/components/HeaderNotice.vue'
-import HeaderI18n from '@/components/HeaderI18n/index.vue'
+// import HeaderI18n from '@/components/HeaderI18n/index.vue'
 
 export default {
   components: {

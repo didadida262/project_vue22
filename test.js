@@ -14,5 +14,27 @@
 // 输出：[[1,5]]
 // 解释：区间 [1,4] 和 [4,5] 可被视为重叠区间。
 
-const intervals = [[1, 3], [2, 6], [8, 10], [15, 18]]
+// const intervals = [[1, 3], [2, 6], [8, 10], [15, 18]]
 
+// 全排列,此题非常之经典
+const arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+const used = new Array(arr.lenght).fill(false)
+const res = []
+const f = (path) => {
+  if (path.length === arr.length) {
+    console.log('>>>>>>>>>>>>>>>>>>', path)
+    res.push(JSON.parse(JSON.stringify(path)))
+    return
+  }
+  for (let i = 0; i < arr.length; i++) {
+    if (!used[i]) {
+      used[i] = true
+      path.push(arr[i])
+      f(path)
+      path.pop()
+      used[i] = false
+    }
+  }
+}
+f([])
+// console.log('res>>', res)
