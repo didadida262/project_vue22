@@ -23,6 +23,23 @@
         cursor: pointer;
       }
     }
+    .content {
+      width: calc(100% - 45px);
+      height: 100%;
+      .contentItem-st {
+        width: 49%;
+        height: 100%;
+        border-radius: 5px;
+        border: 2px solid gray;
+      }
+      .activeContentItem-st {
+        border: 2px solid rgb(89, 195, 225);
+        border-radius: 5px;
+        width: 49%;
+        height: 100%;
+      }
+    }
+
   }
 
 }
