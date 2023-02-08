@@ -49,7 +49,7 @@ export default {
   methods: {
     init() {
       // this.log('初始化pencil--->')
-      this.tool = this.$parent.tool
+      this.tool = new paper.Tool()
       this.tool.onKeyDown = this.onKeyDown
       this.tool.onMouseDown = this.onMouseDown
       this.tool.onMouseDrag = this.onMouseDrag

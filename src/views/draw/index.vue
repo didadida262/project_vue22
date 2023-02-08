@@ -7,12 +7,12 @@
        size="mini"
        @click="handleExport"
        >Export</el-button>
-      <Pencil
+      <!-- <Pencil
         class="cursor-pointer"
         :selected="activatedBrush"
         @changeBrush="changeBrush"
-      />
-      <oldBrush
+      /> -->
+      <!-- <oldBrush
         class="cursor-pointer"
         :selected="activatedBrush"
         @changeBrush="changeBrush"
@@ -36,7 +36,7 @@
         class="cursor-pointer"
         :selected="activatedBrush"
         @changeBrush="changeBrush"
-      />
+      /> -->
       <RectBrush
         class="cursor-pointer"
         :selected="activatedBrush"

@@ -2,7 +2,7 @@
  * @Author: Hhvcg
  * @Date: 2022-06-12 21:17:03
  * @LastEditors: -_-
- * @Description: 
+ * @Description:
 -->
 <template>
   <el-tooltip
@@ -24,20 +24,19 @@
 </template>
 
 <script>
-import paper from "paper";
+import paper from 'paper'
 import { getRandomColor } from '@/utils/weapons.js'
-
 
 // 色调         hue: Math.random() * 360,
 // 饱和度    saturation: 1,
 // 亮度       brightness: 1
 export default {
-  name: "killBrush",
+  name: 'killBrush',
   props: {
     selected: {
       type: String,
-      required: true,
-    },
+      required: true
+    }
   },
   data() {
     return {
@@ -48,24 +47,22 @@ export default {
         color: 'black',
         pathOptions: {
           radius: 10,
-          btype: "circle"  // circle ||  rectangle
+          btype: 'circle' // circle ||  rectangle
           // btype: "rectangle"  // circle ||  rectangle,
         }
       },
       selection: null,
       tool: null,
       handle: null
-    };
+    }
   },
   computed: {},
   watch: {
     selected() {
       if (this.selected === 'kill_brush') {
         this.init()
-      } else {
-        this.tool = null
       }
-    },
+    }
   },
   mounted() {},
   methods: {
@@ -73,43 +70,42 @@ export default {
       if (this.selection && _point.getDistance(this.lastPoint) >= this.brush.pathOptions.radius * 2) {
         const vector = _point.subtract(this.lastPoint)
         for (let i = 1; i < vector.length;) {
-          let newPoint = this.lastPoint.add(vector.normalize().multiply(i))
+          const newPoint = this.lastPoint.add(vector.normalize().multiply(i))
           let temp = null
           // if (this.brush.pathOptions.btype==='circle'){
-            temp = new paper.Path.Circle(newPoint, new paper.Size(this.brush.pathOptions.radius))
+          temp = new paper.Path.Circle(newPoint, new paper.Size(this.brush.pathOptions.radius))
           // } else {
           //   temp = new paper.Path.Rectangle({
           //     center: newPoint,
-          //     size: new paper.Size(this.brush.pathOptions.radius * 2) 
+          //     size: new paper.Size(this.brush.pathOptions.radius * 2)
           //   })
           // }
-          
-          let newSelection = this.selection.unite(temp);
+
+          const newSelection = this.selection.unite(temp)
           temp = null
-          this.selection.remove();
-          this.selection = newSelection;
+          this.selection.remove()
+          this.selection = newSelection
           i = i + this.brush.pathOptions.radius / 2
         }
         this.lastPoint = _point
-      }  
-
-    },     
+      }
+    },
     init() {
       // this.log('初始化brush--->')
       this.tool = this.$parent.tool
       this.tool.onKeyDown = this.onKeyDown
-      this.tool.onMouseDown = this.onMouseDown    
-      this.tool.onMouseDrag = this.onMouseDrag    
-      this.tool.onMouseMove = this.onMouseMove    
+      this.tool.onMouseDown = this.onMouseDown
+      this.tool.onMouseDrag = this.onMouseDrag
+      this.tool.onMouseMove = this.onMouseMove
       this.tool.onMouseUp = this.onMouseUp
       this.tool.fixedDistance = this.brush.pathOptions.radius / 2
-      
+
       const point1 = new paper.Point(100, 0)
       const point2 = new paper.Point(100, this.brush.pathOptions.radius * 2)
       const vector = new paper.Point({
         angle: point1.subtract(point2).angle,
         length: Math.sqrt(this.brush.pathOptions.radius * this.brush.pathOptions.radius)
-      });
+      })
 
       const path = new paper.Path({
         segments: [
@@ -117,7 +113,7 @@ export default {
           [point2, vector.rotate(-90).multiply(1.5), vector.rotate(90).multiply(1.5)]
         ],
         fullySelected: true
-      });   
+      })
       path.closed = true
       const text1 = new paper.PointText({
         point: point1.subtract(10),
@@ -129,9 +125,7 @@ export default {
         content: 'point2',
         fontSize: 10
       })
-   
-
-    },    
+    },
     changeBrush() {
       this.$emit('changeBrush', 'kill_brush')
     },
@@ -139,9 +133,9 @@ export default {
     },
     onMouseUp(e) {
       // const temp = this.selection.unite(this.brush.path)
-        let newSelection = this.selection.unite(this.brush.path);
-        this.selection.remove();
-        this.selection = newSelection;
+      const newSelection = this.selection.unite(this.brush.path)
+      this.selection.remove()
+      this.selection = newSelection
       this.selectionsResp.push(this.selection.clone())
       this.removeSelection()
 
@@ -157,14 +151,14 @@ export default {
     drawHead(e) {
       this.selection = new paper.Path({
         strokeColor: this.brush.color
-      })      
+      })
       const vector = new paper.Point({
         angle: 0,
         length: this.brush.pathOptions.radius
-      })      
+      })
       const res = this.getTopAndBot(e.point, vector)
       this.selection.add(res[1])
-      this.selection.insert(0, res[0])      
+      this.selection.insert(0, res[0])
     },
     getDragPoints(e) {
       const vector = e.point.subtract(e.lastPoint)
@@ -173,10 +167,10 @@ export default {
       const bottom = e.point.add(step)
       const top = e.point.subtract(step)
       return [top, bottom]
-    },    
+    },
     onMouseDown(e) {
       this.drawHead(e)
-    }, 
+    },
     removeSelection() {
       if (this.selection) {
         this.selection.remove()
@@ -210,8 +204,8 @@ export default {
             [res[0], vector, vector.rotate(-180)],
             [res[1], vector.rotate(-180), vector]
           ],
-          fillColor: getRandomColor(),
-        }) 
+          fillColor: getRandomColor()
+        })
         // 如果是矩形
       } else {
         this.selection = new paper.Path({
@@ -219,8 +213,8 @@ export default {
             [ress[0], vector.normalize(), vector.rotate(90).normalize().multiply(this.brush.pathOptions.radius)],
             [ress[1], vector.rotate(-90).normalize().multiply(this.brush.pathOptions.radius), vector]
           ],
-          fillColor: getRandomColor(),
-        }) 
+          fillColor: getRandomColor()
+        })
       }
     },
     onMouseDrag(e) {
@@ -248,14 +242,14 @@ export default {
       this.brush.path = new paper.Path.Circle({
         center: e.point,
         strokeColor: this.brush.color,
-        radius: this.brush.pathOptions.radius,
+        radius: this.brush.pathOptions.radius
       })
     }
   },
 
   created() {
-  },
-};
+  }
+}
 </script>
 
 <style lang="scss" scoped>
