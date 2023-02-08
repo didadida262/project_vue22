@@ -2,16 +2,16 @@
   <div class="draw-container">
     <!-- 所有笔刷 -->
     <div class="tool">
-      <el-button
+      <!-- <el-button
        type="primary"
        size="mini"
        @click="handleExport"
-       >Export</el-button>
-      <!-- <Pencil
+       >Export</el-button> -->
+      <Pencil
         class="cursor-pointer"
         :selected="activatedBrush"
         @changeBrush="changeBrush"
-      /> -->
+      />
       <!-- <oldBrush
         class="cursor-pointer"
         :selected="activatedBrush"
@@ -111,7 +111,7 @@ export default {
 
   mounted() {
     this.init()
-    console.log('Draw--->>>>', this.paper)
+    console.log('Draw---mounted--this.paper>>>>', this.paper)
   },
   created() {
   },

@@ -48,8 +48,11 @@ export default {
   mounted() { },
   methods: {
     init() {
-      // this.log('初始化pencil--->')
-      this.tool = new paper.Tool()
+      console.log('初始化pencil--->')
+      if (!this.tool) {
+        this.tool = new paper.Tool()
+        this.tool.activate()
+      }
       this.tool.onKeyDown = this.onKeyDown
       this.tool.onMouseDown = this.onMouseDown
       this.tool.onMouseDrag = this.onMouseDrag
