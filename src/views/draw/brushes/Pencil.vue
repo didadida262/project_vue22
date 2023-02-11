@@ -19,9 +19,10 @@
 
 <script>
 import paper from 'paper'
-
+import tools from '../tools'
 export default {
   name: 'pencil',
+  mixins: [tools],
   props: {
     selected: {
       type: String,
@@ -30,50 +31,37 @@ export default {
   },
   data() {
     return {
+      name: 'pencil',
       icon: 'el-icon-edit',
       path: null,
-      tool: null
     }
   },
   computed: {},
   watch: {
-    selected() {
-      if (this.selected === 'pencil') {
-        this.init()
-      } else {
-        this.tool = null
-      }
-    }
-  },
-  mounted() { },
-  methods: {
-    init() {
-      // this.log('初始化pencil--->')
-      this.tool = this.$parent.tool
-      this.tool.onKeyDown = this.onKeyDown
-      this.tool.onMouseDown = this.onMouseDown
-      this.tool.onMouseDrag = this.onMouseDrag
-      this.tool.onMouseMove = this.onMouseMove
-    },
-    onMouseMove(e) {
 
+},
+  mounted() {
+
+  },
+  methods: {
+    onMouseMove(e) {
+      console.log('drag')
     },
     changeBrush() {
       this.$emit('changeBrush', 'pencil')
     },
-    onKeyDown(e) {
-    },
     onMouseDown(e) {
+      console.log('down')
       this.path = new paper.Path({
         strokeColor: 'black'
       })
       this.path.add(e.point)
     },
     onMouseDrag(e) {
+      console.log('drag')
       this.path.add(e.point)
     }
   },
-
   created() {
   }
 }

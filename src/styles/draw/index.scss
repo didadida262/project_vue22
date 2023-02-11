@@ -5,9 +5,7 @@
   &-container {
     margin: 30px;
     height: calc(100% - 50px);
-    display: flex;
-    justify-content: space-between;
-    .tool {
+    &-tool {
       padding: 10px;
       padding-top: 20px;
       border: 1px solid gainsboro;
@@ -22,6 +20,25 @@
       .icon:hover {
         cursor: pointer;
       }
+    }
+    &-annotate {
+      height: 100%;
+      width: calc(100% - 40px - 210px);
+      border: 1px solid gainsboro;
+      .paperView-item {
+        width: 50%;
+        height: 1000px;
+        border: 1px solid ghostwhite;
+        border-radius: 5px;
+      }
+      .activateScope-st {
+        border: 3px solid rgb(0, 183, 255);
+      }
+    }
+    &-catefory {
+      width: 200px;
+      height: 100%;
+      border: 1px solid gainsboro;
     }
   }
 

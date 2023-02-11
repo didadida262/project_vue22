@@ -1,80 +1,59 @@
-// js的继承
+// 再谈js的继承那些事
 
 
 
-
-// const Parent = function () {
-//     this.name = 'parent'
-//     this.children = ['son1', 'son2']
-//     this.getChildren = function () {
-//         console.log('儿子们:', this.children)
-//     }
-// }
-// Parent.prototype.say = function () {
-//     console.log('say>>>',this.name)
-// }
+const Parent  = function() {
+    this.name = '爷爷'
+    this.children= ['son1', 'son2']
+    this.old = 100
+    this.getName = function() {
+        return this.name
+    }
+}
+Parent.prototype.getChildren = function () {
+    return this.children
+}
 
 
 // 1.原型链继承
 // const Children = function () {
+    
 // }
+
 // Children.prototype = new Parent()
 // const child = new Children()
-// console.log('name>>>',child.name)
-// child.children.push(1000)
-// child.getChildren()
 // const child2 = new Children()
-// child.getChildren()
-// 假继承，因为属性不是私有的
+// console.log(child.getChildren())
+// child.children.push('child')
+// console.log(child2)
 
 
 
 
+// 2.构造函数继承
 
-// 2.构造函数继承 --》call.实现私有化的需求
-// const Children = function (...args) {
-//     Parent.call(this, ...args)
+// const Children = function () {
+//     Parent.call(this)
 // }
-// Children.prototype = Parent.prototype
-// const child = new Children()
-// child.name = 'child'
-// console.log(child.say())
-// child.children.push('10000')
-// child.name = 'asasd'
-// child.getChildren()
-// console.log(child)
 
+// const child1 = new Children()
 // const child2 = new Children()
-// child2.getChildren()
-// console.log(child2.name)
+// child1.children.push('>>>>>>>>>>>>>')
+// console.log('child1>>>',child1.getChildren())
+// console.log('child2>>>',child2.children)
 
 
 
+// 3.组合继承 利用原型链方法，继承父类构造函数的原型对象上的方法 利用构造函数继承，实现私有化
 
-
-
-// 组合继承
-// 组合继承改进版本
-// es6标准
-
-class Parent {
-    constructor(name) {
-        this.name = name
-    }
-    say() {
-        console.log(this.name)
-    }
+const Children = function () {
+    Parent.call(this)
 }
 
-class Children extends Parent {
-    constructor(name) {
-        super(name)
-        this.old = 100
-    }
-}
+Children.prototype = Object.create(Parent.prototype)
+Children.prototype.constructor = Children
 
-const child = new Children('hhvcg')
-const child22 = new Children('hhvcg22222222')
-child.name = 'asdasd'
-child.say()
-child22.say()
+const child1 = new Children()
+const child2 = new Children()
+console.log('child1>>',child1.__proto__)
+console.log('child2>>',child2)
