@@ -89,7 +89,7 @@ export default {
     this.initWorld()
     console.time('test')
     this.test()
-    this.testWebSocket()
+    // this.testWebSocket()
     console.timeEnd('test')
     this.$nextTick(() => {
       this.$refs.uploadFile.$children[0].$refs.input.webkitdirectory = true

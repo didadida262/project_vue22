@@ -4,15 +4,7 @@
     <breadcrumb class="breadcrumb-container" />
     <header-notice></header-notice>
     <div class="right-menu flex-ca">
-     
-      <!-- <el-dropdown split-button type="primary">
-        切换语言
-        <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item>中文</el-dropdown-item>
-          <el-dropdown-item>英文</el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>       -->
-      <el-button @click="changeLanguage" size="mini">{{ $t('name')}}</el-button>
+      <!-- <header-i18n v-if="showI18n" /> -->
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
           <el-avatar size="small" src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"></el-avatar>
@@ -40,50 +32,35 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
 import HeaderNotice from '@/components/HeaderNotice.vue'
+// import HeaderI18n from '@/components/HeaderI18n/index.vue'
 
 export default {
   components: {
     Breadcrumb,
     Hamburger,
     HeaderNotice
+    // HeaderI18n
   },
   computed: {
     ...mapGetters([
       'sidebar',
       'avatar'
     ]),
+    ...mapState('settings', ['showI18n']),
     language() {
       return sessionStorage.getItem('local')
     }
   },
-  data(){
+  data() {
     return {
     }
   },
   methods: {
-    changeLanguage(){
-      console.log('改前---->', this.language)
-      console.log('改前---->', typeof this.language)
-      if (this.language === 'zh') {
-        console.log('1')
-        sessionStorage.setItem('local', 'en')
-      } else {
-        console.log('2')
-        sessionStorage.setItem('local', 'zh')
-      }
-      console.log('改后---->', this.language)
-      this.$message(`切换至${this.language}`)
 
-      // this.$message({
-      //   message: `切换至${this.language}`,
-      //   center: true,
-      //   duration: 3
-      // });
-    },
     toggleSideBar() {
       this.$store.dispatch('app/toggleSideBar')
     },
@@ -91,8 +68,7 @@ export default {
       await this.$store.dispatch('user/logout')
       this.$router.push(`/login?redirect=${this.$route.fullPath}`)
     },
-  mounted() {
-    // console.log('header组件---mounted')
+    mounted() {
     }
   },
   mounted() {

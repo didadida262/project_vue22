@@ -21,6 +21,7 @@
         cursor: pointer;
       }
     }
+<<<<<<< HEAD
     &-annotate {
       height: 100%;
       width: calc(100% - 40px - 210px);
@@ -40,6 +41,25 @@
       height: 100%;
       border: 1px solid gainsboro;
     }
+=======
+    .content {
+      width: calc(100% - 45px);
+      height: 100%;
+      .contentItem-st {
+        width: 49%;
+        height: 100%;
+        border-radius: 5px;
+        border: 2px solid gray;
+      }
+      .activeContentItem-st {
+        border: 2px solid rgb(89, 195, 225);
+        border-radius: 5px;
+        width: 49%;
+        height: 100%;
+      }
+    }
+
+>>>>>>> 9ff22210cc2deac4b0f4edf3442c9449f7addfab
   }
 
 }

@@ -50,8 +50,6 @@ export default {
     selected() {
       if (this.selected === 'line') {
         this.init()
-      } else {
-        this.tool = null
       }
     }
   },

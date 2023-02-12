@@ -27,9 +27,10 @@ import 'element-ui/lib/theme-chalk/index.css'
 // 自定义了elementui的默认配置
 import '../theme/index.css'
 
-import Antd from 'ant-design-vue'
-import 'ant-design-vue/dist/antd.css'
-Vue.use(Antd)
+// 有问题，暂时屏蔽
+// import Antd from 'ant-design-vue'
+// import 'ant-design-vue/dist/antd.css'
+// Vue.use(Antd)
 
 import '@/styles/index.scss' // global css
 
