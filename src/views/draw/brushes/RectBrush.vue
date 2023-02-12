@@ -26,12 +26,13 @@
 <script>
 import paper from 'paper'
 import { getRandomColor } from '@/utils/weapons.js'
-
+import tools from '../tools'
 // 色调         hue: Math.random() * 360,
 // 饱和度    saturation: 1,
 // 亮度       brightness: 1
 export default {
   name: 'rect_brush',
+  mixins: [tools],
   props: {
     selected: {
       type: String,
@@ -40,6 +41,7 @@ export default {
   },
   data() {
     return {
+      name: 'rect_brush',
       selection: null,
       first: null,
       myPath: null,
@@ -49,34 +51,14 @@ export default {
   },
   computed: {},
   watch: {
-    selected() {
-      if (this.selected === 'rect_brush') {
-        this.init()
-      } else {
-        this.tool = null
-      }
-    }
+
   },
   mounted() {},
   methods: {
-    init() {
-      console.log('初始化brush--->')
-      this.createColors()
-      if (!this.tool) {
-        this.tool = new paper.Tool()
-        this.tool.activate()
-      }
-      this.tool.onKeyDown = this.onKeyDown
-      this.tool.onMouseDown = this.onMouseDown
-      this.tool.onMouseDrag = this.onMouseDrag
-      this.tool.onMouseMove = this.onMouseMove
-      this.tool.onMouseUp = this.onMouseUp
-    },
     changeBrush() {
       this.$emit('changeBrush', 'rect_brush')
     },
-    onKeyDown(e) {
-    },
+
     // 针对给定path，color，上梯度色
     colorFul(item) {
       console.log('item---->', item.bounds)
@@ -128,10 +110,6 @@ export default {
       const height = e.point.y - this.first.y
       this.selection = new paper.Path.Rectangle(this.first.x, this.first.y, width, height)
       this.selection.selected = true
-    },
-    // 若path存在，清除第二个点，加上当前点
-    onMouseMove(e) {
-
     },
     removeSelection() {
       if (this.selection) {

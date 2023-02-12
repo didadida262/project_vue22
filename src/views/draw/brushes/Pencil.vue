@@ -19,9 +19,10 @@
 
 <script>
 import paper from 'paper'
-
+import tools from '../tools'
 export default {
   name: 'pencil',
+  mixins: [tools],
   props: {
     selected: {
       type: String,
@@ -30,53 +31,40 @@ export default {
   },
   data() {
     return {
+      name: 'pencil',
       icon: 'el-icon-edit',
       path: null,
-      tool: null
     }
   },
   computed: {},
   watch: {
-    selected() {
-      if (this.selected === 'pencil') {
-        this.init()
-      } else {
-        this.tool = null
-      }
-    }
-  },
-  mounted() { },
-  methods: {
-    init() {
-      console.log('初始化pencil--->')
-      if (!this.tool) {
-        this.tool = new paper.Tool()
-        this.tool.activate()
-      }
-      this.tool.onKeyDown = this.onKeyDown
-      this.tool.onMouseDown = this.onMouseDown
-      this.tool.onMouseDrag = this.onMouseDrag
-      this.tool.onMouseMove = this.onMouseMove
-    },
-    onMouseMove(e) {
 
+},
+  mounted() {
+
+  },
+  methods: {
+    onMouseMove(e) {
+      console.log('drag')
     },
     changeBrush() {
       this.$emit('changeBrush', 'pencil')
     },
-    onKeyDown(e) {
-    },
     onMouseDown(e) {
+      console.log('this',e)
+      console.log('活跃图层名称1',this.$parent.activePaperScope.project.name)
+      console.log('活跃图层名称2',this.$parent.activateScope)
+      console.log('down')
       this.path = new paper.Path({
         strokeColor: 'black'
       })
       this.path.add(e.point)
     },
     onMouseDrag(e) {
+      console.log('drag')
       this.path.add(e.point)
     }
   },
-
   created() {
   }
 }
