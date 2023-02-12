@@ -134,7 +134,11 @@ export default {
       this.activePaperScope.projects[0].activate()
     },
     handleSwitch() {
-      this.activateScope = this.activateScope === 1 ? 0 : 1
+      if (this.activateScope + 1 >= this.picList.length) {
+        this.activateScope = 0
+      } else {
+        this.activateScope++
+      }
       this.activePaperScope.projects[this.activateScope].activate()
     },
 
