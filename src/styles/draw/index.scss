@@ -23,7 +23,7 @@
     }
     &-annotate {
       height: 100%;
-      width: calc(100% - 40px - 210px);
+      width: calc(100% - 40px - 360px);
       border: 1px solid gainsboro;
       .paperView-item {
         width: 24%;
@@ -36,7 +36,7 @@
       }
     }
     &-catefory {
-      width: 200px;
+      width: 250px;
       height: 100%;
       border: 1px solid gainsboro;
     }

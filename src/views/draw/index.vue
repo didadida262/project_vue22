@@ -1,10 +1,11 @@
 <template>
   <div class="draw-container flex-cb">
     <!-- 所有笔刷 -->
+    <el-button
+      style="width: 80px;height: 100%;"
+      type="primary"
+      @click="handleSwitch">switch</el-button>
     <div class="draw-container-tool">
-      <el-button
-        type="primary"
-        @click="handleSwitch">switch</el-button>
         <RectBrush
           class="cursor-pointer"
           :selected="activatedBrush"
