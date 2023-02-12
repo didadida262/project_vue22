@@ -2,7 +2,9 @@
   <div class="draw-container flex-cb">
     <!-- 所有笔刷 -->
     <div class="draw-container-tool">
-      <el-button @click="handleSwitch">switch</el-button>
+      <el-button
+        type="primary"
+        @click="handleSwitch">switch</el-button>
         <RectBrush
           class="cursor-pointer"
           :selected="activatedBrush"
@@ -41,7 +43,7 @@
 
     </div>
     <!-- :class="[{'cursorpointerNone-st': activatedBrush !== 'pencil' && activatedBrush !== 'line' && activatedBrush !== 'rect_brush'}]" -->
-    <div class="draw-container-annotate flex-cb">
+    <div class="draw-container-annotate flex-ca">
       <div class="paperView-item"
       :class="[activateScope === index? 'activateScope-st': '']"
        v-for="(item, index) in picList"
@@ -85,13 +87,22 @@ export default {
   data() {
     return {
       picList: [
-      {
+        {
           title: 'Surface',
-          src: 'https://cms-assets.tutsplus.com/uploads/users/1251/posts/26530/image/BenderPaper.jpg'
+          // src: 'https://cms-assets.tutsplus.com/uploads/users/1251/posts/26530/image/BenderPaper.jpg'
+          src: require('@/assets/Sam.webp')
         },
         {
           title: 'PL',
-          src: 'https://cms-assets.tutsplus.com/uploads/users/1251/posts/26530/image/BenderPaper.jpg'
+          src: require('@/assets/Sam.webp')
+        },
+        {
+          title: '3',
+          src: require('@/assets/Sam.webp')
+        },
+        {
+          title: '4',
+          src: require('@/assets/Sam.webp')
         }
       ],
       activateScope: 0,
@@ -123,15 +134,14 @@ export default {
       this.activePaperScope.projects[0].activate()
     },
     handleSwitch() {
-      this.activateScope = this.activateScope === 1? 0: 1
+      this.activateScope = this.activateScope === 1 ? 0 : 1
       this.activePaperScope.projects[this.activateScope].activate()
-      
     },
 
     changeBrush(brush) {
       this.activatedBrush = brush
       this.$message.success(`切换至${brush}`)
-    },
+    }
 
   }
 }
