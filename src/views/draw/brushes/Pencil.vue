@@ -51,6 +51,9 @@ export default {
       this.$emit('changeBrush', 'pencil')
     },
     onMouseDown(e) {
+      console.log('this',e)
+      console.log('活跃图层名称1',this.$parent.activePaperScope.project.name)
+      console.log('活跃图层名称2',this.$parent.activateScope)
       console.log('down')
       this.path = new paper.Path({
         strokeColor: 'black'

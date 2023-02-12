@@ -109,6 +109,7 @@ export default {
       const width = e.point.x - this.first.x
       const height = e.point.y - this.first.y
       this.selection = new paper.Path.Rectangle(this.first.x, this.first.y, width, height)
+      this.selection.fillColor = getRandomColor()
       this.selection.selected = true
     },
     removeSelection() {
