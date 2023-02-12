@@ -16,6 +16,7 @@ export default {
             this.tool.onMouseDown = this.onMouseDown
             this.tool.onMouseDrag = this.onMouseDrag
             this.tool.onMouseMove = this.onMouseMove
+            this.tool.onMouseUp = this.onMouseUp
         }
     },
     watch:{
