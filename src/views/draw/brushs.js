@@ -1,4 +1,4 @@
-export const brushArray =  [
+export const brushArray = [
   {
     name: 'old_brush',
     icon: 'el-icon-scissors',
@@ -28,5 +28,5 @@ export const brushArray =  [
     name: 'kill_brush',
     icon: 'el-icon-brush',
     descript: '测试笔刷'
-  }        
+  }
 ]

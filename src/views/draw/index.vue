@@ -145,7 +145,6 @@ export default {
 
     changeBrush(brush) {
       this.activatedBrush = brush
-      this.$message.success(`切换至${brush}`)
     }
 
   }
