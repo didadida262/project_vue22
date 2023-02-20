@@ -57,8 +57,21 @@ export default {
       this.paper = paper
       this.paper.project.name = this.picContainer
       this.paper.view.setCenter(0, 0)
+      this.paper.view.onMouseDown = this.onMouseDown
+      this.paper.view.onMouseDrag = this.onMouseDrag
+      this.paper.view.onMouseMove = this.onMouseMove
+      this.paper.view.onMouseUp = this.onMouseUp
     },
-
+    onMouseDown(e) {
+      this.currentProject.activate()
+      this.$emit('handleChangePaperScope', this.picInfo)
+    },
+    onMouseDrag(e) {
+    },
+    onMouseMove(e) {
+    },
+    onMouseUp(e) {
+    },
 
     drawPic() {
       const raster = new paper.Raster(this.picInfo.src)

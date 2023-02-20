@@ -31,7 +31,6 @@ export default {
   },
   watch: {
     selected() {
-      console.log('selectd》》》》》》')
       if (this.selected === this.name) {
         this.$message.success(`激活${this.name}工具`)
         this.tool.activate()

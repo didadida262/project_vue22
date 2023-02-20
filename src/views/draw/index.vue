@@ -52,6 +52,7 @@
         <PaperView
           :picInfo="item"
           ref="PaperView"
+          @handleChangePaperScope="handleChangePaperScope"
         />
       </div>
     </div>
@@ -89,21 +90,26 @@ export default {
     return {
       picList: [
         {
-          title: 'Surface',
+          title: '1',
           // src: 'https://cms-assets.tutsplus.com/uploads/users/1251/posts/26530/image/BenderPaper.jpg'
-          src: require('@/assets/Sam.webp')
+          src: require('@/assets/Sam.webp'),
+          key: 0
         },
         {
-          title: 'PL',
-          src: require('@/assets/Sam.webp')
+          title: '2',
+          src: require('@/assets/Sam.webp'),
+          key: 1
+
         },
         {
           title: '3',
-          src: require('@/assets/Sam.webp')
+          src: require('@/assets/Sam.webp'),
+          key: 2
         },
         {
           title: '4',
-          src: require('@/assets/Sam.webp')
+          src: require('@/assets/Sam.webp'),
+          key: 3
         }
       ],
       activateScope: 0,
@@ -124,6 +130,8 @@ export default {
 
   mounted() {
     this.initDefaultScope()
+    console.log('1>>>', this.$refs['PaperView'][0].paper)
+    console.log('2>>>', this.$refs['PaperView'][1].paper)
   },
   created() {
   },
@@ -142,11 +150,14 @@ export default {
       }
       this.activePaperScope.projects[this.activateScope].activate()
     },
+    // 变更激活scope
+    handleChangePaperScope(item) {
+      this.activateScope = item.key
+    },
 
     changeBrush(brush) {
       this.activatedBrush = brush
     }
-
   }
 }
 </script>

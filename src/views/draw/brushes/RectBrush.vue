@@ -98,6 +98,7 @@ export default {
     },
 
     onMouseDown(e) {
+      console.log('工具组建的onMouseDown>>>')
       this.first = e.point
     },
     onMouseDrag(e) {
