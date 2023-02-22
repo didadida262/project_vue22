@@ -167,6 +167,12 @@ export const constantRoutes = [
       //   meta: { title: 'Draw_version2', icon: 'Raster' }
       // },
       {
+        path: 'star',
+        name: 'star',
+        component: () => import('@/views/paper/Star/index'),
+        meta: { title: 'Star', icon: 'Raster' }
+      },
+      {
         path: 'matchman',
         name: 'matchman',
         component: () => import('@/views/paper/matchMan/index'),
