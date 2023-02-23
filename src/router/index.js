@@ -302,6 +302,12 @@ export const constantRoutes = [
         name: 'circleEarth',
         component: () => import('@/views/threeJs/circleEarth'),
         meta: { title: 'CircleEarth', icon: 'earth' }
+      },
+      {
+        path: 'test_web3d',
+        name: 'test_web3d',
+        component: () => import('@/views/threeJs/test'),
+        meta: { title: 'test_web3d', icon: 'earth' }
       }
     ]
   },
