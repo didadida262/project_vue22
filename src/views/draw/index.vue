@@ -4,7 +4,7 @@
     <el-button
       style="width: 80px;height: 100%;"
       type="primary"
-      @click="handleSwitch">switch</el-button>
+      @click="handleSwitch">Switch</el-button>
     <div class="draw-container-tool">
         <RectBrush
           class="cursor-pointer"
@@ -12,6 +12,11 @@
           @changeBrush="changeBrush"
         />
         <Pencil
+          class="cursor-pointer"
+          :selected="activatedBrush"
+          @changeBrush="changeBrush"
+        />
+        <fat-pencil
           class="cursor-pointer"
           :selected="activatedBrush"
           @changeBrush="changeBrush"
@@ -66,6 +71,7 @@
 <script>
 import paper from 'paper'
 import Pencil from './brushes/Pencil.vue'
+import FatPencil from './brushes/FatPencil.vue'
 import RectBrush from './brushes/RectBrush.vue'
 import PaperView from '@/components/PaperView.vue'
 // import oldBrush from './brushes/oldBrush.vue'
@@ -79,7 +85,8 @@ export default {
   components: {
     Pencil,
     RectBrush,
-    PaperView
+    PaperView,
+    FatPencil
     // oldBrush,
     // killBrush,
     // broomBrush,
@@ -115,7 +122,7 @@ export default {
       activateScope: 0,
 
       url: '@/assets/rick.jpg',
-      activatedBrush: '',
+      activatedBrush: 'rect_brush',
       image: {
         // url: 'https://cms-assets.tutsplus.com/uploads/users/1251/posts/26530/image/BenderPaper.jpg'
       }
