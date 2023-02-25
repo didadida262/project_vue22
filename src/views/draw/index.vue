@@ -1,10 +1,10 @@
 <template>
   <div class="draw-container flex-cb">
     <!-- 所有笔刷 -->
-    <el-button
+    <!-- <el-button
       style="width: 80px;height: 100%;"
       type="primary"
-      @click="handleSwitch">Switch</el-button>
+      @click="handleSwitch">Switch</el-button> -->
     <div class="draw-container-tool">
         <RectBrush
           class="cursor-pointer"
@@ -54,14 +54,14 @@
       :class="[activateScope === index? 'activateScope-st': '']"
        v-for="(item, index) in picList"
        :key="index">
-        <PaperView
+        <PaperMark
           :picInfo="item"
           ref="PaperView"
           @handleChangePaperScope="handleChangePaperScope"
         />
       </div>
     </div>
-    <div class="draw-container-catefory">
+    <div class="draw-container-category">
       category
     </div>
 
@@ -73,7 +73,7 @@ import paper from 'paper'
 import Pencil from './brushes/Pencil.vue'
 import FatPencil from './brushes/FatPencil.vue'
 import RectBrush from './brushes/RectBrush.vue'
-import PaperView from '@/components/PaperView.vue'
+import PaperMark from '@/components/PicMark.vue'
 // import oldBrush from './brushes/oldBrush.vue'
 // import killBrush from './brushes/kill_brush.vue'
 // import killBrushNew from './brushes/kill_brush2.vue'
@@ -85,7 +85,7 @@ export default {
   components: {
     Pencil,
     RectBrush,
-    PaperView,
+    PaperMark,
     FatPencil
     // oldBrush,
     // killBrush,

@@ -2,7 +2,7 @@
  * @Author: Hhvcg
  * @Date: 2022-09-16 11:38:49
  * @LastEditors: -_-
- * @Description: 支持图片展示、拖拽、放大缩小功能及各种标注
+ * @Description: 支持图片展示、拖拽、放大缩小功能---适配标注页面
 -->
 
 <template>
@@ -11,7 +11,6 @@
     :ref="picContainer"
     resize
     class="picContainer"
-    @wheel="onwheel"
   />
 </template>
 <script>
@@ -22,12 +21,6 @@ export default {
     picInfo: {
       type: Object,
       required: true
-    },
-    activatedBrush: {
-      type: String
-    },
-    activeScope: {
-      type: String
     }
   },
   data() {
@@ -40,15 +33,6 @@ export default {
     }
   },
   methods: {
-    onMouseDown(e) {
-      this.path = new paper.Path({
-        strokeColor: 'black'
-      })
-      this.path.add(e.point)
-    },
-    onMouseDrag(e) {
-      this.path.add(e.point)
-    },
     changeZoom(delta, p) {
       const view = this.currentProject.view
       const oldZoom = view.zoom
@@ -64,17 +48,6 @@ export default {
 
       return { zoom: zoom, offset: a }
     },
-    onwheel(e) {
-      const view = this.currentProject.view
-      const viewPosition = view.viewToProject(
-        new paper.Point(e.offsetX, e.offsetY)
-      )
-      const transform = this.changeZoom(e.deltaY, viewPosition)
-      this.paper.projects.forEach((project) => {
-        project.view.zoom = transform.zoom
-        project.view.center = project.view.center.add(transform.offset)
-      })
-    },
     // 初始化画布，并确认相关参数初始值
     init() {
       const canvas = this.$refs[this.picContainer]
@@ -84,38 +57,26 @@ export default {
       this.paper = paper
       this.paper.project.name = this.picContainer
       this.paper.view.setCenter(0, 0)
-      this.paper.view.onMouseDown = (e) => { this.onMouseDown(e) }
-      this.paper.view.onMouseDrag = (e) => { this.onMouseDrag(e) }
+      this.paper.view.onMouseDown = this.onMouseDown
+      this.paper.view.onMouseDrag = this.onMouseDrag
+      this.paper.view.onMouseMove = this.onMouseMove
+      this.paper.view.onMouseUp = this.onMouseUp
     },
-    // onMouseDown(e) {
-    //   this.initPoint = e.point
-    // },
-    // onMouseDrag(e) {
-    //   const delta = this.initPoint.subtract(e.point)
-    //   this.paper.projects.forEach(pro => {
-    //     const newCenter = pro.view.center.add(delta)
-    //     pro.view.setCenter(newCenter)
-    //   })
-    // },
+    onMouseDown(e) {
+      this.currentProject.activate()
+      this.$emit('handleChangePaperScope', this.picInfo)
+    },
+    onMouseDrag(e) {
+    },
+    onMouseMove(e) {
+    },
+    onMouseUp(e) {
+    },
+
     drawPic() {
       const raster = new paper.Raster(this.picInfo.src)
       raster.onLoad = () => {
         raster.fitBounds(this.paper.view.bounds, false)
-      }
-    }
-  },
-  watch: {
-    activeScope() {
-      if (this.activeScope === this.picInfo.title) {
-        this.currentProject.activate()
-      }
-    },
-    activatedBrush() {
-      console.log('this.activatedBrush>>>', this.activatedBrush)
-      if (this.activatedBrush === 'pencil') {
-        this.currentProject.view.onMouseDown = this.onMouseDown
-        this.currentProject.view.onMouseDrag = this.onMouseDrag
-        this.currentProject.view.onMouseMove = this.onMouseMove
       }
     }
   },

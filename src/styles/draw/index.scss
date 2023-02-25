@@ -9,7 +9,7 @@
       padding: 10px;
       padding-top: 20px;
       border: 1px solid gainsboro;
-      width: 40px;
+      width: 60px;
       height: 100%;
       display: flex;
       flex-direction: column;
@@ -23,8 +23,7 @@
     }
     &-annotate {
       height: 100%;
-      width: calc(100% - 40px - 360px);
-      border: 1px solid gainsboro;
+      width: calc(100% - 320px);
       .paperView-item {
         width: 24%;
         height: 100%;
@@ -35,7 +34,7 @@
         border: 3px solid rgb(0, 183, 255);
       }
     }
-    &-catefory {
+    &-category {
       width: 250px;
       height: 100%;
       border: 1px solid gainsboro;
