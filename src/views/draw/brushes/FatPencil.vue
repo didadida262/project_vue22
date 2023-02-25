@@ -21,6 +21,8 @@
 <script>
 import paper from 'paper'
 import tools from '../tools'
+import { getRandomColor } from '@/utils/weapons.js'
+
 export default {
   name: 'fat_pencil',
   mixins: [tools],
@@ -49,13 +51,9 @@ export default {
       console.log('drag')
     },
     onMouseDown(e) {
-      console.log('this', e)
-      console.log('活跃图层名称1', this.$parent.activePaperScope.project.name)
-      console.log('活跃图层名称2', this.$parent.activateScope)
-      console.log('down')
       this.path = new paper.Path({
-        strokeColor: 'black',
-        strokeWidth: 20
+        strokeColor: getRandomColor(),
+        strokeWidth: 10
       })
       this.path.add(e.point)
     },

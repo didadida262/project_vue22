@@ -79,7 +79,6 @@ export default {
       // this.colorFul(this.selection)
       if (this.selection) {
         this.selection.selected = false
-        this.selection.fillColor = getRandomColor()
         this.resp.push(this.selection.clone())
         const left = this.selection.curves[0].point1
         const right = this.selection.curves[0].point2
@@ -100,6 +99,7 @@ export default {
     onMouseDown(e) {
       console.log('工具组建的onMouseDown>>>')
       this.first = e.point
+      this.color = getRandomColor()
     },
     onMouseDrag(e) {
       this.removeSelection()
@@ -107,6 +107,7 @@ export default {
       const height = e.point.y - this.first.y
       this.selection = new paper.Path.Rectangle(this.first.x, this.first.y, width, height)
       this.selection.selected = true
+      this.selection.fillColor = this.color
     },
     removeSelection() {
       if (this.selection) {
