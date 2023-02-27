@@ -16,6 +16,7 @@
 </template>
 <script>
 import paper from 'paper'
+import { getEffectiveConstraintOfTypeParameter } from 'typescript'
 export default {
   name: 'paperpicsample',
   props: {
@@ -34,7 +35,15 @@ export default {
     }
   },
   methods: {
+    canOperate() {
+      if (this.$parent.activatedBrush === 'select_tool' && this.paper.project.name === this.picContainer) {
+        return true
+      }
+      return false
+    },
     onwheel(e) {
+      // 当前为激活scope且选择工具状态才能执行
+      if (!this.canOperate()) return
       const view = this.currentProject.view
       const viewPosition = view.viewToProject(
         new paper.Point(e.offsetX, e.offsetY)
@@ -74,7 +83,6 @@ export default {
       this.paper.view.onMouseUp = this.onMouseUp
     },
     onMouseDown(e) {
-      console.log('pic---down')
       this.currentProject.activate()
       this.$emit('handleChangePaperScope', this.picInfo)
     },
@@ -100,6 +108,7 @@ export default {
   beforeDestroy() {
     const currentProject = this.paper.projects.filter((p) => p.name === this.picContainer)
     currentProject.remove()
+    this.paper = null
   }
 }
 </script>
