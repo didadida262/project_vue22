@@ -127,9 +127,8 @@ export default {
         }
       ],
       activateScope: 0,
-
       url: '@/assets/rick.jpg',
-      activatedBrush: 'rect_brush',
+      activatedBrush: 'select_tool',
       image: {
         // url: 'https://cms-assets.tutsplus.com/uploads/users/1251/posts/26530/image/BenderPaper.jpg'
       }
@@ -143,8 +142,6 @@ export default {
 
   mounted() {
     this.initDefaultScope()
-    console.log('1>>>', this.$refs['PaperView'][0].paper)
-    console.log('2>>>', this.$refs['PaperView'][1].paper)
   },
   created() {
   },

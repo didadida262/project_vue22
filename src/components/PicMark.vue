@@ -7,6 +7,7 @@
 
 <template>
   <canvas
+    @wheel="onwheel"
     :id="picContainer"
     :ref="picContainer"
     resize
@@ -33,6 +34,16 @@ export default {
     }
   },
   methods: {
+    onwheel(e) {
+      const view = this.currentProject.view
+      const viewPosition = view.viewToProject(
+        new paper.Point(e.offsetX, e.offsetY)
+      )
+      const transform = this.changeZoom(e.deltaY, viewPosition)
+      this.paper.projects.forEach((project) => {
+        project.view.zoom = transform.zoom
+      })
+    },
     changeZoom(delta, p) {
       const view = this.currentProject.view
       const oldZoom = view.zoom
@@ -67,13 +78,6 @@ export default {
       this.currentProject.activate()
       this.$emit('handleChangePaperScope', this.picInfo)
     },
-    onMouseDrag(e) {
-    },
-    onMouseMove(e) {
-    },
-    onMouseUp(e) {
-    },
-
     drawPic() {
       const raster = new paper.Raster(this.picInfo.src)
       raster.onLoad = () => {
