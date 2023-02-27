@@ -63,6 +63,7 @@ export default {
       this.paper.view.onMouseUp = this.onMouseUp
     },
     onMouseDown(e) {
+      console.log('pic---down')
       this.currentProject.activate()
       this.$emit('handleChangePaperScope', this.picInfo)
     },

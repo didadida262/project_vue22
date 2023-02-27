@@ -19,6 +19,7 @@ export default {
   },
   methods: {
     handleClickTool() {
+      console.log('this.name>>>', this.name)
       this.$emit('changeBrush', this.name)
     },
     initTool() {
@@ -31,6 +32,8 @@ export default {
   },
   watch: {
     selected() {
+      console.log('this.selected???', this.selected)
+      console.log('this.name???', this.name)
       if (this.selected === this.name) {
         this.$message.success(`激活${this.name}工具`)
         this.tool.activate()

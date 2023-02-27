@@ -6,6 +6,11 @@
       type="primary"
       @click="handleSwitch">Switch</el-button> -->
     <div class="draw-container-tool">
+        <SelectTool
+          class="cursor-pointer"
+          :selected="activatedBrush"
+          @changeBrush="changeBrush"
+        />
         <RectBrush
           class="cursor-pointer"
           :selected="activatedBrush"
@@ -73,6 +78,7 @@ import paper from 'paper'
 import Pencil from './brushes/Pencil.vue'
 import FatPencil from './brushes/FatPencil.vue'
 import RectBrush from './brushes/RectBrush.vue'
+import SelectTool from './brushes/SelectTool.vue'
 import PaperMark from '@/components/PicMark.vue'
 // import oldBrush from './brushes/oldBrush.vue'
 // import killBrush from './brushes/kill_brush.vue'
@@ -86,7 +92,8 @@ export default {
     Pencil,
     RectBrush,
     PaperMark,
-    FatPencil
+    FatPencil,
+    SelectTool
     // oldBrush,
     // killBrush,
     // broomBrush,
@@ -165,6 +172,7 @@ export default {
     changeBrush(brush) {
       console.log('brush>>>', brush)
       this.activatedBrush = brush
+      console.log('activatedBrush>>>', this.activatedBrush)
     }
   }
 }

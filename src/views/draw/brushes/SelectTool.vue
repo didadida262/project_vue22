@@ -1,289 +1,78 @@
+<!--
+ * @Author: Hhvcg
+ * @Date: 2022-06-12 21:17:03
+ * @LastEditors: -_-
+ * @Description:
+-->
+<template>
+  <el-tooltip
+    class="item"
+    effect="dark"
+    content="select_tool"
+    placement="right"
+  >
+    <div
+     :class="[{ 'is-active': selected === 'select_tool' }]"
+     @click="handleClickTool"
+     >
+      <svg width="16" height="16" fill="currentColor" t="1677464077327" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3570">
+        <path d="M402.285714 73.142857c-40.557714 0-73.142857 32.585143-73.142857 73.142857v512l-86.272-115.419428A77.714286 77.714286 0 0 0 181.723429 512C141.714286 512 109.714286 545.718857 109.714286 585.142857c0 16.018286 5.156571 31.414857 14.848 43.995429l219.428571 292.571428c13.714286 18.285714 35.437714 29.147429 58.294857 29.147429h410.294857c16.566857 0 31.414857-11.446857 35.437715-27.428572l52.553143-210.285714c9.142857-36.571429 13.714286-73.728 13.714285-110.848v-124.013714c0-30.281143-23.442286-57.709714-54.857143-57.709714A54.857143 54.857143 0 0 0 804.571429 475.428571h-18.285715v-34.852571c0-35.986286-27.428571-65.718857-64-65.718857-35.437714 0-64 28.562286-64 64v36.571428h-18.285714v-51.419428c0-41.142857-31.414857-76.580571-73.142857-76.580572-40.557714 0-73.142857 32.585143-73.142857 73.142858V475.428571H475.428571V149.723429C475.428571 108.580571 444.013714 73.142857 402.285714 73.142857z m0-73.142857c81.700571 0 146.285714 68.571429 146.285715 149.723429v125.696c6.290286-0.585143 11.995429-1.133714 18.285714-1.133715a144.091429 144.091429 0 0 1 98.852571 39.424 137.654857 137.654857 0 0 1 56.576-11.995428c41.142857 0 79.433143 18.285714 105.142857 49.700571 10.861714-2.852571 21.138286-3.986286 32-3.986286 72.009143 0 128 60.013714 128 130.852572v124.013714c0 42.861714-5.156571 86.272-16.018285 128.585143l-52.553143 210.285714a109.494857 109.494857 0 0 1-106.276572 82.870857H402.285714a148.845714 148.845714 0 0 1-117.138285-58.294857l-219.428572-292.571428A147.785143 147.785143 0 0 1 36.571429 585.179429c0-80.018286 65.133714-146.285714 145.152-146.285715A145.92 145.92 0 0 1 256 458.898286V146.322286c0-80.566857 65.718857-146.285714 146.285714-146.285715z m73.142857 804.571429v-219.428572h-18.285714v219.428572h18.285714z m146.285715 0v-219.428572h-18.285715v219.428572h18.285715z m146.285714 0v-219.428572h-18.285714v219.428572h18.285714z" p-id="3571">
+        </path>
+      </svg>
+      <el-divider />
+    </div>
+  </el-tooltip>
+</template>
+
 <script>
 import paper from 'paper'
-import tool from '../tools'
-
+import tools from '../tools'
+// 色调         hue: Math.random() * 360,
+// 饱和度    saturation: 1,
+// 亮度       brightness: 1
 export default {
-  name: 'SelectTool',
-  mixins: [tool],
-
+  name: 'select_tool',
+  mixins: [tools],
+  props: {
+    selected: {
+      type: String,
+      required: true
+    }
+  },
   data() {
     return {
-      name: '选择工具'
-      // icon: 'fa-hand-pointer-o',
-      // shortcut: '字母 A',
-      // cursor: 'pointer',
-      // scaleFactor: 15,
-      // isValidDrag: false
-
+      name: 'select_tool'
     }
   },
-
-  created() {
-  },
-  methods: {
-    onMouseDown(event) {
-      const hitResult = this.$parent.paper.project.hitTest(
-        event.point,
-        this.hitOptions
-      )
-
-      if (!hitResult) return
-      if (hitResult.item['name']) return
-
-      if (event.modifiers.shift) {
-        if (hitResult.type === 'segment') {
-          hitResult.segment.remove()
-        }
-        return
-      }
-      const path = hitResult.item
-      let paperObject = null
-      if (hitResult.type === 'segment') {
-        this.segment = hitResult.segment
-        paperObject = path.parent
-        this.paperObject = paperObject
-        this.adjustSegments = true
-      } else if (hitResult.type === 'stroke') {
-        const location = hitResult.location
-        this.segment = path.insert(location.index + 1, event.point)
-      } else if (event.item.className == 'CompoundPath') {
-        this.initPoint = event.point
-        this.moveObject = event.item
-        paperObject = event.item
-      }
-      this.isBbox = this.checkBbox(paperObject)
-      if (this.point != null) {
-        this.edit.canMove = this.point.contains(event.point)
-      } else {
-        this.edit.canMove = false
-      }
-    },
-    setAnnotationBorder(isshow) {
-      if (this.hover.annotation) {
-        this.hover.annotation.showBorder = isshow
-      }
-    },
-    clear(currentDomIsAuditModal) {
-      if (currentDomIsAuditModal) return
-      if (new Date().getTime() - this.duration > 200) {
-        if (!currentDomIsAuditModal) {
-          this.$parent.isShowAuditModal = false
-        }
-      }
-      this.setAnnotationBorder(false)
-      this.hover.category = null
-      this.hover.annotation = null
-      this.isBbox = false
-      this.segment = null
-      this.moveObject = null
-      if (this.hover.text != null) {
-        this.hover.text.remove()
-        this.hover.box.remove()
-        this.hover.text = null
-        this.hover.box = null
-      }
-    },
-    createPoint(point) {
-      if (this.point != null) {
-        this.point.remove()
-      }
-
-      this.point = new paper.Path.Circle(point, this.edit.indicatorSize)
-      this.point.strokeColor = 'black'
-      this.point.strokeWidth = this.edit.indicatorWidth
-      this.point.indicator = true
-    },
-    onMouseDrag(event) {
-      this.isValidDrag = false
-      // console.log('this.moveObject:',this.moveObject)
-      if (this.moveObject) { // 源语句: if (this.isBbox && this.moveObject) 其实所有的框都要支持拖动
-        if (this.moveObject.removeBorderCompoundPath) {
-          this.moveObject.removeBorderCompoundPath()
-        }
-        // 拖动框逻辑
-        let delta_x = this.initPoint.x - event.point.x
-        let delta_y = this.initPoint.y - event.point.y
-        const canMove = this.moveObject.children.some(item => {
-          const res = this.$parent.validationAnnotationBounds(item.bounds, delta_x, delta_y)
-          if (res.x_disable) { delta_x = 0 }
-          if (res.y_disable) { delta_y = 0 }
-          return res.x_disable && res.y_disable
-        })
-        if (canMove) return
-        this.$parent.isChange = true
-        this.moveObject.children.forEach((item) => {
-          const segments = item.segments
-          segments.forEach(segment => {
-            const p = segment.point
-            segment.point = new paper.Point(p.x - delta_x, p.y - delta_y)
-          })
-        })
-        this.initPoint = event.point
-        this.isValidDrag = true
-      }
-
-      if (this.adjustSegments && this.paperObject) {
-        if (this.paperObject.removeBorderCompoundPath) {
-          this.paperObject.removeBorderCompoundPath()
-        }
-      }
-      if (this.segment && this.edit.canMove) {
-        let left = 0; let right = 0; let top = 0; let bottom = 0
-        if (event.point.x > 0) { left = Math.abs(event.point.x) }
-        if (event.point.x < 0) { right = Math.abs(event.point.x) }
-        if (event.point.y > 0) { top = Math.abs(event.point.y) }
-        if (event.point.y < 0) { bottom = Math.abs(event.point.y) }
-        if (this.$parent.validationAnnotationBounds({ left, right, top, bottom })) return
-        // 改变框大小逻辑
-        this.$parent.isChange = true
-        this.createPoint(event.point)
-        if (this.isBbox) {
-          // counter clockwise prev and next.
-          const isCounterClock =
-            this.segment.previous.point.x == this.segment.point.x
-          const prev = isCounterClock ? this.segment.previous : this.segment.next
-          const next = !isCounterClock
-            ? this.segment.previous
-            : this.segment.next
-
-          prev.point = new paper.Point(event.point.x, prev.point.y)
-          next.point = new paper.Point(next.point.x, event.point.y)
-        } // getbbox here somehow
-        this.segment.point = event.point
-        this.isValidDrag = true
-      } else if (!this.keypoint) {
-        // the event point exists on a relative coordinate system (dependent on screen dimensions)
-        // however, the image on the canvas paper exists on an absolute coordinate system
-        // thus, tracking mouse deltas from the previous point is necessary
-        const delta_x = this.initPoint.x - event.point.x
-        const delta_y = this.initPoint.y - event.point.y
-        const center_delta = new paper.Point(delta_x, delta_y)
-        const new_center = this.$parent.paper.view.center.add(center_delta)
-        this.$parent.paper.view.setCenter(new_center)
-      }
-      // if (this.$parent.validationAnnotationMask(this.moveObject)) {
-      //     this.$message.closeAll()
-      //     this.$message.warning({
-      //       message: "标注框不可和掩膜区域重合!",
-      //       type: 'warning'
-      //     })
-      // }
-      // 与掩膜的相交校验统一放到边缘像素生成后的节点去做
-    },
-    onMouseUp(event) {
-      // this.isValidDrag && this.$parent.changeSnapshot()
-      if (this.isValidDrag && this.moveObject) {
-        this.$parent.resetAnnotationBorderPixels(this.moveObject)
-      }
-      if (this.adjustSegments) {
-        this.$parent.resetAnnotationBorderPixels(this.paperObject)
-      }
-      this.clear()
-      this.adjustSegments = false
-    },
-    onMouseMove(event) {
-      const currentMoveDom = event.event.target.getAttribute('class') || ''
-      const auditModalIncludeClass = ['audit-modal']
-      // const auditModalIncludeClass = ['ivu-select-selection', 'ivu-select-selected-value', 'audit-modal', 'ivu-select-dropdown']
-      const currentDomIsAuditModal = auditModalIncludeClass.some(item => currentMoveDom.includes(item))
-      // ensures that the initPoint is always tracked.
-      // Necessary for the introduced pan functionality and fixes a bug with selecting and dragging bboxes, since initPoint is initially undefined
-      this.initPoint = event.point
-
-      const hitResult = this.$parent.paper.project.hitTest(
-        event.point,
-        this.hitOptions
-      )
-
-      if (hitResult && !hitResult.item['name']) {
-        let point = null
-
-        if (hitResult.type === 'segment') {
-          point = hitResult.segment.location.point
-        } else if (hitResult.type === 'stroke') {
-          point = hitResult.location.point
-        }
-
-        if (point != null) {
-          this.edit.center = point
-          // 排除掉不该显示的冗余点（dda计算出的边缘点，正常标注几乎不会出现x和y都是整型的场景）
-          if (parseInt(point.x) == point.x && parseInt(point.y) == point.y) return
-          this.createPoint(point)
-        } else {
-          if (this.point != null) {
-            this.point.remove()
-            this.point = null
-          }
-        }
-      }
-
-      this.$parent.hover.annotation = -1
-      this.$parent.hover.category = -1
-
-      this.$parent.paper.project.activeLayer.selected = false
-      const item = event.item
-
-      this.keypoint = null
-
-      if (
-        item &&
-        item.data.hasOwnProperty('annotationId') &&
-        item.data.hasOwnProperty('categoryId')
-      ) {
-        this.hover.position = event.point
-
-        const categoryId = event.item.data.categoryId
-        const annotationId = event.item.data.annotationId
-        this.$parent.hover.categoryId = categoryId
-        this.$parent.hover.annotation = annotationId
-
-        this.hover.category = this.$parent.getCategory(categoryId)
-        if (this.hover.category != null) {
-          this.setAnnotationBorder(false)
-          this.hover.annotation = this.hover.category.getAnnotationById(
-            annotationId
-          )
-          this.setAnnotationBorder(true)
-          event.item.selected = true
-          // this.hoverText(); // 使用新的dom悬框
-          if (!this.$parent.isShowAuditModal) {
-            const { event: { clientX, clientY }} = event
-            this.$parent.selectToolsPosition = { clientX, clientY }
-            this.duration = new Date().getTime()
-            this.$parent.isShowAuditModal = true
-          }
-          this.$parent.annotationsInfo = {
-            annotation: this.hover.annotation.annotation,
-            category: this.hover.category.category
-          }
-        }
-      } else if (event.item && event.item.hasOwnProperty('keypoint')) {
-        this.hover.position = event.point
-        this.keypoint = item
-      } else if (
-        item &&
-        item.lastChild &&
-        item.lastChild.hasOwnProperty('keypoint')
-      ) {
-        this.hover.position = event.point
-        for (let i = 0; i < item.children.length; ++i) {
-          if (item.children[i].hasOwnProperty('keypoint')) {
-            const keypoint = item.children[i].keypoint
-            if (event.point.getDistance(keypoint) <= keypoint.radius) {
-              this.keypoint = item.children[i]
-              break
-            }
-          }
-        }
-      } else {
-        this.clear(currentDomIsAuditModal)
-      }
-    }
-  },
+  computed: {},
   watch: {
 
   },
+  mounted() {
+    this.paper = paper
+  },
+  methods: {
+    onMouseUp(e) {
+    },
+    onMouseDown(e) {
+      this.initPoint = e.point
+    },
+    onMouseDrag(e) {
+      const delta = this.initPoint.subtract(e.point)
+      this.paper.projects.forEach((pro) => {
+        const newCenter = pro.view.center.add(delta)
+        pro.view.setCenter(newCenter)
+      })
+    }
+  },
+  created() {
+  },
   beforeDestroy() {
+    this.paper = null
   }
 }
 </script>
+
+<style lang="scss" scoped>
+
+</style>
