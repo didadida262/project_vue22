@@ -1,39 +1,30 @@
-// 输入：intervals = [[1,3],[2,6],[8,10],[15,18]]
-// 输出：[[1,6],[8,10],[15,18]]
-// 解释：区间 [1,3] 和 [2,6] 重叠, 将它们合并为 [1,6].
+// 快排算法: 去一个固定值，每次将数组分为左右两部分大于该数、小于该数
 
-const intervals = [[1, 3], [2, 6], [8, 10], [15, 18]]
+const nums = [1, 5, 2, 6, 4, 3, 7]
 
-intervals.sort((a, b) => {
-  return a[0] - b[0]
-})
+const quick_sort = (arr) => {
+  if (arr.length <= 1) return arr
+  const pivot = arr[0]
+  const greater = arr.slice(1).filter((item) => item >= pivot)
+  const smaller = arr.slice(1).filter((item) => item < pivot)
+  return quick_sort(smaller).concat([pivot]).concat(quick_sort(greater))
+}
 
-const f = (arr1, arr2) => {
-  if (arr1[0] > arr2[0]) {
-    const t = JSON.parse(JSON.stringify(arr2))
-    arr2 = JSON.parse(JSON.stringify(arr1))
-    arr1 = JSON.parse(JSON.stringify(t))
-  }
-  if (arr1[1] < arr2[0]) {
-    return [arr1, arr2]
-  } else if (arr1[1] < arr2[1]) {
-    return [arr1[0], arr2[1]]
-  } else {
-    return arr1
+// console.log(quick_sort(nums))
+
+// 冒泡
+
+const bubble_sort = (nums) => {
+  for (let i = 0; i < nums.length - 1; i++) {
+    for (let j = i + 1; j < nums.length; j++) {
+      if (nums[j] < nums[i]) {
+        const t = nums[i]
+        nums[i] = nums[j]
+        nums[j] = t
+      }
+    }
   }
 }
 
-let start = intervals.shift()
-const res = []
-while (intervals.length) {
-  const current = intervals.shift()
-  const tempResu = f(start, current)
-  if (Array.isArray(tempResu[0])) {
-    res.push(tempResu[0])
-    start = tempResu[1]
-  } else {
-    start = tempResu
-  }
-}
-res.push(start)
-
+// bubble_sort(nums)
+console.log(nums)
