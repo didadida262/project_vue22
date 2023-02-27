@@ -136,7 +136,6 @@ export default {
     }
   },
   computed: {
-
     currentProject() {
       return this.paper.projects.filter((_p) => _p.name === 'Draw')[0]
     }
@@ -156,14 +155,14 @@ export default {
       this.activePaperScope = this.$refs['PaperView'][0].paper
       this.activePaperScope.projects[0].activate()
     },
-    handleSwitch() {
-      if (this.activateScope + 1 >= this.picList.length) {
-        this.activateScope = 0
-      } else {
-        this.activateScope++
-      }
-      this.activePaperScope.projects[this.activateScope].activate()
-    },
+    // handleSwitch() {
+    //   if (this.activateScope + 1 >= this.picList.length) {
+    //     this.activateScope = 0
+    //   } else {
+    //     this.activateScope++
+    //   }
+    //   this.activePaperScope.projects[this.activateScope].activate()
+    // },
     // 变更激活scope
     handleChangePaperScope(item) {
       this.activateScope = item.key
