@@ -1,30 +1,36 @@
-// 快排算法: 去一个固定值，每次将数组分为左右两部分大于该数、小于该数
-
-const nums = [1, 5, 2, 6, 4, 3, 7]
-
-const quick_sort = (arr) => {
-  if (arr.length <= 1) return arr
-  const pivot = arr[0]
-  const greater = arr.slice(1).filter((item) => item >= pivot)
-  const smaller = arr.slice(1).filter((item) => item < pivot)
-  return quick_sort(smaller).concat([pivot]).concat(quick_sort(greater))
-}
-
-// console.log(quick_sort(nums))
-
-// 冒泡
-
-const bubble_sort = (nums) => {
-  for (let i = 0; i < nums.length - 1; i++) {
-    for (let j = i + 1; j < nums.length; j++) {
-      if (nums[j] < nums[i]) {
-        const t = nums[i]
-        nums[i] = nums[j]
-        nums[j] = t
-      }
+// 不同路劲
+const m = 7
+const n = 3
+var uniquePaths = function(m, n) {
+  // 法1：亲测超时。。。。
+  const i = 0
+  const j = 0
+  const visited = new Array(m).fill(new Array(n).fill(0))
+  let num = 0
+  const f = (p, q) => {
+    if (p === (m - 1) && q === (n - 1)) num++
+    if (p + 1 < m) {
+      visited[p + 1][q] = 1
+      f(p + 1, q)
+      visited[p + 1][q] = 0
+    }
+    if (q + 1 < n) {
+      visited[p][q + 1] = 1
+      f(p, q + 1)
+      visited[p][q + 1] = 0
     }
   }
+  f(0, 0)
+  return num
 }
+// const d = new Array(m).fill(new Array(n).fill(1))
 
-// bubble_sort(nums)
-console.log(nums)
+// const walk = (m, n) => {
+//   for (let i = 1; i < m; i++) {
+//     for (let j = 1; j < n; j++) {
+//       d[i][j] = d[i - 1][j] + d[i][j - 1]
+//     }
+//   }
+// }
+// walk(m, n)
+console.log('d>>', uniquePaths(m, n))

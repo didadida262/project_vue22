@@ -43,7 +43,12 @@ export default {
   },
   beforeDestroy() {
     const currentProject = this.paper.projects.filter((_p) => _p.name === this.title)[0]
-    currentProject.remove()
+    if (currentProject) {
+      currentProject.remove()
+    }
+    if (this.paper) {
+      this.paper = null
+    }
   },
   methods: {
     getRandomPoint() {
@@ -62,7 +67,6 @@ export default {
       this.paper = paper
       this.paper.setup(canvas)
       this.paper.project.name = this.title
-      this.paper.view.setCenter(0, 0)
       this.paper.view.onFrame = this.onFrame
       this.paper.view.onMouseDown = this.onMouseDown
       this.tool = new paper.Tool()

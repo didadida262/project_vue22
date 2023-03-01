@@ -75,7 +75,8 @@ export default {
         this.brick = new paper.Path.Rectangle(this.start, new paper.Size(this.SIZE))
         this.brick.fillColor = getRandomColor()
         // 构建一个向量，确认其运动的方向
-        this.start = this.random()
+        const v = new paper.Point.random()
+        this.start.add(v)
         // if (Math.abs(newPosition.x) < this.WIDTH / 2 && Math.abs(newPosition.y) < this.HEIGHT / 2) {
         //   this.start = this.start.add(vector)
         // } else {
