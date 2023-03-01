@@ -10,6 +10,9 @@ const SIZE = 50
 export class Tank {
   constructor(position) {
     this.position = position
+    this.AmmunitionDepo = []
+    this.ammunitionSize = 5
+    this.step = 10
     console.log('asdasdasd>>>', this.position)
     this.init()
   }
@@ -44,13 +47,33 @@ export class Tank {
     // })
     // this.path.fillColor = this.color
   }
-  update(order) {
-    console.log('uptate>>>>', order)
+  // 根据方向命令改变tank位置
+  handleChangePosition(order) {
     if (order === 'left') {
-      console.log('uptate>>>>')
-      // const v = new paper.Point(-10, 0)
-      const newP = new paper.Point(this.path.position.x - 10, this.path.position.y)
+      const newP = new paper.Point(this.path.position.x - this.step, this.path.position.y)
+      this.path.position = newP.clone()
+    } else if (order === 'right') {
+      const newP = new paper.Point(this.path.position.x + this.step, this.path.position.y)
+      this.path.position = newP.clone()
+    } else if (order === 'up') {
+      const newP = new paper.Point(this.path.position.x, this.path.position.y - this.step)
+      this.path.position = newP.clone()
+    } else if (order === 'down') {
+      const newP = new paper.Point(this.path.position.x, this.path.position.y + this.step)
       this.path.position = newP.clone()
     }
+    this.position = this.path.position
+  }
+  fire() {
+    console.log('fire>>>')
+    const ammunition = new paper.Path.Circle({
+      center: this.position,
+      radius: this.ammunitionSize,
+      fillColor: 'orange'
+    })
+    this.AmmunitionDepo.push(ammunition)
+  }
+  update(order) {
+
   }
 }

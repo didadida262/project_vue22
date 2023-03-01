@@ -84,21 +84,21 @@ export default {
     },
     handleKeyDown(e) {
       switch (e.key) {
-        // fire！！！
-        case 'space':
-          break
         case 'left':
-          this.tank.update('left')
+          this.tank.handleChangePosition('left')
           break
         case 'right':
-          console.log('right')
+          this.tank.handleChangePosition('right')
           break
         case 'up':
-          console.log('up')
+          this.tank.handleChangePosition('up')
           break
         case 'down':
-          console.log('down')
+          this.tank.handleChangePosition('down')
           break
+        // fire
+        case 'space':
+          this.tank.fire()
       }
     },
     initTool() {
@@ -135,6 +135,9 @@ export default {
       console.log('初始化坦克世界')
     },
     onFrame() {
+      this.tank.AmmunitionDepo.forEach((ammunition) => {
+        ammunition.position = new paper.Point(ammunition.position.x, ammunition.position.y - 10).clone()
+      })
     }
   },
   beforeDestroy() {
