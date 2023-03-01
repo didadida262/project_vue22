@@ -18,8 +18,10 @@
 import paper from 'paper'
 import commonTemplate from '@/components/titleTemplate.vue'
 import { getRandomColor } from '@/utils/weapons'
+import tools from './tools'
 
 export default {
+  mixins: [tools],
   name: 'cyberFont',
   components: {
     commonTemplate
@@ -60,6 +62,14 @@ export default {
     },
     onMouseDown(e) {
     },
+    onMouseDrag(e) {
+    },
+    onMouseMove(e) {
+    },
+    onMouseUp(e) {
+    },
+    onKeyDown(e) {
+    },
     init() {
       const canvas = this.$refs.canvas
       this.WIDTH = canvas.clientWidth
@@ -69,9 +79,6 @@ export default {
       this.paper.project.name = this.title
       this.paper.view.onFrame = this.onFrame
       this.paper.view.onMouseDown = this.onMouseDown
-      this.tool = new paper.Tool()
-      this.tool.onMouseDown = (e) => {
-      }
       console.log('初始化世界!!!')
     }
   }
