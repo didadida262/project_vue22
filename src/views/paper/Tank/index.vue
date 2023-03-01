@@ -83,22 +83,12 @@ export default {
       }
     },
     handleKeyDown(e) {
-      switch (e.key) {
-        case 'left':
-          this.tank.handleChangePosition('left')
-          break
-        case 'right':
-          this.tank.handleChangePosition('right')
-          break
-        case 'up':
-          this.tank.handleChangePosition('up')
-          break
-        case 'down':
-          this.tank.handleChangePosition('down')
-          break
-        // fire
-        case 'space':
-          this.tank.fire()
+      console.log('e>>>>', e)
+      // fire
+      if (e.key === 'space') {
+        this.tank.fire()
+      } else {
+        this.tank.handleChangePosition(e)
       }
     },
     initTool() {

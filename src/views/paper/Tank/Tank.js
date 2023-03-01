@@ -48,17 +48,17 @@ export class Tank {
     // this.path.fillColor = this.color
   }
   // 根据方向命令改变tank位置
-  handleChangePosition(order) {
-    if (order === 'left') {
+  handleChangePosition(e) {
+    if (e.key === 'left' || e.key === 'a') {
       const newP = new paper.Point(this.path.position.x - this.step, this.path.position.y)
       this.path.position = newP.clone()
-    } else if (order === 'right') {
+    } else if (e.key === 'right' || e.key === 'd') {
       const newP = new paper.Point(this.path.position.x + this.step, this.path.position.y)
       this.path.position = newP.clone()
-    } else if (order === 'up') {
+    } else if (e.key === 'up' || e.key === 'w') {
       const newP = new paper.Point(this.path.position.x, this.path.position.y - this.step)
       this.path.position = newP.clone()
-    } else if (order === 'down') {
+    } else if (e.key === 'down' || e.key === 's') {
       const newP = new paper.Point(this.path.position.x, this.path.position.y + this.step)
       this.path.position = newP.clone()
     }
