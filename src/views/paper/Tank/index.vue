@@ -22,7 +22,8 @@
 
 <script>
 import paper from 'paper'
-import { Bomb } from './Bomb'
+// import { Bomb } from './Bomb'
+import { Tank } from './Tank'
 export default {
   data() {
     return {
@@ -56,6 +57,14 @@ export default {
   },
   methods: {
     initRole() {
+      console.log('initRole>>>')
+      const position = new paper.Point(this.WIDTH / 2, this.HEIGHT / 2)
+      console.log('position>>>', position)
+      this.tank = new Tank(position)
+      console.log('tank>>>', this.tank)
+    },
+    // 绘制tank---图片
+    initRolePic() {
       const raster = new paper.Raster({
         position: new paper.Point(this.WIDTH / 2, this.HEIGHT / 2),
         source: this.url
@@ -177,8 +186,7 @@ export default {
       }
     }
     .tank {
-      // background: black;
-      border: 1px solid gray;
+      background: black;
       height: 80vh;
       width: 80vw;
     }
