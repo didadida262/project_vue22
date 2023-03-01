@@ -44,4 +44,13 @@ export class Tank {
     // })
     // this.path.fillColor = this.color
   }
+  update(order) {
+    console.log('uptate>>>>', order)
+    if (order === 'left') {
+      console.log('uptate>>>>')
+      // const v = new paper.Point(-10, 0)
+      const newP = new paper.Point(this.path.position.x - 10, this.path.position.y)
+      this.path.position = newP.clone()
+    }
+  }
 }

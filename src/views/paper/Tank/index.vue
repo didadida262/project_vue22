@@ -82,35 +82,28 @@ export default {
         // })
       }
     },
+    handleKeyDown(e) {
+      switch (e.key) {
+        // fire！！！
+        case 'space':
+          break
+        case 'left':
+          this.tank.update('left')
+          break
+        case 'right':
+          console.log('right')
+          break
+        case 'up':
+          console.log('up')
+          break
+        case 'down':
+          console.log('down')
+          break
+      }
+    },
     initTool() {
       this.tool = new this.paper.Tool()
-      this.tool.onKeyDown = (e) => {
-        // console.log('-----',e)
-        switch (e.key) {
-          // fire！！！
-          case 'space':
-            break
-          case 'left':
-            console.log('left')
-            this.updateBottom(new paper.Point(-8, 0))
-            break
-          case 'right':
-            console.log('right')
-            this.updateBottom(new paper.Point(8, 0))
-            break
-          case 'up':
-            console.log('up')
-            break
-          case 'down':
-            console.log('down')
-            break
-        }
-
-        // if (e.key === 'space') {
-        //   // 发射
-        //   this.bombs.push(new Bomb(new this.paper.Point(this.role.gun.position.x, this.role.gun.position.y - this.GUNHEIGHT / 2 - 5), 10))
-        // }
-      }
+      this.tool.onKeyDown = this.handleKeyDown
       this.tool.onMouseMove = (e) => {
         // const vector = e.point.subtract(this.role.gun.position).normalize();
       }
