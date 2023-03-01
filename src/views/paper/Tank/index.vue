@@ -2,9 +2,18 @@
   <div class="page-container">
     <h1>Tank</h1>
     <div class="view">
-      <div class="operation">
-        <el-button size="mini" @click="changeSpeed(true)">Speed_up!</el-button>
-        <el-button size="mini" class="mgt" @click="changeSpeed(false)">Speed_down!</el-button>
+      <div class="operation flex-col">
+        <div class="operation-info pd5">
+          <p>Some Informations</p>
+          <p>Role: ...</p>
+          <p>Role: ...</p>
+          <p>Role: ...</p>
+          <p>Role: ...</p>
+        </div>
+        <div class="operation-btn flex-cb pd5">
+          <el-button size="mini" @click="changeSpeed(true)">Speed_up!</el-button>
+          <el-button size="mini" class="mgt" @click="changeSpeed(false)">Speed_down!</el-button>
+        </div>
       </div>
       <canvas id="tank" ref="tank" resize class="tank" />
     </div>
@@ -139,7 +148,13 @@ export default {
     }
   },
   beforeDestroy() {
-    this.currentProject.remove()
+    const currentProject = this.paper.projects.filter((_p) => _p.name === this.title)[0]
+    if (currentProject) {
+      currentProject.remove()
+    }
+    if (this.paper) {
+      this.paper = null
+    }
   }
 }
 </script>
@@ -154,10 +169,14 @@ export default {
       height: 80vh;
       width: 10vw;
       border: 1px solid gray;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
+      &-info {
+        height: calc(100% - 110px);
+        border: 1px solid gray;
+      }
+      &-btn {
+        height: 50px;
+        border: 1px solid gray;
+      }
     }
     .tank {
       background: black;
