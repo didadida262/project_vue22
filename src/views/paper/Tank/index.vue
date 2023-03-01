@@ -79,7 +79,6 @@ export default {
       }
     },
     onKeyDown(e) {
-      console.log('e>>>>', e)
       // fire
       if (e.key === 'space') {
         this.tank.fire()
@@ -94,7 +93,7 @@ export default {
 
     },
     onMouseMove(e) {
-
+      console.log('move>>>', e)
     },
     onMouseUp(e) {
 

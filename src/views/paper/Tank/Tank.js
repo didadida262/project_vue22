@@ -65,7 +65,6 @@ export class Tank {
     this.position = this.path.position
   }
   fire() {
-    console.log('fire>>>')
     const ammunition = new paper.Path.Circle({
       center: this.position,
       radius: this.ammunitionSize,
@@ -74,6 +73,5 @@ export class Tank {
     this.AmmunitionDepo.push(ammunition)
   }
   update(order) {
-
   }
 }
