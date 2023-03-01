@@ -4,11 +4,10 @@
     <div class="view">
       <div class="operation flex-col">
         <div class="operation-info pd5">
-          <p>Some Informations</p>
-          <p>Role: ...</p>
-          <p>Role: ...</p>
-          <p>Role: ...</p>
-          <p>Role: ...</p>
+          <p><strong>Some Informations</strong></p>
+          <p>Role: 朱永灵</p>
+          <p>Old: 27</p>
+          <p>血槽: 100</p>
         </div>
         <div class="operation-btn flex-cb pd5">
           <el-button size="mini" @click="changeSpeed(true)">Speed_up!</el-button>
@@ -24,7 +23,9 @@
 import paper from 'paper'
 // import { Bomb } from './Bomb'
 import { Tank } from './Tank'
+import tools from './tools'
 export default {
+  mixins: [tools],
   data() {
     return {
       url: require('@/assets/tank_laiyin.jpg'),
@@ -39,14 +40,12 @@ export default {
         bottom: null,
         // 炮管50x100
         gun: null
-      },
-      tool: null
+      }
     }
   },
   watch: {},
   mounted() {
     this.init()
-    this.initTool()
     this.initRole()
     console.log('this.currentProject', this.currentProject)
   },
@@ -57,11 +56,8 @@ export default {
   },
   methods: {
     initRole() {
-      console.log('initRole>>>')
       const position = new paper.Point(this.WIDTH / 2, this.HEIGHT / 2)
-      console.log('position>>>', position)
       this.tank = new Tank(position)
-      console.log('tank>>>', this.tank)
     },
     // 绘制tank---图片
     initRolePic() {
@@ -82,7 +78,7 @@ export default {
         // })
       }
     },
-    handleKeyDown(e) {
+    onKeyDown(e) {
       console.log('e>>>>', e)
       // fire
       if (e.key === 'space') {
@@ -91,16 +87,17 @@ export default {
         this.tank.handleChangePosition(e)
       }
     },
-    initTool() {
-      this.tool = new this.paper.Tool()
-      this.tool.onKeyDown = this.handleKeyDown
-      this.tool.onMouseMove = (e) => {
-        // const vector = e.point.subtract(this.role.gun.position).normalize();
-      }
-      this.tool.onMouseDown = (e) => {
-        console.log('e.point---->', e.point)
-        console.log('e.downPoint---->', e.downPoint)
-      }
+    onMouseDown(e) {
+      this.tank.fire()
+    },
+    onMouseDrag(e) {
+
+    },
+    onMouseMove(e) {
+
+    },
+    onMouseUp(e) {
+
     },
     // 变更gun的火力(速度)
     changeSpeed(flag) {
