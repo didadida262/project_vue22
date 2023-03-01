@@ -89,16 +89,6 @@ export default {
         switch (e.key) {
           // fire！！！
           case 'space':
-            this.bombs.push(
-              new Bomb(
-                new this.paper.Point(
-                  this.role.gun.position.x,
-                  this.role.gun.position.y - this.GUNHEIGHT / 2 - 5
-                ),
-                10,
-                this.colors[0]
-              )
-            )
             break
           case 'left':
             console.log('left')
