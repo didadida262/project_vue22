@@ -26,15 +26,10 @@ import { Bomb } from './Bomb'
 export default {
   data() {
     return {
+      url: require('@/assets/tank_laiyin.jpg'),
+      WIDTH: null,
+      HEIGHT: null,
       title: 'tank',
-      colors: ['#80FFA5'],
-      GUNWIDTH: 10,
-      GUNHEIGHT: 100,
-      BOTTOMWIDTH: 300,
-      BOTTOMHEIGHT: 40,
-      // 炮弹库
-      bombs: [],
-      paper: null,
       role: {
         speed: 10,
         name: 'hhvcg',
@@ -50,6 +45,9 @@ export default {
   watch: {},
   mounted() {
     this.init()
+    this.initTool()
+    this.initRole()
+    console.log('this.currentProject', this.currentProject)
   },
   computed: {
     currentProject() {
@@ -57,29 +55,25 @@ export default {
     }
   },
   methods: {
-    // 变更gun的火力(速度)
-    changeSpeed(flag) {
-      if (flag) {
-        this.role.speed += 10
-      } else {
-        if (this.role.speed === 10) return
-        this.role.speed -= 10
+    initRole() {
+      const raster = new paper.Raster({
+        position: new paper.Point(this.WIDTH / 2, this.HEIGHT / 2),
+        source: this.url
+      })
+      raster.onLoad = () => {
+        console.log('加载完成')
+        const rec = new paper.Rectangle({
+          center: new paper.Point(this.WIDTH / 2, this.HEIGHT / 2),
+          size: new paper.Size(100)
+        })
+        raster.fitBounds(rec, true)
+        // raster.set({
+        //   width: 300,
+        //   heigth: 300
+        // })
       }
     },
-    updateBottom(point) {
-      this.role.bottom.position = this.role.bottom.position.add(point).clone()
-      this.role.gun.position = this.role.gun.position.add(point).clone()
-    },
-    init() {
-      const canvas = this.$refs.tank
-      // canvas的dom节点给到paper装载
-      this.paper = paper
-      this.paper.setup(canvas)
-
-      // 将视图的远点置于底部中间，方便后续炮塔等的向量计算
-      this.paper.view.setCenter(0, -canvas.clientHeight / 2)
-
-      this.paper.view.onFrame = this.onFrame
+    initTool() {
       this.tool = new this.paper.Tool()
       this.tool.onKeyDown = (e) => {
         // console.log('-----',e)
@@ -125,26 +119,30 @@ export default {
         console.log('e.point---->', e.point)
         console.log('e.downPoint---->', e.downPoint)
       }
+    },
+    // 变更gun的火力(速度)
+    changeSpeed(flag) {
+      if (flag) {
+        this.role.speed += 10
+      } else {
+        if (this.role.speed === 10) return
+        this.role.speed -= 10
+      }
+    },
+    init() {
+      const canvas = this.$refs.tank
+      this.WIDTH = canvas.clientWidth
+      this.HEIGHT = canvas.clientHeight
+      // canvas的dom节点给到paper装载
+      this.paper = paper
+      this.paper.setup(canvas)
+      this.paper.project.name = this.title
+
+      // 将视图的远点置于底部中间，方便后续炮塔等的向量计算
+      this.paper.view.onFrame = this.onFrame
       console.log('初始化坦克世界')
-      this.role.bottom = new this.paper.Path.Rectangle(
-        -this.BOTTOMWIDTH / 2, -this.BOTTOMHEIGHT,
-        this.BOTTOMWIDTH,
-        this.BOTTOMHEIGHT
-      )
-      this.role.bottom.fillColor = 'black'
-      this.role.gun = new this.paper.Path.Rectangle(
-        this.role.bottom.position.x - this.GUNWIDTH / 2,
-        this.role.bottom.position.y - this.GUNHEIGHT - this.BOTTOMHEIGHT / 2,
-        this.GUNWIDTH,
-        this.GUNHEIGHT
-      )
-      this.role.gun.fillColor = this.colors[0]
     },
     onFrame() {
-      this.role.gun.rotate(this.role.speed, this.role.gun.position)
-      for (const bomb of this.bombs) {
-        bomb.update(this.role.speed)
-      }
     }
   },
   beforeDestroy() {
@@ -179,7 +177,8 @@ export default {
       }
     }
     .tank {
-      background: black;
+      // background: black;
+      border: 1px solid gray;
       height: 80vh;
       width: 80vw;
     }
