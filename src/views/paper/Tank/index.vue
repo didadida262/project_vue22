@@ -63,13 +63,18 @@ export default {
       return paper.Point.random().multiply(this.WIDTH, this.HEIGHT)
     },
     initEnemy() {
-      for (let i = 0; i < 5; i++) {
-        this.enemies.push(new Tank(this.random(), getRandomColor()))
+      for (let i = 0; i < 100; i++) {
+        const position = this.random()
+        const end = new paper.Point(position.x, position.y - 50)
+        const direction = this.tank.path.position.subtract(position).normalize(50)
+        this.enemies.push(new Tank(position, 'red', direction))
       }
     },
     initRole() {
       const position = new paper.Point(this.WIDTH / 2, this.HEIGHT / 2)
-      this.tank = new Tank(position, 'white')
+      const end = new paper.Point(position.x, position.y - 50)
+      const direction = end.subtract(position)
+      this.tank = new Tank(position, 'white', direction)
     },
     // 绘制tank---图片
     initRolePic() {

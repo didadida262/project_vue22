@@ -9,21 +9,17 @@ import { Ammunition } from './AmmunitionDepo'
 // import { getRandomColor } from '@/utils/weapons'
 const SIZE = 50
 export class Tank {
-  constructor(position, color) {
+  constructor(position, color, direction) {
     this.color = color
-    this.direction = null
+    this.direction = direction
     this.path = null
     this.position = position
     this.AmmunitionDepo = []
     this.ammunitionSize = 5
     this.step = 10
     this.init()
-    this.initDirec()
   }
-  initDirec() {
-    const turret_end = new paper.Point(this.position.x, this.position.y - 60)
-    this.direction = turret_end.subtract(this.position)
-  }
+
   init() {
     this.path = new paper.Group({
       children: [
@@ -35,7 +31,7 @@ export class Tank {
         }),
         new paper.Path({
           name: 'turret',
-          segments: [this.position, new paper.Point(this.position.x, this.position.y - 60)],
+          segments: [this.position, this.position.add(this.direction)],
           strokeWidth: 5,
           strokeColor: this.color,
           strokeCap: 'round'
