@@ -24,6 +24,7 @@ import paper from 'paper'
 // import { Bomb } from './Bomb'
 import { Tank } from './Tank'
 import tools from './tools'
+import { getRandomColor } from '@/utils/weapons'
 export default {
   mixins: [tools],
   data() {
@@ -32,6 +33,7 @@ export default {
       WIDTH: null,
       HEIGHT: null,
       title: 'tank',
+      enemies: [],
       role: {
         speed: 10,
         name: 'hhvcg',
@@ -47,7 +49,9 @@ export default {
   mounted() {
     this.init()
     this.initRole()
-    console.log('this.currentProject', this.currentProject)
+    this.initEnemy()
+    console.log('初始化坦克世界')
+    console.log('this.paper>>>', this.paper)
   },
   computed: {
     currentProject() {
@@ -55,9 +59,17 @@ export default {
     }
   },
   methods: {
+    random() {
+      return paper.Point.random().multiply(this.WIDTH, this.HEIGHT)
+    },
+    initEnemy() {
+      for (let i = 0; i < 5; i++) {
+        this.enemies.push(new Tank(this.random(), getRandomColor()))
+      }
+    },
     initRole() {
       const position = new paper.Point(this.WIDTH / 2, this.HEIGHT / 2)
-      this.tank = new Tank(position)
+      this.tank = new Tank(position, 'white')
     },
     // 绘制tank---图片
     initRolePic() {
@@ -137,8 +149,6 @@ export default {
 
       // 将视图的远点置于底部中间，方便后续炮塔等的向量计算
       this.paper.view.onFrame = this.onFrame
-      console.log('初始化坦克世界')
-      console.log('this.paper>>>', this.paper)
     },
     onFrame() {
       this.tank.AmmunitionDepo.forEach((ammunition) => {

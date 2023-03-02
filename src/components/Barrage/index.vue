@@ -52,7 +52,6 @@ export default {
   methods: {
     // 根据当前paperscope宽高，返回一个范围内的随机坐标
     random() {
-      // return paper.Point.random() * this.WIDTH
       return paper.Point.random().multiply(this.WIDTH, this.HEIGHT)
     },
     drawFont() {
