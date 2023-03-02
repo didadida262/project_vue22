@@ -99,11 +99,9 @@ export default {
       //   radius: 10,
       //   fillColor: 'red'
       // })
-      const to = e.point
       const vector = e.point.subtract(from).normalize(60)
       this.tank.direction = vector
-      const vector_end = this.tank.position.add(vector)
-      const new_turret = new paper.Path([this.tank.position, vector_end])
+      const vector_end = from.add(vector)
       const turret = this.tank.path.children['turret']
       turret.replaceWith(new paper.Path(
         {
