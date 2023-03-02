@@ -50,22 +50,30 @@ export class Tank {
       ]
     })
   }
-  // 根据方向命令改变tank位置
-  handleChangePosition(e) {
-    if (e.key === 'left' || e.key === 'a') {
-      const newP = new paper.Point(this.path.position.x - this.step, this.path.position.y)
-      this.path.position = newP.clone()
-    } else if (e.key === 'right' || e.key === 'd') {
-      const newP = new paper.Point(this.path.position.x + this.step, this.path.position.y)
-      this.path.position = newP.clone()
-    } else if (e.key === 'up' || e.key === 'w') {
-      const newP = new paper.Point(this.path.position.x, this.path.position.y - this.step)
-      this.path.position = newP.clone()
-    } else if (e.key === 'down' || e.key === 's') {
-      const newP = new paper.Point(this.path.position.x, this.path.position.y + this.step)
-      this.path.position = newP.clone()
+  judeBoundary(position, width, height) {
+    if (position.x <= 0 || position.x >= width || position.y <= 0 || position.y >= height) {
+      return true
+    } else {
+      return false
     }
-    this.position = this.path.position
+  }
+  // 根据方向命令改变tank位置
+  handleChangePosition(e, width, height) {
+    let newP = null
+    if (e.key === 'left' || e.key === 'a') {
+      newP = new paper.Point(this.path.position.x - this.step, this.path.position.y)
+    } else if (e.key === 'right' || e.key === 'd') {
+      newP = new paper.Point(this.path.position.x + this.step, this.path.position.y)
+    } else if (e.key === 'up' || e.key === 'w') {
+      newP = new paper.Point(this.path.position.x, this.path.position.y - this.step)
+    } else if (e.key === 'down' || e.key === 's') {
+      newP = new paper.Point(this.path.position.x, this.path.position.y + this.step)
+    }
+    if (!this.judeBoundary(newP, width, height)) {
+      this.path.position = newP
+      this.position = this.path.position
+    }
+    newP = null
   }
   fire() {
     const ammunition = new Ammunition(this.position, 'circle', 5, 'orange')

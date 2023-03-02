@@ -84,7 +84,7 @@ export default {
       if (e.key === 'space') {
         this.tank.fire()
       } else {
-        this.tank.handleChangePosition(e)
+        this.tank.handleChangePosition(e, this.WIDTH, this.HEIGHT)
       }
     },
     onMouseDown(e) {
