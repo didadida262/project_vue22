@@ -20,32 +20,26 @@ export class Tank {
     console.log('execute>>>')
     this.path = new paper.Group({
       children: [
-
         new paper.Path.Rectangle({
           center: this.position,
           size: new paper.Size(SIZE),
-          fillColor: getRandomColor()
+          strokeColor: 'white'
         }),
-        new paper.Path.Line({
-          from: this.position,
-          to: new paper.Point(this.position.x, this.position.y - 60),
-          strokeColor: getRandomColor(),
-          strokeWidth: 5
+        new paper.Path({
+          name: 'turret',
+          segments: [this.position, new paper.Point(this.position.x, this.position.y - 60)],
+          strokeWidth: 5,
+          strokeColor: 'white',
+          strokeCap: 'round'
+
         }),
         new paper.Path.Circle({
           radius: SIZE / 4,
           center: this.position,
-          fillColor: getRandomColor()
+          fillColor: 'white'
         })
-
       ]
     })
-
-    // this.path = new paper.Path.Circle({
-    //   center: this.position,
-    //   radius: this.radius
-    // })
-    // this.path.fillColor = this.color
   }
   // 根据方向命令改变tank位置
   handleChangePosition(e) {

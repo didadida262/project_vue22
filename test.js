@@ -4,7 +4,7 @@ const sleep = (d) => {
 const test = () => {
   console.log('executing=---')
 }
-setInterval(test, 2000)
+// setInterval(test, 2000)
 
-// sleep(3000)
-// console.log('1')
+sleep(3000)
+console.log('1')

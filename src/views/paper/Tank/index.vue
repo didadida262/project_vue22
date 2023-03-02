@@ -93,7 +93,24 @@ export default {
 
     },
     onMouseMove(e) {
-      console.log('move>>>', e)
+      const from = this.tank.position
+      const to = e.point
+      const vector = e.point.subtract(from).normalize(60)
+      const vector_end = this.tank.position.add(vector)
+      const new_turret = new paper.Path([this.tank.position, vector_end])
+      const turret = this.tank.path.children['turret']
+      turret.replaceWith(new paper.Path(
+        {
+          name: 'turret',
+          segments: [from, vector_end],
+          strokeWidth: 5,
+          strokeColor: 'white',
+          strokeCap: 'round'
+        }
+      ))
+
+      console.log('this.this.tank.path>>', this.tank.path)
+      console.log('vector>>', vector)
     },
     onMouseUp(e) {
 
