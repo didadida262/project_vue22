@@ -25,6 +25,7 @@ import paper from 'paper'
 import { Tank } from './Tank'
 import tools from './tools'
 import { getRandomColor } from '@/utils/weapons'
+import { ENUMMEMBER_TYPES } from '@babel/types'
 export default {
   mixins: [tools],
   data() {
@@ -63,7 +64,7 @@ export default {
       return paper.Point.random().multiply(this.WIDTH, this.HEIGHT)
     },
     initEnemy() {
-      for (let i = 0; i < 100; i++) {
+      for (let i = 0; i < 10; i++) {
         const position = this.random()
         const end = new paper.Point(position.x, position.y - 50)
         const direction = this.tank.path.position.subtract(position).normalize(50)
@@ -167,6 +168,10 @@ export default {
         }
         newP = null
         // ammunition.position = new paper.Point(ammunition.position.x, ammunition.position.y - 10).clone()
+      })
+
+      this.enemies.forEach((enemy) => {
+        enemy.autoRun(this.tank.path.position)
       })
     },
     judeBoundary(position) {

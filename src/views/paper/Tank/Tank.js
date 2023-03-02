@@ -19,7 +19,25 @@ export class Tank {
     this.step = 10
     this.init()
   }
-
+  autoRun(position) {
+    this.direction = position.subtract(this.path.position).clone()
+    this.updateTurret()
+  }
+  updateTurret() {
+    const vector = this.direction.normalize(50).clone()
+    const vector_end = this.path.children['base'].position.add(vector).clone()
+    const turret = this.path.children['turret']
+    turret.replaceWith(new paper.Path(
+      {
+        name: 'turret',
+        segments: [this.path.children['base'].position, vector_end],
+        strokeWidth: 5,
+        strokeColor: this.color,
+        strokeCap: 'round'
+      }
+    ))
+    this.path.position = this.path.position.add(this.direction.normalize()).clone()
+  }
   init() {
     this.path = new paper.Group({
       children: [
