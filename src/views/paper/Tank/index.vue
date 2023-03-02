@@ -79,6 +79,7 @@ export default {
       }
     },
     onKeyDown(e) {
+      console.log(e)
       // fire
       if (e.key === 'space') {
         this.tank.fire()
@@ -112,9 +113,6 @@ export default {
           strokeCap: 'round'
         }
       ))
-
-      console.log('this.this.tank.path>>', this.tank.path)
-      console.log('vector>>', vector)
     },
     onMouseUp(e) {
 
@@ -143,8 +141,9 @@ export default {
     },
     onFrame() {
       this.tank.AmmunitionDepo.forEach((ammunition) => {
-        const newP = ammunition.position.add(this.tank.direction)
-        ammunition.position = newP.clone()
+        let newP = ammunition.path.position.add(this.tank.direction)
+        ammunition.updateLocation(newP)
+        newP = null
         // ammunition.position = new paper.Point(ammunition.position.x, ammunition.position.y - 10).clone()
       })
     }

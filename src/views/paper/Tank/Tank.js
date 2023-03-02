@@ -5,7 +5,8 @@
  * @Description: 坦克类
  */
 import paper from 'paper'
-import { getRandomColor } from '@/utils/weapons'
+import { Ammunition } from './AmmunitionDepo'
+// import { getRandomColor } from '@/utils/weapons'
 const SIZE = 50
 export class Tank {
   constructor(position) {
@@ -67,11 +68,7 @@ export class Tank {
     this.position = this.path.position
   }
   fire() {
-    const ammunition = new paper.Path.Circle({
-      center: this.position,
-      radius: this.ammunitionSize,
-      fillColor: 'orange'
-    })
+    const ammunition = new Ammunition(this.position, 'circle', 5, 'orange')
     this.AmmunitionDepo.push(ammunition)
   }
   update(order) {
