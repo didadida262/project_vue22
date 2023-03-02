@@ -9,12 +9,18 @@ import { getRandomColor } from '@/utils/weapons'
 const SIZE = 50
 export class Tank {
   constructor(position) {
+    this.direction = null
     this.position = position
     this.AmmunitionDepo = []
     this.ammunitionSize = 5
     this.step = 10
     console.log('asdasdasd>>>', this.position)
     this.init()
+    this.initDirec()
+  }
+  initDirec() {
+    const turret_end = new paper.Point(this.position.x, this.position.y - 60)
+    this.direction = turret_end.subtract(this.position)
   }
   init() {
     console.log('execute>>>')

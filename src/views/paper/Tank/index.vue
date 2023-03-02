@@ -96,6 +96,7 @@ export default {
       const from = this.tank.position
       const to = e.point
       const vector = e.point.subtract(from).normalize(60)
+      this.tank.direction = vector
       const vector_end = this.tank.position.add(vector)
       const new_turret = new paper.Path([this.tank.position, vector_end])
       const turret = this.tank.path.children['turret']
@@ -139,7 +140,9 @@ export default {
     },
     onFrame() {
       this.tank.AmmunitionDepo.forEach((ammunition) => {
-        ammunition.position = new paper.Point(ammunition.position.x, ammunition.position.y - 10).clone()
+        const newP = ammunition.position.add(this.tank.direction)
+        ammunition.position = newP.clone()
+        // ammunition.position = new paper.Point(ammunition.position.x, ammunition.position.y - 10).clone()
       })
     }
   },
