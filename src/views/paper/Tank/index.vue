@@ -138,14 +138,28 @@ export default {
       // 将视图的远点置于底部中间，方便后续炮塔等的向量计算
       this.paper.view.onFrame = this.onFrame
       console.log('初始化坦克世界')
+      console.log('this.paper>>>', this.paper)
     },
     onFrame() {
       this.tank.AmmunitionDepo.forEach((ammunition) => {
+        // 若越界，消除之
         let newP = ammunition.path.position.add(this.tank.direction)
-        ammunition.updateLocation(newP)
+        if (!this.judeBoundary(newP)) {
+          ammunition.updateLocation(newP)
+        } else {
+          ammunition.path.remove()
+          ammunition = null
+        }
         newP = null
         // ammunition.position = new paper.Point(ammunition.position.x, ammunition.position.y - 10).clone()
       })
+    },
+    judeBoundary(position) {
+      if (position.x <= 0 || position.x >= this.WIDTH || position.y <= 0 || position.y >= this.HEIGHT) {
+        return true
+      } else {
+        return false
+      }
     }
   },
   beforeDestroy() {
