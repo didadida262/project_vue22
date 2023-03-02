@@ -10,6 +10,7 @@ const SIZE = 50
 export class Tank {
   constructor(position) {
     this.direction = null
+    this.path = null
     this.position = position
     this.AmmunitionDepo = []
     this.ammunitionSize = 5
@@ -27,6 +28,7 @@ export class Tank {
     this.path = new paper.Group({
       children: [
         new paper.Path.Rectangle({
+          name: 'base',
           center: this.position,
           size: new paper.Size(SIZE),
           strokeColor: 'white'

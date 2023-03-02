@@ -93,7 +93,12 @@ export default {
 
     },
     onMouseMove(e) {
-      const from = this.tank.position
+      const from = this.tank.path.children['base'].position
+      // const t = new paper.Path.Circle({
+      //   center: from,
+      //   radius: 10,
+      //   fillColor: 'red'
+      // })
       const to = e.point
       const vector = e.point.subtract(from).normalize(60)
       this.tank.direction = vector
