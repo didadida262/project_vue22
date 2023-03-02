@@ -20,6 +20,7 @@
           class="cursor-pointer"
           :selected="activatedBrush"
           @changeBrush="changeBrush"
+          @unitePath="unitePath"
         />
         <fat-pencil
           class="cursor-pointer"
@@ -109,22 +110,22 @@ export default {
           src: require('@/assets/Sam.webp'),
           key: 0
         },
-        {
-          title: '2',
-          src: require('@/assets/Sam.webp'),
-          key: 1
+        // {
+        //   title: '2',
+        //   src: require('@/assets/Sam.webp'),
+        //   key: 1
 
-        },
-        {
-          title: '3',
-          src: require('@/assets/Sam.webp'),
-          key: 2
-        },
-        {
-          title: '4',
-          src: require('@/assets/Sam.webp'),
-          key: 3
-        }
+        // },
+        // {
+        //   title: '3',
+        //   src: require('@/assets/Sam.webp'),
+        //   key: 2
+        // },
+        // {
+        //   title: '4',
+        //   src: require('@/assets/Sam.webp'),
+        //   key: 3
+        // }
       ],
       activateScope: 0,
       url: '@/assets/rick.jpg',
@@ -148,6 +149,15 @@ export default {
   beforeDestroy() {
   },
   methods: {
+    unitePath(path) {
+      if (!this.CompoundPath) {
+        this.CompoundPath = new paper.CompoundPath
+      }
+      console.log('接收到path',path)
+      // this.CompoundPath.unite(path.clone())
+      // console.log('>>>this.CompoundPath',this.CompoundPath)
+
+    },
     initDefaultScope() {
       this.activePaperScope = this.$refs['PaperView'][0].paper
       this.activePaperScope.projects[0].activate()

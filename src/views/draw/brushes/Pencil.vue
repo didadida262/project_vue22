@@ -45,21 +45,18 @@ export default {
   },
   methods: {
     onMouseMove(e) {
-      console.log('drag')
     },
     onMouseDown(e) {
-      console.log('this', e)
-      console.log('活跃图层名称1', this.$parent.activePaperScope.project.name)
-      console.log('活跃图层名称2', this.$parent.activateScope)
-      console.log('down')
       this.path = new paper.Path({
         strokeColor: 'black'
       })
       this.path.add(e.point)
     },
     onMouseDrag(e) {
-      console.log('drag')
       this.path.add(e.point)
+    },
+    onMouseUp(e) {
+      this.$emit('unitePath', this.path)
     }
   },
   created() {

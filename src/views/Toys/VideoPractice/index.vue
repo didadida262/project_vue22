@@ -22,9 +22,10 @@
         <div>
           <el-button @click="changePlayWay">{{ playWayShowContent }}</el-button>
           <el-button @click="switchVideo('right')">下一个</el-button>
+          <el-button @click="switchCurrentListState">{{  currentListState }}</el-button>
         </div>
       </div>
-      <div class="option-container pd10">
+      <div v-if="currentListState === 'show'" class="option-container pd10">
         <div class="option-container-cate">
           <el-button
             v-for="(cate, index) in categories"
@@ -65,6 +66,7 @@ export default {
   },
   data() {
     return {
+      currentListState: 'show',
       currentPlayWay: 'random',
       playWayCate: {
         random: '随机播放',
@@ -99,6 +101,9 @@ export default {
   beforeDestroy() {
   },
   methods: {
+    switchCurrentListState() {
+      this.currentListState = this.currentListState === 'show'? 'hide': 'show'
+    },
     nextVideo() {
       this.handleVideoEnded()
     },
@@ -267,10 +272,10 @@ export default {
     height: calc(100% - 100px);
     // flex: 1;
     .video-container {
-      width: calc(100% - 510px);
       border: 1px solid gray;
       height: 100%;
       background: 'black';
+      flex: 1
     }
     .option-container {
       width: 500px;

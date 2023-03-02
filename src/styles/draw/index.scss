@@ -25,10 +25,11 @@
       height: 100%;
       width: calc(100% - 320px);
       .paperView-item {
-        width: 24%;
         height: 100%;
         border: 3px solid red;
         border-radius: 5px;
+        flex: 1;
+        margin-left: 5px
       }
       .activateScope-st {
         border: 3px solid rgb(0, 183, 255);
