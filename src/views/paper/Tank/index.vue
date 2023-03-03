@@ -170,9 +170,9 @@ export default {
         // ammunition.position = new paper.Point(ammunition.position.x, ammunition.position.y - 10).clone()
       })
 
-      // this.enemies.forEach((enemy) => {
-      //   enemy.autoRun(this.tank.path.position)
-      // })
+      this.enemies.forEach((enemy) => {
+        enemy.autoRun(this.tank.path.position)
+      })
     },
     judeBoundary(position) {
       if (position.x <= 0 || position.x >= this.WIDTH || position.y <= 0 || position.y >= this.HEIGHT) {

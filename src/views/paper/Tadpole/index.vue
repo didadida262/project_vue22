@@ -19,9 +19,11 @@ import paper from 'paper'
 import { Boid } from './myBoid.js'
 import commonTemplate from '@/components/titleTemplate.vue'
 import { getRandomColor } from '@/utils/weapons'
+import tools from './tools'
 
 export default {
   name: 'tadpole',
+  mixins: [tools],
   components: {
     commonTemplate
   },
@@ -82,9 +84,8 @@ export default {
       this.paper = paper
       this.paper.setup(canvas)
       this.paper.project.name = this.title
-      // this.paper.view.setCenter(0, 0)
+      this.paper.view.setCenter(0, 0)
       this.paper.view.onFrame = this.onFrame
-      this.paper.view.onMouseDown = this.onMouseDown
       console.log('初始化世界!!!')
     }
   }

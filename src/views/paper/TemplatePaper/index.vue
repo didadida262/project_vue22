@@ -53,6 +53,9 @@ export default {
     }
   },
   methods: {
+    random() {
+      return paper.Point.random().multiply(this.WIDTH, this.HEIGHT)
+    },
     getRandomPoint() {
       return new paper.Point(Math.random() * this.WIDTH, Math.random() * this.HEIGHT)
     },
