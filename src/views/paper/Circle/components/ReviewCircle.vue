@@ -93,34 +93,34 @@ export default {
     },
     // 在circle项目中的指定位置点e，绘制layerXY图层, 若存在，直接覆盖
     drawXY(e) {
-      this.movePaperScope.activate()
-      const movePaperScopeProject = this.movePaperScope.projects[0]
-      const data = getLineData(e.point, this.innerRadius)
-      if (movePaperScopeProject.layers['layerXY']) {
-        movePaperScopeProject.layers['layerXY'].remove()
-      }
-      const layerXY = new paper.Layer()
-      layerXY.name = 'layerXY'
-      const xBot = this.waferInfo.orientation_mark_length[0] * this.ratio / 2
-      const yBot = getAnotherPoint(xBot, this.innerRadius)
-      if (data[1].two[1] > yBot) {
-        data[1].two[1] = yBot
-      }
-      if (data[0].one[1] > yBot) {
-        data[0].one[1] = yBot
-        data[0].two[1] = yBot
-      }
-      const X = new paper.Path.Line({
-        from: new paper.Point(data[0].one[0], data[0].one[1]),
-        to: new paper.Point(data[0].two[0], data[0].two[1]),
-        strokeColor: '#650D65'
-      })
-      const Y = new paper.Path.Line({
-        from: new paper.Point(data[1].one[0], data[1].one[1]),
-        to: new paper.Point(data[1].two[0], data[1].two[1]),
-        strokeColor: '#650D65'
-      })
-      this.paper.activate()
+      // this.movePaperScope.activate()
+      // const movePaperScopeProject = this.movePaperScope.projects[0]
+      // const data = getLineData(e.point, this.innerRadius)
+      // if (movePaperScopeProject.layers['layerXY']) {
+      //   movePaperScopeProject.layers['layerXY'].remove()
+      // }
+      // const layerXY = new paper.Layer()
+      // layerXY.name = 'layerXY'
+      // const xBot = this.waferInfo.orientation_mark_length[0] * this.ratio / 2
+      // const yBot = getAnotherPoint(xBot, this.innerRadius)
+      // if (data[1].two[1] > yBot) {
+      //   data[1].two[1] = yBot
+      // }
+      // if (data[0].one[1] > yBot) {
+      //   data[0].one[1] = yBot
+      //   data[0].two[1] = yBot
+      // }
+      // const X = new paper.Path.Line({
+      //   from: new paper.Point(data[0].one[0], data[0].one[1]),
+      //   to: new paper.Point(data[0].two[0], data[0].two[1]),
+      //   strokeColor: '#650D65'
+      // })
+      // const Y = new paper.Path.Line({
+      //   from: new paper.Point(data[1].one[0], data[1].one[1]),
+      //   to: new paper.Point(data[1].two[0], data[1].two[1]),
+      //   strokeColor: '#650D65'
+      // })
+      // this.paper.activate()
     },
     createPath(e) {
 
@@ -163,7 +163,7 @@ export default {
     // 先批量处理点数据坐标信息，再绘制数据点
     // 内圆同数据处于同一图层
     drawDot() {
-      console.log('this.defectList>>', this.defectList)
+      // console.log('this.defectList>>', this.defectList)
       // 基于当前晶圆大小，处理数据点信息
       const layerDot = new paper.Layer()
       layerDot.name = 'layerDot'
@@ -213,6 +213,9 @@ export default {
           console.log('点击')
         }
       })
+    },
+    onClickDot(e) {
+      console.log('点击')
     },
     // 基于指定半径的圆，画内圆
     drawInnerCircle(len, radius) {
@@ -553,7 +556,7 @@ export default {
     // a.href = URL.createObjectURL(blob)
     // a.download = 'test.svg'
     // a.click()
-    // console.log('x>>>', x)
+    console.log('this.paper>>>', this.paper)
   },
   beforeDestroy() {
     this.currentProject.remove()
