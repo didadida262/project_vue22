@@ -8,21 +8,24 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import paper from 'paper'
 
+const strength = Math.random() * 0.5
 export class Boid {
   constructor(position, maxSpeed, maxForce) {
-    // 小蝌蚪坐标信息
-    this.position = position.clone()
-    // 尾巴点数[10， 15）
+    this.position = position
+    this.radius = 30
+
+    // 尾巴点数[10， 14]
     this.tailAmount = Math.random() * 5 + 10
+
     // 蝌蚪移动速度，此值极其重要，关系到蝌蚪实例的生命力
     this.acceleration = new paper.Point()
-    // 越界时用于更新当前蝌蚪的position
+
     // vector这个变量，决定了下一帧，或者说是下一时刻，小蝌蚪的运动目的地
     this.vector = new paper.Point.random()
-    this.radius = 30
-    const strength = Math.random() * 0.5
+
     // 取值范围:[10, 10.5),干嘛的未知
     this.maxSpeed = maxSpeed + strength
+
     // 取值范围:[0.05, 0.55),干嘛的未知
     this.maxForce = maxForce + strength
     this.count = 0
@@ -32,8 +35,7 @@ export class Boid {
   createItems() {
     // 椭圆，代表蝌蚪的头部
     this.head = new paper.Shape.Ellipse({
-      //   center: [0, 0],
-      center: [this.position.x, this.position.y],
+      center: this.position,
       size: [15, 10],
       fillColor: 'orange'
     })
@@ -58,7 +60,7 @@ export class Boid {
     }
     // 截止此时，除了头部已经画出，颈部及尾巴均没有实际画出，实质上是通过加point的方式，埋了几个坑位
     // 为什么此时不画出颈部和尾巴呢？因为方向未知
-    // 颈部和尾巴都是线段，通过add的方式添加点坑位，其值存储在各自的segements。这种纯线段图形，没有children
+    // 颈部和尾巴都是线段，通过add的方式添加点坑位，其值存储在各自的segments。这种纯线段图形，没有children
   }
   run(boids, groupTogether) {
     // 记录当前蝌蚪位置
