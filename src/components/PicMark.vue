@@ -16,7 +16,6 @@
 </template>
 <script>
 import paper from 'paper'
-import { getEffectiveConstraintOfTypeParameter } from 'typescript'
 export default {
   name: 'paperpicsample',
   props: {

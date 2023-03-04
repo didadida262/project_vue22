@@ -107,15 +107,14 @@ export default {
         {
           title: '1',
           // src: 'https://cms-assets.tutsplus.com/uploads/users/1251/posts/26530/image/BenderPaper.jpg'
-          src: require('@/assets/Sam.webp'),
+          src: require('@/assets/bigPic.png'),
           key: 0
         },
-        // {
-        //   title: '2',
-        //   src: require('@/assets/Sam.webp'),
-        //   key: 1
-
-        // },
+        {
+          title: '2',
+          src: require('@/assets/bigPic2.png'),
+          key: 1
+        }
         // {
         //   title: '3',
         //   src: require('@/assets/Sam.webp'),
@@ -151,12 +150,11 @@ export default {
   methods: {
     unitePath(path) {
       if (!this.CompoundPath) {
-        this.CompoundPath = new paper.CompoundPath
+        this.CompoundPath = new paper.CompoundPath()
       }
-      console.log('接收到path',path)
+      console.log('接收到path', path)
       // this.CompoundPath.unite(path.clone())
       // console.log('>>>this.CompoundPath',this.CompoundPath)
-
     },
     initDefaultScope() {
       this.activePaperScope = this.$refs['PaperView'][0].paper
