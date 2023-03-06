@@ -90,7 +90,6 @@ export default {
     .picview-item-st {
       width: 33%;
       height: 200px;
-      border: 1px solid red;
     }
   }
 }

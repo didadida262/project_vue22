@@ -103,6 +103,12 @@ export default {
 .picContainer {
   width: 100%;
   height: 100%;
+  border: 1px solid rgb(184, 174, 174);
+  border-radius: 5px;
+}
+.picContainer:hover {
+  cursor: pointer;
+  border: 2px solid rgb(0, 183, 255);
 }
 
 </style>
