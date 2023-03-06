@@ -7,6 +7,7 @@
  */
 /* eslint-disable no-mixed-spaces-and-tabs */
 import paper from 'paper'
+// import { getRandomColor } from '@/utils/weapons'
 
 const strength = Math.random() * 0.5
 export class Boid {
@@ -31,7 +32,7 @@ export class Boid {
     this.count = 0
     this.createItems()
   }
-  // 定义蝌蚪的身体组成
+  // 初始化蝌蚪的身体各组成部分
   createItems() {
     // 椭圆，代表蝌蚪的头部
     this.head = new paper.Shape.Ellipse({
@@ -65,26 +66,17 @@ export class Boid {
   run(boids, groupTogether) {
     // 记录当前蝌蚪位置
     this.lastLoc = this.position.clone()
-    // 不排队
     if (!groupTogether) {
+      // 自由飞翔
       this.flock(boids)
     } else {
       // 沿着svg的轨迹运动---很神奇
       this.align(boids)
     }
-    this.borders()
-    // this.changeColor()
+    this.judeBorders()
     this.update()
     this.calculateTail()
     this.moveHead()
-  }
-  // 随机生成颜色，每帧更新颜色实现蹦迪的效果
-  randomColor() {
-    let color = '#'
-    // for循环中，如果后面仅有一条语句，{}可省略不写
-    // 同上面方法
-    for (let i = 0; i < 8; i++) color += parseInt(Math.random() * 16).toString(16)
-    return color
   }
   changeColor() {
     // const colors = ['red', 'orange', 'yellow', 'green']
@@ -95,18 +87,27 @@ export class Boid {
   }
   // We accumulate a new acceleration each time based on three rules
   flock(boids) {
+    // 打点
+    // 分离
     const separation = this.separate(boids).multiply(3)
+    // 对齐
     const alignment = this.align(boids)
+    // 凝聚力
     const cohesion = this.cohesion(boids)
-    this.acceleration = this.acceleration.add(separation, alignment, cohesion)
-    // 为什么acceleration会是一个点？
+    // this.acceleration = this.acceleration.add(separation, alignment, cohesion)
+    this.acceleration = this.acceleration.add(separation)
+    this.acceleration = this.acceleration.add(alignment)
+    this.acceleration = this.acceleration.add(cohesion)
+    // 此处三个向量之计算，严重关系到电子蝌蚪的活力
   }
+  // 注意，此处的参数，是当前所有的蝌蚪数组
   separate(boids) {
     const desiredSeperation = 60
+    // 引导steer
     let steer = new paper.Point()
     let count = 0
     // For every boid in the system, check if it's too close
-    for (let i = 0, l = boids.length; i < l; i++) {
+    for (let i = 0; i < boids.length; i++) {
       const other = boids[i]
       const vector = this.position.subtract(other.position)
       const distance = vector.length
@@ -178,7 +179,7 @@ export class Boid {
   // Takes a second argument, if true, it slows down as it approaches
   // the target
   steer(target, slowdown) {
-    let steer
+    let steer = null
     const desired = target.subtract(this.position)
     const distance = desired.length
     // Two options for desired vector magnitude
@@ -194,11 +195,12 @@ export class Boid {
     return steer
   }
   // 如果越界，对身体各组件位置处理
-  borders() {
+  // 学好数理化，走遍天下都不怕，此处可见数学的威力
+  judeBorders() {
     const vector = new paper.Point()
     const position = this.position
     const radius = this.radius
-    const size = paper.view.size
+    const size = paper.project.view.size
     // 越界判断
     if (position.x < -radius) vector.x = size.width + radius
     if (position.y < -radius) vector.y = size.height + radius
