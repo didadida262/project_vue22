@@ -74,16 +74,9 @@ export class Boid {
       this.align(boids)
     }
     this.judeBorders()
-    this.update()
+    this.updatePosition()
     this.calculateTail()
     this.moveHead()
-  }
-  changeColor() {
-    // const colors = ['red', 'orange', 'yellow', 'green']
-    // const newC = this.randomColor()
-    // this.head.fillColor = newC
-    // this.shortPath.strokeColor = newC
-    // this.path.strokeColor = newC
   }
   // We accumulate a new acceleration each time based on three rules
   flock(boids) {
@@ -202,22 +195,28 @@ export class Boid {
     const radius = this.radius
     const size = paper.project.view.size
     // 越界判断
+    // 四类情况获取向量vector
+    // 左边界溢出，向右边拉
     if (position.x < -radius) vector.x = size.width + radius
+    // 上边界溢出，向下拉
     if (position.y < -radius) vector.y = size.height + radius
+    // 右边界益出，往左拉
     if (position.x > size.width + radius) vector.x = -size.width - radius
+    // 下边界溢出，往上拉
     if (position.y > size.height + radius) vector.y = -size.height - radius
     if (!vector.isZero()) {
       this.position = this.position.add(vector)
       // 批量更新尾巴节点的位置，使得呈现出去又进来的效果
       const segments = this.path.segments
+      // 下面的三行代码，是我见过的，最tm骚气的for循环。实现尾巴的骚动
       for (let i = 0; i < this.tailAmount; i++) {
         segments[i].point = segments[i].point.add(vector)
       }
     }
   }
   // 顾名思义，每帧更新蝌蚪位置position
-  update() {
-    // Update velocity
+  updatePosition() {
+    // updatePosition velocity
     this.vector = this.vector.add(this.acceleration)
     // Limit speed (vector#limit?)
     this.vector.length = Math.min(this.maxSpeed, this.vector.length)
