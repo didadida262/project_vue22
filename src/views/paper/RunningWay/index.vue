@@ -59,6 +59,42 @@ export default {
         {
           title: 'pl',
           src: require('@/assets/Sam.webp')
+        },
+        {
+          title: 'pl',
+          src: require('@/assets/Sam.webp')
+        },
+        {
+          title: 'pl',
+          src: require('@/assets/Sam.webp')
+        },
+        {
+          title: 'pl',
+          src: require('@/assets/Sam.webp')
+        },
+        {
+          title: 'pl',
+          src: require('@/assets/Sam.webp')
+        },
+        {
+          title: 'pl',
+          src: require('@/assets/Sam.webp')
+        },
+        {
+          title: 'pl',
+          src: require('@/assets/Sam.webp')
+        },
+        {
+          title: 'pl',
+          src: require('@/assets/Sam.webp')
+        },
+        {
+          title: 'pl',
+          src: require('@/assets/Sam.webp')
+        },
+        {
+          title: 'pl',
+          src: require('@/assets/Sam.webp')
         }
       ]
     }
@@ -85,7 +121,7 @@ export default {
     border: 1px solid rgb(118, 118, 122, 0.5);
     display: flex;
     justify-content: space-around;
-    align-content: flex-start;
+    align-content:space-around;
     flex-wrap: wrap;
     .picview-item-st {
       width: 33%;
