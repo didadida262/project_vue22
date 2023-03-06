@@ -8,13 +8,16 @@
 <template>
   <div class="runningWay-container pd10">
     <commonTemplate title="Running-Way" />
-    <div class="runningWay-container-content">
-      <paper-view
-        class="picview-item-st"
+    <div class="runningWay-container-content pd10">
+      <div
         v-for="(pic, index) in picviewlist"
         :key="index"
-        :picInfo="pic"
-      />
+        class="picview-item-st mgb5"
+      >
+        <paper-view
+          :picInfo="pic"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -80,8 +83,12 @@ export default {
     width: 100%;
     height: calc(100% - 80px);
     border: 1px solid rgb(118, 118, 122, 0.5);
+    display: flex;
+    justify-content: space-around;
+    align-content: flex-start;
+    flex-wrap: wrap;
     .picview-item-st {
-      width: 30%;
+      width: 33%;
       height: 200px;
       border: 1px solid red;
     }
