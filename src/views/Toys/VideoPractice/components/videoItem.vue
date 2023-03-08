@@ -15,14 +15,12 @@
         >
           {{ this.data.name.slice(0, 20) + '...' }}
         </span> -->
-        <el-tooltip
+        <span
           v-else
           class="item" 
-          effect="dark" 
-          :content="this.data.name" 
-          placement="bottom">
+          >
           <span>{{ this.data.name.slice(0, 20) + '...' }}</span>
-        </el-tooltip>
+        </span>
       </span>
       <input
        v-if="this.data.editFlag"  

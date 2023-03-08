@@ -20,6 +20,7 @@
           <source :src="url" type="video/mp4">
         </video>
         <div>
+          <span>{{  currentVideoInfo.name }}</span>
           <el-button @click="changePlayWay">{{ playWayShowContent }}</el-button>
           <el-button @click="switchVideo('right')">下一个</el-button>
           <el-button @click="switchCurrentListState">{{  currentListState }}</el-button>
@@ -66,6 +67,7 @@ export default {
   },
   data() {
     return {
+      currentVideoInfo: {},
       currentListState: 'show',
       currentPlayWay: 'random',
       playWayCate: {
