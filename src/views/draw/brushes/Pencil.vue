@@ -56,7 +56,7 @@ export default {
       this.path.add(e.point)
     },
     onMouseUp(e) {
-      this.$emit('unitePath', this.path)
+      this.$emit('submitPath', this.path)
     }
   },
   created() {

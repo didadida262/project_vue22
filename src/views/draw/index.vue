@@ -20,7 +20,7 @@
           class="cursor-pointer"
           :selected="activatedBrush"
           @changeBrush="changeBrush"
-          @unitePath="unitePath"
+          @submitPath="submitPath"
         />
         <fat-pencil
           class="cursor-pointer"
@@ -105,13 +105,13 @@ export default {
     return {
       picList: [
         {
-          title: '1',
+          title: 'Surface',
           // src: 'https://cms-assets.tutsplus.com/uploads/users/1251/posts/26530/image/BenderPaper.jpg'
           src: require('@/assets/bigPic.png'),
           key: 0
         },
         {
-          title: '2',
+          title: 'PL',
           src: require('@/assets/bigPic2.png'),
           key: 1
         }
@@ -126,6 +126,7 @@ export default {
         //   key: 3
         // }
       ],
+      paperScopePathData: [],
       activateScope: 0,
       url: '@/assets/rick.jpg',
       activatedBrush: 'select_tool',
@@ -142,19 +143,23 @@ export default {
 
   mounted() {
     this.initDefaultScope()
+    this.initPaperScopePathData()
   },
   created() {
   },
   beforeDestroy() {
   },
   methods: {
-    unitePath(path) {
-      if (!this.CompoundPath) {
-        this.CompoundPath = new paper.CompoundPath()
-      }
+    initPaperScopePathData() {
+      this.picList.forEach((pic, index) => {
+        this.paperScopePathData[index] = []
+      })
+    },
+    submitPath(path) {
+      // const currentScopeCompoundPath = this.CompoundPathArray[this.activateScope]
+      this.paperScopePathData[this.activateScope].push(path)
       console.log('接收到path', path)
-      // this.CompoundPath.unite(path.clone())
-      // console.log('>>>this.CompoundPath',this.CompoundPath)
+      console.log(this.paperScopePathData)
     },
     initDefaultScope() {
       this.activePaperScope = this.$refs['PaperView'][0].paper
