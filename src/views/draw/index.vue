@@ -68,7 +68,10 @@
       </div>
     </div>
     <div class="draw-container-category">
-      category
+      <Category
+        v-if="currentScopeCategory"
+        :categoryData="currentScopeCategory"
+      />
     </div>
 
   </div>
@@ -81,6 +84,7 @@ import FatPencil from './brushes/FatPencil.vue'
 import RectBrush from './brushes/RectBrush.vue'
 import SelectTool from './brushes/SelectTool.vue'
 import PaperMark from '@/components/PicMark.vue'
+import Category from './Category.vue'
 // import oldBrush from './brushes/oldBrush.vue'
 // import killBrush from './brushes/kill_brush.vue'
 // import killBrushNew from './brushes/kill_brush2.vue'
@@ -94,7 +98,8 @@ export default {
     RectBrush,
     PaperMark,
     FatPencil,
-    SelectTool
+    SelectTool,
+    Category
     // oldBrush,
     // killBrush,
     // broomBrush,
@@ -138,6 +143,12 @@ export default {
   computed: {
     currentProject() {
       return this.paper.projects.filter((_p) => _p.name === 'Draw')[0]
+    },
+    currentScopeCategory() {
+      if (this.paperScopePathData[this.activateScope]) {
+        return this.paperScopePathData[this.activateScope]
+      }
+      return []
     }
   },
 
