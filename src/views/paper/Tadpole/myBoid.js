@@ -87,7 +87,6 @@ export class Boid {
     const alignment = this.align(boids)
     // 凝聚力
     const cohesion = this.cohesion(boids)
-    // this.acceleration = this.acceleration.add(separation, alignment, cohesion)
     this.acceleration = this.acceleration.add(separation)
     this.acceleration = this.acceleration.add(alignment)
     this.acceleration = this.acceleration.add(cohesion)
