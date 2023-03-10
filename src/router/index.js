@@ -167,6 +167,12 @@ export const constantRoutes = [
       //   meta: { title: 'Draw_version2', icon: 'Raster' }
       // },
       {
+        path: 'gameworld',
+        name: 'gameworld',
+        component: () => import('@/views/paper/GameWorld/index'),
+        meta: { title: 'Game_World', icon: 'earth' }
+      },
+      {
         path: 'runningway',
         name: 'runningway',
         component: () => import('@/views/paper/RunningWay/index'),
