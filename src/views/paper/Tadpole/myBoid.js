@@ -97,6 +97,7 @@ export class Boid {
   separate(boids) {
     const desiredSeperation = 60
     // 引导steer
+    // new point 生成一个0向量
     let steer = new paper.Point()
     let count = 0
     // For every boid in the system, check if it's too close
