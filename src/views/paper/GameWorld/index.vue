@@ -35,7 +35,8 @@ export default {
   watch: {},
   mounted() {
     this.init()
-    this.draw()
+    this.drawGround()
+    console.log('this.currentProject>>>>', this.currentProject)
   },
   beforeDestroy() {
     const currentProject = this.paper.projects.filter((_p) => _p.name === this.title)[0]
@@ -47,13 +48,15 @@ export default {
     }
   },
   methods: {
+    // 初版简单粗暴，就一条直线，视图下方处
+    drawGround() {
+
+    },
     random() {
       return paper.Point.random().multiply(this.WIDTH, this.HEIGHT)
     },
     getRandomPoint() {
       return new paper.Point(Math.random() * this.WIDTH, Math.random() * this.HEIGHT)
-    },
-    draw() {
     },
     onFrame() {
     },
@@ -66,18 +69,19 @@ export default {
     onMouseUp(e) {
     },
     onKeyDown(e) {
-      if (e.key === 'a') {
-        const currentCenter = this.currentProject.view.center
-        const newCenter = currentCenter.add(new paper.Point(-50, 0))
-        this.currentProject.view.setCenter(newCenter)
-        console.log('left>>>')
-      }
-      if (e.key === 'd') {
-        console.log('right>>>')
-        const currentCenter = this.currentProject.view.center
-        const newCenter = currentCenter.add(new paper.Point(50, 0))
-        this.currentProject.view.setCenter(newCenter)
-      }
+      // 方向键控制role，何时触发视图的变幻？
+      // if (e.key === 'a') {
+      //   const currentCenter = this.currentProject.view.center
+      //   const newCenter = currentCenter.add(new paper.Point(-50, 0))
+      //   this.currentProject.view.setCenter(newCenter)
+      //   console.log('left>>>')
+      // }
+      // if (e.key === 'd') {
+      //   console.log('right>>>')
+      //   const currentCenter = this.currentProject.view.center
+      //   const newCenter = currentCenter.add(new paper.Point(50, 0))
+      //   this.currentProject.view.setCenter(newCenter)
+      // }
     },
     init() {
       const canvas = this.$refs.canvas
