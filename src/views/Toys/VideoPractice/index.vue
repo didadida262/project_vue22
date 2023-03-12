@@ -9,7 +9,7 @@
   <div class="VideoPractice pd10 flex-col">
     <commonTemplate title="Some ge tais" />
     <div class="Content flex-cb">
-      <div class="video-container flex-col">
+      <div class="video-container flex-col pd10">
         <video
          id="videoContainer" 
          ref="videoContainer" 
