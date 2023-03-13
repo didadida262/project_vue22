@@ -122,11 +122,9 @@ export default {
   }
   .video-item:hover {
     background-image: linear-gradient(120deg,#b0d2ee,#13ca75);
-    transform: scale(1.1);
   }
   .is-active {
     background-image: linear-gradient(120deg,#b0d2ee,#13ca75);
-    transform: scale(1.1);
   }
 
 </style>
