@@ -9,35 +9,69 @@
   <div class="test-container pd10">
     <commonTemplate title="test" />
     <div class="test-container-content">
+      <PaperPic
+        :picInfo="picInfo"
+        @handlePicEvent="handlePicEvent"
+       />
     </div>
   </div>
 </template>
 
 <script>
 import commonTemplate from '@/components/titleTemplate.vue'
-
+import PaperPic from './components/PaperPic.vue'
+import paper from 'paper'
 export default {
   name: 'test',
   components: {
-    commonTemplate
+    commonTemplate,
+    PaperPic
   },
   data() {
     return {
-      title: 'test'
+      title: 'test',
+      picInfo: {
+        src: require('@/assets/Sam.webp'),
+        title: 'PL'
+      }
     }
   },
   computed: {
   },
   watch: {},
   mounted() {
-
+  },
+  methods: {
+    handlePicEvent(event) {
+      if (event.loadedSuccess) {
+        this.test()
+      }
+    },
+    test() {
+      const raster = paper.project.layers[0].children[0]
+      console.log('paper>>>', paper)
+      console.log('raster>>>', raster)
+      const average = raster.getAverageColor()
+      console.log('getAverageColor>>>', average)
+      // const rect = new paper.Path.Circle({
+      //   center: new paper.Point(0),
+      //   radius: 0.5,
+      //   strokeColor: 'green',
+      //   strokeWidth: 0.1
+      // })
+      // raster.setPixel(new paper.Point(0), average)
+      // const start = raster.bounds.topLeft
+      // const width = raster.width
+      // for (let i = 0; i < width; i++) {
+      //   console.log('???????????')
+      //   raster.setPixel(new paper.Point(start.x + i, start.y), average)
+      // }
+    }
   },
   beforeDestroy() {
 
-  },
-  methods: {
-
   }
+
 }
 </script>
 <style scoped lang="scss">
