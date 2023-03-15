@@ -2,7 +2,7 @@
  * @Author: Hhvcg
  * @Date: 2022-12-30 11:15:36
  * @LastEditors: -_-
- * @Description: 测试websockt-频道1
+ * @Description: template
 -->
 
 <template>
