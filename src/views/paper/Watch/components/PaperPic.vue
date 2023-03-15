@@ -79,10 +79,11 @@ export default {
       // const color = this.raster.getPixel(e.point.x, e.point.y)
       // console.log('color>>', color)
       // console.log(`RGB>>>>>${color.red} + ${color.green} + ${color.blue}`)
-      const c = new paper.Path.Circle({
-        center: e.point,
-        radius: 1,
-        strokeColor: 'red'
+      const c = new paper.Path.Rectangle({
+        center: e.point.floor(),
+        size: new paper.Size(0.1),
+        strokeColor: 'green',
+        strokeWidth: 0.1
       })
     },
     onMouseDrag(e) {
@@ -100,6 +101,15 @@ export default {
       this.raster.onLoad = () => {
         this.raster.fitBounds(this.paper.view.bounds, false)
         this.average = this.raster.getAverageColor()
+        for (let i = 0; i < 100; i++) {
+          const c = new paper.Path.Rectangle({
+            center: new paper.Point(i, 0),
+            size: new paper.Size(1),
+            strokeColor: 'green',
+            strokeWidth: 1
+          })
+        }
+
         this.$emit('handlePicEvent', {
           loadedSuccess: true
         })
