@@ -8,16 +8,21 @@
 <template>
   <div class="pixel-container pd10">
     <commonTemplate title="pixel" />
-    <div class="pixel-container-content flex-col-sc pd10">
-      <div class="pixel-container-content-pic">
-        <PaperPic
-          :picInfo="picInfo"
-          @handlePicEvent="handlePicEvent"
-        />
+    <div class="flex-cb pd10" style="width: 100%;height:calc(100% - 80px)">
+      <div class="pixel-container-operation border-common pd10">
+          <el-button @click="handleBinary">Binary</el-button>
       </div>
-      <div
-       ref="myChart"
-       class="pixel-container-content-echarts">
+      <div class="pixel-container-content flex-col-sc">
+        <div class="pixel-container-content-pic">
+          <PaperPic
+            :picInfo="picInfo"
+            @handlePicEvent="handlePicEvent"
+          />
+        </div>
+        <div
+        ref="myChart"
+        class="pixel-container-content-echarts">
+        </div>
       </div>
     </div>
 
@@ -40,7 +45,8 @@ export default {
       title: 'pixel',
       picInfo: {
         src: require('@/assets/slogan.jpg'),
-        title: 'PL'
+        title: 'PL',
+        mode: 'common'
       }
     }
   },
@@ -50,6 +56,12 @@ export default {
   mounted() {
   },
   methods: {
+    handleBinary() {
+      console.log('binary_deal')
+      this.picInfo.mode = 'binary'
+
+      // this.initEcharts(this.picPixData)
+    },
     preDealData(obj) {
       const arr = []
       for (const key in obj) {
@@ -179,8 +191,8 @@ export default {
         this.test()
       }
       if (event.type === 'submitData') {
-        console.log('get_____data>>>', event.data)
-        this.initEcharts(event.data)
+        this.picPixData = event.data
+        this.initEcharts(this.picPixData)
       }
     },
     test() {
@@ -196,17 +208,20 @@ export default {
 .pixel-container {
   width: 100%;
   height: 100%;
+  &-operation {
+    width: 200px;
+    height: 100%;
+  }
   &-content {
-    width: 100%;
-    height: calc(100% - 80px);
-    border: 1px solid gray;
+    width: calc(100% - 220px);
+    height: 100%;
     &-pic {
       width: 100%;
       height: calc(100% - 480px);
     }
     &-echarts {
       width: 100%;
-      height: 440px;
+      height: 450px;
       border: 1px solid gray;
     }
   }

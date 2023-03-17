@@ -101,14 +101,15 @@ export default {
       for (let i = 0; i < width; i++) {
         for (let j = 0; j < height; j++) {
           const curPixelData = this.raster.getImageData(i, j, 1, 1)
-          const valid = Math.floor(curPixelData.data[0] + curPixelData.data[1] + curPixelData.data[2] / 3)
-          if (!obj.hasOwnProperty(valid)) {
-            obj[valid] = 1
+          const pixValue = Math.floor((curPixelData.data[0] + curPixelData.data[1] + curPixelData.data[2]) / 3)
+          if (!obj.hasOwnProperty(pixValue)) {
+            obj[pixValue] = 1
           } else {
-            obj[valid]++
+            obj[pixValue]++
           }
         }
       }
+      console.log('obj>>>>', obj)
       this.$emit('handlePicEvent', {
         type: 'submitData',
         data: obj
@@ -139,9 +140,9 @@ export default {
         }
       }
       console.timeEnd('1')
-      // resp.forEach((item) => {
-      //   this.raster.putImageData(item.data, item.index[0], item.index[1])
-      // })
+      resp.forEach((item) => {
+        this.raster.putImageData(item.data, item.index[0], item.index[1])
+      })
     },
     drawPic() {
       this.raster = new paper.Raster({
@@ -171,6 +172,14 @@ export default {
         //   radius: 100,
         //   fillColor: 'red'
         // })
+        // this.binaryPic()
+        this.getPicPix()
+      }
+    }
+  },
+  watch: {
+    'picInfo.mode'() {
+      if (this.picInfo.mode === 'binary') {
         this.binaryPic()
         this.getPicPix()
       }
@@ -199,7 +208,6 @@ export default {
 .picContainer {
   width: 100%;
   height: 100%;
-  border: 1px solid red;
 }
 
 </style>
