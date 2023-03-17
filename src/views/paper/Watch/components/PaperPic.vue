@@ -93,6 +93,28 @@ export default {
         pro.view.setCenter(newCenter)
       })
     },
+    getPicPix() {
+      const width = this.raster.width
+      const height = this.raster.height
+      const obj = {}
+      console.time('getPicPix')
+      for (let i = 0; i < width; i++) {
+        for (let j = 0; j < height; j++) {
+          const curPixelData = this.raster.getImageData(i, j, 1, 1)
+          const valid = Math.floor(curPixelData.data[0] + curPixelData.data[1] + curPixelData.data[2] / 3)
+          if (!obj.hasOwnProperty(valid)) {
+            obj[valid] = 1
+          } else {
+            obj[valid]++
+          }
+        }
+      }
+      this.$emit('handlePicEvent', {
+        type: 'submitData',
+        data: obj
+      })
+      console.timeEnd('getPicPix')
+    },
     binaryPic() {
       const width = this.raster.width
       const height = this.raster.height
@@ -150,23 +172,7 @@ export default {
         //   fillColor: 'red'
         // })
         this.binaryPic()
-
-        // black.forEach((item) => {
-        //   this.raster.putImageData(item.data, item.index[0], item.index[1])
-        // })
-        // for (let i = 0; i < width; i++) {
-        //   for (let j = 0; j < height; j++) {
-        //     const cur = imageArr[i][j]
-        //     if (cur.data[0] === 0) {
-        //       filter_black.push(imageArr[i][j])
-        //     } else {
-        //       filter_white.push(imageArr[i][j])
-        //     }
-        //     // this.raster.putImageData(imageArr[i][j], i, j)
-        //   }
-        // }
-        // console.log('filter_white>>>', filter_white)
-        // console.log('filter_black>>>', filter_black)
+        this.getPicPix()
       }
     }
   },

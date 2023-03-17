@@ -105,8 +105,12 @@ div:focus {
 .flex-col-sc {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-content: space-around;
+  justify-content: space-between;
+  align-items: center;
+}
+.border-common {
+  border-radius: 5px;
+  border:1px solid rgb(177, 171, 171);
 }
 .pd5 {
   padding: 5px
