@@ -76,15 +76,15 @@ export default {
       console.warn('down>>>>>>>>')
       this.initPoint = e.point
       // this.raster.setPixel(e.point.x, e.point.y, 'red')
-      // const color = this.raster.getPixel(e.point.x, e.point.y)
-      // console.log('color>>', color)
-      // console.log(`RGB>>>>>${color.red} + ${color.green} + ${color.blue}`)
-      const c = new paper.Path.Rectangle({
-        center: e.point.floor(),
-        size: new paper.Size(0.1),
-        strokeColor: 'green',
-        strokeWidth: 0.1
-      })
+      const color = this.raster.getPixel(e.point.x, e.point.y)
+      console.log('color>>', color)
+      console.log(`RGB>>>>>${color.red} + ${color.green} + ${color.blue} + ${color.alpha}`)
+      // const c = new paper.Path.Rectangle({
+      //   center: e.point.floor(),
+      //   size: new paper.Size(0.1),
+      //   strokeColor: 'green',
+      //   strokeWidth: 0.1
+      // })
     },
     onMouseDrag(e) {
       const delta = this.initPoint.subtract(e.point)
@@ -93,6 +93,34 @@ export default {
         pro.view.setCenter(newCenter)
       })
     },
+    binaryPic() {
+      const width = this.raster.width
+      const height = this.raster.height
+      const imageArr = new Array(width).fill(new Array(height))
+      const resp = []
+      console.time('1')
+      for (let i = 0; i < width; i++) {
+        for (let j = 0; j < height; j++) {
+          const curPixelData = this.raster.getImageData(i, j, 1, 1)
+          const sum = curPixelData.data[0] + curPixelData.data[1] + curPixelData.data[2]
+          if (sum / 3 >= 127) {
+            curPixelData.data[0] = 0
+            curPixelData.data[1] = 0
+            curPixelData.data[2] = 0
+          } else {
+            curPixelData.data[0] = 255
+            curPixelData.data[1] = 255
+            curPixelData.data[2] = 255
+          }
+          resp.push({ data: curPixelData, index: [i, j] })
+          imageArr[i][j] = curPixelData
+        }
+      }
+      console.timeEnd('1')
+      // resp.forEach((item) => {
+      //   this.raster.putImageData(item.data, item.index[0], item.index[1])
+      // })
+    },
     drawPic() {
       this.raster = new paper.Raster({
         source: this.picInfo.src,
@@ -100,19 +128,45 @@ export default {
       })
       this.raster.onLoad = () => {
         this.raster.fitBounds(this.paper.view.bounds, false)
-        this.average = this.raster.getAverageColor()
-        for (let i = 0; i < 100; i++) {
-          const c = new paper.Path.Rectangle({
-            center: new paper.Point(i, 0),
-            size: new paper.Size(1),
-            strokeColor: 'green',
-            strokeWidth: 1
-          })
-        }
+        console.log('this.raster>>>', this.raster)
+        // const topLeft = new paper.Path.Circle({
+        //   center: this.raster.bounds.topLeft,
+        //   radius: 100,
+        //   fillColor: 'red'
+        // })
+        // const topRight = new paper.Path.Circle({
+        //   center: this.raster.bounds.topRight,
+        //   radius: 100,
+        //   fillColor: 'red'
+        // })
+        // const bottomLeft = new paper.Path.Circle({
+        //   center: this.raster.bounds.bottomLeft,
+        //   radius: 100,
+        //   fillColor: 'red'
+        // })
+        // const bottomRight = new paper.Path.Circle({
+        //   center: this.raster.bounds.bottomRight,
+        //   radius: 100,
+        //   fillColor: 'red'
+        // })
+        this.binaryPic()
 
-        this.$emit('handlePicEvent', {
-          loadedSuccess: true
-        })
+        // black.forEach((item) => {
+        //   this.raster.putImageData(item.data, item.index[0], item.index[1])
+        // })
+        // for (let i = 0; i < width; i++) {
+        //   for (let j = 0; j < height; j++) {
+        //     const cur = imageArr[i][j]
+        //     if (cur.data[0] === 0) {
+        //       filter_black.push(imageArr[i][j])
+        //     } else {
+        //       filter_white.push(imageArr[i][j])
+        //     }
+        //     // this.raster.putImageData(imageArr[i][j], i, j)
+        //   }
+        // }
+        // console.log('filter_white>>>', filter_white)
+        // console.log('filter_black>>>', filter_black)
       }
     }
   },

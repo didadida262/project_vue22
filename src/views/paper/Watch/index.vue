@@ -6,32 +6,40 @@
 -->
 
 <template>
-  <div class="test-container pd10">
-    <commonTemplate title="test" />
-    <div class="test-container-content">
-      <PaperPic
-        :picInfo="picInfo"
-        @handlePicEvent="handlePicEvent"
-       />
+  <div class="pixel-container pd10">
+    <commonTemplate title="pixel" />
+    <div class="pixel-container-content flex-col-sc">
+      <div class="pixel-container-content-pic">
+        <PaperPic
+          :picInfo="picInfo"
+          @handlePicEvent="handlePicEvent"
+        />
+      </div>
+      <div
+       ref="pixelEcharts"
+       class="pixel-container-content-echarts">
+      </div>
     </div>
+
   </div>
 </template>
 
 <script>
+import echarts from 'echarts'
 import commonTemplate from '@/components/titleTemplate.vue'
 import PaperPic from './components/PaperPic.vue'
 import paper from 'paper'
 export default {
-  name: 'test',
+  name: 'pixel',
   components: {
     commonTemplate,
     PaperPic
   },
   data() {
     return {
-      title: 'test',
+      title: 'pixel',
       picInfo: {
-        src: require('@/assets/Sam.webp'),
+        src: require('@/assets/slogan.jpg'),
         title: 'PL'
       }
     }
@@ -40,32 +48,19 @@ export default {
   },
   watch: {},
   mounted() {
+    this.initEcharts()
   },
   methods: {
+    initEcharts() {
+      console.log('echarts>>', echarts)
+      // this.pixelEcharts = echarts.init(this.$refs.pixelEcharts)
+    },
     handlePicEvent(event) {
       if (event.loadedSuccess) {
         this.test()
       }
     },
     test() {
-      const raster = paper.project.layers[0].children[0]
-      console.log('paper>>>', paper)
-      console.log('raster>>>', raster)
-      const average = raster.getAverageColor()
-      console.log('getAverageColor>>>', average)
-      // const rect = new paper.Path.Circle({
-      //   center: new paper.Point(0),
-      //   radius: 0.5,
-      //   strokeColor: 'green',
-      //   strokeWidth: 0.1
-      // })
-      // raster.setPixel(new paper.Point(0), average)
-      // const start = raster.bounds.topLeft
-      // const width = raster.width
-      // for (let i = 0; i < width; i++) {
-      //   console.log('???????????')
-      //   raster.setPixel(new paper.Point(start.x + i, start.y), average)
-      // }
     }
   },
   beforeDestroy() {
@@ -75,13 +70,23 @@ export default {
 }
 </script>
 <style scoped lang="scss">
-.test-container {
+.pixel-container {
   width: 100%;
   height: 100%;
   &-content {
     width: 100%;
     height: calc(100% - 80px);
-    border: 1px solid rgb(118, 118, 122, 0.5);
+    border: 1px solid blue;
+    &-pic {
+      width: 100%;
+      height: calc(100% - 580px);
+      border: 1px solid rgb(118, 118, 122, 0.5);
+    }
+    &-echarts {
+      width: 100%;
+      height: 400px;
+      border: 1px solid green;
+    }
   }
 }
 </style>
