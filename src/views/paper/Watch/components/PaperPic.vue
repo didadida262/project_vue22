@@ -30,7 +30,8 @@ export default {
       WIDTH: null,
       HEIGHT: null,
       // 拖动的初始点
-      initPoint: null
+      initPoint: null,
+      picOriginData: null
     }
   },
   methods: {
@@ -93,6 +94,24 @@ export default {
         pro.view.setCenter(newCenter)
       })
     },
+    getOriginData() {
+      const width = this.raster.width
+      const height = this.raster.height
+      const obj = {}
+      console.time('getPicPix')
+      for (let i = 0; i < width; i++) {
+        for (let j = 0; j < height; j++) {
+          const curPixelData = this.raster.getImageData(i, j, 1, 1)
+          const pixValue = Math.floor((curPixelData.data[0] + curPixelData.data[1] + curPixelData.data[2]) / 3)
+          if (!obj.hasOwnProperty(pixValue)) {
+            obj[pixValue] = 1
+          } else {
+            obj[pixValue]++
+          }
+        }
+      }
+      this.picOriginData = obj
+    },
     getPicPix() {
       const width = this.raster.width
       const height = this.raster.height
@@ -109,7 +128,6 @@ export default {
           }
         }
       }
-      console.log('obj>>>>', obj)
       this.$emit('handlePicEvent', {
         type: 'submitData',
         data: obj
@@ -173,6 +191,7 @@ export default {
         //   fillColor: 'red'
         // })
         // this.binaryPic()
+        this.getOriginData()
         this.getPicPix()
       }
     }

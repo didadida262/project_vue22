@@ -10,7 +10,10 @@
     <commonTemplate title="pixel" />
     <div class="flex-cb pd10" style="width: 100%;height:calc(100% - 80px)">
       <div class="pixel-container-operation border-common pd10">
-          <el-button @click="handleBinary">Binary</el-button>
+        <el-button
+         v-for="mode in modeList"
+         :key="mode.key"
+         @click="handleEnhance(mode.key)">{{ mode.name }}</el-button>
       </div>
       <div class="pixel-container-content flex-col-sc">
         <div class="pixel-container-content-pic">
@@ -47,7 +50,17 @@ export default {
         src: require('@/assets/slogan.jpg'),
         title: 'PL',
         mode: 'common'
-      }
+      },
+      modeList: [
+        {
+          name: 'Binary',
+          key: 'binary'
+        }
+        // {
+        //   name: 'Origin',
+        //   key: 'origin'
+        // }
+      ]
     }
   },
   computed: {
@@ -56,9 +69,9 @@ export default {
   mounted() {
   },
   methods: {
-    handleBinary() {
-      console.log('binary_deal')
-      this.picInfo.mode = 'binary'
+    handleEnhance(mode) {
+      console.log('mode>>>', mode)
+      this.picInfo.mode = mode
 
       // this.initEcharts(this.picPixData)
     },
@@ -225,5 +238,8 @@ export default {
       border: 1px solid gray;
     }
   }
+}
+.el-button + .el-button {
+    margin-left: 0px;
 }
 </style>
