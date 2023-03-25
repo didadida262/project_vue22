@@ -8,30 +8,47 @@
 <template>
   <div class="Channel-container pd10">
     <commonTemplate title="Channel1" />
-    <div class="Channel-container-content">
-      频道1
+    <div class="Channel-container-content flex-cc">
+      <div
+        class="Channel-container-content-item"
+        v-for="(channel, index) in channels"
+        :key="index"
+      >
+        <ChatChannel
+          :info="channel"
+        />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import commonTemplate from '@/components/titleTemplate.vue'
+import ChatChannel from './components/ChatChannel.vue'
 
 export default {
   name: 'Channel',
   components: {
-    commonTemplate
+    commonTemplate,
+    ChatChannel
   },
   data() {
     return {
-      title: 'Channel'
+      title: 'WebSocket',
+      channels: [
+      {
+          title: 'Channel1'
+        },
+      {
+        title: 'Channel2'
+      }
+    ]
     }
   },
   computed: {
   },
   watch: {},
   created() {
-    this.connectWebSocket()
   },
   mounted() {
 
@@ -40,32 +57,6 @@ export default {
 
   },
   methods: {
-    connectWebSocket() {
-      // console.log('http://localhost:3000')
-      const wsuri = 'ws://127.0.0.1:3001'
-      this.websock = new WebSocket(wsuri)
-      this.websock.onmessage = this.websocketonmessage
-      this.websock.onopen = this.websocketonopen
-      this.websock.onerror = this.websocketonerror
-      this.websock.onclose = this.websocketclose
-    },
-    websocketonopen() { // 连接建立之后执行send方法发送数据
-      const actions = { 'c1': '12345' }
-      this.websocketsend(JSON.stringify(actions))
-    },
-    websocketonerror() { // 连接建立失败重连
-      console.log('errr>>>>>>>>>>')
-      // this.initWebSocket()
-    },
-    websocketonmessage(e) { // 数据接收
-      console.log('c1接收返回数据1>>>', e.data)
-    },
-    websocketsend(Data) { // 数据发送
-      this.websock.send(Data)
-    },
-    websocketclose(e) { // 关闭
-      console.log('c1断开连接', e)
-    }
   }
 }
 </script>
@@ -77,6 +68,10 @@ export default {
     width: 100%;
     height: calc(100% - 80px);
     border: 1px solid rgb(118, 118, 122, 0.5);
+    &-item {
+      width: 49%;
+      height: 100%;
+    }
   }
 }
 </style>

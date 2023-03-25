@@ -1,17 +1,11 @@
-/*
- * @Author: Hhvcg
- * @Date: 2023-01-30 11:05:10
- * @LastEditors: -_-
- * @Description:  ts测试文件
- */
-
-//
-
-const arr = []
-const obj = {
-  name: 'hhvcg',
-  old: 15
+// 注释节点
+{
+  text: '注释节点',
+  isComment: true
 }
-arr.push(obj)
-obj.old = 100
-console.log(arr)
+
+
+// 文本节点
+{
+  text: '一段文本'
+}

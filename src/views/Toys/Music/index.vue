@@ -146,6 +146,7 @@ export default {
   },
   async created() {
     await this.getMusicCates()
+    this.getSongsList(this.musicCates[0])
     // await this.getSongData(this.musicBox.currentSongIndex)
     window.addEventListener('keydown', this.handleKeyDown)
   },
@@ -200,17 +201,12 @@ export default {
       this.currentCate = {
         ...cate
       }
-      console.log('cate>>', cate)
       this.songlistData = await this.$axios.getSongsList({
         ...cate
       })
-      console.log('songlistData>>', this.songlistData)
     },
     async getMusicCates() {
       this.musicCates = await this.$axios.getMusicCates()
-      console.log('当前所有cate--->', this.musicCates)
-      // this.musicBox.currentSongIndex = Math.floor(Math.random() * this.songsList.length)
-      // console.log('随机值--->', this.musicBox.currentSongIndex)
     },
     handleSongListOperate(info) {
      switch (info.type) {
@@ -235,7 +231,7 @@ export default {
       this.currentMusicInfo = {
         ...song
       }
-      this.playOrStopSong('paused')
+      // 打点
       this.musicBox.currentSongIndex = song.id
       await this.getSongData(song)
       this.initMusic()
@@ -318,6 +314,7 @@ export default {
     },
     // 播放合暂停
     playOrStopSong(flag) {
+      console.log('playOrStopSong>>', flag)
       if (flag === 'playing') {
         this.$refs['logoRef'].style.animationPlayState = 'running'
         this.$refs['audio'].play()
@@ -325,6 +322,7 @@ export default {
         this.$refs['logoRef'].style.animationPlayState = 'paused'
         this.$refs['audio'].pause()
       }
+      
       this.musicBox.status = flag
     },
     // 音量控制
@@ -341,7 +339,6 @@ export default {
     // 初始化播放器
     initMusic() {
       this.$refs['logoRef'].style.setProperty('transform', 'rotate(0deg)', 'important')
-      console.log('??????', this.$refs['logoRef'].style)
       // this.$refs['logoRef'].transform = 'rotate(0)'
     }
   }
@@ -366,7 +363,6 @@ export default {
     left: 0px;
     &-container {
       height: 80px;
-      border: 1px solid white;
     }
     &-songlist {
       height: calc(100% - 100px);
