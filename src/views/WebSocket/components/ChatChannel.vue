@@ -1,12 +1,15 @@
 <template>
   <div class="Channel-container pd10">
     <span class="label">{{  this.info.title  }}</span>
-    <div class="Channel-container-content">
+    <div class="Channel-container-content pd10">
       <div
+      class="Channel-container-content-item"
        v-for="(item, index) in infoList"
        :key="index">
-       <span>{{ item }}</span>
+       <span>{{ item.user }}</span>
+       <span>{{ item.content }}</span>
       </div>
+      <el-divider />
     </div>
     <div class="Channel-container-operation">
       <el-input v-model="message"></el-input>
@@ -27,8 +30,13 @@ export default {
   },
   data() {
     return {
-      infoList: [],
-      message: '默认内容'
+      infoList: [
+        {
+          user: this.info.title,
+          content: '我们的征途，是星辰大海...'
+        }
+      ],
+      message: ''
     }
   },
   computed: {
@@ -45,7 +53,10 @@ export default {
   },
   methods: {
     sendMessage() {
-      this.websocketsend(this.message)
+      this.websocketsend({
+        user: this.info.title,
+        content: this.message
+      })
     },
     connectWebSocket() {
       // console.log('http://localhost:3000')
@@ -57,18 +68,20 @@ export default {
       this.websock.onclose = this.websocketclose
     },
     websocketonopen() { // 连接建立之后执行send方法发送数据
-      const actions = { client: this.info.title }
-      this.$set(this.infoList, this.infoList.length, '我们的征途，是星辰大海...')
-      this.websocketsend('我们的征途，是星辰大海...')
+      const actions = { user: this.info.title, content: '我们的征途，是星辰大海...'}
+      this.websocketsend(JSON.stringify(actions))
     },
     websocketonerror() { // 连接建立失败重连
       console.log('web---err')
     },
     websocketonmessage(e) { // 数据接收
-      this.$set(this.infoList, this.infoList.length, e.data)
+      const data = JSON.parse(e.data)
+      if (data.user !== this.info.title) {
+        this.$set(this.infoList, this.infoList.length, data)
+      }
     },
     websocketsend(Data) { // 数据发送
-      this.websock.send(Data)
+      this.websock.send(JSON.stringify(Data))
     },
     websocketclose(e) { // 关闭
       console.log('c1断开连接', e)
@@ -88,6 +101,14 @@ export default {
   &-content {
     width: 100%;
     height: 70%;
+    border: 1px solid rgb(118, 118, 122, 0.5);
+    &-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      flex-direction: column;
+    }
+
   }
   &-operation {
     width: 100%;
