@@ -20,7 +20,7 @@ import Vuei18n from 'vue-i18n'
 
 // import i18n from '@/i18n'
 import 'normalize.css/normalize.css' // A modern alternative to CSS resets
-
+import VueWorker from 'vue-worker';Vue.use(VueWorker);
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 // import localeEI from 'element-ui/lib/locale/lang/en' // lang i18n

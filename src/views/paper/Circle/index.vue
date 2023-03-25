@@ -114,6 +114,27 @@ export default {
     this.currentProject.remove()
   },
   methods: {
+    testWorker() {
+      this.worker = this.$worker.create([
+      {
+        message:'hello',
+        func: function(e){
+          console.log('接受--hello',e)//hello i am yiye
+      // 接收到消息之后发送
+            return 'hi yiye'
+          }
+      },
+        {
+          message:'world!',
+          func:function(e){
+            console.log(e)
+          }
+        }
+      ])
+    this.worker.postMessage('hello',['i am yiye']).then(function(e){
+      console.log('拿到数据--->:',e); //post: hi yiye
+      })
+    },
     handleSliderCompOperatiopn(data) {
       console.log('收到数据>>', data)
       const circleProject = this.$refs['circle'].paper.projects.filter((project) => project.name === 'circle')[0]
@@ -127,6 +148,7 @@ export default {
   },
   created() {
     console.log('this.circleData>>>', this.circleData)
+    this.testWorker()
   }
 }
 </script>

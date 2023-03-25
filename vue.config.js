@@ -70,6 +70,29 @@ module.exports = {
         '@': resolve('src')
       }
     }
+  // configureWebpack: config => {
+  //   config.module.rules.push({
+  //     test: /\.worker.js$/,
+  //     use: {
+  //       loader: 'worker-loader',
+  //       options: { inline: true, name: 'workerName.[hash].js' }
+  //     }
+  //   })
+  },
+  // chainWebpack: config => {
+  //   config.module
+  // .rule('worker')
+  // .test(/\.worker\.js$/)
+  // .use('worker-loader')
+  // .loader('worker-loader')
+  // .options({
+  // inline: 'fallback'
+  // })
+  // // 解决 "window is undefined", 这是因为 worker 线程中不存在 window 对象, 要用 this 代替
+  // config.output.globalObject('this')
+  // },
+  // // 解决打包的时报错
+  // parallel: false,
     // plugins
     // plugins: [
     //   new webpack.ProvidePlugin({
@@ -79,8 +102,9 @@ module.exports = {
     //     Popper: ['popper.js', 'default']
     //   })
     // ]
-  },
+  // },
   chainWebpack(config) {
+
     // config.plugin('prerender-spa-plugin')
     // .use(new PrerenderSPAPlugin({
     //   //要求-给的WebPack-输出应用程序的路径预渲染。
