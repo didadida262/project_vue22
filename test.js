@@ -1,11 +1,6 @@
-// 注释节点
-{
-  text: '注释节点',
-  isComment: true
-}
+const arr = [1, 2, 3, 4]
+const arr2 = [1, 2, 3, 4]
 
+const res = arr2.every((item) => arr.includes(item))
 
-// 文本节点
-{
-  text: '一段文本'
-}
+console.log('res>>', res)

@@ -129,15 +129,20 @@ export default {
       console.log('断开连接', e)
     },
     test() {
+      const view = this.paper.project.view
+      console.log('>>>>>>>>>>>>>>')
       const path = new paper.Path.Rectangle({
         name: 'test',
         center: this.currentProject.view.center,
-        size: [100, 100],
-        fillColor: 'rgb(153, 0, 255)',
-        selected: true,
+        size: [500, 500],
+        fillColor: 'red',
+        strokeColor: new paper.Color(0, 0, 0, 1),
+        strokeWidth: 3,
         onMouseDown: this.handleTestDown,
         onMouseDrag: this.handleTestDrag
       })
+      console.log('path>>', path)
+      path.style.fillColor.alpha = 0.001
     },
     handleTestDrag(e) {
       e.stopPropagation()
@@ -171,9 +176,10 @@ export default {
       }
     },
     handleTestDown(e) {
+      console.log('hitResult>>', hitResult)
+
       e.stopPropagation()
       const hitResult = this.currentProject.hitTest(e.point, this.hitOptions)
-      console.log('hitResult>>', hitResult)
       if (hitResult) {
         if (hitResult.type === 'segment') {
           console.warn('segment>>')
