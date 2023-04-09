@@ -1,6 +1,29 @@
-const arr = [1, 2, 3, 4]
-const arr2 = [1, 2, 3, 4]
 
-const res = arr2.every((item) => arr.includes(item))
+const test = {
+  name: 'hhvcg',
+  old: 10
+}
 
-console.log('res>>', res)
+// const p = new Promise((resolve, reject) => {
+//   // rejected()
+//   // resolve()
+//   reject()
+// })
+
+// p.then(() => {
+//   console.log('resolve')
+// })
+// p.catch(() => {
+//   console.log('reject')
+// })
+// console.log('p>>', p)
+
+const arr = new Array(1000).fill(0)
+
+console.time('time')
+// for (let i = 0, len = arr.length; i < len; i++) {
+for (let i = 0; i < arr.length; i++) {
+  console.log('i>>', i)
+}
+console.timeEnd('time')
+

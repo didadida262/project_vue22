@@ -21,6 +21,8 @@
       <el-button size="small" type="primary">点击上传</el-button>
       <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
     </el-upload>
+    <child :info="testData"/>
+    <el-button @click="changeData">change</el-button>
   </div>
 </template>
 
@@ -28,11 +30,14 @@
 import { mapGetters } from 'vuex'
 import paper from 'paper'
 import bus from '@/api/eventBus'
+import child from './child.vue'
 // import { getRandomColor, getCirclePoint } from '@/utils/weapons'
 
 export default {
   name: 'Dashboard',
-
+  components: {
+    child
+  },
   computed: {
     ...mapGetters([
       'name'
@@ -43,6 +48,10 @@ export default {
   },
   data() {
     return {
+      testData: {
+        name: 'hhvcg',
+        old: 15
+      },
       respBlob: [],
       fileList: [],
       hitResult: null,
@@ -86,6 +95,7 @@ export default {
     })
   },
   mounted() {
+    this.testPostTask()
     this.initWorld()
     console.time('test')
     this.test()
@@ -101,6 +111,22 @@ export default {
   },
 
   methods: {
+    testPostTask() {
+      scheduler.postTask(() => {
+        console.log('1')
+      }, { priority: 'background' })
+
+      scheduler.postTask(() => {
+        console.log('2')
+      }, { priority: 'user-blocking' })
+      scheduler.postTask(() => {
+        console.log('3')
+      }, { priority: 'background' })
+    },
+    changeData() {
+      console.log('???')
+      this.testData.old++
+    },
     testWebSocket() {
       // console.log('http://localhost:3000')
       const wsuri = 'ws://127.0.0.1:3001'
