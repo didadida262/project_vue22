@@ -21,6 +21,8 @@
       <el-button size="small" type="primary">点击上传</el-button>
       <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
     </el-upload>
+    <child :info="testData"/>
+    <el-button @click="changeData">change</el-button>
   </div>
 </template>
 
@@ -28,12 +30,18 @@
 import { mapGetters } from 'vuex'
 import paper from 'paper'
 import bus from '@/api/eventBus'
+<<<<<<< HEAD
 import { getRandomColor } from '@/utils/weapons'
+=======
+import child from './child.vue'
+>>>>>>> 4ac935bcb3eb15e3765de1a18f827e597ca7ebdd
 // import { getRandomColor, getCirclePoint } from '@/utils/weapons'
 
 export default {
   name: 'Dashboard',
-
+  components: {
+    child
+  },
   computed: {
     ...mapGetters([
       'name'
@@ -44,8 +52,15 @@ export default {
   },
   data() {
     return {
+<<<<<<< HEAD
     circleData: require('@/api/circleData'),
 
+=======
+      testData: {
+        name: 'hhvcg',
+        old: 15
+      },
+>>>>>>> 4ac935bcb3eb15e3765de1a18f827e597ca7ebdd
       respBlob: [],
       fileList: [],
       hitResult: null,
@@ -89,6 +104,7 @@ export default {
     })
   },
   mounted() {
+    this.testPostTask()
     this.initWorld()
     this.draw()
     console.time('test')
@@ -151,9 +167,10 @@ export default {
       }
     },
     handleTestDown(e) {
+      console.log('hitResult>>', hitResult)
+
       e.stopPropagation()
       const hitResult = this.currentProject.hitTest(e.point, this.hitOptions)
-      console.log('hitResult>>', hitResult)
       if (hitResult) {
         if (hitResult.type === 'segment') {
           console.warn('segment>>')
