@@ -16,6 +16,8 @@
 </template>
 <script>
 import paper from 'paper'
+import { getRandomColor } from '@/utils/weapons'
+
 export default {
   name: 'paperpicsample',
   props: {
@@ -81,6 +83,24 @@ export default {
       this.paper.view.onMouseMove = this.onMouseMove
       this.paper.view.onMouseUp = this.onMouseUp
     },
+    draw() {
+      console.time('timer')
+
+      for (let i = 0; i < 5000; i++) {
+        const c = new paper.Path.Circle({
+          center: this.random(),
+          radius: 10,
+          fillColor: getRandomColor()
+        })
+      }
+
+      console.timeEnd('timer')
+
+    },
+    random() {
+      return paper.Point.random().multiply(this.WIDTH, this.HEIGHT)
+    },
+
     onMouseDown(e) {
       this.currentProject.activate()
       this.$emit('handleChangePaperScope', this.picInfo)
@@ -102,6 +122,7 @@ export default {
   },
   mounted() {
     this.init()
+    this.draw()
     this.drawPic()
   },
   beforeDestroy() {

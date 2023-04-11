@@ -291,6 +291,12 @@ export const constantRoutes = [
         name: 'Picturewall',
         component: () => import('@/views/paper/PictureWall/index'),
         meta: { title: 'Picturewall', icon: 'table' }
+      },
+      {
+        path: 'testpaper',
+        name: 'testpaper',
+        component: () => import('@/views/paper/TestPaper/index'),
+        meta: { title: 'testpaper', icon: 'table' }
       }
     ]
   },

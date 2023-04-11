@@ -28,6 +28,7 @@
 import { mapGetters } from 'vuex'
 import paper from 'paper'
 import bus from '@/api/eventBus'
+import { getRandomColor } from '@/utils/weapons'
 // import { getRandomColor, getCirclePoint } from '@/utils/weapons'
 
 export default {
@@ -43,6 +44,8 @@ export default {
   },
   data() {
     return {
+    circleData: require('@/api/circleData'),
+
       respBlob: [],
       fileList: [],
       hitResult: null,
@@ -87,8 +90,8 @@ export default {
   },
   mounted() {
     this.initWorld()
+    this.draw()
     console.time('test')
-    this.test()
     // this.testWebSocket()
     console.timeEnd('test')
     this.$nextTick(() => {
@@ -101,43 +104,20 @@ export default {
   },
 
   methods: {
-    testWebSocket() {
-      // console.log('http://localhost:3000')
-      const wsuri = 'ws://127.0.0.1:3001'
-      this.websock = new WebSocket(wsuri)
-      this.websock.onmessage = this.websocketonmessage
-      this.websock.onopen = this.websocketonopen
-      this.websock.onerror = this.websocketonerror
-      this.websock.onclose = this.websocketclose
+    random() {
+      return paper.Point.random().multiply(this.WIDTH, this.HEIGHT)
     },
-    websocketonopen() { // 连接建立之后执行send方法发送数据
-      const actions = { 'test': '12345' }
-      this.websocketsend(JSON.stringify(actions))
-    },
-    websocketonerror() { // 连接建立失败重连
-      console.log('errr>>>>>>>>>>')
-      // this.initWebSocket()
-    },
-    websocketonmessage(e) { // 数据接收
-      console.log('sockect返回数据1>>>', e.data)
-      console.log('sockect返回数据2>>>', typeof e.data)
-    },
-    websocketsend(Data) { // 数据发送
-      this.websock.send(Data)
-    },
-    websocketclose(e) { // 关闭
-      console.log('断开连接', e)
-    },
-    test() {
-      const path = new paper.Path.Rectangle({
-        name: 'test',
-        center: this.currentProject.view.center,
-        size: [100, 100],
-        fillColor: 'rgb(153, 0, 255)',
-        selected: true,
-        onMouseDown: this.handleTestDown,
-        onMouseDrag: this.handleTestDrag
-      })
+    draw() {
+      console.time('draw')
+      for (let i =0; i < 10000; i++) {
+        const c = new paper.Path.Circle({
+          center: this.random(),
+          fillColor: getRandomColor(),
+          radius: 10
+        })
+      }
+      console.timeEnd('draw')
+
     },
     handleTestDrag(e) {
       e.stopPropagation()
@@ -248,7 +228,7 @@ export default {
       this.paper.view.onFrame = this.onFrame
       // this.paper.view.onMouseDown = (e) => { this.onMouseDown(e) }
       // this.paper.view.onMouseDrag = (e) => { this.onMouseDrag(e) }
-      this.paper.view.setCenter(0, 0)
+      // this.paper.view.setCenter(0, 0)
       console.log('this.paper', this.paper)
       // console.log('ctx.gggg', ctx.getImageData(this.currentProject.view.bounds))
       const testLayer = new paper.Layer({

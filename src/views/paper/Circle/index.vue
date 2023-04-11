@@ -119,7 +119,7 @@ export default {
       {
         message:'hello',
         func: function(e){
-          console.log('接受--hello',e)//hello i am yiye
+          // console.log('接受--hello',e)//hello i am yiye
       // 接收到消息之后发送
             return 'hi yiye'
           }
@@ -127,27 +127,29 @@ export default {
         {
           message:'world!',
           func:function(e){
-            console.log(e)
+            // console.log(e)
           }
         }
       ])
     this.worker.postMessage('hello',['i am yiye']).then(function(e){
-      console.log('拿到数据--->:',e); //post: hi yiye
+      // console.log('拿到数据--->:',e); //post: hi yiyeasd
       })
     },
     handleSliderCompOperatiopn(data) {
-      console.log('收到数据>>', data)
+      // console.log('收到数据>>', data)
       const circleProject = this.$refs['circle'].paper.projects.filter((project) => project.name === 'circle')[0]
       const targetLayer = circleProject.layers[data.layer]
-      console.log('circleProject>>', circleProject)
-      console.log('targetLayer>>', targetLayer)
+      // console.log('circleProject>>', circleProject)
+      // console.log('targetLayer>>', targetLayer)
       if (targetLayer) {
         targetLayer.opacity = data.data
       }
     }
   },
   created() {
-    console.log('this.circleData>>>', this.circleData)
+    // console.log('es6>>', es6)
+    require('./myWorker')
+    // console.log('this.circleData>>>', this.circleData)
     this.testWorker()
   }
 }

@@ -119,7 +119,8 @@ export default {
           title: 'PL',
           src: require('@/assets/bigPic2.png'),
           key: 1
-        }
+        },
+
         // {
         //   title: '3',
         //   src: require('@/assets/Sam.webp'),
