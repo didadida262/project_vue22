@@ -46,7 +46,7 @@ export default {
 }
 .articleItem-container:hover {
   cursor: pointer;
-  border-bottom: 5px solid gray;
+  animation: jitter 0.5s linear infinite;
 }
 
 </style>

@@ -5,3 +5,33 @@
  * @Description: 搜集各种动画效果 
  */
 
+//  文本阴影抖动
+ @keyframes jitter{
+  0%,
+  25% {
+      text-shadow: 2px 2px 2px #63ff8a;
+  }
+
+  50% {
+      text-shadow: 2px -2px 2px #63ff8a;
+  }
+
+  75% {
+      text-shadow: -2px 2px 2px #63ff8a;
+  }
+
+  100% {
+      text-shadow: -2px -2px 2px #63ff8a;
+  }
+}
+
+@keyframes flowCss {
+  0% {
+      /* 移动背景位置 */
+      background-position: 0 0;
+  }
+
+  100% {
+      background-position: -400% 0;
+  }
+}
