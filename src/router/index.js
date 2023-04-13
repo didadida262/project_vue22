@@ -323,6 +323,37 @@ export const constantRoutes = [
       }
     ]
   },
+  // blog专栏
+  {
+    path: '/blog',
+    redirect: '/blog/main',
+    name: 'Blog',
+    component: Layout,
+    meta: {
+      title: 'Blog',
+      icon: 'blog'
+    },
+    children: [
+      {
+        path: 'main',
+        component: () => import('@/views/Blog/Main/index'),
+        name: 'main',
+        meta: {
+          title: 'Main',
+          icon: 'blog'
+        }
+      },
+      {
+        path: 'list',
+        component: () => import('@/views/Blog/List/index'),
+        name: 'list',
+        meta: {
+          title: 'List',
+          icon: 'blog'
+        }
+      }
+    ]
+  },
 
   // all kinds of toys...
   {

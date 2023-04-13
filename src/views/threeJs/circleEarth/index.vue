@@ -76,7 +76,7 @@ export default {
     setPoint() {
       // 光源设置
       // 点光
-      const point = new Three.PointLight(0xffffff, 0.2)
+      const point = new Three.PointLight(0xffffff, 2)
       point.position.set(2, 200, 300)
       this.scene.add(point)
       // 测试点
