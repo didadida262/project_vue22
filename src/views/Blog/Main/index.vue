@@ -2,23 +2,50 @@
 <template>
   <div class="blogMain-container pd10">
     <commonTemplate title="blogMain" />
-    <div class="blogMain-container-content">
-      blog...main
+    <div class="blogMain-container-content flex-cb">
+      <div class="blogMain-container-content-cate">
+        <div
+         v-for="(item, index) in articleCateList"
+         :key="index"
+         >
+          <Article-Item
+            :info="item"
+          />
+        </div>
+
+      </div>
+      <div class="blogMain-container-content-articleContent"></div>
     </div>
   </div>
 </template>
 
 <script>
 import commonTemplate from '@/components/titleTemplate.vue'
+import ArticleItem from './components/ArticleItem/index.vue'
 
 export default {
   name: 'blogMain',
   components: {
-    commonTemplate
+    commonTemplate,
+    ArticleItem
   },
   data() {
     return {
-      title: 'blogMain'
+      title: 'blogMain',
+      articleCateList: [
+        {
+          name: 'Vue',
+          key: 'vue'
+        },
+        {
+          name: '性能优化',
+          key: 'eff'
+        },
+        {
+          name: 'Canvas',
+          key: 'canvas'
+        }
+      ]
     }
   },
   computed: {
@@ -42,7 +69,15 @@ export default {
   &-content {
     width: 100%;
     height: calc(100% - 80px);
-    border: 1px solid rgb(118, 118, 122, 0.5);
+    &-cate {
+      width: 200px;
+      height: 100%;
+    }
+    &-articleContent {
+      width: calc(100% - 210px);
+      border: 1px solid rgb(118, 118, 122, 0.5);
+      height: 100%;
+    }
   }
 }
 </style>
