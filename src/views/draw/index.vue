@@ -114,12 +114,12 @@ export default {
           // src: 'https://cms-assets.tutsplus.com/uploads/users/1251/posts/26530/image/BenderPaper.jpg'
           src: require('@/assets/bigPic.png'),
           key: 0
-        },
-        {
-          title: 'PL',
-          src: require('@/assets/bigPic2.png'),
-          key: 1
-        },
+        }
+        // {
+        //   title: 'PL',
+        //   src: require('@/assets/bigPic2.png'),
+        //   key: 1
+        // }
 
         // {
         //   title: '3',

@@ -77,7 +77,7 @@ export default {
       paper.setup(canvas)
       this.paper = paper
       this.paper.project.name = this.picContainer
-      this.paper.view.setCenter(0, 0)
+      // this.paper.view.setCenter(0, 0)
       this.paper.view.onMouseDown = this.onMouseDown
       this.paper.view.onMouseDrag = this.onMouseDrag
       this.paper.view.onMouseMove = this.onMouseMove
@@ -85,17 +85,33 @@ export default {
     },
     draw() {
       console.time('timer')
-
-      for (let i = 0; i < 5000; i++) {
+      // circle
+      for (let i = 0; i < 8000; i++) {
         const c = new paper.Path.Circle({
           center: this.random(),
           radius: 10,
           fillColor: getRandomColor()
         })
       }
+      // pointText
+      // for (let i = 0; i < 8000; i++) {
+      //   const defectName = new paper.PointText({
+      //     point: this.random(),
+      //     content: 'ceshi',
+      //     justification: 'center',
+      //     fillColor: getRandomColor()
+      //     // fontWeight: 'bold'
+      //   })
+      // }
+      // for (let i = 0; i < 10000; i++) {
+      //   const defectBorder = new paper.Path.Rectangle({
+      //     center: this.random(),
+      //     size: new paper.Size(10),
+      //     fillColor: getRandomColor()
+      //   })
+      // }
 
       console.timeEnd('timer')
-
     },
     random() {
       return paper.Point.random().multiply(this.WIDTH, this.HEIGHT)
@@ -123,7 +139,7 @@ export default {
   mounted() {
     this.init()
     this.draw()
-    this.drawPic()
+    // this.drawPic()
   },
   beforeDestroy() {
     const currentProject = this.paper.projects.filter((p) => p.name === this.picContainer)

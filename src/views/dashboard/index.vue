@@ -30,11 +30,8 @@
 import { mapGetters } from 'vuex'
 import paper from 'paper'
 import bus from '@/api/eventBus'
-<<<<<<< HEAD
 import { getRandomColor } from '@/utils/weapons'
-=======
 import child from './child.vue'
->>>>>>> 4ac935bcb3eb15e3765de1a18f827e597ca7ebdd
 // import { getRandomColor, getCirclePoint } from '@/utils/weapons'
 
 export default {
@@ -52,15 +49,11 @@ export default {
   },
   data() {
     return {
-<<<<<<< HEAD
-    circleData: require('@/api/circleData'),
-
-=======
+      circleData: require('@/api/circleData'),
       testData: {
         name: 'hhvcg',
         old: 15
       },
->>>>>>> 4ac935bcb3eb15e3765de1a18f827e597ca7ebdd
       respBlob: [],
       fileList: [],
       hitResult: null,
@@ -125,7 +118,7 @@ export default {
     },
     draw() {
       console.time('draw')
-      for (let i =0; i < 10000; i++) {
+      for (let i = 0; i < 10000; i++) {
         const c = new paper.Path.Circle({
           center: this.random(),
           fillColor: getRandomColor(),
@@ -133,7 +126,6 @@ export default {
         })
       }
       console.timeEnd('draw')
-
     },
     handleTestDrag(e) {
       e.stopPropagation()
