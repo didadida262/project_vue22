@@ -1,3 +1,9 @@
+/*
+ * @Author: Hhvcg
+ * @Date: 2023-01-30 11:05:10
+ * @LastEditors: -_-
+ * @Description:
+ */
 
 const test = {
   name: 'hhvcg',
@@ -21,7 +27,6 @@ const test = {
 const arr = new Array(1000).fill(0)
 
 console.time('time')
-// for (let i = 0, len = arr.length; i < len; i++) {
 for (let i = 0; i < arr.length; i++) {
   console.log('i>>', i)
 }
