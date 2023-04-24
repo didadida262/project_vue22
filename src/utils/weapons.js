@@ -105,7 +105,6 @@ export const getAnotherPoint = (val, radius) => {
   return Math.sqrt(Math.pow(radius, 2) - Math.pow(Math.abs(val), 2))
 }
 
-
 /**
  * @description: 解压zip取出csv文件获取数据
  * @param {* zip-blob}
@@ -136,4 +135,4 @@ export const dealZipDefectsFile = (data) => {
       })
     })
   })
-},
+}

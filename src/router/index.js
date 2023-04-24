@@ -143,12 +143,6 @@ export const constantRoutes = [
         name: 'channelone',
         component: () => import('@/views/WebSocket/channelOne'),
         meta: { title: 'channelone', icon: 'Raster' }
-      },
-      {
-        path: 'channeltwo',
-        name: 'channeltwo',
-        component: () => import('@/views/WebSocket/channelTwo'),
-        meta: { title: 'channeltwo', icon: 'Raster' }
       }
     ]
   },
