@@ -1,29 +1,10 @@
-
 /*
- *                        .::::.
- *                      .::::::::.
- *                     :::::::::::
- *                  ..:::::::::::'
- *               '::::::::::::'
- *                 .::::::::::
- *            '::::::::::::::..
- *                 ..::::::::::::.
- *               ``::::::::::::::::
- *                ::::``:::::::::'        .:::.
- *               ::::'   ':::::'       .::::::::.
- *             .::::'      ::::     .:::::::'::::.
- *            .:::'       :::::  .:::::::::' ':::::.
- *           .::'        :::::.:::::::::'      ':::::.
- *          .::'         ::::::::::::::'         ``::::.
- *      ...:::           ::::::::::::'              ``::.
- *     ````':.          ':::::::::'                  ::::..
- *                        '.:::::'                    ':'````..
- *
  * @Author: Hhvcg
- * @Date: 2022-02-28 10:07:23
- * @LastEditors: -_-
+ * @Date: 2022-06-01 19:41:20
+ * @LastEditors: Hhvcg
  * @Description: 军武库
  */
+
 // const fs = require('fs')
 // const path = require('path')
 // const crypto = require('crypto')
@@ -123,3 +104,36 @@ export const getLineData = (point, radius) => {
 export const getAnotherPoint = (val, radius) => {
   return Math.sqrt(Math.pow(radius, 2) - Math.pow(Math.abs(val), 2))
 }
+
+
+/**
+ * @description: 解压zip取出csv文件获取数据
+ * @param {* zip-blob}
+ * @return {* data}
+ */
+export const dealZipDefectsFile = (data) => {
+  const startTime = Date.now()
+  // console.log('开始时间>>>', startTime)
+  // 解压
+  // eslint-disable-next-line new-cap
+  const zip = new jsZip()
+  zip.loadAsync(data).then((response) => {
+    const finiTime = Date.now()
+    // console.log('解压成功时间>>>', finiTime)
+    // console.log('解压成功,耗时>>>', finiTime - startTime)
+    const keys = Object.keys(response.files)
+    const csv = response.files[keys[0]]
+    csv.async('uint8array').then((data) => {
+      const blob = new File([data], csv.name)
+      Papa.parse(blob, {
+        header: true,
+        complete: (csvData) => {
+          const finiGetDataTime = Date.now()
+          // console.log('读取数据时间>>>', finiGetDataTime)
+          const t = finiGetDataTime - startTime
+          console.log('最终数据>>>', csvData)
+        }
+      })
+    })
+  })
+},
