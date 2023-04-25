@@ -1,11 +1,9 @@
-/* eslint-disable new-cap */
 /*
  * @Author: Hhvcg
  * @Date: 2022-03-11 17:26:22
- * @LastEditors: -_-
+ * @LastEditors: Hhvcg
  * @Description: boid类文件
  */
-/* eslint-disable no-mixed-spaces-and-tabs */
 import paper from 'paper'
 // import { getRandomColor } from '@/utils/weapons'
 
@@ -14,14 +12,14 @@ export class Boid {
   constructor(position, maxSpeed, maxForce) {
     this.position = position
     this.radius = 30
-
     // 尾巴点数[10， 14]
     this.tailAmount = Math.random() * 5 + 10
-
+    this.neckAmount = 3
     // 蝌蚪移动速度，此值极其重要，关系到蝌蚪实例的生命力
     this.acceleration = new paper.Point()
 
     // vector这个变量，决定了下一帧，或者说是下一时刻，小蝌蚪的运动目的地
+    // eslint-disable-next-line new-cap
     this.vector = new paper.Point.random()
 
     // 取值范围:[10, 10.5),干嘛的未知
@@ -32,7 +30,10 @@ export class Boid {
     this.count = 0
     this.createItems()
   }
-  // 初始化蝌蚪的身体各组成部分
+  /**
+   * @description: 初始化蝌蚪的颈部尾巴的各个点位
+   * @return {*}
+   */
   createItems() {
     // 椭圆，代表蝌蚪的头部
     this.head = new paper.Shape.Ellipse({
@@ -40,6 +41,15 @@ export class Boid {
       size: [15, 10],
       fillColor: 'orange'
     })
+    // 颈部
+    this.shortPath = new paper.Path({
+      strokeColor: 'white',
+      strokeWidth: 4,
+      strokeCap: 'round'
+    })
+    for (let i = 0; i < this.neckAmount; i++) {
+      this.shortPath.add(new paper.Point())
+    }
     // 尾巴
     this.path = new paper.Path({
       strokeColor: 'green',
@@ -50,19 +60,17 @@ export class Boid {
     for (let i = 0; i < this.tailAmount; i++) {
       this.path.add(new paper.Point())
     }
-    // 颈部
-    this.shortPath = new paper.Path({
-      strokeColor: 'white',
-      strokeWidth: 4,
-      strokeCap: 'round'
-    })
-    for (let i = 0; i < 3; i++) {
-      this.shortPath.add(new paper.Point())
-    }
+
     // 截止此时，除了头部已经画出，颈部及尾巴均没有实际画出，实质上是通过加point的方式，埋了几个坑位
-    // 为什么此时不画出颈部和尾巴呢？因为方向未知
+    // 为什么此时不画出颈部和尾巴呢？
     // 颈部和尾巴都是线段，通过add的方式添加点坑位，其值存储在各自的segments。这种纯线段图形，没有children
   }
+  /**
+   * @description: run起来...
+   * @param {*} boids
+   * @param {*} groupTogether
+   * @return {*}
+   */
   run(boids, groupTogether) {
     // 记录当前蝌蚪位置
     this.lastLoc = this.position.clone()
@@ -78,9 +86,12 @@ export class Boid {
     this.calculateTail()
     this.moveHead()
   }
-  // We accumulate a new acceleration each time based on three rules
+  /**
+   * @description: We accumulate a new acceleration each time based on three rules
+   * @param {*} boids
+   * @return {*} update acceleration
+   */
   flock(boids) {
-    // 打点
     // 分离
     const separation = this.separate(boids).multiply(3)
     // 对齐
@@ -90,7 +101,7 @@ export class Boid {
     this.acceleration = this.acceleration.add(separation)
     this.acceleration = this.acceleration.add(alignment)
     this.acceleration = this.acceleration.add(cohesion)
-    // 此处三个向量之计算，严重关系到电子蝌蚪的活力
+    // 此处三个向量更新acceleration属性值，严重关系到电子蝌蚪的活力
   }
   // 注意，此处的参数，是当前所有的蝌蚪数组
   separate(boids) {
@@ -187,8 +198,10 @@ export class Boid {
     steer.length = Math.min(this.maxForce, steer.length)
     return steer
   }
-  // 如果越界，对身体各组件位置处理
-  // 学好数理化，走遍天下都不怕，此处可见数学的威力
+  /**
+   * @description: 如果越界，对身体各组件位置处理---学好数理化，走遍天下都不怕，此处可见数学的威力
+   * @return {*}
+   */
   judeBorders() {
     const vector = new paper.Point()
     const position = this.position
@@ -214,7 +227,10 @@ export class Boid {
       }
     }
   }
-  // 顾名思义，每帧更新蝌蚪位置position
+  /**
+   * @description: 顾名思义，每帧更新蝌蚪位置position
+   * @return {*}
+   */
   updatePosition() {
     // updatePosition velocity
     this.vector = this.vector.add(this.acceleration)
@@ -224,8 +240,11 @@ export class Boid {
     // Reset acceleration to 0 each cycle
     this.acceleration = new paper.Point()
   }
+  /**
+   * @description: 处理颈部及尾巴
+   * @return {*}
+   */
   calculateTail() {
-    //   处理颈部及尾巴
     const segments = this.path.segments
     const shortSegments = this.shortPath.segments
     const speed = this.vector.length
@@ -244,14 +263,15 @@ export class Boid {
       const sway = lastVector.rotate(90).normalize(wave)
       point = point.add(lastVector.normalize(pieceLength), sway)
       segments[i].point = point
-      if (i < 3) { shortSegments[i].point = point }
+      if (i < this.neckAmount) { shortSegments[i].point = point }
       lastVector = vector
     }
     this.path.smooth()
+    this.shortPath.smooth()
   }
   moveHead() {
     this.head.position = this.position
-    this.head.rotation = this.vector.angle
+    // this.head.rotation = this.vector.angle
   }
   arrive(target) {
     this.acceleration = this.acceleration.add(this.steer(target, true))
