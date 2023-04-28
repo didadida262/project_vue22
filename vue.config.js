@@ -93,18 +93,17 @@ module.exports = {
   // },
   // // 解决打包的时报错
   // parallel: false,
-    // plugins
-    // plugins: [
-    //   new webpack.ProvidePlugin({
-    //     $: 'jquery',
-    //     jQuery: 'jquery',
-    //     'window.jQuery': 'jquery',
-    //     Popper: ['popper.js', 'default']
-    //   })
-    // ]
+  // plugins
+  // plugins: [
+  //   new webpack.ProvidePlugin({
+  //     $: 'jquery',
+  //     jQuery: 'jquery',
+  //     'window.jQuery': 'jquery',
+  //     Popper: ['popper.js', 'default']
+  //   })
+  // ]
   // },
   chainWebpack(config) {
-
     // config.plugin('prerender-spa-plugin')
     // .use(new PrerenderSPAPlugin({
     //   //要求-给的WebPack-输出应用程序的路径预渲染。
