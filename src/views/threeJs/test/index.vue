@@ -7,6 +7,8 @@
 
 import * as Three from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader"
+import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader"
 export default {
   data() {
     return {
@@ -27,7 +29,6 @@ export default {
 
   methods: {
     animate() {
-      console.log('执行>>>>')
       requestAnimationFrame(this.animate)
       // mesh.rotation.x += 0.01
       // mesh.rotation.y += 0.02
@@ -74,6 +75,24 @@ export default {
       this.camera = new Three.OrthographicCamera(-s * k, s * k, s, -s, 1, 1000)
       this.camera.position.set(200, 300, 200) // 设置相机位置
       this.camera.lookAt(this.scene.position) // 设置相机方向(指向的场景对象)
+      const axesHelper = new Three.AxesHelper(500)
+      axesHelper.setColors('red', 'green', 'orange')
+      this.scene.add(axesHelper)
+
+      const dracoLoader = new DRACOLoader()
+      // 导入模型
+      // three/examples/js/libs/draco/gltf
+      dracoLoader.setDecoderPath("./draco/gltf/")
+      dracoLoader.preload()
+      const loader = new GLTFLoader()
+      console.log('dracoLoader>>',dracoLoader)
+      loader.setDRACOLoader(dracoLoader)
+      loader.load('./Pistol_Model.glb', (gltf) => {
+        console.log('success!!!')
+        const air = gltf.scene
+        scene.add(air)
+      })
+
       /**
        * 创建渲染器对象
        */
@@ -83,6 +102,12 @@ export default {
       container.appendChild(this.renderer.domElement) // body元素中插入canvas对象
       // 执行渲染操作   指定场景、相机作为参数
       this.renderer.render(this.scene, this.camera)
+
+      // 轨道
+      const orbit = new OrbitControls(this.camera, this.renderer.domElement)
+      // 设置控制器阻尼
+      orbit.enableDamping = true
+
     }
   }
 }

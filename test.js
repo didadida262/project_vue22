@@ -1,34 +1,18 @@
-/*
- * @Author: Hhvcg
- * @Date: 2023-01-30 11:05:10
- * @LastEditors: -_-
- * @Description:
- */
 
-const test = {
-  name: 'hhvcg',
-  old: 10
-}
+const arr = [1,2,3,4,5, 5,5,5]
 
-// const p = new Promise((resolve, reject) => {
-//   // rejected()
-//   // resolve()
-//   reject()
-// })
 
-// p.then(() => {
-//   console.log('resolve')
-// })
-// p.catch(() => {
-//   console.log('reject')
-// })
-// console.log('p>>', p)
+// 求和
+const sum = arr.reduce((prev, cur) => {
+  return prev + cur;
+}, 0);
 
-const arr = new Array(1000).fill(0)
+console.log('sum>>', sum)
 
-console.time('time')
-for (let i = 0; i < arr.length; i++) {
-  console.log('i>>', i)
-}
-console.timeEnd('time')
+// 数组去重
+const singleArr = arr.reduce((pre, cur) => {
+  pre.indexOf(cur) === -1 && pre.push(cur)  
+  return pre
+}, [])
 
+console.log('singleArr>',singleArr)
