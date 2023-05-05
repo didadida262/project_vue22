@@ -22,7 +22,7 @@
 
 <script>
 export default {
-  name: 'OfflineAnalysis',
+  name: 'dialog',
   props: ['dialogVisible']
 
 }
