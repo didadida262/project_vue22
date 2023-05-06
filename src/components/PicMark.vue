@@ -86,7 +86,7 @@ export default {
     draw() {
       console.time('timer')
       // circle
-      for (let i = 0; i < 8000; i++) {
+      for (let i = 0; i < 4000; i++) {
         const c = new paper.Path.Circle({
           center: this.random(),
           radius: 10,

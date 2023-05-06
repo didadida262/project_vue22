@@ -36,13 +36,13 @@ export default {
     return {
       title: 'WebSocket',
       channels: [
-      {
+        {
           title: 'Channel1'
         },
-      {
-        title: 'Channel2'
-      }
-    ]
+        {
+          title: 'Channel2'
+        }
+      ]
     }
   },
   computed: {
