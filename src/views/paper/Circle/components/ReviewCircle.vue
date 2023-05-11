@@ -1,7 +1,7 @@
 <!--
  * @Author: Hhvcg
  * @Date: 2022-08-29 11:42:53
- * @LastEditors: -_-
+ * @LastEditors: Hhvcg
  * @Description: 圆框点数据基础组件，包含外圆层、晶圆片点数据层（包含内圆）、网格层、十字移动层、密度图层、明场、暗场层。同时输出点击事件的数据输出，该组件是一个多图层的架构
                 getXYData:输出move信息；getClickData：输出click点数据
 -->
@@ -184,10 +184,10 @@ export default {
           center: new paper.Point(item.pos_x, item.pos_y),
           radius: 3,
           // shadowColor: this.classColors[item.class_id],
-          // shadowColor: 'black',
-          // shadowOffset: new paper.Point(0.1),
-          // // 模糊距离
-          // shadowBlur: new paper.Point(20),
+          shadowColor: 'black',
+          shadowOffset: new paper.Point(0.1),
+          // 模糊距离
+          shadowBlur: new paper.Point(20),
           // fillColor: this.classColors[item.class_id]
           fillColor: 'black'
         })

@@ -1,7 +1,7 @@
 <!--
  * @Author: Hhvcg
  * @Date: 2022-07-06 17:59:06
- * @LastEditors: -_-
+ * @LastEditors: Hhvcg
  * @Description: threejs相关特性探索
 -->
 
@@ -12,6 +12,8 @@
 <script>
 
 import * as Three from 'three'
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
+import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 export default {
   data() {
@@ -29,9 +31,20 @@ export default {
   mounted() {
     this.initWorld()
     this.animated()
+    this.addModel()
   },
 
   methods: {
+    addModel() {
+      // 导入模型
+      const loader = new GLTFLoader()
+      const dracoLoader = new DRACOLoader()
+      dracoLoader.setDecoderPath('./draco/')
+      loader.setDRACOLoader(dracoLoader)
+      loader.load('./air.glb', function() {
+        console.log('success!!!')
+      })
+    },
     // 按帧数执行
     animated() {
       requestAnimationFrame(this.animated)
