@@ -7,8 +7,8 @@
 
 import * as Three from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader"
-import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader"
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
+import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader'
 export default {
   data() {
     return {
@@ -48,7 +48,6 @@ export default {
       this.scene = new Three.Scene()
       this.geometry = new Three.SphereBufferGeometry(60, 40, 40)
       this.material = new Three.MeshStandardMaterial({
-        // color: 'black'
       })
       this.material.metalness = 0.7
       this.material.roughness = 0.2
@@ -82,10 +81,10 @@ export default {
       const dracoLoader = new DRACOLoader()
       // 导入模型
       // three/examples/js/libs/draco/gltf
-      dracoLoader.setDecoderPath("./draco/gltf/")
+      dracoLoader.setDecoderPath('./draco/gltf/')
       dracoLoader.preload()
       const loader = new GLTFLoader()
-      console.log('dracoLoader>>',dracoLoader)
+      console.log('dracoLoader>>', dracoLoader)
       loader.setDRACOLoader(dracoLoader)
       loader.load('./Pistol_Model.glb', (gltf) => {
         console.log('success!!!')
@@ -107,7 +106,6 @@ export default {
       const orbit = new OrbitControls(this.camera, this.renderer.domElement)
       // 设置控制器阻尼
       orbit.enableDamping = true
-
     }
   }
 }

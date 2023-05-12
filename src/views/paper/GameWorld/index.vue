@@ -37,6 +37,7 @@ export default {
     this.init()
     this.drawGround()
     this.test()
+    this.test2()
     console.log('this.currentProject>>>>', this.currentProject)
   },
   beforeDestroy() {
@@ -49,6 +50,35 @@ export default {
     }
   },
   methods: {
+    test2() {
+      console.log('test2')
+      // 创建一个路径对象
+      // const path = new paper.Path()
+
+      // // 将起始点移动到画布的左侧中央位置
+      // path.moveTo(new paper.Point(0, this.HEIGHT / 2))
+
+      // // 添加三个控制点来创建一个贝塞尔曲线
+      // path.cubicCurveTo(
+      //   new paper.Point(100, 0),
+      //   new paper.Point(300, this.HEIGHT),
+      //   new paper.Point(this.WIDTH - 50, this.HEIGHT / 2 - 50)
+      // )
+
+      // // 设置曲线的颜色和宽度
+      // path.strokeColor = 'red'
+      // path.strokeWidth = 4
+
+      // // 将绘制的曲线显示在画布上
+      // this.paper.view.draw()
+      const rect = new paper.Path.Rectangle(new paper.Rectangle(50, 50, 200, 100))
+      rect.strokeColor = 'green'
+      rect.strokeWidth = 1
+      rect.shadowColor = new paper.Color(1, 1, 1, 1)
+      rect.shadowColor = 'white'
+      rect.shadowBlur = 3
+      // paper.view.draw()
+    },
     test() {
       // const center = new paper.Path.Circle({
       //   center: this.paper.view.center,
@@ -67,22 +97,16 @@ export default {
       const rec = new paper.Path.Rectangle({
         center: this.paper.view.center,
         size: [300, 300],
-        // strokeColor: 'white',
-        strokeWidth: 5
-        // shadowBlur: 100
+        strokeColor: 'white',
+        strokeWidth: 3,
+        shadowBlur: 10,
+        shadowColor: 'white'
       })
-      const color = new paper.Color({
-        gradient: gradient,
-        origin: rec.bounds.leftCenter,
-        destination: rec.bounds.rightCenter,
-        brightness: 1,
-        lightness: 1
-      })
-      rec.set({
-        // strokeColor: new paper.Color(gradient,  rec.bounds.rightCenter)
-        strokeColor: color
-        // shadowColor: 'white'
-      })
+      // rec.set({
+      //   // strokeColor: new paper.Color(gradient,  rec.bounds.rightCenter)
+      //   strokeColor: new paper.Color(1, 1, 1, 1)
+      //   // shadowColor: 'white'
+      // })
       console.log('rec>>>', rec)
 
       // strokeColor: 'white',
@@ -148,7 +172,7 @@ export default {
       this.paper.project.name = this.title
       this.paper.view.onFrame = this.onFrame
       this.paper.view.onMouseDown = this.onMouseDown
-      this.paper.view.setCenter(0)
+      // this.paper.view.setCenter(0)
 
       console.log('初始化世界!!!')
     }
