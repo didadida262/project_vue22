@@ -36,8 +36,7 @@ export default {
   mounted() {
     this.init()
     this.drawGround()
-    this.test()
-    this.test2()
+    this.test3()
     console.log('this.currentProject>>>>', this.currentProject)
   },
   beforeDestroy() {
@@ -50,6 +49,14 @@ export default {
     }
   },
   methods: {
+    // 测试点信息
+    test3() {
+      const p1 = new paper.Point(100)
+      const p2 = new paper.Point(200)
+      const p3 = new paper.Point(300)
+      const v = p2.subtract(p1)
+      console.log('v>>', v)
+    },
     test2() {
       console.log('test2')
       // 创建一个路径对象
@@ -102,31 +109,6 @@ export default {
         shadowBlur: 10,
         shadowColor: 'white'
       })
-      // rec.set({
-      //   // strokeColor: new paper.Color(gradient,  rec.bounds.rightCenter)
-      //   strokeColor: new paper.Color(1, 1, 1, 1)
-      //   // shadowColor: 'white'
-      // })
-      console.log('rec>>>', rec)
-
-      // strokeColor: 'white',
-      //             shadowColor: 'white',
-      //             shadowOffset: new paper.Point(1),
-      //             // 模糊距离
-      //             shadowBlur: new paper.Point(5),      // const center2 = new paper.Path.Circle({
-      //   center: new paper.Point(100),
-      //   radius: 50,
-      //   fillColor: 'green',
-      //   strokeWidth: 2
-      // })
-      // const pp = new paper.Path.Arc({
-      //   from: new paper.Point(10),
-      //   through: new paper.Point(0, -10),
-      //   to: new paper.Point(20),
-      //   strokeColor: 'red',
-      //   closed: true,
-      //   strokeWidth: 2
-      // })
     },
     // 初版简单粗暴，就一条直线，视图下方处
     drawGround() {

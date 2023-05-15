@@ -1,7 +1,7 @@
 <!--
  * @Author: Hhvcg
  * @Date: 2022-11-17 15:01:35
- * @LastEditors: -_-
+ * @LastEditors: Hhvcg
  * @Description: 测试向量
 -->
 
@@ -135,6 +135,7 @@ export default {
       this.vectorStart = new paper.Point(0)
       const end = new paper.Point(100)
       this.vector = end.subtract(this.vectorStart)
+      console.log('this.vector>>>',this.vector)
       this.arrowVector = this.vector.normalize(10)
       console.log('this.arrowVector>>', this.arrowVector)
       this.vectorItem = new paper.Group([
