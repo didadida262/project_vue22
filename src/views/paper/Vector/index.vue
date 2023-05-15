@@ -138,6 +138,15 @@ export default {
       console.log('start>>>', this.vectorStart)
       console.log('end>>>', end)
       console.log('this.vector>>>', this.vector)
+      const tt = end.transform(new paper.Matrix(Math.cos(45), -Math.sin(45), Math.sin(45), Math.cos(45), 0, 0))
+      // const tt = end.transform(new paper.Matrix(Math.cos(45), -Math.sin(45), Math.sin(45), Math.cos(45), 0, 0))
+      // const tt = end.transform(new paper.Matrix(2, 2, 2, 2, 0, 0))
+      new paper.Path.Circle({
+        center: tt,
+        radius: 10,
+        strokeColor: 'red'
+      })
+      console.log('tt>>', tt)
       this.arrowVector = this.vector.normalize(10)
       this.vectorItem = new paper.Group([
         new paper.Path([this.vectorStart, end]),
