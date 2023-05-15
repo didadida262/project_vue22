@@ -1,8 +1,15 @@
-// https://github.com/michael-ciniawsky/postcss-load-config
-
+/*
+ * @Author: Hhvcg
+ * @Date: 2022-02-20 15:26:48
+ * @LastEditors: Hhvcg
+ */
 module.exports = {
-  'plugins': {
-    // to edit target browsers: use "browserslist" field in package.json
-    'autoprefixer': {}
-  }
+  plugins: [
+    [
+      'postcss-preset-env',
+      {
+        // 其他选项
+      }
+    ]
+  ]
 }
