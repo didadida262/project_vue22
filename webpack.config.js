@@ -5,6 +5,7 @@
  */
 const path = require('path')
 const { VueLoaderPlugin } = require('vue-loader')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 // const resolve = dir => path.join(__dirname, dir)
 // const webpack = require('webpack')
 // const name = 'dadadadad!!!'
@@ -16,15 +17,6 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js'
   },
-  // css: {
-  //   loaderOptions: {
-  //     less: {
-  //     },
-  //     sass: {
-  //       prependData: `@import "@/styles/variables.scss";`
-  //     }
-  //   }
-  // },
   module: {
     rules: [
       {
@@ -46,6 +38,48 @@ module.exports = {
           // 'postcss-loader'
         ]
       },
+      // {
+      //   test: /\.css$/,
+      //   use: [
+      //     MiniCssExtractPlugin.loader,
+      //     {
+      //       loader: 'css-loader',
+      //       options: {
+      //         sourceMap: false
+      //       }
+      //     },
+      //     {
+      //       loader: 'postcss-loader',
+      //       options: {
+      //         sourceMap: false
+      //       }
+      //     }
+      //   ]
+      // },
+      // {
+      //   test: /\.s[ac]ss$/i,
+      //   use: [
+      //     MiniCssExtractPlugin.loader,
+      //     {
+      //       loader: 'css-loader',
+      //       options: {
+      //         sourceMap: false
+      //       }
+      //     },
+      //     {
+      //       loader: 'postcss-loader',
+      //       options: {
+      //         sourceMap: false
+      //       }
+      //     },
+      //     {
+      //       loader: 'sass-loader',
+      //       options: {
+      //         sourceMap: false
+      //       }
+      //     }
+      //   ]
+      // },
       {
         test: /\.(png|jpg|svg|gif|webp|JPG|jpe)$/,
         type: 'assets',
@@ -58,16 +92,17 @@ module.exports = {
           filename: 'assets/[hash:8].[name][ext]'
         }
       }
-      // { test: /\.jpg$/, use: 'raw-loader' },
-      // { test: /\.png$/, use: 'raw-loader' }
     ]
   },
   resolve: {
+    extensions: ['.js', '.vue', '.json'],
     alias: {
-      'vue$': 'vue/dist/vue.esm.js',
+      'vue$': 'vue/dist/vue.js',
       '@': path.resolve(__dirname, 'src')
     },
-    extensions: ['.js', '.vue', '.json']
+    fallback: {
+      path: require.resolve('path-browserify')
+    }
   },
   plugins: [
     new VueLoaderPlugin()
