@@ -19,4 +19,4 @@ const singleArr = arr.reduce((pre, cur) => {
   return pre
 }, [])
 
-console.log('singleArr>', singleArr)
+console.log('singleArr>', 2 * Math.PI / 4 / 2)

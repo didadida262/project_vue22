@@ -135,9 +135,10 @@ export default {
       this.vectorStart = new paper.Point(0)
       const end = new paper.Point(100)
       this.vector = end.subtract(this.vectorStart)
-      console.log('this.vector>>>',this.vector)
+      console.log('start>>>', this.vectorStart)
+      console.log('end>>>', end)
+      console.log('this.vector>>>', this.vector)
       this.arrowVector = this.vector.normalize(10)
-      console.log('this.arrowVector>>', this.arrowVector)
       this.vectorItem = new paper.Group([
         new paper.Path([this.vectorStart, end]),
         new paper.Path([
@@ -160,8 +161,6 @@ export default {
         fillColor: 'green',
         opacity: 0.5
       })
-      console.log('p>>', this.paper)
-      console.log('vectorItem>>', this.vectorItem)
     },
     initWorld() {
       // 获取
