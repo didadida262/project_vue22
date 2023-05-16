@@ -68,7 +68,7 @@ export default {
       this.websock.onclose = this.websocketclose
     },
     websocketonopen() { // 连接建立之后执行send方法发送数据
-      const actions = { user: this.info.title, content: '我们的征途，是星辰大海...'}
+      const actions = { user: this.info.title, content: '我们的征途，是星辰大海...' }
       this.websocketsend(JSON.stringify(actions))
     },
     websocketonerror() { // 连接建立失败重连
@@ -93,7 +93,7 @@ export default {
 .Channel-container {
   width: 100%;
   height: 100%;
-  border: 1px solid rgb(118, 118, 122, 0.5);
+  border: 1px solid rgba(118, 118, 122, 0.5);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -101,7 +101,7 @@ export default {
   &-content {
     width: 100%;
     height: 70%;
-    border: 1px solid rgb(118, 118, 122, 0.5);
+    border: 1px solid rgba(118, 118, 122, 0.5);
     &-item {
       display: flex;
       justify-content: space-between;

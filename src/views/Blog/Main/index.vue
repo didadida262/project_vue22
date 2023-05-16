@@ -1,3 +1,8 @@
+<!--
+ * @Author: Hhvcg
+ * @Date: 2023-04-13 14:20:31
+ * @LastEditors: Hhvcg
+-->
 <!-- blog-main -->
 <template>
   <div class="blogMain-container pd10">
@@ -75,7 +80,7 @@ export default {
     }
     &-articleContent {
       width: calc(100% - 210px);
-      border: 1px solid rgb(118, 118, 122, 0.5);
+      border: 1px solid rgba(118, 118, 122, 0.5);
       height: 100%;
     }
   }

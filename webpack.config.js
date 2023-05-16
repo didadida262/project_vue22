@@ -5,13 +5,17 @@
  */
 const path = require('path')
 const { VueLoaderPlugin } = require('vue-loader')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const webpack = require('webpack')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 // const resolve = dir => path.join(__dirname, dir)
 // const webpack = require('webpack')
 // const name = 'dadadadad!!!'
 module.exports = {
   // entry: './src/main.js',
   mode: 'development',
+  // entry: path.join(__dirname, './public/index.html'),
   entry: path.join(__dirname, './src/main.js'),
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -27,59 +31,18 @@ module.exports = {
         test: /\.(css|scss)$/,
         use: [
           'style-loader',
-          'css-loader'
+          'css-loader',
           // {
           //   loader: 'css-loader',
           //   options: {
           //     importLoaders: 2
           //   }
           // },
-          // 'sass-loader',
+          'sass-loader'
           // 'postcss-loader'
         ]
       },
-      // {
-      //   test: /\.css$/,
-      //   use: [
-      //     MiniCssExtractPlugin.loader,
-      //     {
-      //       loader: 'css-loader',
-      //       options: {
-      //         sourceMap: false
-      //       }
-      //     },
-      //     {
-      //       loader: 'postcss-loader',
-      //       options: {
-      //         sourceMap: false
-      //       }
-      //     }
-      //   ]
-      // },
-      // {
-      //   test: /\.s[ac]ss$/i,
-      //   use: [
-      //     MiniCssExtractPlugin.loader,
-      //     {
-      //       loader: 'css-loader',
-      //       options: {
-      //         sourceMap: false
-      //       }
-      //     },
-      //     {
-      //       loader: 'postcss-loader',
-      //       options: {
-      //         sourceMap: false
-      //       }
-      //     },
-      //     {
-      //       loader: 'sass-loader',
-      //       options: {
-      //         sourceMap: false
-      //       }
-      //     }
-      //   ]
-      // },
+
       {
         test: /\.(png|jpg|svg|gif|webp|JPG|jpe)$/,
         type: 'assets',
@@ -105,21 +68,34 @@ module.exports = {
     }
   },
   plugins: [
-    new VueLoaderPlugin()
-    // new webpack.LoaderOptionsPlugin({
-    //   options: {
-    //     chainWebpack: config => {
-    //       config.resolve.alias
-    //         .set('@', resolve('src'))
-    //     }
-    //   }
+    // new HotModuleReplacementPlugin(),
+    new VueLoaderPlugin(),
+    new CleanWebpackPlugin(),
+    new MiniCssExtractPlugin({
+      filename: 'css/[name]_[contenthash:8].css'
+    }),
+    new HtmlWebpackPlugin({
+      template: path.resolve('public/index.html'),
+      inject: 'body',
+      minify: {
+        removeComments: true, // 移除HTML中的注释
+        collapseWhitespace: true, // 删除空符与换符
+        minifyCSS: true// 压缩内联css
+      },
+      options: {
+        url: 'src/asstes'
+      }
+    })
+    // 进度条
+    // new ProgressBarPlugin({
+    //   format: `  :msg [:bar] ${chalk.green.bold(':percent')} (:elapsed s)`
     // })
 
   ],
   devServer: {
     static: path.join(__dirname, 'dist'),
     compress: true,
-    port: 9000,
+    port: 9528,
     allowedHosts: 'all'
   }
 

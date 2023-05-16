@@ -1,7 +1,7 @@
 <!--
  * @Author: Hhvcg
  * @Date: 2022-12-30 11:15:36
- * @LastEditors: -_-
+ * @LastEditors: Hhvcg
  * @Description: 测试websockt-频道1
 -->
 
@@ -67,7 +67,7 @@ export default {
   &-content {
     width: 100%;
     height: calc(100% - 80px);
-    border: 1px solid rgb(118, 118, 122, 0.5);
+    border: 1px solid rgba(118, 118, 122, 0.5);
     &-item {
       width: 49%;
       height: 100%;

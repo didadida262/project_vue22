@@ -1,7 +1,7 @@
 <!--
  * @Author: Hhvcg
  * @Date: 2022-07-13 15:20:52
- * @LastEditors: -_-
+ * @LastEditors: Hhvcg
  * @Description: 火柴人大乱斗
 -->
 <template>
@@ -80,7 +80,7 @@ export default {
   .MatchStick-container-content {
     width: 100%;
     height: calc(100% - 80px);
-    border: 1px solid rgb(118, 118, 122, 0.5);
+    border: 1px solid rgba(118, 118, 122, 0.5);
     .canvas {
       width: 100%;
       height: 100%;
