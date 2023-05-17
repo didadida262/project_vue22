@@ -8,7 +8,7 @@
   <div>
     <el-dialog
       :title="$t('page.review.sensorshipDialogTitle')"
-      :visible.sync="SensorshipDialogVisable"
+      :visible.sync="showFlag"
       width="30%"
       :close-on-click-modal="false"
       :close-on-press-escape="false"
@@ -26,6 +26,16 @@
 export default {
   name: 'SensorshipDialog',
   props: ['SensorshipDialogVisable'],
+  computed: {
+    showFlag: {
+      get() {
+        return this.ModifyDefectVisible
+      },
+      set() {
+        this.$emit('close')
+      }
+    }
+  },
   methods: {
     handleCancel() {
       this.$emit('close')
