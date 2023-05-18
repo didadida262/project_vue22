@@ -1,7 +1,7 @@
 <!--
  * @Author: Hhvcg
  * @Date: 2022-05-31 15:42:55
- * @LastEditors: -_-
+ * @LastEditors: Hhvcg
  * @Description: music盒子，该有的功能都得支持
 -->
 <template>
@@ -9,7 +9,7 @@
     <div class="music-cate flex-col">
       <div class="music-cate-container flex-ca">
         <el-button
-          v-for="(item, index) in this.musicCates" 
+          v-for="(item, index) in this.musicCates"
           @click="getSongsList(item)"
           :plain="currentCate.key !== item.key"
           :key="index">{{ item.key }}</el-button>
@@ -108,7 +108,7 @@
 </template>
 <script lang="ts">
 
-import { _arrayBufferToBase64 } from '@/utils/index'
+// import { _arrayBufferToBase64 } from '@/utils/index'
 import songsList from './components/songsList.vue'
 // import songsComponent from './components/songsList.vue'
 export default {
@@ -152,18 +152,17 @@ export default {
   },
   async mounted() {
     this.addEndedEvent()
-
   },
   beforeDestroy() {
     window.removeEventListener('keydown', this.handleKeyDown)
   },
   methods: {
     addEndedEvent() {
-      const elevideo = document.getElementById("audioContainer")
+      const elevideo = document.getElementById('audioContainer')
       console.log('elevideo', elevideo)
-      elevideo.addEventListener('ended', () =>  { //结束
+      elevideo.addEventListener('ended', () => { // 结束
         this.handleMusicEnded()
-      }, false);
+      }, false)
     },
     handleMusicEnded() {
       this.$message.info('播放结束--->切歌')
@@ -173,7 +172,7 @@ export default {
           break
         case 'sequence':
           this.sequencePlay()
-          break;
+          break
       }
     },
     async randomPlay() {
@@ -189,12 +188,12 @@ export default {
     switchMusic(direction) {
       switch (direction) {
         case 'right':
-        this.handleMusiceEnded()
-        break
+          this.handleMusiceEnded()
+          break
       }
     },
     changePlayWay() {
-      this.currentPlayWay = this.currentPlayWay === 'random'? 'sequence': 'random'
+      this.currentPlayWay = this.currentPlayWay === 'random' ? 'sequence' : 'random'
       this.$message.info(this.playWayCate[this.currentPlayWay])
     },
     async getSongsList(cate) {
@@ -209,10 +208,10 @@ export default {
       this.musicCates = await this.$axios.getMusicCates()
     },
     handleSongListOperate(info) {
-     switch (info.type) {
-      case 'selectSong':
-        this.changeSong(info.data)
-     }
+      switch (info.type) {
+        case 'selectSong':
+          this.changeSong(info.data)
+      }
     },
     // 根据当前song的id获取音频资源
     async getSongData(song) {
@@ -223,9 +222,6 @@ export default {
       this.musicBox.url = url
       console.log('当前url--->', this.musicBox.url)
     },
-
-
-
 
     async changeSong(song) {
       this.currentMusicInfo = {
@@ -322,7 +318,7 @@ export default {
         this.$refs['logoRef'].style.animationPlayState = 'paused'
         this.$refs['audio'].pause()
       }
-      
+
       this.musicBox.status = flag
     },
     // 音量控制
