@@ -1,7 +1,7 @@
 <!--
  * @Author: Hhvcg
  * @Date: 2022-09-16 11:38:49
- * @LastEditors: -_-
+ * @LastEditors: Hhvcg
  * @Description: 支持图片展示、拖拽、放大缩小功能---适配标注页面
 -->
 
@@ -138,8 +138,8 @@ export default {
   },
   mounted() {
     this.init()
-    this.draw()
-    // this.drawPic()
+    // this.draw()
+    this.drawPic()
   },
   beforeDestroy() {
     const currentProject = this.paper.projects.filter((p) => p.name === this.picContainer)
