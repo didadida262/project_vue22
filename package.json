@@ -36,6 +36,7 @@
     "js-cookie": "2.2.0",
     "lodash": "4.17.10",
     "mddir": "^1.1.1",
+    "node-sass": "^4.14.1",
     "normalize.css": "7.0.0",
     "nprogress": "0.2.0",
     "object-sizeof": "^2.6.1",
@@ -105,7 +106,6 @@
     "webpack-dev-server": "^4.15.0",
     "worker-loader": "^3.0.8"
   },
-
   "engines": {
     "node": ">=8.9",
     "npm": ">= 3.0.0"
