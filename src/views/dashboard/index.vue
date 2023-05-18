@@ -1,7 +1,7 @@
 <!--
  * @Author: Hhvcg
  * @Date: 2022-02-20 15:26:48
- * @LastEditors: -_-
+ * @LastEditors: Hhvcg
  * @Description:
 -->
 <template>
@@ -22,7 +22,7 @@
       <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
     </el-upload>
     <child :info="testData"/>
-    <el-button @click="changeData">change</el-button>
+    <!-- <el-button @click="changeData">change</el-button> -->
   </div>
 </template>
 
@@ -97,7 +97,7 @@ export default {
     })
   },
   mounted() {
-    this.testPostTask()
+    // this.testPostTask()
     this.initWorld()
     this.draw()
     console.time('test')

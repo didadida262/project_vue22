@@ -54,7 +54,6 @@ Vue.prototype.$ = $
 // import i18n from '@/i18n'
 // import VueWorker from 'vue-worker';
 
-// import localeEI from 'element-ui/lib/locale/lang/en' // lang i18n
 // 自定义了elementui的默认配置
 
 // 有问题，暂时屏蔽
@@ -95,8 +94,6 @@ Vue.prototype.$ = $
 // }
 
 // set ElementUI lang to EN
-Vue.use(ElementUI, { localeEI })
-Vue.use(ElementUI, 'en')
 // 如果想要中文版 element-ui，按如下方式声明
 // if (window) window['$t'] = (key, value) => i18n.t(key, value)
 // Vue.prototype.log = log

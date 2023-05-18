@@ -1,3 +1,8 @@
+<!--
+ * @Author: Hhvcg
+ * @Date: 2022-02-20 15:26:48
+ * @LastEditors: Hhvcg
+-->
 <template>
   <div :class="{'has-logo':showLogo}">
     <logo v-if="showLogo" :collapse="isCollapse" />
@@ -53,7 +58,7 @@ export default {
     }
   },
   mounted() {
-    // console.log('菜单组件----mounted!!!')
+    console.log('菜单组件----mounted!!!', this.routes)
   }
 }
 </script>
