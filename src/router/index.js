@@ -48,11 +48,11 @@ export const constantRoutes = [
   //   component: () => import('@/views/form/createArticle'),
   //   hidden: true
   // },
-  // {
-  //   path: '/404',
-  //   component: () => import('@/views/404'),
-  //   hidden: true
-  // },
+  {
+    path: '/404',
+    component: () => import('@/views/404'),
+    hidden: true
+  },
 
   {
     path: '/',
@@ -65,44 +65,44 @@ export const constantRoutes = [
       meta: { title: 'Dashboard', icon: 'dashboard' }
     }]
   },
-  // {
-  //   path: '/draw',
-  //   component: Layout,
-  //   redirect: '/draw',
-  //   children: [{
-  //     path: 'draw',
-  //     name: 'draw',
-  //     component: () => import('@/views/draw/index'),
-  //     meta: { title: 'Draw', icon: 'el-icon-brush' }
-  //   }]
-  // },
+  {
+    path: '/draw',
+    component: Layout,
+    redirect: '/draw',
+    children: [{
+      path: 'draw',
+      name: 'draw',
+      component: () => import('@/views/draw/index'),
+      meta: { title: 'Draw', icon: 'el-icon-brush' }
+    }]
+  },
   // openLayer
-  // {
-  //   path: '/openlayer',
-  //   component: Layout,
-  //   redirect: '/openlayer/gd',
-  //   meta: { title: 'Map', icon: 'map' },
-  //   children: [
-  //     {
-  //       path: 'tiles',
-  //       name: 'tiles',
-  //       component: () => import('@/views/openLayer/TilesMap/index'),
-  //       meta: { title: 'Tiles', icon: 'tiles' }
-  //     },
-  //     {
-  //       path: 'bd',
-  //       name: 'baidu',
-  //       component: () => import('@/views/openLayer/BaiduMap/index'),
-  //       meta: { title: 'BaiduMap', icon: 'map' }
-  //     },
-  //     {
-  //       path: 'gd',
-  //       name: 'gaode',
-  //       component: () => import('@/views/openLayer/GaodeMap/index'),
-  //       meta: { title: 'GaodeMap', icon: 'map' }
-  //     }
-  //   ]
-  // },
+  {
+    path: '/openlayer',
+    component: Layout,
+    redirect: '/openlayer/gd',
+    meta: { title: 'Map', icon: 'map' },
+    children: [
+      {
+        path: 'tiles',
+        name: 'tiles',
+        component: () => import('@/views/openLayer/TilesMap/index'),
+        meta: { title: 'Tiles', icon: 'tiles' }
+      },
+      {
+        path: 'bd',
+        name: 'baidu',
+        component: () => import('@/views/openLayer/BaiduMap/index'),
+        meta: { title: 'BaiduMap', icon: 'map' }
+      },
+      {
+        path: 'gd',
+        name: 'gaode',
+        component: () => import('@/views/openLayer/GaodeMap/index'),
+        meta: { title: 'GaodeMap', icon: 'map' }
+      }
+    ]
+  },
   // article
   {
     path: '/articleList',
@@ -147,153 +147,153 @@ export const constantRoutes = [
     ]
   },
   // paperjs
-  // {
-  //   path: '/paperjs',
-  //   component: Layout,
-  //   redirect: '/paperjs/tadpole',
-  //   name: 'paperjs',
-  //   meta: { title: 'PaperJs', icon: 'el-icon-s-help' },
-  //   children: [
-  //     // {
-  //     //   path: 'drawVersionTwo',
-  //     //   name: 'drawVersionTwo',
-  //     //   component: () => import('@/views/drawVersionTwo/index'),
-  //     //   meta: { title: 'Draw_version2', icon: 'Raster' }
-  //     // },
-  //     {
-  //       path: 'gameworld',
-  //       name: 'gameworld',
-  //       component: () => import('@/views/paper/GameWorld/index'),
-  //       meta: { title: 'Game_World', icon: 'earth' }
-  //     },
-  //     {
-  //       path: 'runningway',
-  //       name: 'runningway',
-  //       component: () => import('@/views/paper/RunningWay/index'),
-  //       meta: { title: 'Running-Way', icon: 'Raster' }
-  //     },
-  //     {
-  //       path: 'matchman',
-  //       name: 'matchman',
-  //       component: () => import('@/views/paper/matchMan/index'),
-  //       meta: { title: 'MatchMan', icon: 'Raster' }
-  //     },
-  //     {
-  //       path: 'raster',
-  //       name: 'raster',
-  //       component: () => import('@/views/paper/Raster/index'),
-  //       meta: { title: 'Raster', icon: 'Raster' }
-  //     },
-  //     {
-  //       path: 'rainfallen',
-  //       name: 'rainfallen',
-  //       component: () => import('@/views/paper/RainFallen/index'),
-  //       meta: { title: 'RainFallen', icon: 'Rain' }
-  //     },
-  //     {
-  //       path: 'space',
-  //       name: 'space',
-  //       component: () => import('@/views/paper/Space/index'),
-  //       meta: { title: 'Space', icon: 'Space' }
-  //     },
-  //     {
-  //       path: 'cyberfont',
-  //       name: 'cyberfont',
-  //       component: () => import('@/views/paper/CyberFont/index'),
-  //       meta: { title: 'CyberFont', icon: 'shell' }
-  //     },
-  //     {
-  //       path: 'snake',
-  //       name: 'snake',
-  //       component: () => import('@/views/paper/Snake/index'),
-  //       meta: { title: 'Snake', icon: 'Snake' }
-  //     },
-  //     {
-  //       path: 'vector',
-  //       name: 'vector',
-  //       component: () => import('@/views/paper/Vector/index'),
-  //       meta: { title: 'vector', icon: 'vector' }
-  //     },
-  //     {
-  //       path: 'diagram',
-  //       name: 'diagram',
-  //       component: () => import('@/views/paper/Diagram/index'),
-  //       meta: { title: 'DiaGram', icon: 'Taichi' }
-  //     },
-  //     {
-  //       path: 'darkball',
-  //       name: 'darkball',
-  //       component: () => import('@/views/paper/DarkBall/index'),
-  //       meta: { title: 'DarkBall', icon: 'tadpole' }
-  //     },
-  //     {
-  //       path: 'tadpole',
-  //       name: 'tadpole',
-  //       component: () => import('@/views/paper/Tadpole/index'),
-  //       meta: { title: 'Tadpole', icon: 'tadpole' }
-  //     },
-  //     {
-  //       path: 'tank',
-  //       name: 'Tank',
-  //       component: () => import('@/views/paper/Tank/index'),
-  //       meta: { title: 'Tank', icon: 'tank' }
-  //     },
+  {
+    path: '/paperjs',
+    component: Layout,
+    redirect: '/paperjs/tadpole',
+    name: 'paperjs',
+    meta: { title: 'PaperJs', icon: 'el-icon-s-help' },
+    children: [
+      // {
+      //   path: 'drawVersionTwo',
+      //   name: 'drawVersionTwo',
+      //   component: () => import('@/views/drawVersionTwo/index'),
+      //   meta: { title: 'Draw_version2', icon: 'Raster' }
+      // },
+      {
+        path: 'gameworld',
+        name: 'gameworld',
+        component: () => import('@/views/paper/GameWorld/index'),
+        meta: { title: 'Game_World', icon: 'earth' }
+      },
+      {
+        path: 'runningway',
+        name: 'runningway',
+        component: () => import('@/views/paper/RunningWay/index'),
+        meta: { title: 'Running-Way', icon: 'Raster' }
+      },
+      {
+        path: 'matchman',
+        name: 'matchman',
+        component: () => import('@/views/paper/matchMan/index'),
+        meta: { title: 'MatchMan', icon: 'Raster' }
+      },
+      {
+        path: 'raster',
+        name: 'raster',
+        component: () => import('@/views/paper/Raster/index'),
+        meta: { title: 'Raster', icon: 'Raster' }
+      },
+      {
+        path: 'rainfallen',
+        name: 'rainfallen',
+        component: () => import('@/views/paper/RainFallen/index'),
+        meta: { title: 'RainFallen', icon: 'Rain' }
+      },
+      {
+        path: 'space',
+        name: 'space',
+        component: () => import('@/views/paper/Space/index'),
+        meta: { title: 'Space', icon: 'Space' }
+      },
+      {
+        path: 'cyberfont',
+        name: 'cyberfont',
+        component: () => import('@/views/paper/CyberFont/index'),
+        meta: { title: 'CyberFont', icon: 'shell' }
+      },
+      {
+        path: 'snake',
+        name: 'snake',
+        component: () => import('@/views/paper/Snake/index'),
+        meta: { title: 'Snake', icon: 'Snake' }
+      },
+      {
+        path: 'vector',
+        name: 'vector',
+        component: () => import('@/views/paper/Vector/index'),
+        meta: { title: 'vector', icon: 'vector' }
+      },
+      {
+        path: 'diagram',
+        name: 'diagram',
+        component: () => import('@/views/paper/Diagram/index'),
+        meta: { title: 'DiaGram', icon: 'Taichi' }
+      },
+      {
+        path: 'darkball',
+        name: 'darkball',
+        component: () => import('@/views/paper/DarkBall/index'),
+        meta: { title: 'DarkBall', icon: 'tadpole' }
+      },
+      {
+        path: 'tadpole',
+        name: 'tadpole',
+        component: () => import('@/views/paper/Tadpole/index'),
+        meta: { title: 'Tadpole', icon: 'tadpole' }
+      },
+      {
+        path: 'tank',
+        name: 'Tank',
+        component: () => import('@/views/paper/Tank/index'),
+        meta: { title: 'Tank', icon: 'tank' }
+      },
 
-  //     // 见缝插针
-  //     {
-  //       path: 'stickIn',
-  //       name: 'StickIn',
-  //       component: () => import('@/views/paper/StickIn/index'),
-  //       meta: { title: 'StickIn', icon: 'line' }
-  //     },
-  //     // cricle点
-  //     {
-  //       path: 'circle',
-  //       name: 'Circle',
-  //       component: () => import('@/views/paper/Circle/index'),
-  //       meta: { title: 'Circle', icon: 'circle' }
-  //     },
-  //     // airplane
-  //     {
-  //       path: 'ariplane',
-  //       name: 'Ariplane',
-  //       component: () => import('@/views/paper/Airplane/index'),
-  //       meta: { title: 'Airplane', icon: 'el-icon-s-promotion' }
-  //     },
+      // 见缝插针
+      {
+        path: 'stickIn',
+        name: 'StickIn',
+        component: () => import('@/views/paper/StickIn/index'),
+        meta: { title: 'StickIn', icon: 'line' }
+      },
+      // cricle点
+      {
+        path: 'circle',
+        name: 'Circle',
+        component: () => import('@/views/paper/Circle/index'),
+        meta: { title: 'Circle', icon: 'circle' }
+      },
+      // airplane
+      {
+        path: 'ariplane',
+        name: 'Ariplane',
+        component: () => import('@/views/paper/Airplane/index'),
+        meta: { title: 'Airplane', icon: 'el-icon-s-promotion' }
+      },
 
-  //     {
-  //       path: 'pcman',
-  //       name: 'pcman',
-  //       component: () => import('@/views/paper/pcMan/index'),
-  //       meta: { title: 'PcMan', icon: 'man' }
-  //     },
-  //     {
-  //       path: 'radio',
-  //       name: 'radio',
-  //       component: () => import('@/views/paper/Radio/index'),
-  //       meta: { title: 'Radio', icon: 'el-icon-headset' }
-  //     },
-  //     {
-  //       path: 'watch',
-  //       name: 'watch',
-  //       component: () => import('@/views/paper/Watch/index'),
-  //       meta: { title: 'Watch', icon: 'watch' }
-  //     },
-  //     // picturewall
-  //     {
-  //       path: 'picturewall',
-  //       name: 'Picturewall',
-  //       component: () => import('@/views/paper/PictureWall/index'),
-  //       meta: { title: 'Picturewall', icon: 'table' }
-  //     },
-  //     {
-  //       path: 'testpaper',
-  //       name: 'testpaper',
-  //       component: () => import('@/views/paper/TestPaper/index'),
-  //       meta: { title: 'testpaper', icon: 'table' }
-  //     }
-  //   ]
-  // },
+      {
+        path: 'pcman',
+        name: 'pcman',
+        component: () => import('@/views/paper/pcMan/index'),
+        meta: { title: 'PcMan', icon: 'man' }
+      },
+      {
+        path: 'radio',
+        name: 'radio',
+        component: () => import('@/views/paper/Radio/index'),
+        meta: { title: 'Radio', icon: 'el-icon-headset' }
+      },
+      {
+        path: 'watch',
+        name: 'watch',
+        component: () => import('@/views/paper/Watch/index'),
+        meta: { title: 'Watch', icon: 'watch' }
+      },
+      // picturewall
+      {
+        path: 'picturewall',
+        name: 'Picturewall',
+        component: () => import('@/views/paper/PictureWall/index'),
+        meta: { title: 'Picturewall', icon: 'table' }
+      },
+      {
+        path: 'testpaper',
+        name: 'testpaper',
+        component: () => import('@/views/paper/TestPaper/index'),
+        meta: { title: 'testpaper', icon: 'table' }
+      }
+    ]
+  },
   // threejs
   {
     path: '/threejs',
@@ -350,55 +350,55 @@ export const constantRoutes = [
   },
 
   // all kinds of toys...
-  // {
-  //   path: '/toys',
-  //   component: Layout,
-  //   redirect: '/toys/video',
-  //   name: 'Toys',
-  //   meta: {
-  //     title: 'Toys',
-  //     icon: 'nested'
-  //   },
-  //   children: [
-  //     {
-  //       path: 'lifetime',
-  //       component: () => import('@/views/Toys/LifeTime/index'),
-  //       name: 'lifetime',
-  //       meta: { title: 'LifeTime', icon: 'time' }
-  //     },
-  //     {
-  //       path: 'music',
-  //       name: 'Music',
-  //       component: () => import('@/views/Toys/Music/index'),
-  //       meta: { title: 'Music', icon: 'el-icon-headset' }
-  //     },
-  //     {
-  //       path: 'records',
-  //       component: () => import('@/views/Toys/Records/index'),
-  //       name: 'Records',
-  //       meta: { title: 'Records', icon: 'record' }
-  //     },
-  //     {
-  //       path: 'video',
-  //       component: () => import('@/views/Toys/VideoPractice/index'),
-  //       name: 'Video',
-  //       meta: { title: 'Video', icon: 'el-icon-video-camera' }
-  //     },
-  //     {
-  //       path: 'Chars',
-  //       component: () => import('@/views/Toys/Chars/index'),
-  //       name: 'Chars',
-  //       meta: { title: 'Chars', icon: 'el-icon-video-camera' }
-  //     },
-  //     {
-  //       path: 'test',
-  //       component: () => import('@/views/Toys/Test/index'),
-  //       name: 'Test',
-  //       meta: { title: 'Test', icon: 'el-icon-video-camera' }
-  //     }
-  //   ]
+  {
+    path: '/toys',
+    component: Layout,
+    redirect: '/toys/video',
+    name: 'Toys',
+    meta: {
+      title: 'Toys',
+      icon: 'nested'
+    },
+    children: [
+      {
+        path: 'lifetime',
+        component: () => import('@/views/Toys/LifeTime/index'),
+        name: 'lifetime',
+        meta: { title: 'LifeTime', icon: 'time' }
+      },
+      {
+        path: 'music',
+        name: 'Music',
+        component: () => import('@/views/Toys/Music/index'),
+        meta: { title: 'Music', icon: 'el-icon-headset' }
+      },
+      {
+        path: 'records',
+        component: () => import('@/views/Toys/Records/index'),
+        name: 'Records',
+        meta: { title: 'Records', icon: 'record' }
+      },
+      {
+        path: 'video',
+        component: () => import('@/views/Toys/VideoPractice/index'),
+        name: 'Video',
+        meta: { title: 'Video', icon: 'el-icon-video-camera' }
+      },
+      {
+        path: 'Chars',
+        component: () => import('@/views/Toys/Chars/index'),
+        name: 'Chars',
+        meta: { title: 'Chars', icon: 'el-icon-video-camera' }
+      },
+      {
+        path: 'test',
+        component: () => import('@/views/Toys/Test/index'),
+        name: 'Test',
+        meta: { title: 'Test', icon: 'el-icon-video-camera' }
+      }
+    ]
 
-  // },
+  },
 
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }

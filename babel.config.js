@@ -1,7 +1,13 @@
+/*
+ * @Author: Hhvcg
+ * @Date: 2022-02-20 15:26:48
+ * @LastEditors: Hhvcg
+ */
 module.exports = {
   presets: [
     // https://github.com/vuejs/vue-cli/tree/master/packages/@vue/babel-preset-app
-    '@vue/cli-plugin-babel/preset'
+    // '@vue/cli-plugin-babel/preset'
+    ['@vue/app', { useBuiltIns: 'entry' }]
   ],
   'env': {
     'development': {

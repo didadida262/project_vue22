@@ -16,9 +16,9 @@ import App from './App'
 import store from './store'
 import router from './router'
 
-// import '@/icons' // icon
-// import '@/permission' // permission control
-// import _ from 'lodash'
+import '@/icons' // icon
+import '@/permission' // permission control
+import _ from 'lodash'
 import BaiduMap from 'vue-baidu-map'
 // 日期处理
 import dayjs from 'dayjs'
@@ -42,14 +42,14 @@ new Vue({
 
 // import Vuei18n from 'vue-i18n'
 // 引入jQuery、bootstrap----->虽然很不想装jquery，但还是tm的被迫装了
-// import $ from 'jquery'
-// import 'bootstrap'
+import $ from 'jquery'
+import 'bootstrap'
 // // 引入bootstrap样式
-// import 'bootstrap/dist/css/bootstrap.min.css'
-// import 'bootstrap/dist/js/bootstrap.min.js'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap/dist/js/bootstrap.min.js'
 
 // 全局注册 $
-// Vue.prototype.$ = $
+Vue.prototype.$ = $
 
 // import i18n from '@/i18n'
 // import VueWorker from 'vue-worker';
@@ -95,8 +95,8 @@ new Vue({
 // }
 
 // set ElementUI lang to EN
-// Vue.use(ElementUI, { localeEI })
-// Vue.use(ElementUI, 'en')
+Vue.use(ElementUI, { localeEI })
+Vue.use(ElementUI, 'en')
 // 如果想要中文版 element-ui，按如下方式声明
 // if (window) window['$t'] = (key, value) => i18n.t(key, value)
 // Vue.prototype.log = log
