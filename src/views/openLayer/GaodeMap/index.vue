@@ -1,7 +1,7 @@
 <!--
  * @Author: Hhvcg
  * @Date: 2022-07-20 16:42:36
- * @LastEditors: -_-
+ * @LastEditors: Hhvcg
  * @Description: openlayer地图
 -->
 <template>
@@ -83,7 +83,7 @@ export default {
   .openLayer-container-content {
     width: 100%;
     height: calc(100% - 80px);
-    border: 1px solid rgb(118, 118, 122, 0.5);
+    border: 1px solid rgba(118, 118, 122, 0.5);
     .bm-view {
       width: 100%;
       height: 100%;

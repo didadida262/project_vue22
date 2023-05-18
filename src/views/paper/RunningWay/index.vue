@@ -1,7 +1,7 @@
 <!--
  * @Author: Hhvcg
  * @Date: 2023-02-22 17:39:55
- * @LastEditors: -_-
+ * @LastEditors: Hhvcg
  * @Description: runnigway--app
 -->
 
@@ -118,7 +118,7 @@ export default {
   &-content {
     width: 100%;
     height: calc(100% - 80px);
-    border: 1px solid rgb(118, 118, 122, 0.5);
+    border: 1px solid rgba(118, 118, 122, 0.5);
     display: flex;
     justify-content: space-around;
     align-content:space-around;

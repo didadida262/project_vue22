@@ -11,10 +11,10 @@
     <div class="Content flex-cb">
       <div class="video-container flex-col pd10">
         <video
-         id="videoContainer" 
-         ref="videoContainer" 
-         controls 
-         style="width: 100%;height: 90%" 
+         id="videoContainer"
+         ref="videoContainer"
+         controls
+         style="width: 100%;height: 90%"
          controlslist="nodownload"
          autoplay="autoplay">
           <source :src="url" type="video/mp4">
@@ -41,12 +41,12 @@
         </div>
         <div class="option-container-list">
           <div
-           v-for="(video, index) in videosList" 
-           :key="index" 
+           v-for="(video, index) in videosList"
+           :key="index"
            :id="'test' + video.id"
            class="flex-ca video-itemContainer mgb5">
-            <video-item 
-            :data="video" 
+            <video-item
+            :data="video"
             @handleVideoOperate="handleVideoOperate" />
           </div>
         </div>
@@ -94,17 +94,17 @@ export default {
     this.getVideosList(this.page)
   },
   mounted() {
-    const elevideo = document.getElementById("videoContainer")
+    const elevideo = document.getElementById('videoContainer')
     console.log('elevideo', elevideo)
-    elevideo.addEventListener('ended', () =>  { //结束
+    elevideo.addEventListener('ended', () => { // 结束
       this.handleVideoEnded()
-    }, false);
+    }, false)
   },
   beforeDestroy() {
   },
   methods: {
     switchCurrentListState() {
-      this.currentListState = this.currentListState === 'show'? 'hide': 'show'
+      this.currentListState = this.currentListState === 'show' ? 'hide' : 'show'
     },
     nextVideo() {
       this.handleVideoEnded()
@@ -118,18 +118,18 @@ export default {
     },
     // 根据当前输入item，更新选中信息
     updateItemSelected(target) {
-      console.log('target>',target)
+      console.log('target>', target)
       this.videosList.forEach(item => {
-          item.editFlag = false
-          if (item.id === target.id) {
-            item.active = true
-          } else {
-            item.active = false
-          }
-        })
+        item.editFlag = false
+        if (item.id === target.id) {
+          item.active = true
+        } else {
+          item.active = false
+        }
+      })
     },
     changePlayWay() {
-      this.currentPlayWay = this.currentPlayWay === 'random'? 'sequence': 'random'
+      this.currentPlayWay = this.currentPlayWay === 'random' ? 'sequence' : 'random'
       this.$message.info(this.playWayCate[this.currentPlayWay])
     },
     async randomPlay() {
@@ -151,7 +151,7 @@ export default {
           break
         case 'sequence':
           this.sequencePlay()
-          break;
+          break
       }
     },
     handleChangeModel(cate) {
@@ -162,9 +162,8 @@ export default {
     scrollToTarget(target) {
       const targetDom = document.querySelector('#test' + target.id)
       if (targetDom) {
-        targetDom.scrollIntoView(true);
+        targetDom.scrollIntoView(true)
       }
-      
     },
     async handleVideoOperate(info) {
       console.log('当前>>', info)
@@ -229,7 +228,7 @@ export default {
       this.currentVideoInfo = {
         ...info
       }
-      console.log('目标视频信息',info)
+      console.log('目标视频信息', info)
       const res = await this.$axios.getVideo(info)
       const blob = new Blob([res], { type: 'mp4' })
       const url = URL.createObjectURL(blob)
@@ -291,7 +290,7 @@ export default {
         width: 100%;
         height: calc(100% - 90px);
         overflow: scroll;
-      }      
+      }
       .video-itemContainer {
         border: 1px solid rgb(142, 68, 68);
       }

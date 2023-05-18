@@ -28,21 +28,33 @@ module.exports = {
         loader: 'vue-loader'
       },
       {
-        test: /\.(css|scss)$/,
+        test: /\.(css)$/,
         use: [
           'style-loader',
-          'css-loader',
-          // {
-          //   loader: 'css-loader',
-          //   options: {
-          //     importLoaders: 2
-          //   }
-          // },
-          'sass-loader'
-          // 'postcss-loader'
+          {
+            loader: 'css-loader',
+            options: {
+              importLoaders: 1
+            }
+          },
+          {
+            loader: 'postcss-loader',
+            options: {
+              postcssOptions: {
+                plugins: ['postcss-preset-env']
+              }
+            }
+          }
         ]
       },
-
+      {
+        test: /\.less$/,
+        use: ['style-loader', 'css-loader', 'less-loader']
+      },
+      {
+        test: /\.scss$/,
+        use: ['style-loader', 'css-loader', 'sass-loader']
+      },
       {
         test: /\.(png|jpg|svg|gif|webp|JPG|jpe)$/,
         type: 'assets',

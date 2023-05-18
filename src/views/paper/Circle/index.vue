@@ -116,22 +116,22 @@ export default {
   methods: {
     testWorker() {
       this.worker = this.$worker.create([
-      {
-        message:'hello',
-        func: function(e){
+        {
+          message: 'hello',
+          func: function(e) {
           // console.log('接受--hello',e)//hello i am yiye
-      // 接收到消息之后发送
+            // 接收到消息之后发送
             return 'hi yiye'
           }
-      },
+        },
         {
-          message:'world!',
-          func:function(e){
+          message: 'world!',
+          func: function(e) {
             // console.log(e)
           }
         }
       ])
-    this.worker.postMessage('hello',['i am yiye']).then(function(e){
+      this.worker.postMessage('hello', ['i am yiye']).then(function(e) {
       // console.log('拿到数据--->:',e); //post: hi yiyeasd
       })
     },
@@ -164,12 +164,12 @@ export default {
     &-operateLayer {
       width: 300px;
       height: 100%;
-      border: 1px solid rgb(118, 118, 122, 0.5);
+      border: 1px solid rgba(118, 118, 122, 0.5);
     }
     &-circle {
       width: calc(100% - 320px);
       height: 100%;
-      border: 1px solid rgb(118, 118, 122, 0.5);
+      border: 1px solid rgba(118, 118, 122, 0.5);
     }
   }
 }

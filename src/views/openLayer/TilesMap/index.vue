@@ -1,7 +1,7 @@
 <!--
  * @Author: Hhvcg
  * @Date: 2022-12-02 17:16:13
- * @LastEditors: -_-
+ * @LastEditors: Hhvcg
  * @Description: 模仿搞得的瓦片加载， 实现“视图感知”demo版
 -->
 
@@ -54,7 +54,7 @@ export default {
   &-content {
     width: 100%;
     height: calc(100% - 80px);
-    border: 1px solid rgb(118, 118, 122, 0.5);
+    border: 1px solid rgba(118, 118, 122, 0.5);
     .canvas {
       width: 100%;
       height: 100%;

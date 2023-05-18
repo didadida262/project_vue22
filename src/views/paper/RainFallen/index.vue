@@ -1,7 +1,7 @@
 <!--
  * @Author: Hhvcg
  * @Date: 2022-12-20 10:49:07
- * @LastEditors: -_-
+ * @LastEditors: Hhvcg
  * @Description: rainfallen--试图模仿雨滴
 -->
 
@@ -99,7 +99,7 @@ export default {
   &-content {
     width: 100%;
     height: calc(100% - 80px);
-    border: 1px solid rgb(118, 118, 122, 0.5);
+    border: 1px solid rgba(118, 118, 122, 0.5);
     .canvas {
       width: 100%;
       height: 100%;
