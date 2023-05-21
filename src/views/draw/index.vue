@@ -6,27 +6,35 @@
       type="primary"
       @click="handleSwitch">Switch</el-button> -->
     <div class="draw-container-tool">
-        <SelectTool
+      <!-- <el-button>矩形框</el-button>
+      <el-button>线段</el-button> -->
+      <PicSelf
           class="cursor-pointer"
           :selected="activatedBrush"
           @changeBrush="changeBrush"
         />
-        <RectBrush
+      <RectBrush
           class="cursor-pointer"
           :selected="activatedBrush"
           @changeBrush="changeBrush"
         />
-        <Pencil
+      <Pencil
+        class="cursor-pointer"
+        :selected="activatedBrush"
+        @changeBrush="changeBrush"
+        @submitPath="submitPath"
+      />
+        <!-- <SelectTool
           class="cursor-pointer"
           :selected="activatedBrush"
           @changeBrush="changeBrush"
-          @submitPath="submitPath"
         />
+
         <fat-pencil
           class="cursor-pointer"
           :selected="activatedBrush"
           @changeBrush="changeBrush"
-        />
+        /> -->
       <!-- <oldBrush
         class="cursor-pointer"
         :selected="activatedBrush"
@@ -60,7 +68,7 @@
       :class="[activateScope === index? 'activateScope-st': '']"
        v-for="(item, index) in picList"
        :key="index">
-        <PaperMark
+        <PicNew
           :picInfo="item"
           ref="PaperView"
           @handleChangePaperScope="handleChangePaperScope"
@@ -83,8 +91,9 @@ import Pencil from './brushes/Pencil.vue'
 import FatPencil from './brushes/FatPencil.vue'
 import RectBrush from './brushes/RectBrush.vue'
 import SelectTool from './brushes/SelectTool.vue'
-import PaperMark from '@/components/PicMark.vue'
+import PicNew from '@/components/PicNew.vue'
 import Category from './Category.vue'
+import PicSelf from './brushes/PicSelf.vue'
 // import oldBrush from './brushes/oldBrush.vue'
 // import killBrush from './brushes/kill_brush.vue'
 // import killBrushNew from './brushes/kill_brush2.vue'
@@ -94,12 +103,15 @@ import Category from './Category.vue'
 export default {
   name: 'Dashboard',
   components: {
+    PicSelf,
     Pencil,
     RectBrush,
-    PaperMark,
-    FatPencil,
-    SelectTool,
+    PicNew,
     Category
+
+    // PaperNew,
+    // FatPencil,
+    // SelectTool,
     // oldBrush,
     // killBrush,
     // broomBrush,
@@ -114,12 +126,12 @@ export default {
           // src: 'https://cms-assets.tutsplus.com/uploads/users/1251/posts/26530/image/BenderPaper.jpg'
           src: require('@/assets/bigPic.png'),
           key: 0
+        },
+        {
+          title: 'PL',
+          src: require('@/assets/bigPic2.png'),
+          key: 1
         }
-        // {
-        //   title: 'PL',
-        //   src: require('@/assets/bigPic2.png'),
-        //   key: 1
-        // }
 
         // {
         //   title: '3',

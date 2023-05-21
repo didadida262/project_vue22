@@ -8,11 +8,11 @@
   <el-tooltip
     class="item"
     effect="dark"
-    content="rect_brush"
+    content="pic_self"
     placement="right"
   >
     <div
-     :class="[{ 'is-active': selected === 'rect_brush' }]"
+     :class="[{ 'is-active': selected === 'pic_self' }]"
      @click="handleClickTool"
      >
      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-textarea-resize" viewBox="0 0 16 16">
@@ -31,7 +31,7 @@ import tools from './tools'
 // 饱和度    saturation: 1,
 // 亮度       brightness: 1
 export default {
-  name: 'rect_brush',
+  name: 'pic_self',
   mixins: [tools],
   props: {
     selected: {
@@ -41,7 +41,7 @@ export default {
   },
   data() {
     return {
-      name: 'rect_brush',
+      name: 'pic_self',
       selection: null,
       first: null,
       myPath: null,
@@ -53,7 +53,9 @@ export default {
   watch: {
 
   },
-  mounted() {},
+  mounted() {
+    this.paper = paper
+  },
   methods: {
     // 针对给定path，color，上梯度色
     colorFul(item) {
@@ -76,45 +78,19 @@ export default {
       console.log(this.colors)
     },
     onMouseUp(e) {
-      // this.colorFul(this.selection)
-      if (this.selection) {
-        this.selection.selected = false
-        this.resp.push(this.selection.clone())
-        const left = this.selection.curves[0].point1
-        const right = this.selection.curves[0].point2
-        const t1 = new paper.PointText({
-          content: 'left',
-          point: left,
-          fontSize: 5
-        })
-        const t2 = new paper.PointText({
-          content: 'right',
-          point: right,
-          fontSize: 5
-        })
-        this.removeSelection()
-      }
     },
 
     onMouseDown(e) {
-      console.log('工具组建的onMouseDown>>>')
-      this.first = e.point
-      this.color = getRandomColor()
+      this.initPoint = e.point
     },
     onMouseDrag(e) {
-      this.removeSelection()
-      const width = e.point.x - this.first.x
-      const height = e.point.y - this.first.y
-      this.selection = new paper.Path.Rectangle(this.first.x, this.first.y, width, height)
-      this.selection.selected = true
-      this.selection.fillColor = this.color
+      const delta = this.initPoint.subtract(e.point)
+      this.paper.projects.forEach(pro => {
+        const newCenter = pro.view.center.add(delta)
+        pro.view.setCenter(newCenter)
+      })
     },
-    removeSelection() {
-      if (this.selection) {
-        this.selection.remove()
-        this.selection = null
-      }
-    }
+
 
   },
 

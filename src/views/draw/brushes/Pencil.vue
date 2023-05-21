@@ -19,7 +19,7 @@
 
 <script>
 import paper from 'paper'
-import tools from '../tools'
+import tools from './tools'
 export default {
   name: 'pencil',
   mixins: [tools],

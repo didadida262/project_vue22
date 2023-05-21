@@ -26,7 +26,7 @@
 
 <script>
 import paper from 'paper'
-import tools from '../tools'
+import tools from './tools'
 // 色调         hue: Math.random() * 360,
 // 饱和度    saturation: 1,
 // 亮度       brightness: 1

@@ -20,7 +20,7 @@
 
 <script>
 import paper from 'paper'
-import tools from '../tools'
+import tools from './tools'
 import { getRandomColor } from '@/utils/weapons.js'
 
 export default {
