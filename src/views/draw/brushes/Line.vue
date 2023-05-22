@@ -1,19 +1,20 @@
+
 <!--
  * @Author: Hhvcg
  * @Date: 2022-06-12 21:17:03
- * @LastEditors: -_-
+ * @LastEditors: Hhvcg
  * @Description:
 -->
 <template>
   <el-tooltip
     class="item"
     effect="dark"
-    content="line"
+    content="line_brush"
     placement="right"
   >
     <div
-     :class="[{ 'is-active': selected === 'line' }]"
-     @click="changeBrush"
+     :class="[{ 'is-active': selected === 'line_brush' }]"
+     @click="handleClickTool"
      >
      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-slash-lg" viewBox="0 0 16 16">
       <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
@@ -26,12 +27,13 @@
 <script>
 import paper from 'paper'
 import { getRandomColor } from '@/utils/weapons.js'
-
+import tools from './tools'
 // 色调         hue: Math.random() * 360,
 // 饱和度    saturation: 1,
 // 亮度       brightness: 1
 export default {
-  name: 'Line_brush',
+  name: 'line_brush',
+  mixins: [tools],
   props: {
     selected: {
       type: String,
@@ -40,75 +42,74 @@ export default {
   },
   data() {
     return {
+      name: 'line_brush',
+      path: null,
+      pathOptions: {
+        strokeColor: getRandomColor(),
+        strokeWidth: 1,
+        lineWidth: 40
+      },
+      firstPoint: null,
+      lastPoint: null,
+      resp: [],
+
       selection: null,
-      finished: false,
-      resp: []
+      first: null,
+      colors: []
     }
   },
   computed: {},
   watch: {
-    selected() {
-      if (this.selected === 'line') {
-        this.init()
-      }
-    }
+
   },
   mounted() {},
   methods: {
-    init() {
-      // this.log('初始化brush--->')
-      this.tool = this.$parent.tool
-      this.tool.onKeyDown = this.onKeyDown
-      this.tool.onMouseDown = this.onMouseDown
-      this.tool.onMouseDrag = this.onMouseDrag
-      this.tool.onMouseMove = this.onMouseMove
-      this.tool.onMouseUp = this.onMouseUp
+    removeLastPoint() {
+      this.path.removeSegment(this.path.segments.length - 1)
     },
-    changeBrush() {
-      this.$emit('changeBrush', 'line')
+    onMouseMove(event) {
+      console.log('onMouseMove>>>')
+      console.log('this.path>>>', this.path)
+      if (!this.path) return
+      if (this.path.segments.length > 1) {
+        this.removeLastPoint()
+      }
+      this.lastPoint = event.point
+      this.path.add(this.lastPoint)
+      this.path.closePath()
     },
-    onKeyDown(e) {
+    onMouseDown(e) {
+      if (!this.firstPoint) {
+        this.createLine(e.point)
+      } else {
+        this.completeLine(e.point)
+      }
     },
-    onMouseUp(e) {
+    createLine(point) {
+      this.firstPoint = point
+      this.path = new paper.Path(this.pathOptions)
+      this.path.add(this.firstPoint)
+    },
+    completeLine(point) {
+      this.lastPoint = point
+      this.path.add(this.lastPoint)
+      this.path.closePath()
+      this.resp.push(this.path.clone())
+      this.path.removeSegments()
+      this.removeLine()
+    },
+    removeLine() {
+      this.path.remove()
+      this.path = null
+      this.firstPoint = null
+      this.lastPoint = null
     },
 
-    onMouseDown(e) {
-      if (this.selection && this.selection.segments.length === 2) {
-        this.resp.push(this.selection.clone())
-        this.selection.remove()
-        this.selection = null
-        return
-      }
-      if (this.selection) {
-        this.selection = null
-        this.selection = new paper.Path({
-          strokeColor: 'black'
-        })
-        return
-      }
-      this.selection = new paper.Path({
-        strokeColor: 'black'
-      })
-      this.selection.add(e.point)
-    },
     onMouseDrag(e) {
-    },
-    // 若path存在，清除第二个点，加上当前点
-    onMouseMove(e) {
-      if (this.selection) {
-        if (this.selection.segments.length === 2) {
-          this.selection.segments.pop()
-          this.selection.add(e.point)
-        } else {
-          this.selection.add(e.point)
-        }
-      }
+
     },
     removeSelection() {
-      if (this.selection) {
-        this.selection.remove()
-        this.selection = null
-      }
+
     }
 
   },

@@ -24,6 +24,12 @@
         @changeBrush="changeBrush"
         @submitPath="submitPath"
       />
+      <LineBrush
+        class="cursor-pointer"
+        :selected="activatedBrush"
+        @changeBrush="changeBrush"
+      />
+
         <!-- <SelectTool
           class="cursor-pointer"
           :selected="activatedBrush"
@@ -51,11 +57,6 @@
         @changeBrush="changeBrush"
       />
       <killBrushNew
-        class="cursor-pointer"
-        :selected="activatedBrush"
-        @changeBrush="changeBrush"
-      />
-      <LineBrush
         class="cursor-pointer"
         :selected="activatedBrush"
         @changeBrush="changeBrush"
@@ -94,11 +95,11 @@ import SelectTool from './brushes/SelectTool.vue'
 import PicNew from '@/components/PicNew.vue'
 import Category from './Category.vue'
 import PicSelf from './brushes/PicSelf.vue'
+import LineBrush from './brushes/Line.vue'
 // import oldBrush from './brushes/oldBrush.vue'
 // import killBrush from './brushes/kill_brush.vue'
 // import killBrushNew from './brushes/kill_brush2.vue'
 // import broomBrush from './brushes/broomBrush.vue'
-// import LineBrush from './brushes/Line.vue'
 
 export default {
   name: 'Dashboard',
@@ -107,7 +108,8 @@ export default {
     Pencil,
     RectBrush,
     PicNew,
-    Category
+    Category,
+    LineBrush
 
     // PaperNew,
     // FatPencil,
