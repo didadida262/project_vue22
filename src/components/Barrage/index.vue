@@ -46,8 +46,9 @@ export default {
     console.log('收到的数据>>', this.dataList)
   },
   beforeDestroy() {
-    const currentProject = this.paper.projects.filter((_p) => _p.name === this.title)[0]
-    currentProject.remove()
+    if (this.currentProject) {
+      this.currentProject.remove()
+    }
   },
   methods: {
     // 根据当前paperscope宽高，返回一个范围内的随机坐标

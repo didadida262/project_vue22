@@ -91,11 +91,12 @@ export default {
   mounted() {
     this.init()
     this.drawPic()
-    console.log('this.paper>>>',this.paper)
+    console.log('this.paper>>>', this.paper)
   },
   beforeDestroy() {
-    const currentProject = this.paper.projects.filter((p) => p.name === this.picContainer)
-    currentProject.remove()
+    if (this.currentProject) {
+      this.currentProject.remove()
+    }
   }
 }
 </script>

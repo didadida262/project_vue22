@@ -140,8 +140,9 @@ export default {
     this.drawPic()
   },
   beforeDestroy() {
-    const currentProject = this.paper.projects.filter((p) => p.name === this.picContainer)
-    currentProject.remove()
+    if (this.currentProject) {
+      this.currentProject.remove()
+    }
   }
 }
 </script>

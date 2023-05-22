@@ -42,8 +42,9 @@ export default {
     this.draw()
   },
   beforeDestroy() {
-    const currentProject = this.paper.projects.filter((_p) => _p.name === this.title)[0]
-    currentProject.remove()
+    if (this.currentProject) {
+      this.currentProject.remove()
+    }
   },
   methods: {
     getRandomPoint() {

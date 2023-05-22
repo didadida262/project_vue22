@@ -1,7 +1,7 @@
 <!--
  * @Author: Hhvcg
  * @Date: 2022-06-10 15:44:29
- * @LastEditors: -_-
+ * @LastEditors: Hhvcg
  * @Description: circle
 -->
 <template>
@@ -150,7 +150,7 @@ export default {
     // console.log('es6>>', es6)
     require('./myWorker')
     // console.log('this.circleData>>>', this.circleData)
-    this.testWorker()
+    // this.testWorker()
   }
 }
 </script>
