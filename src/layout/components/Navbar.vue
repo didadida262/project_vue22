@@ -1,5 +1,5 @@
 <template>
-  <div class="navbar">
+  <div class="navbar flex-cb">
     <hamburger :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
     <breadcrumb class="breadcrumb-container" />
     <header-notice></header-notice>
@@ -85,7 +85,6 @@ export default {
   box-shadow: 0 1px 4px rgba(0,21,41,.08);
 
   .hamburger-container {
-    line-height: 46px;
     height: 100%;
     float: left;
     cursor: pointer;
@@ -98,7 +97,8 @@ export default {
   }
 
   .breadcrumb-container {
-    float: left;
+    flex:1;
+
   }
 
   .right-menu {
@@ -134,7 +134,6 @@ export default {
       .avatar-wrapper {
         margin-top: 5px;
         position: relative;
-
         .user-avatar {
           cursor: pointer;
           width: 40px;
@@ -146,7 +145,7 @@ export default {
           cursor: pointer;
           position: absolute;
           right: -20px;
-          top: 25px;
+          top: 20px;
           font-size: 12px;
         }
       }
