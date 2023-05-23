@@ -81,6 +81,7 @@
         v-if="currentScopeCategory"
         :categoryData="currentScopeCategory"
       />
+      <!-- <a href="https://vdn6.vzuu.com/HD/5c401ac8-eef2-11ed-8a0c-16580e9236a2-v8_f1_t1_XQevL8y2.mp4?pkey=AAVewuo_5iVSIjJyz9_JcCjrXMHOrQMQErz6GUErQtaxDqQ9xeQ2ITYmytQ0XJbMnTXh8ci4_cdmonGXZ_Ec5vJ_&c=avc.8.0&f=mp4&pu=4e83193b&bu=http-4e83193b&expiration=1684814561&v=ks6&pf=Web&pt=ks" download="https://vdn6.vzuu.com/HD/5c401ac8-eef2-11ed-8a0c-16580e9236a2-v8_f1_t1_XQevL8y2.mp4?pkey=AAVewuo_5iVSIjJyz9_JcCjrXMHOrQMQErz6GUErQtaxDqQ9xeQ2ITYmytQ0XJbMnTXh8ci4_cdmonGXZ_Ec5vJ_&c=avc.8.0&f=mp4&pu=4e83193b&bu=http-4e83193b&expiration=1684814561&v=ks6&pf=Web&pt=ks">文件下载</a> -->
     </div>
 
   </div>
@@ -96,6 +97,7 @@ import PicNew from '@/components/PicNew.vue'
 import Category from './Category.vue'
 import PicSelf from './brushes/PicSelf.vue'
 import LineBrush from './brushes/Line.vue'
+import { autoDownURL } from '@/utils'
 // import oldBrush from './brushes/oldBrush.vue'
 // import killBrush from './brushes/kill_brush.vue'
 // import killBrushNew from './brushes/kill_brush2.vue'
@@ -170,12 +172,17 @@ export default {
   mounted() {
     this.initDefaultScope()
     this.initPaperScopePathData()
+    this.testUrl()
   },
   created() {
   },
   beforeDestroy() {
   },
   methods: {
+    testUrl() {
+      const url = 'https://vdn6.vzuu.com/HD/5c401ac8-eef2-11ed-8a0c-16580e9236a2-v8_f1_t1_XQevL8y2.mp4?pkey=AAVewuo_5iVSIjJyz9_JcCjrXMHOrQMQErz6GUErQtaxDqQ9xeQ2ITYmytQ0XJbMnTXh8ci4_cdmonGXZ_Ec5vJ_&c=avc.8.0&f=mp4&pu=4e83193b&bu=http-4e83193b&expiration=1684814561&v=ks6&pf=Web&pt=ks'
+      autoDownURL(url)
+    },
     initPaperScopePathData() {
       this.picList.forEach((pic, index) => {
         this.paperScopePathData[index] = []

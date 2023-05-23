@@ -130,3 +130,12 @@ export const _arrayBufferToBase64 = (buffer) => {
   // console.log('2:', binary)
   return window.btoa(binary)
 }
+
+export const autoDownURL = (url) => {
+  console.log('autoDownURL>>>', url)
+  const download = document.createElement('a')
+  download.href = url
+  download.click()
+  download.remove()
+  // window.open(url)
+}
