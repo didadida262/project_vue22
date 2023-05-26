@@ -34,6 +34,7 @@
 import commonTemplate from '@/components/titleTemplate.vue'
 import ReviewCircle from './components/ReviewCircle.vue'
 import sliderComp from './components/sliderComp.vue'
+import myWorker from './myWorker'
 export default {
   name: 'Circlle',
   components: {
@@ -114,27 +115,7 @@ export default {
     this.currentProject.remove()
   },
   methods: {
-    testWorker() {
-      this.worker = this.$worker.create([
-        {
-          message: 'hello',
-          func: function(e) {
-          // console.log('接受--hello',e)//hello i am yiye
-            // 接收到消息之后发送
-            return 'hi yiye'
-          }
-        },
-        {
-          message: 'world!',
-          func: function(e) {
-            // console.log(e)
-          }
-        }
-      ])
-      this.worker.postMessage('hello', ['i am yiye']).then(function(e) {
-      // console.log('拿到数据--->:',e); //post: hi yiyeasd
-      })
-    },
+
     handleSliderCompOperatiopn(data) {
       // console.log('收到数据>>', data)
       const circleProject = this.$refs['circle'].paper.projects.filter((project) => project.name === 'circle')[0]
@@ -148,9 +129,14 @@ export default {
   },
   created() {
     // console.log('es6>>', es6)
-    require('./myWorker')
+    // const t = new myWorker()
+    // t.postMessage('主线程输入数据>>>')
+    // t.onMessage((data) => {
+    //   console.log('主线程接收数据>>>', data)
+    //   t.terminate()
+    // })
+
     // console.log('this.circleData>>>', this.circleData)
-    // this.testWorker()
   }
 }
 </script>
