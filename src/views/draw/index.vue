@@ -180,8 +180,8 @@ export default {
   },
   methods: {
     testUrl() {
-      const url = 'https://vdn6.vzuu.com/HD/5c401ac8-eef2-11ed-8a0c-16580e9236a2-v8_f1_t1_XQevL8y2.mp4?pkey=AAVewuo_5iVSIjJyz9_JcCjrXMHOrQMQErz6GUErQtaxDqQ9xeQ2ITYmytQ0XJbMnTXh8ci4_cdmonGXZ_Ec5vJ_&c=avc.8.0&f=mp4&pu=4e83193b&bu=http-4e83193b&expiration=1684814561&v=ks6&pf=Web&pt=ks'
-      autoDownURL(url)
+      // const url = 'https://vdn6.vzuu.com/HD/5c401ac8-eef2-11ed-8a0c-16580e9236a2-v8_f1_t1_XQevL8y2.mp4?pkey=AAVewuo_5iVSIjJyz9_JcCjrXMHOrQMQErz6GUErQtaxDqQ9xeQ2ITYmytQ0XJbMnTXh8ci4_cdmonGXZ_Ec5vJ_&c=avc.8.0&f=mp4&pu=4e83193b&bu=http-4e83193b&expiration=1684814561&v=ks6&pf=Web&pt=ks'
+      // autoDownURL(url)
     },
     initPaperScopePathData() {
       this.picList.forEach((pic, index) => {
