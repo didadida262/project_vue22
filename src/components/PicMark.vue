@@ -2,7 +2,8 @@
  * @Author: Hhvcg
  * @Date: 2022-09-16 11:38:49
  * @LastEditors: Hhvcg
- * @Description: 支持图片展示、拖拽、放大缩小功能.订正版本
+ * @Description: 支持图片展示、拖拽、放大缩小功能.
+ 订正版本
 -->
 
 <template>
@@ -11,6 +12,7 @@
     :ref="picContainer"
     resize
     class="picContainer"
+    @wheel="onwheel"
   />
 </template>
 <script>
@@ -33,8 +35,19 @@ export default {
     }
   },
   methods: {
+    onwheel(e) {
+      const view = this.project.view
+      const viewPosition = view.viewToProject(
+        new paper.Point(e.offsetX, e.offsetY)
+      )
+      const transform = this.changeZoom(e.deltaY, viewPosition)
+      paper.projects.forEach((project) => {
+        project.view.zoom = transform.zoom
+        project.view.center = project.view.center.add(transform.offset)
+      })
+    },
     changeZoom(delta, p) {
-      const view = this.currentProject.view
+      const view = this.project.view
       const oldZoom = view.zoom
       const c = view.center
       const factor = 0.05 + this.zoom
