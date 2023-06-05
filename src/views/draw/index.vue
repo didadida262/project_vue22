@@ -69,7 +69,7 @@
       :class="[activateScope === index? 'activateScope-st': '']"
        v-for="(item, index) in picList"
        :key="index">
-        <PicNew
+        <PicMark
           :picInfo="item"
           ref="PaperView"
           @handleChangePaperScope="handleChangePaperScope"
@@ -88,16 +88,17 @@
 </template>
 
 <script>
-import paper from 'paper'
+// import paper from 'paper'
 import Pencil from './brushes/Pencil.vue'
-import FatPencil from './brushes/FatPencil.vue'
+// import FatPencil from './brushes/FatPencil.vue'
 import RectBrush from './brushes/RectBrush.vue'
-import SelectTool from './brushes/SelectTool.vue'
-import PicNew from '@/components/PicNew.vue'
+// import SelectTool from './brushes/SelectTool.vue'
+// import PicNew from '@/components/PicNew.vue'
 import Category from './Category.vue'
 import PicSelf from './brushes/PicSelf.vue'
 import LineBrush from './brushes/Line.vue'
-import { autoDownURL } from '@/utils'
+import PicMark from '@/components/PicMark.vue'
+// import { autoDownURL } from '@/utils'
 // import oldBrush from './brushes/oldBrush.vue'
 // import killBrush from './brushes/kill_brush.vue'
 // import killBrushNew from './brushes/kill_brush2.vue'
@@ -106,10 +107,10 @@ import { autoDownURL } from '@/utils'
 export default {
   name: 'Dashboard',
   components: {
+    PicMark,
     PicSelf,
     Pencil,
     RectBrush,
-    PicNew,
     Category,
     LineBrush
 
@@ -195,8 +196,7 @@ export default {
       console.log(this.paperScopePathData)
     },
     initDefaultScope() {
-      this.activePaperScope = this.$refs['PaperView'][0].paper
-      this.activePaperScope.projects[0].activate()
+      this.$refs['PaperView'][0].project.activate()
     },
     // handleSwitch() {
     //   if (this.activateScope + 1 >= this.picList.length) {
