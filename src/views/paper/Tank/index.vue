@@ -183,9 +183,8 @@ export default {
     }
   },
   beforeDestroy() {
-    const currentProject = this.paper.projects.filter((_p) => _p.name === this.title)[0]
-    if (currentProject) {
-      currentProject.remove()
+    if (this.currentProject) {
+      this.currentProject.remove()
     }
     if (this.paper) {
       this.paper = null

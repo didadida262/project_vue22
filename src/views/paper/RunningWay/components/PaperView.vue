@@ -1,7 +1,7 @@
 <!--
  * @Author: Hhvcg
  * @Date: 2022-09-16 11:38:49
- * @LastEditors: -_-
+ * @LastEditors: Hhvcg
  * @Description: 支持图片展示、拖拽、放大缩小功能
 -->
 
@@ -54,13 +54,14 @@ export default {
       this.WIDTH = canvas.clientWidth
       this.HEIGHT = canvas.clientHeight
       paper.setup(canvas)
-      this.paper = paper
-      this.paper.project.name = this.picContainer
-      this.paper.view.setCenter(0, 0)
-      this.paper.view.onMouseDown = this.onMouseDown
-      this.paper.view.onMouseDrag = this.onMouseDrag
-      this.paper.view.onMouseMove = this.onMouseMove
-      this.paper.view.onMouseUp = this.onMouseUp
+      this.project = paper.project
+      this.project.name = this.picContainer
+      this.project.view.setCenter(0, 0)
+      this.project.view.onMouseDown = this.onMouseDown
+      this.project.view.onMouseDrag = this.onMouseDrag
+      this.project.view.onMouseMove = this.onMouseMove
+      this.project.view.onMouseUp = this.onMouseUp
+      console.log(paper)
     },
     onMouseDown(e) {
       this.currentProject.activate()
@@ -76,7 +77,7 @@ export default {
     drawPic() {
       const raster = new paper.Raster(this.picInfo.src)
       raster.onLoad = () => {
-        raster.fitBounds(this.paper.view.bounds, false)
+        raster.fitBounds(this.project.view.bounds, false)
       }
     }
   },
@@ -85,7 +86,7 @@ export default {
       return 'picContainer' + this.picInfo.title
     },
     currentProject() {
-      return this.paper.projects.filter((item) => item.name === this.picContainer)[0]
+      return this.project
     }
   },
   mounted() {
@@ -93,8 +94,9 @@ export default {
     this.drawPic()
   },
   beforeDestroy() {
-    const currentProject = this.paper.projects.filter((p) => p.name === this.picContainer)
-    currentProject.remove()
+    if (this.currentProject) {
+      this.currentProject.remove()
+    }
   }
 }
 </script>

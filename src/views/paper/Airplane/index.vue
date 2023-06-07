@@ -1,7 +1,7 @@
 <!--
  * @Author: Hhvcg
  * @Date: 2022-06-10 15:44:29
- * @LastEditors: -_-
+ * @LastEditors: Hhvcg
  * @Description: 小飞机
 -->
 <template>
@@ -44,8 +44,9 @@ export default {
     this.init()
   },
   beforeDestroy() {
-    const currentProject = this.paper.projects.filter((_p) => _p.name === this.title)[0]
-    currentProject.remove()
+    if (this.currentProject) {
+      this.currentProject.remove()
+    }
   },
   methods: {
     onFrame() {

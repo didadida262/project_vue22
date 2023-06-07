@@ -21,6 +21,12 @@
         @changeBrush="changeBrush"
         @submitPath="submitPath"
       />
+      <LineBrush
+        class="cursor-pointer"
+        :selected="activatedBrush"
+        @changeBrush="changeBrush"
+      />
+
         <!-- <SelectTool
           class="cursor-pointer"
           :selected="activatedBrush"
@@ -51,11 +57,6 @@
         class="cursor-pointer"
         :selected="activatedBrush"
         @changeBrush="changeBrush"
-      />
-      <LineBrush
-        class="cursor-pointer"
-        :selected="activatedBrush"
-        @changeBrush="changeBrush"
       /> -->
 
     </div>
@@ -65,8 +66,7 @@
       :class="[activateScope === index? 'activateScope-st': '']"
        v-for="(item, index) in picList"
        :key="index">
-        <PicNew
-        :model="model"
+        <PicMark
           :picInfo="item"
           ref="PaperView"
           @handleChangePaperScope="handleChangePaperScope"
@@ -78,34 +78,38 @@
         v-if="currentScopeCategory"
         :categoryData="currentScopeCategory"
       />
+      <!-- <a href="https://vdn6.vzuu.com/HD/5c401ac8-eef2-11ed-8a0c-16580e9236a2-v8_f1_t1_XQevL8y2.mp4?pkey=AAVewuo_5iVSIjJyz9_JcCjrXMHOrQMQErz6GUErQtaxDqQ9xeQ2ITYmytQ0XJbMnTXh8ci4_cdmonGXZ_Ec5vJ_&c=avc.8.0&f=mp4&pu=4e83193b&bu=http-4e83193b&expiration=1684814561&v=ks6&pf=Web&pt=ks" download="https://vdn6.vzuu.com/HD/5c401ac8-eef2-11ed-8a0c-16580e9236a2-v8_f1_t1_XQevL8y2.mp4?pkey=AAVewuo_5iVSIjJyz9_JcCjrXMHOrQMQErz6GUErQtaxDqQ9xeQ2ITYmytQ0XJbMnTXh8ci4_cdmonGXZ_Ec5vJ_&c=avc.8.0&f=mp4&pu=4e83193b&bu=http-4e83193b&expiration=1684814561&v=ks6&pf=Web&pt=ks">文件下载</a> -->
     </div>
 
   </div>
 </template>
 
 <script>
-import paper from 'paper'
+// import paper from 'paper'
 import Pencil from './brushes/Pencil.vue'
-import FatPencil from './brushes/FatPencil.vue'
+// import FatPencil from './brushes/FatPencil.vue'
 import RectBrush from './brushes/RectBrush.vue'
-import SelectTool from './brushes/SelectTool.vue'
-import PicNew from '@/components/PicNew.vue'
+// import SelectTool from './brushes/SelectTool.vue'
+// import PicNew from '@/components/PicNew.vue'
 import Category from './Category.vue'
 import PicSelf from './brushes/PicSelf.vue'
+import LineBrush from './brushes/Line.vue'
+import PicMark from '@/components/PicMark.vue'
+// import { autoDownURL } from '@/utils'
 // import oldBrush from './brushes/oldBrush.vue'
 // import killBrush from './brushes/kill_brush.vue'
 // import killBrushNew from './brushes/kill_brush2.vue'
 // import broomBrush from './brushes/broomBrush.vue'
-// import LineBrush from './brushes/Line.vue'
 
 export default {
   name: 'Dashboard',
   components: {
+    PicMark,
     PicSelf,
     Pencil,
     RectBrush,
-    PicNew,
-    Category
+    Category,
+    LineBrush
 
     // PaperNew,
     // FatPencil,
@@ -167,14 +171,16 @@ export default {
   mounted() {
     this.initDefaultScope()
     this.initPaperScopePathData()
+    this.testUrl()
   },
   created() {
   },
   beforeDestroy() {
   },
   methods: {
-    reset() {
-      this.model = 'reset'
+    testUrl() {
+      // const url = 'https://vdn6.vzuu.com/HD/5c401ac8-eef2-11ed-8a0c-16580e9236a2-v8_f1_t1_XQevL8y2.mp4?pkey=AAVewuo_5iVSIjJyz9_JcCjrXMHOrQMQErz6GUErQtaxDqQ9xeQ2ITYmytQ0XJbMnTXh8ci4_cdmonGXZ_Ec5vJ_&c=avc.8.0&f=mp4&pu=4e83193b&bu=http-4e83193b&expiration=1684814561&v=ks6&pf=Web&pt=ks'
+      // autoDownURL(url)
     },
     initPaperScopePathData() {
       this.picList.forEach((pic, index) => {
@@ -188,8 +194,7 @@ export default {
       console.log(this.paperScopePathData)
     },
     initDefaultScope() {
-      this.activePaperScope = this.$refs['PaperView'][0].paper
-      this.activePaperScope.projects[0].activate()
+      this.$refs['PaperView'][0].project.activate()
     },
     // handleSwitch() {
     //   if (this.activateScope + 1 >= this.picList.length) {

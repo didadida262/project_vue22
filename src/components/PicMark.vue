@@ -2,22 +2,21 @@
  * @Author: Hhvcg
  * @Date: 2022-09-16 11:38:49
  * @LastEditors: Hhvcg
- * @Description: 支持图片展示、拖拽、放大缩小功能---适配标注页面
+ * @Description: 支持图片展示、拖拽、放大缩小功能.
+ 订正版本
 -->
 
 <template>
   <canvas
-    @wheel="onwheel"
     :id="picContainer"
     :ref="picContainer"
     resize
     class="picContainer"
+    @wheel="onwheel"
   />
 </template>
 <script>
 import paper from 'paper'
-import { getRandomColor } from '@/utils/weapons'
-
 export default {
   name: 'paperpicsample',
   props: {
@@ -36,26 +35,19 @@ export default {
     }
   },
   methods: {
-    canOperate() {
-      if (this.$parent.activatedBrush === 'select_tool' && this.paper.project.name === this.picContainer) {
-        return true
-      }
-      return false
-    },
     onwheel(e) {
-      // 当前为激活scope且选择工具状态才能执行
-      if (!this.canOperate()) return
-      const view = this.currentProject.view
+      const view = this.project.view
       const viewPosition = view.viewToProject(
         new paper.Point(e.offsetX, e.offsetY)
       )
       const transform = this.changeZoom(e.deltaY, viewPosition)
-      this.paper.projects.forEach((project) => {
+      paper.projects.forEach((project) => {
         project.view.zoom = transform.zoom
+        project.view.center = project.view.center.add(transform.offset)
       })
     },
     changeZoom(delta, p) {
-      const view = this.currentProject.view
+      const view = this.project.view
       const oldZoom = view.zoom
       const c = view.center
       const factor = 0.05 + this.zoom
@@ -75,56 +67,30 @@ export default {
       this.WIDTH = canvas.clientWidth
       this.HEIGHT = canvas.clientHeight
       paper.setup(canvas)
-      this.paper = paper
-      this.paper.project.name = this.picContainer
-      // this.paper.view.setCenter(0, 0)
-      this.paper.view.onMouseDown = this.onMouseDown
-      this.paper.view.onMouseDrag = this.onMouseDrag
-      this.paper.view.onMouseMove = this.onMouseMove
-      this.paper.view.onMouseUp = this.onMouseUp
+      this.project = paper.project
+      this.project.name = this.picContainer
+      this.project.view.setCenter(0, 0)
+      this.project.view.onMouseDown = this.onMouseDown
+      this.project.view.onMouseDrag = this.onMouseDrag
+      this.project.view.onMouseMove = this.onMouseMove
+      this.project.view.onMouseUp = this.onMouseUp
+      console.log(paper)
     },
-    draw() {
-      console.time('timer')
-      // circle
-      for (let i = 0; i < 4000; i++) {
-        const c = new paper.Path.Circle({
-          center: this.random(),
-          radius: 10,
-          fillColor: getRandomColor()
-        })
-      }
-      // pointText
-      // for (let i = 0; i < 8000; i++) {
-      //   const defectName = new paper.PointText({
-      //     point: this.random(),
-      //     content: 'ceshi',
-      //     justification: 'center',
-      //     fillColor: getRandomColor()
-      //     // fontWeight: 'bold'
-      //   })
-      // }
-      // for (let i = 0; i < 10000; i++) {
-      //   const defectBorder = new paper.Path.Rectangle({
-      //     center: this.random(),
-      //     size: new paper.Size(10),
-      //     fillColor: getRandomColor()
-      //   })
-      // }
-
-      console.timeEnd('timer')
-    },
-    random() {
-      return paper.Point.random().multiply(this.WIDTH, this.HEIGHT)
-    },
-
     onMouseDown(e) {
       this.currentProject.activate()
       this.$emit('handleChangePaperScope', this.picInfo)
     },
+    onMouseDrag(e) {
+    },
+    onMouseMove(e) {
+    },
+    onMouseUp(e) {
+    },
+
     drawPic() {
       const raster = new paper.Raster(this.picInfo.src)
       raster.onLoad = () => {
-        raster.fitBounds(this.paper.view.bounds, false)
+        raster.fitBounds(this.project.view.bounds, false)
       }
     }
   },
@@ -133,18 +99,17 @@ export default {
       return 'picContainer' + this.picInfo.title
     },
     currentProject() {
-      return this.paper.projects.filter((item) => item.name === this.picContainer)[0]
+      return this.project
     }
   },
   mounted() {
     this.init()
-    // this.draw()
     this.drawPic()
   },
   beforeDestroy() {
-    const currentProject = this.paper.projects.filter((p) => p.name === this.picContainer)
-    currentProject.remove()
-    this.paper = null
+    if (this.currentProject) {
+      this.currentProject.remove()
+    }
   }
 }
 </script>
@@ -153,6 +118,12 @@ export default {
 .picContainer {
   width: 100%;
   height: 100%;
+  border: 1px solid rgb(184, 174, 174);
+  border-radius: 5px;
+}
+.picContainer:hover {
+  cursor: pointer;
+  border: 2px solid rgb(0, 183, 255);
 }
 
 </style>

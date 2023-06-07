@@ -10,9 +10,9 @@
     <commonTemplate title="TestPaper" />
     <div class="cyberFont-container-content">
       <canvas
-       ref="canvas" 
+       ref="canvas"
        @wheel="onwheel"
-       resize 
+       resize
        class="canvas" />
     </div>
   </div>
@@ -49,9 +49,8 @@ export default {
     this.draw()
   },
   beforeDestroy() {
-    const currentProject = this.paper.projects.filter((_p) => _p.name === this.title)[0]
-    if (currentProject) {
-      currentProject.remove()
+    if (this.currentProject) {
+      this.currentProject.remove()
     }
     if (this.paper) {
       this.paper = null
@@ -79,8 +78,8 @@ export default {
         new paper.Point(e.offsetX, e.offsetY)
       )
       const transform = this.changeZoom(e.deltaY, viewPosition)
-        this.currentProject.view.zoom = transform.zoom
-        this.currentProject.view.center = this.currentProject.view.center.add(transform.offset)
+      this.currentProject.view.zoom = transform.zoom
+      this.currentProject.view.center = this.currentProject.view.center.add(transform.offset)
     },
     random() {
       return paper.Point.random().multiply(this.WIDTH, this.HEIGHT)
@@ -90,7 +89,7 @@ export default {
     },
     draw() {
       console.time('timer')
-      for (let i = 0; i <10000; i++) {
+      for (let i = 0; i < 10000; i++) {
         const c = new paper.Path.Circle({
           center: this.random(),
           radius: 10,
@@ -107,9 +106,8 @@ export default {
     onMouseDrag(e) {
       if (this.initPoint) {
         const v = this.initPoint.subtract(e.point)
-        const newC = this.currentProject.view.center.add(v) 
+        const newC = this.currentProject.view.center.add(v)
         this.currentProject.view.setCenter(newC)
-        
       }
     },
     onMouseMove(e) {

@@ -1,7 +1,7 @@
 <!--
  * @Author: Hhvcg
  * @Date: 2022-09-16 11:38:49
- * @LastEditors: -_-
+ * @LastEditors: Hhvcg
  * @Description: 支持图片展示、拖拽、放大缩小功能
 -->
 
@@ -38,14 +38,12 @@ export default {
       const oldZoom = view.zoom
       const c = view.center
       const factor = 0.05 + this.zoom
-
       const zoom = delta < 0 ? oldZoom * factor : oldZoom / factor
       const beta = oldZoom / zoom
       // 计算当前点到当前视图中心点向量指向
       const pc = p.subtract(c)
       // a点目测是换算后的新p点
       const a = p.subtract(pc.multiply(beta)).subtract(c)
-
       return { zoom: zoom, offset: a }
     },
     // 初始化画布，并确认相关参数初始值
@@ -54,7 +52,6 @@ export default {
       this.WIDTH = canvas.clientWidth
       this.HEIGHT = canvas.clientHeight
       paper.setup(canvas)
-      this.paper = paper
       this.paper.project.name = this.picContainer
       this.paper.view.setCenter(0, 0)
       this.paper.view.onMouseDown = this.onMouseDown
@@ -93,8 +90,9 @@ export default {
     this.drawPic()
   },
   beforeDestroy() {
-    const currentProject = this.paper.projects.filter((p) => p.name === this.picContainer)
-    currentProject.remove()
+    if (this.currentProject) {
+      this.currentProject.remove()
+    }
   }
 }
 </script>

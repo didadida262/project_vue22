@@ -74,8 +74,9 @@ export default {
     this.addVideo()
   },
   beforeDestroy() {
-    const currentProject = this.paper.projects.filter((_p) => _p.name === this.title)[0]
-    currentProject.remove()
+    if (this.currentProject) {
+      this.currentProject.remove()
+    }
   },
   methods: {
     async getVideoData(info) {

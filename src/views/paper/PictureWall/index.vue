@@ -1,7 +1,7 @@
 <!--
  * @Author: Hhvcg
  * @Date: 2022-11-09 17:07:29
- * @LastEditors: -_-
+ * @LastEditors: Hhvcg
  * @Description: picture wall ---wangjian
 -->
 
@@ -110,12 +110,11 @@ export default {
     }
   },
   beforeDestroy() {
+    if (this.currentProject) {
+      this.currentProject.remove()
+    }
     if (this.paper) {
       this.paper = null
-    }
-    const currentProject = this.paper.projects.filter((p) => p.name === this.picContainer)
-    if (currentProject) {
-      currentProject.remove()
     }
   }
 }

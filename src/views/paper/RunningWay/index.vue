@@ -37,65 +37,14 @@ export default {
       title: 'runningWay',
       picviewlist: [
         {
-          title: 'pl',
-          src: require('@/assets/Sam.webp')
-        },
-        {
-          title: 'pl',
-          src: require('@/assets/Sam.webp')
-        },
-        {
-          title: 'pl',
-          src: require('@/assets/Sam.webp')
-        },
-        {
-          title: 'pl',
-          src: require('@/assets/Sam.webp')
-        },
-        {
-          title: 'pl',
-          src: require('@/assets/Sam.webp')
-        },
-        {
-          title: 'pl',
-          src: require('@/assets/Sam.webp')
-        },
-        {
-          title: 'pl',
-          src: require('@/assets/Sam.webp')
-        },
-        {
-          title: 'pl',
-          src: require('@/assets/Sam.webp')
-        },
-        {
-          title: 'pl',
-          src: require('@/assets/Sam.webp')
-        },
-        {
-          title: 'pl',
-          src: require('@/assets/Sam.webp')
-        },
-        {
-          title: 'pl',
-          src: require('@/assets/Sam.webp')
-        },
-        {
-          title: 'pl',
-          src: require('@/assets/Sam.webp')
-        },
-        {
-          title: 'pl',
-          src: require('@/assets/Sam.webp')
-        },
-        {
-          title: 'pl',
+          title: 'sur',
           src: require('@/assets/Sam.webp')
         },
         {
           title: 'pl',
           src: require('@/assets/Sam.webp')
         }
+
       ]
     }
   },

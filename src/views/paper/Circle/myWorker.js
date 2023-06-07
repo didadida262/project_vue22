@@ -1,10 +1,9 @@
-
-console.log('>>>>>123')
-const es6 = () => {
-  console.log('asdasd')
+// 监听接收 主线程的参数
+onmessage = function(message) {
+  console.log('接收到数据>>>', message)
+  postMessage('adadadadad')
 }
-
-// export default es6
-module.exports = {
-  es6
+onerror = function(event) {
+  console.log(event)
+  self.close()
 }
