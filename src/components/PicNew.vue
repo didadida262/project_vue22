@@ -16,6 +16,9 @@ export default {
     picInfo: {
       type: Object,
       required: true
+    },
+    model: {
+      type: String
     }
   },
   data() {
@@ -63,15 +66,25 @@ export default {
       this.paper = paper
       this.paper.project.name = this.picContainer
       this.paper.view.setCenter(0, 0)
-      this.paper.view.onMouseDown = (e) => { this.onMouseDown(e) }
+      this.paper.view.onMouseDown = (e) => {this.paperViewMouseDown(e)}
+      this.toolKit = new paper.Tool()
+      this.toolKit.onMouseDown = (e) => { this.onMouseDown(e) }
+      this.toolKit.onMouseDrag = (e) => { this.onMouseDrag(e) }
       // this.paper.view.onMouseDrag = (e) => { this.onMouseDrag(e) }
+    },
+    paperViewMouseDown(e) {
+      this.currentProject.activate()
     },
     onMouseDown(e) {
       console.log('1----onMouseDown')
-      this.currentProject.activate()
+      this.initPoint = e.point
     },
     onMouseDrag(e) {
-
+      const delta = this.initPoint.subtract(e.point)
+      this.paper.projects.forEach(pro => {
+        const newCenter = pro.view.center.add(delta)
+        pro.view.setCenter(newCenter)
+      })
     },
     drawPic() {
       const raster = new paper.Raster(this.picInfo.src)
@@ -88,10 +101,18 @@ export default {
       return this.paper.projects.filter((item) => item.name === this.picContainer)[0]
     }
   },
+  watch: {
+    model() {
+      if (this.model === 'reset') {
+        this.toolKit.activate()
+      }
+    } 
+  },
   mounted() {
     this.init()
     this.drawPic()
     console.log('this.paper>>>',this.paper)
+    console.log('this.model>>',this.model)
   },
   beforeDestroy() {
     const currentProject = this.paper.projects.filter((p) => p.name === this.picContainer)

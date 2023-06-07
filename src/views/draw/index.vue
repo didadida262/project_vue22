@@ -8,11 +8,8 @@
     <div class="draw-container-tool">
       <!-- <el-button>矩形框</el-button>
       <el-button>线段</el-button> -->
-      <PicSelf
-          class="cursor-pointer"
-          :selected="activatedBrush"
-          @changeBrush="changeBrush"
-        />
+      <el-button @click="reset">一键还原</el-button>
+
       <RectBrush
           class="cursor-pointer"
           :selected="activatedBrush"
@@ -69,6 +66,7 @@
        v-for="(item, index) in picList"
        :key="index">
         <PicNew
+        :model="model"
           :picInfo="item"
           ref="PaperView"
           @handleChangePaperScope="handleChangePaperScope"
@@ -120,6 +118,7 @@ export default {
   },
   data() {
     return {
+      model: 'watch',
       picList: [
         {
           title: 'Surface',
@@ -174,6 +173,9 @@ export default {
   beforeDestroy() {
   },
   methods: {
+    reset() {
+      this.model = 'reset'
+    },
     initPaperScopePathData() {
       this.picList.forEach((pic, index) => {
         this.paperScopePathData[index] = []
