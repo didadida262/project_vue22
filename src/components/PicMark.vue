@@ -121,9 +121,9 @@ export default {
   border: 1px solid rgb(184, 174, 174);
   border-radius: 5px;
 }
-.picContainer:hover {
-  cursor: pointer;
-  border: 2px solid rgb(0, 183, 255);
-}
+// .picContainer:hover {
+//   cursor: pointer;
+//   border: 2px solid rgb(0, 183, 255);
+// }
 
 </style>

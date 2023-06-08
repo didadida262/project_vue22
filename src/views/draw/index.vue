@@ -8,11 +8,16 @@
     <div class="draw-container-tool">
       <!-- <el-button>矩形框</el-button>
       <el-button>线段</el-button> -->
-      <PicSelf
+      <SelectTool
+        class="cursor-pointer"
+        :selected="activatedBrush"
+        @changeBrush="changeBrush"
+      />
+      <!-- <PicSelf
           class="cursor-pointer"
           :selected="activatedBrush"
           @changeBrush="changeBrush"
-        />
+        /> -->
       <RectBrush
           class="cursor-pointer"
           :selected="activatedBrush"
@@ -30,11 +35,7 @@
         @changeBrush="changeBrush"
       />
 
-        <!-- <SelectTool
-          class="cursor-pointer"
-          :selected="activatedBrush"
-          @changeBrush="changeBrush"
-        />
+        <!--
 
         <fat-pencil
           class="cursor-pointer"
@@ -92,7 +93,7 @@
 import Pencil from './brushes/Pencil.vue'
 // import FatPencil from './brushes/FatPencil.vue'
 import RectBrush from './brushes/RectBrush.vue'
-// import SelectTool from './brushes/SelectTool.vue'
+import SelectTool from './brushes/SelectTool.vue'
 // import PicNew from '@/components/PicNew.vue'
 import Category from './Category.vue'
 import PicSelf from './brushes/PicSelf.vue'
@@ -112,7 +113,8 @@ export default {
     Pencil,
     RectBrush,
     Category,
-    LineBrush
+    LineBrush,
+    SelectTool
 
     // PaperNew,
     // FatPencil,
