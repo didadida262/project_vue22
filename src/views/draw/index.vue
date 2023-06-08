@@ -212,7 +212,6 @@ export default {
     },
 
     changeBrush(brush) {
-      console.log('brush>>>', brush)
       this.activatedBrush = brush
       console.log('activatedBrush>>>', this.activatedBrush)
     }

@@ -1,7 +1,7 @@
 /*
  * @Author: Hhvcg
  * @Date: 2023-02-12 13:58:05
- * @LastEditors: -_-
+ * @LastEditors: Hhvcg
  * @Description:
  */
 
@@ -31,6 +31,7 @@ export default {
   },
   watch: {
     selected() {
+      console.log('selected', this.selected)
       if (this.selected === this.name) {
         this.$message.success(`激活${this.name}工具`)
         this.tool.activate()
