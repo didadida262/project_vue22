@@ -81,37 +81,50 @@ export default {
       this.path.add(this.lastPoint)
       this.path.closePath()
       this.resp.push(this.path.clone())
+      this.resp.push(this.arr.clone())
       this.path.removeSegments()
+      this.arr.removeSegments()
       this.removeLine()
     },
-    createLine(point) {
+    createLineGroup(point) {
       this.firstPoint = point
+      this.pathGroup = new paper.Group()
       this.path = new paper.Path(this.pathOptions)
       this.path.add(this.firstPoint)
+      this.pathGroup.addChild(this.path.clone())
     },
     processVector(e, drag) {
-      if (this.vectorItem) {
-        this.vectorItem.remove()
+      if (this.arr) {
+        this.arr.remove()
       }
       const vector = e.point.subtract(this.firstPoint)
       const arrowVector = vector.normalize(10)
-      this.vectorItem = new paper.Group([
-        new paper.Path({
-          strokeColor: 'red',
-          strokeWidth: 1,
-          segments: [
-            this.lastPoint.add(arrowVector.rotate(135)),
-            this.lastPoint,
-            this.lastPoint.add(arrowVector.rotate(-135))
-          ]
-        })
-      ])
+      this.arr = new paper.Path({
+        strokeColor: 'red',
+        strokeWidth: 1,
+        segments: [
+          this.lastPoint.add(arrowVector.rotate(135)),
+          this.lastPoint,
+          this.lastPoint.add(arrowVector.rotate(-135))
+        ]
+      })
+      // this.vectorItem = new paper.Group([
+      //   new paper.Path({
+      //     strokeColor: 'red',
+      //     strokeWidth: 1,
+      //     segments: [
+      //       this.lastPoint.add(arrowVector.rotate(135)),
+      //       this.lastPoint,
+      //       this.lastPoint.add(arrowVector.rotate(-135))
+      //     ]
+      //   })
+      // ])
     },
     onMouseUp(e) {
     },
     onMouseDown(e) {
       if (!this.firstPoint) {
-        this.createLine(e.point)
+        this.createLineGroup(e.point)
       } else {
         this.completeLine(e.point)
       }
