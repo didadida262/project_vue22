@@ -34,7 +34,11 @@
         :selected="activatedBrush"
         @changeBrush="changeBrush"
       />
-
+      <MeasureTool
+        class="cursor-pointer"
+        :selected="activatedBrush"
+        @changeBrush="changeBrush"
+      />
         <!--
 
         <fat-pencil
@@ -99,6 +103,7 @@ import Category from './Category.vue'
 import PicSelf from './brushes/PicSelf.vue'
 import LineBrush from './brushes/Line.vue'
 import PicMark from '@/components/PicMark.vue'
+import MeasureTool from './brushes/MeasureTool.vue'
 // import { autoDownURL } from '@/utils'
 // import oldBrush from './brushes/oldBrush.vue'
 // import killBrush from './brushes/kill_brush.vue'
@@ -110,13 +115,12 @@ export default {
   components: {
     PicMark,
     PicSelf,
+    MeasureTool,
     Pencil,
     RectBrush,
     Category,
     LineBrush,
-    SelectTool
-
-    // PaperNew,
+    SelectTool, // PaperNew,
     // FatPencil,
     // SelectTool,
     // oldBrush,
@@ -124,6 +128,8 @@ export default {
     // broomBrush,
     // LineBrush,
     // killBrushNew
+
+    MeasureTool
   },
   data() {
     return {
