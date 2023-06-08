@@ -133,6 +133,7 @@ export default {
   },
   data() {
     return {
+      model: 'watch',
       picList: [
         {
           title: 'Surface',

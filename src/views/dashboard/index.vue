@@ -44,6 +44,7 @@ export default {
       'name'
     ]),
     currentProject() {
+    console.log('---Dashboard---computed--->')
       return this.paper.projects.filter((_p) => _p.name === this.title)[0]
     }
   },
@@ -89,7 +90,7 @@ export default {
     }
   },
   created() {
-    console.log('---Dashboard---加载完成--->')
+    console.log('---Dashboard---created--->')
     console.log(window.performance)
     this.paper = null
     bus.$on('click', (data) => {
@@ -97,6 +98,10 @@ export default {
     })
   },
   mounted() {
+    this.currentProject.remove()
+
+    console.log('---Dashboard---mounted--->')
+
     // this.testPostTask()
     this.initWorld()
     this.draw()

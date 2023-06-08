@@ -83,7 +83,7 @@ export default {
     },
 
     onMouseDown(e) {
-      this.initPoint = e.point
+      console.log('this.WIDTH>>>', this.WIDTH)
     },
     onMouseDrag(e) {
       const delta = this.initPoint.subtract(e.point)
