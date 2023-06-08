@@ -9,7 +9,7 @@
   <div class="runningWay-container pd10">
     <commonTemplate title="Running-Way" />
     <div class="runningWay-container-content pd10">
-      <div
+      <!-- <div
         v-for="(pic, index) in picviewlist"
         :key="index"
         class="picview-item-st mgb5"
@@ -17,7 +17,9 @@
         <paper-view
           :picInfo="pic"
         />
-      </div>
+      </div> -->
+      <canvas ref="canvas1" width="500px" height="500px">1</canvas>
+        <canvas ref="canvas2" width="500px" height="500px">2</canvas>
     </div>
   </div>
 </template>
@@ -25,6 +27,7 @@
 <script>
 import commonTemplate from '@/components/titleTemplate.vue'
 import PaperView from './components/PaperView.vue'
+import paper from 'paper'
 
 export default {
   name: 'runningWay',
@@ -53,6 +56,10 @@ export default {
   },
   watch: {},
   mounted() {
+    const p1 = paper.setup(this.$refs['canvas1'])
+    p1.name = 'p1'
+    paper.setup(this.$refs['canvas2'])
+    console.log('paper', paper)
   },
   beforeDestroy() {
   },
