@@ -49,9 +49,14 @@ export default {
   data() {
     return {
       name: 'measuretool',
-      selection: null,
+      path: null,
       firstPoint: null,
-      lastPoint: null
+      lastPoint: null,
+      pathOptions: {
+        strokeColor: 'red',
+        strokeWidth: 1
+      },
+      resp: []
     }
   },
   computed: {},
@@ -62,17 +67,68 @@ export default {
     this.paper = paper
   },
   methods: {
+    removeLastPoint() {
+      this.path.removeSegment(this.path.segments.length - 1)
+    },
+    removeLine() {
+      this.path.remove()
+      this.path = null
+      this.firstPoint = null
+      this.lastPoint = null
+    },
+    completeLine(point) {
+      this.lastPoint = point
+      this.path.add(this.lastPoint)
+      this.path.closePath()
+      this.resp.push(this.path.clone())
+      this.path.removeSegments()
+      this.removeLine()
+    },
+    createLine(point) {
+      this.firstPoint = point
+      this.path = new paper.Path(this.pathOptions)
+      this.path.add(this.firstPoint)
+    },
+    processVector(e, drag) {
+      if (this.vectorItem) {
+        this.vectorItem.remove()
+      }
+      const vector = e.point.subtract(this.firstPoint)
+      const arrowVector = vector.normalize(10)
+      this.vectorItem = new paper.Group([
+        new paper.Path({
+          strokeColor: 'red',
+          strokeWidth: 1,
+          segments: [
+            this.lastPoint.add(arrowVector.rotate(135)),
+            this.lastPoint,
+            this.lastPoint.add(arrowVector.rotate(-135))
+          ]
+        })
+      ])
+    },
     onMouseUp(e) {
     },
-
     onMouseDown(e) {
-      if ()
+      if (!this.firstPoint) {
+        this.createLine(e.point)
+      } else {
+        this.completeLine(e.point)
+      }
     },
     onMouseDrag(e) {
-
+    },
+    onMouseMove(e) {
+      if (!this.path) return
+      if (this.path.segments.length > 1) {
+        this.removeLastPoint()
+      }
+      this.lastPoint = e.point
+      this.path.add(this.lastPoint)
+      this.path.closePath()
+      this.processVector(e, e.modifiers.shift)
     }
   },
-
   created() {
   }
 }
