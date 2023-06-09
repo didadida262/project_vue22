@@ -66,31 +66,19 @@ export default {
     removeLastPoint() {
       this.path.removeSegment(this.path.segments.length - 1)
     },
-    removeLine() {
-      this.path.remove()
-      this.path = null
-      this.firstPoint = null
-      this.lastPoint = null
-    },
     completeLine(point) {
       this.lastPoint = point
       this.path.add(this.lastPoint)
-      this.path.closePath()
-      this.resp.push(this.path.clone())
-      this.resp.push(this.arr.clone())
-      this.path.removeSegments()
-      this.arr.removeSegments()
-      this.removeLine()
+      this.firstPoint = null
+      this.lastPoint = null
     },
-    createLineGroup(point) {
+    createLine(point) {
       this.firstPoint = point
-      this.pathGroup = new paper.Group()
       this.path = new paper.Path({
         strokeColor: 'red',
         strokeWidth: 1 / paper.project.view.zoom
       })
       this.path.add(this.firstPoint)
-      this.pathGroup.addChild(this.path.clone())
     },
     drawLength(from, to, sign, label, value, prefix) {
       // const lengthSize = 5
@@ -164,9 +152,9 @@ export default {
       })
     },
     removeAny() {
-      this.resp.forEach((item) => {
-        item.remove()
-      })
+      if (this.path) {
+        this.path.remove()
+      }
       if (this.arr) {
         this.arr.remove()
       }
@@ -180,7 +168,7 @@ export default {
       if (!this.firstPoint) {
         // 全部清空
         this.removeAny()
-        this.createLineGroup(e.point)
+        this.createLine(e.point)
       } else {
         this.completeLine(e.point)
       }
@@ -188,13 +176,12 @@ export default {
     onMouseDrag(e) {
     },
     onMouseMove(e) {
-      if (!this.path) return
+      if (!this.firstPoint && !this.lastPoint) return
       if (this.path.segments.length > 1) {
         this.removeLastPoint()
       }
       this.lastPoint = e.point
       this.path.add(this.lastPoint)
-      this.path.closePath()
       this.dragArr(e, e.modifiers.shift)
       this.drawLength(this.firstPoint, this.lastPoint)
       this.drawInfo(this.firstPoint, this.lastPoint)
