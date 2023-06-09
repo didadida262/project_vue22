@@ -8,11 +8,11 @@
   <el-tooltip
     class="item"
     effect="dark"
-    content="pic_self"
+    content="select_tool"
     placement="right"
   >
     <div
-     :class="[{ 'is-active': selected === 'pic_self' }]"
+     :class="[{ 'is-active': selected === 'select_tool' }]"
      @click="handleClickTool"
      >
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 1024 1024">
@@ -33,7 +33,7 @@ import tools from './tools'
 // 饱和度    saturation: 1,
 // 亮度       brightness: 1
 export default {
-  name: 'pic_self',
+  name: 'select_tool',
   mixins: [tools],
   props: {
     selected: {
@@ -43,12 +43,18 @@ export default {
   },
   data() {
     return {
-      name: 'pic_self',
+      name: 'select_tool',
       selection: null,
       first: null,
       myPath: null,
       resp: [],
-      colors: []
+      colors: [],
+      hitOptions: {
+        segments: true,
+        stroke: true,
+        fill: true,
+        tolerance: 5
+      }
     }
   },
   computed: {},
@@ -83,14 +89,32 @@ export default {
     },
 
     onMouseDown(e) {
+      console.log('onMouseDown')
       this.initPoint = e.point
     },
     onMouseDrag(e) {
+      console.log('onMouseDrag')
       const delta = this.initPoint.subtract(e.point)
       this.paper.projects.forEach(pro => {
         const newCenter = pro.view.center.add(delta)
         pro.view.setCenter(newCenter)
       })
+    },
+    handleHitResult(hitResult) {
+      if (hitResult.type === 'fill') {
+        console.log('图形上')
+      } else if (hitResult.type === 'segment') {
+        console.log('图形bian')
+      }
+    },
+    onMouseMove(e) {
+      console.log('selecttool-move')
+      const currentProject = this.paper.project
+      const hitResult = currentProject.hitTest(e.point, this.hitOptions)
+      console.log('hitResult>>>', hitResult)
+      if (hitResult) {
+        this.handleHitResult(hitResult)
+      }
     }
 
   },
