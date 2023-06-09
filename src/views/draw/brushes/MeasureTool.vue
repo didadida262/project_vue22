@@ -52,10 +52,6 @@ export default {
       path: null,
       firstPoint: null,
       lastPoint: null,
-      pathOptions: {
-        strokeColor: 'red',
-        strokeWidth: 1
-      },
       resp: []
     }
   },
@@ -89,41 +85,101 @@ export default {
     createLineGroup(point) {
       this.firstPoint = point
       this.pathGroup = new paper.Group()
-      this.path = new paper.Path(this.pathOptions)
+      this.path = new paper.Path({
+        strokeColor: 'red',
+        strokeWidth: 1 / paper.project.view.zoom
+      })
       this.path.add(this.firstPoint)
       this.pathGroup.addChild(this.path.clone())
     },
-    processVector(e, drag) {
+    drawLength(from, to, sign, label, value, prefix) {
+      // const lengthSize = 5
+      // const vector = to.subtract(from)
+      // const currentlength = vector.length
+      // if (currentlength < lengthSize * 4) return
+      // var awayVector = vector.normalize(lengthSize).rotate(90 * sign)
+      // var upVector = vector.normalize(lengthSize).rotate(45 * sign)
+      // var downVector = upVector.rotate(-90 * sign)
+      // var lengthVector = vector.normalize(
+      //   vector.length / 2 - lengthSize * Math.sqrt(2))
+      // var line = new Path()
+      // line.add(from + awayVector)
+      // line.lineBy(upVector)
+      // line.lineBy(lengthVector)
+      // line.lineBy(upVector)
+      // var middle = line.lastSegment.point
+      // line.lineBy(downVector)
+      // line.lineBy(lengthVector)
+      // line.lineBy(downVector)
+      // dashedItems.push(line)
+      // if (label) {
+      //   // Length Label
+      //   var textAngle = Math.abs(vector.angle) > 90
+      //     ? textAngle = 180 + vector.angle : vector.angle
+      //   // Label needs to move away by different amounts based on the
+      //   // vector's quadrant:
+      //   var away = (sign >= 0 ? [1, 4] : [2, 3]).indexOf(vector.quadrant) != -1
+      //     ? 8 : 0
+      //   value = value || vector.length
+      //   var text = new PointText({
+      //     point: middle + awayVector.normalize(away + lengthSize),
+      //     content: (prefix || '') + Math.floor(value * 1000) / 1000,
+      //     fillColor: 'black',
+      //     justification: 'center'
+      //   })
+      //   text.rotate(textAngle)
+      //   items.push(text)
+      // }
+    },
+    drawInfo(from, to) {
+      if (this.lineName) {
+        this.lineName.remove()
+      }
+      const vector = to.subtract(from)
+      const middle = from.add(vector.normalize(vector.length / 2))
+      this.lineName = new paper.PointText({
+        point: middle,
+        // point: middle + awayVector.normalize(away + lengthSize),
+        content: vector.length.toFixed(2),
+        fontSize: 15 / paper.project.view.zoom,
+        justification: 'right',
+        fillColor: 'black'
+      })
+    },
+    dragArr(e, drag) {
       if (this.arr) {
         this.arr.remove()
       }
       const vector = e.point.subtract(this.firstPoint)
-      const arrowVector = vector.normalize(10)
+      const arrowVector = vector.normalize(10 / paper.project.view.zoom)
       this.arr = new paper.Path({
         strokeColor: 'red',
-        strokeWidth: 1,
+        strokeWidth: 1 / paper.project.view.zoom,
         segments: [
           this.lastPoint.add(arrowVector.rotate(135)),
           this.lastPoint,
           this.lastPoint.add(arrowVector.rotate(-135))
         ]
+
       })
-      // this.vectorItem = new paper.Group([
-      //   new paper.Path({
-      //     strokeColor: 'red',
-      //     strokeWidth: 1,
-      //     segments: [
-      //       this.lastPoint.add(arrowVector.rotate(135)),
-      //       this.lastPoint,
-      //       this.lastPoint.add(arrowVector.rotate(-135))
-      //     ]
-      //   })
-      // ])
+    },
+    removeAny() {
+      this.resp.forEach((item) => {
+        item.remove()
+      })
+      if (this.arr) {
+        this.arr.remove()
+      }
+      if (this.lineName) {
+        this.lineName.remove()
+      }
     },
     onMouseUp(e) {
     },
     onMouseDown(e) {
       if (!this.firstPoint) {
+        // 全部清空
+        this.removeAny()
         this.createLineGroup(e.point)
       } else {
         this.completeLine(e.point)
@@ -139,7 +195,9 @@ export default {
       this.lastPoint = e.point
       this.path.add(this.lastPoint)
       this.path.closePath()
-      this.processVector(e, e.modifiers.shift)
+      this.dragArr(e, e.modifiers.shift)
+      this.drawLength(this.firstPoint, this.lastPoint)
+      this.drawInfo(this.firstPoint, this.lastPoint)
     }
   },
   created() {
