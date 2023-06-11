@@ -50,10 +50,10 @@ export default {
       resp: [],
       colors: [],
       hitOptions: {
-        segments: true
+        segments: true,
         // stroke: true,
         // fill: true,
-        // tolerance: 1
+        tolerance: 5
         // match: hit => {
         //   return !hit.item.hasOwnProperty('indicator') && !hit.item.parent.hasOwnProperty('ignore')
         // }
@@ -99,6 +99,7 @@ export default {
     onMouseDrag(e) {
       console.log('onMouseDrag')
       if (this.hitResult) {
+        this.removeCursorPoint()
         const segment = this.hitResult.segment
         const previous = segment.previous
         const next = segment.next
@@ -109,7 +110,9 @@ export default {
           previous.point = previous.point.add(0, e.delta.y)
           next.point = next.point.add(e.delta.x, 0)
         }
-        segment.point = segment.point.add(e.delta)
+        const newPoint = segment.point.add(e.delta)
+        segment.point = newPoint
+        this.drawCursorPoint(newPoint)
       } else {
         const delta = this.initPoint.subtract(e.point)
         this.paper.projects.forEach(pro => {
