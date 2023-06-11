@@ -93,7 +93,7 @@
 </template>
 
 <script>
-// import paper from 'paper'
+import paper from 'paper'
 import Pencil from './brushes/Pencil.vue'
 // import FatPencil from './brushes/FatPencil.vue'
 import RectBrush from './brushes/RectBrush.vue'
@@ -120,7 +120,7 @@ export default {
     RectBrush,
     Category,
     LineBrush,
-    SelectTool, // PaperNew,
+    SelectTool // PaperNew,
     // FatPencil,
     // SelectTool,
     // oldBrush,
@@ -129,7 +129,6 @@ export default {
     // LineBrush,
     // killBrushNew
 
-    MeasureTool
   },
   data() {
     return {
@@ -183,6 +182,13 @@ export default {
     this.initDefaultScope()
     this.initPaperScopePathData()
     this.testUrl()
+    const rec = new paper.Path.Rectangle({
+      position: 0,
+      size: [200, 200],
+      fillColor: 'green'
+    })
+    rec.name = 'rec'
+    console.log('rec>>', rec)
   },
   created() {
   },

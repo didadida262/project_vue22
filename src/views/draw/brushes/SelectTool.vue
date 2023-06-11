@@ -50,11 +50,15 @@ export default {
       resp: [],
       colors: [],
       hitOptions: {
-        segments: true,
-        stroke: true,
-        fill: true,
-        tolerance: 5
-      }
+        segments: true
+        // stroke: true,
+        // fill: true,
+        // tolerance: 1
+        // match: hit => {
+        //   return !hit.item.hasOwnProperty('indicator') && !hit.item.parent.hasOwnProperty('ignore')
+        // }
+      },
+      cursorPoint: null
     }
   },
   computed: {},
@@ -94,24 +98,60 @@ export default {
     },
     onMouseDrag(e) {
       console.log('onMouseDrag')
-      const delta = this.initPoint.subtract(e.point)
-      this.paper.projects.forEach(pro => {
-        const newCenter = pro.view.center.add(delta)
-        pro.view.setCenter(newCenter)
+      if (this.hitResult) {
+        const segment = this.hitResult.segment
+        const previous = segment.previous
+        const next = segment.next
+        if (segment.index === 1 || segment.index === 3) {
+          previous.point = previous.point.add(e.delta.x, 0)
+          next.point = next.point.add(0, e.delta.y)
+        } else if (segment.index === 0 || segment.index === 2) {
+          previous.point = previous.point.add(0, e.delta.y)
+          next.point = next.point.add(e.delta.x, 0)
+        }
+        segment.point = segment.point.add(e.delta)
+      } else {
+        const delta = this.initPoint.subtract(e.point)
+        this.paper.projects.forEach(pro => {
+          const newCenter = pro.view.center.add(delta)
+          pro.view.setCenter(newCenter)
+        })
+      }
+    },
+    removeCursorPoint() {
+      if (this.cursorPoint) {
+        this.cursorPoint.remove()
+        this.cursorPoint = null
+      }
+    },
+    drawCursorPoint(point) {
+      console.log('绘制点>>>', point)
+      this.cursorPoint = new paper.Path.Circle({
+        center: point,
+        radius: 5,
+        strokeColor: 'black'
       })
+      this.cursorPoint.name = 'circle'
     },
     handleHitResult(hitResult) {
       if (hitResult.type === 'fill') {
-        console.log('图形上')
+        console.warn('fill>>>')
+        console.log('=============')
       } else if (hitResult.type === 'segment') {
-        console.log('图形bian')
+        console.log('hitResult>>>', hitResult)
+        console.log('segment>>>')
+        console.log('=============')
+        const item = hitResult.item
+        this.hitResult = hitResult
+        this.drawCursorPoint(hitResult.segment.location.point)
       }
     },
     onMouseMove(e) {
-      console.log('selecttool-move')
+      this.removeCursorPoint()
+      this.hitResult = null
       const currentProject = this.paper.project
+      this.hitOptions.tolerance = 5 / currentProject.view.zoom
       const hitResult = currentProject.hitTest(e.point, this.hitOptions)
-      console.log('hitResult>>>', hitResult)
       if (hitResult) {
         this.handleHitResult(hitResult)
       }
