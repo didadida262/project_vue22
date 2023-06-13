@@ -16,6 +16,10 @@
     </div>
     <diary-card :info="temp"/>
     <diary-card v-for="(item, index) in articleList" :key="index" :info="item" />
+    <div>
+      <el-button @click="gg">防抖</el-button>
+    </div>
+
   </div>
 </template>
 
@@ -30,6 +34,7 @@ export default {
   },
   data() {
     return {
+      gg: null,
       currentTime: null,
       RAF: null,
       temp: {
@@ -43,12 +48,29 @@ export default {
   created() {
     this.getData()
     this.updateTime()
+    this.gg = this.debounce(this.g, 2000)
+
+  },
+  mounted() {
   },
   beforeDestroy() {
     // clearInterval(this.timer)
     cancelAnimationFrame(this.RAF)
   },
   methods: {
+    g() {
+      console.log('执行>>>g')
+    },
+    debounce(fn, delay) {
+      let timer = null
+      return function() {
+        clearTimeout(timer)
+        timer = setTimeout(() => {
+          fn()
+        },delay)
+      }      
+    },
+
     updateTime() {
       cancelAnimationFrame(this.RAF)
       this.RAF = requestAnimationFrame(() => {
