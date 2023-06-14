@@ -17,7 +17,6 @@
     <diary-card :info="temp"/>
     <diary-card v-for="(item, index) in articleList" :key="index" :info="item" />
     <div>
-      <el-button @click="gg">防抖</el-button>
     </div>
 
   </div>
@@ -26,6 +25,7 @@
 <script>
 import diaryCard from './components/diaryCard.vue'
 import bus from '@/api/eventBus'
+import { Timer } from '@/utils/weapons'
 
 export default {
   name: 'Form',
@@ -46,9 +46,12 @@ export default {
     }
   },
   created() {
+    this.num = 1
     this.getData()
     this.updateTime()
-    this.gg = this.debounce(this.g, 2000)
+    this.t = new Timer(50)
+    console.log(this.t)
+    this.t.start()
 
   },
   mounted() {
@@ -59,7 +62,12 @@ export default {
   },
   methods: {
     g() {
-      console.log('执行>>>g')
+      if (this.num + 1 === 60) {
+        console.log('执行>>>g')
+        this.num = 1
+      }
+      this.num++
+      requestAnimationFrame(this.g)
     },
     debounce(fn, delay) {
       let timer = null

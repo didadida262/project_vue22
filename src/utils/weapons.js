@@ -27,6 +27,37 @@
 //     return token
 // }
 
+export class Timer {
+  constructor(num) {
+    this.num = num
+    this.speed = 1
+    this.that = this
+  }
+  start() {
+    console.log('start>>')
+    this.run()
+  }
+  run() {
+    console.log('run>>')
+    console.log('this>>',this.that)
+    console.log('this.num>>',this.that.num)
+    if (this.that.num === 0) {
+      console.log('over>>>')
+      return
+    }
+    if (this.that.speed + 1 === 60) {
+      this.that.speed = 1
+      this.that.num--
+      console.log('倒计时>>', this.that.num)
+    }
+    this.that.speed++
+    console.log('this.num>>',this.that.num)
+    console.log('======')
+
+    requestAnimationFrame(this.that.run)
+  }
+}
+
 /**
  * @description: 比特转换器
  * @param {*} name 名称
