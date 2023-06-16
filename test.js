@@ -1,3 +1,7 @@
-import('./modulaA.js'),then((module) => {
-  console.log(module)
+// 定时器一秒钟raf版本
+
+
+const timer = requestAnimationFrame(() => {
+  console.log('----')
+  requestAnimationFrame()
 })

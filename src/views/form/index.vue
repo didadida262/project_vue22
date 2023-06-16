@@ -16,12 +16,16 @@
     </div>
     <diary-card :info="temp"/>
     <diary-card v-for="(item, index) in articleList" :key="index" :info="item" />
+    <div>
+    </div>
+
   </div>
 </template>
 
 <script>
 import diaryCard from './components/diaryCard.vue'
 import bus from '@/api/eventBus'
+import { Timer } from '@/utils/weapons'
 
 export default {
   name: 'Form',
@@ -30,6 +34,7 @@ export default {
   },
   data() {
     return {
+      gg: null,
       currentTime: null,
       RAF: null,
       temp: {
@@ -41,14 +46,39 @@ export default {
     }
   },
   created() {
+    this.num = 1
     this.getData()
     this.updateTime()
+    this.t = new Timer(50)
+    console.log(this.t)
+    this.t.start()
+
+  },
+  mounted() {
   },
   beforeDestroy() {
     // clearInterval(this.timer)
     cancelAnimationFrame(this.RAF)
   },
   methods: {
+    g() {
+      if (this.num + 1 === 60) {
+        console.log('执行>>>g')
+        this.num = 1
+      }
+      this.num++
+      requestAnimationFrame(this.g)
+    },
+    debounce(fn, delay) {
+      let timer = null
+      return function() {
+        clearTimeout(timer)
+        timer = setTimeout(() => {
+          fn()
+        },delay)
+      }      
+    },
+
     updateTime() {
       cancelAnimationFrame(this.RAF)
       this.RAF = requestAnimationFrame(() => {
