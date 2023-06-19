@@ -1,7 +1,7 @@
 <!--
  * @Author: Hhvcg
  * @Date: 2022-06-12 21:17:03
- * @LastEditors: -_-
+ * @LastEditors: Hhvcg
  * @Description:
 -->
 <template>
@@ -32,6 +32,7 @@ export default {
   data() {
     return {
       name: 'pencil',
+      cursor: 'copy',
       icon: 'el-icon-edit',
       path: null
     }

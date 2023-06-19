@@ -44,6 +44,7 @@ export default {
     return {
       name: 'line_brush',
       path: null,
+      cursor: 'copy',
       pathOptions: {
         strokeColor: getRandomColor(),
         strokeWidth: 1,

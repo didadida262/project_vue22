@@ -44,6 +44,7 @@ export default {
   data() {
     return {
       name: 'select_tool',
+      cursor: 'pointer',
       selection: null,
       first: null,
       myPath: null,

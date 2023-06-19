@@ -71,6 +71,7 @@
     <!-- :class="[{'cursorpointerNone-st': activatedBrush !== 'pencil' && activatedBrush !== 'line' && activatedBrush !== 'rect_brush'}]" -->
     <div class="draw-container-annotate flex-ca">
       <div class="paperView-item"
+      :style="{ cursor: cursorPointor }"
       :class="[activateScope === index? 'activateScope-st': '']"
        v-for="(item, index) in picList"
        :key="index">
@@ -133,6 +134,7 @@ export default {
   data() {
     return {
       model: 'watch',
+      cursorPointor: 'move',
       picList: [
         {
           title: 'Surface',
@@ -226,9 +228,9 @@ export default {
       this.activateScope = item.key
     },
 
-    changeBrush(brush) {
-      this.activatedBrush = brush
-      console.log('activatedBrush>>>', this.activatedBrush)
+    changeBrush(brushInfo) {
+      this.activatedBrush = brushInfo.key
+      this.cursorPointor = brushInfo.cursor
     }
   }
 }

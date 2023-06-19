@@ -49,6 +49,7 @@ export default {
   data() {
     return {
       name: 'measuretool',
+      cursor: 'copy',
       path: null,
       firstPoint: null,
       lastPoint: null,

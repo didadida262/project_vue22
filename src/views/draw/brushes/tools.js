@@ -19,7 +19,10 @@ export default {
   },
   methods: {
     handleClickTool() {
-      this.$emit('changeBrush', this.name)
+      this.$emit('changeBrush', {
+        key: this.name,
+        cursor: this.cursor
+      })
     },
     initTool() {
       this.tool = new paper.Tool()
