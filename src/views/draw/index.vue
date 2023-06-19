@@ -134,7 +134,7 @@ export default {
   data() {
     return {
       model: 'watch',
-      cursorPointor: 'move',
+      cursorPointor: 'default',
       picList: [
         {
           title: 'Surface',
