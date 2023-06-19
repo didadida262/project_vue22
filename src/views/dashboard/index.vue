@@ -21,7 +21,9 @@
       <el-button size="small" type="primary">点击上传</el-button>
       <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
     </el-upload>
-    <child :info="testData"/>
+    <div style="border: 1px solid red;width: 100px;height: 100px">
+      <i class="fa-pencil-ruler"></i>
+    </div>
     <!-- <el-button @click="changeData">change</el-button> -->
   </div>
 </template>
@@ -44,8 +46,8 @@ export default {
       'name'
     ]),
     currentProject() {
-    console.log('---Dashboard---computed--->')
-      return this.paper.projects.filter((_p) => _p.name === this.title)[0]
+      console.log('---Dashboard---computed--->')
+      return paper.projects.filter((_p) => _p.name === this.title)[0]
     }
   },
   data() {
@@ -98,7 +100,7 @@ export default {
     })
   },
   mounted() {
-    this.currentProject.remove()
+    // this.currentProject.remove()
 
     console.log('---Dashboard---mounted--->')
 
