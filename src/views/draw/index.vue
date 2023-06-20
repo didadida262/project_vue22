@@ -193,13 +193,6 @@ export default {
     this.initDefaultScope()
     this.initPaperScopePathData()
     this.testUrl()
-    const rec = new paper.Path.Rectangle({
-      position: 0,
-      size: [200, 200],
-      fillColor: 'green'
-    })
-    rec.name = 'rec'
-    console.log('rec>>', rec)
   },
   created() {
   },
