@@ -88,20 +88,25 @@ export default {
     updateRect() {
       if (this.rect) {
         this.rect.remove()
+        this.lenMetr.remove()
       }
       const len = this.polygonPath.segments.length
       const p1 = this.polygonPath.segments[len - 2].point
       const p2 = this.polygonPath.segments[len - 1].point
-      const p3 = new paper.Point(p1.x, p1.y)
-      const p4 = new paper.Point(p2.x, p2.y)
-      console.log(p1)
-      const center = p3.subtract(p4)
-      this.rect = new paper.Path.Circle({
-        position: p4,
-        radius: 40,
+      const vector = p2.subtract(p1)
+      const middle = p1.add(vector.normalize(vector.length / 2))
+      this.lenMetr = new paper.PointText({
+        point: middle,
+        content: vector.length.toFixed(2) + 'px',
+        color: 'red'
+      })
+      this.rect = new paper.Path.Rectangle({
+        position: middle,
+        size: [vector.length, 10],
         fillColor: 'red',
         opacity: 0.5
       })
+      this.rect.rotate(vector.angle)
       // this.rect = new paper.Path.Rectangle({
       //   center: center,
       //   size: [100, 100],
