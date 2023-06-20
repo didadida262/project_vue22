@@ -1,5 +1,6 @@
 <template>
   <div class="draw-container flex-cb">
+    <!-- <i class="fa-line"></i> -->
     <!-- 所有笔刷 -->
     <!-- <el-button
       style="width: 80px;height: 100%;"
@@ -35,6 +36,11 @@
         @changeBrush="changeBrush"
       />
       <MeasureTool
+        class="cursor-pointer"
+        :selected="activatedBrush"
+        @changeBrush="changeBrush"
+      />
+      <LinePoly
         class="cursor-pointer"
         :selected="activatedBrush"
         @changeBrush="changeBrush"
@@ -105,6 +111,7 @@ import PicSelf from './brushes/PicSelf.vue'
 import LineBrush from './brushes/Line.vue'
 import PicMark from '@/components/PicMark.vue'
 import MeasureTool from './brushes/MeasureTool.vue'
+import LinePoly from './brushes/LinePoly.vue'
 // import { autoDownURL } from '@/utils'
 // import oldBrush from './brushes/oldBrush.vue'
 // import killBrush from './brushes/kill_brush.vue'
@@ -121,7 +128,9 @@ export default {
     RectBrush,
     Category,
     LineBrush,
-    SelectTool // PaperNew,
+    SelectTool, // PaperNew,
+    LinePoly
+
     // FatPencil,
     // SelectTool,
     // oldBrush,

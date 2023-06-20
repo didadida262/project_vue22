@@ -9,6 +9,7 @@
     <div class="dashboard-container pd10 flex-cc">
       <canvas id="main_canvas" ref="main_canvas" resize class="main_canvas" />
     </div>
+
     <!-- name="sqlite_file" -->
     <el-upload
       ref="uploadFile"
@@ -22,9 +23,15 @@
       <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
     </el-upload>
     <div style="border: 1px solid red;width: 100px;height: 100px">
-      <i class="fa-pencil-ruler"></i>
+      <font-awesome-icon icon="fa-solid fa-user-secret" />
+      <font-awesome-icon icon="fa-regular fa-bicycle" />
+      <!-- <font-awesome-icon icon="fa-brands fa-twitter" />
+      <i class="fa fa-fade"></i>
+      <i class="fa fa-camera"></i>
+      <i class="fa-thin fa-ruler"></i>
+      <font-awesome-icon :icon="['fal', 'ruler']" /> -->
     </div>
-    <!-- <el-button @click="changeData">change</el-button> -->
+
   </div>
 </template>
 
