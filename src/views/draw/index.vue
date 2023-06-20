@@ -195,10 +195,25 @@ export default {
     this.testUrl()
   },
   created() {
+    this.setKeyDownListener()
   },
+
   beforeDestroy() {
+    window.removeEventListener('keydown', this.handleModifyDefectDialogKeyDown)
   },
   methods: {
+    handleModifyDefectDialogKeyDown(e) {
+      console.log('父组件监听案件>>>>')
+    },
+    setKeyDownListener() {
+      window.addEventListener(
+        'keydown',
+        (this.handleModifyDefectDialogKeyDown = this.handleModifyDefectDialogKeyDown.bind(this)),
+        {
+          capture: false
+        }
+      )
+    },
     testUrl() {
       // const url = 'https://vdn6.vzuu.com/HD/5c401ac8-eef2-11ed-8a0c-16580e9236a2-v8_f1_t1_XQevL8y2.mp4?pkey=AAVewuo_5iVSIjJyz9_JcCjrXMHOrQMQErz6GUErQtaxDqQ9xeQ2ITYmytQ0XJbMnTXh8ci4_cdmonGXZ_Ec5vJ_&c=avc.8.0&f=mp4&pu=4e83193b&bu=http-4e83193b&expiration=1684814561&v=ks6&pf=Web&pt=ks'
       // autoDownURL(url)
@@ -235,6 +250,7 @@ export default {
       this.cursorPointor = brushInfo.cursor
     }
   }
+
 }
 </script>
 
