@@ -203,7 +203,6 @@ export default {
   },
   methods: {
     handleModifyDefectDialogKeyDown(e) {
-      console.log('父组件监听案件>>>>')
     },
     setKeyDownListener() {
       window.addEventListener(

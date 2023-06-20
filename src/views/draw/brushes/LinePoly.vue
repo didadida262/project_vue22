@@ -85,17 +85,41 @@ export default {
     },
     onMouseDrag(e) {
     },
+    updateRect() {
+      if (this.rect) {
+        this.rect.remove()
+      }
+      const len = this.polygonPath.segments.length
+      const p1 = this.polygonPath.segments[len - 2].point
+      const p2 = this.polygonPath.segments[len - 1].point
+      const p3 = new paper.Point(p1.x, p1.y)
+      const p4 = new paper.Point(p2.x, p2.y)
+      console.log(p1)
+      const center = p3.subtract(p4)
+      this.rect = new paper.Path.Circle({
+        position: p4,
+        radius: 40,
+        fillColor: 'red',
+        opacity: 0.5
+      })
+      // this.rect = new paper.Path.Rectangle({
+      //   center: center,
+      //   size: [100, 100],
+      //   fillColor: 'red',
+      //   opacity: 0.5
+      // })
+    },
     onMouseMove(e) {
       const point = e.point
       if (!this.polygonPath || !this.polygonPath.segments.length) return
       this.removeLastPoint()
       this.polygonPath.add(point)
+      this.updateRect()
     },
     removeLastPoint() {
       this.polygonPath.removeSegment(this.polygonPath.segments.length - 1)
     },
     handleModifyDefectDialogKeyDown(e) {
-      console.log('子组件监听案件>>>>')
       e.stopPropagation()
       if (e.keyCode === 13) {
         this.completeLine()
