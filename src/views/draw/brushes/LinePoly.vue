@@ -85,6 +85,16 @@ export default {
     },
     onMouseDrag(e) {
     },
+    removeLenMetr() {
+      if (this.lenMetr) {
+        this.lenMetr.remove()
+      }
+    },
+    removeRect() {
+      if (this.rect) {
+        this.rect.remove()
+      }
+    },
     updateRect() {
       if (this.rect) {
         this.rect.remove()
@@ -140,6 +150,8 @@ export default {
       this.removeLastPoint()
       this.resp.push(this.polygonPath.clone())
       this.removePolygonPath()
+      this.removeLenMetr()
+      this.removeRect()
     },
     setKeyDownListener() {
       window.addEventListener(
