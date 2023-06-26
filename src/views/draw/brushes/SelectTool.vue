@@ -128,11 +128,14 @@ export default {
         this.cursorPoint = null
       }
     },
+    currentZoom() {
+      return paper.project.view.zoom
+    },
     drawCursorPoint(point) {
       console.log('绘制点>>>', point)
       this.cursorPoint = new paper.Path.Circle({
         center: point,
-        radius: 5,
+        radius: 10 / this.currentZoom(),
         strokeColor: 'black'
       })
       this.cursorPoint.name = 'circle'
