@@ -81,7 +81,7 @@ export default {
         this.createPolygon()
       }
       this.polygonPath.add(point)
-      this.polygonPath.add(point)
+      // this.polygonPath.add(point)
     },
     onMouseDrag(e) {
     },
@@ -117,12 +117,6 @@ export default {
         opacity: 0.5
       })
       this.rect.rotate(vector.angle)
-      // this.rect = new paper.Path.Rectangle({
-      //   center: center,
-      //   size: [100, 100],
-      //   fillColor: 'red',
-      //   opacity: 0.5
-      // })
     },
     onMouseMove(e) {
       const point = e.point
@@ -132,7 +126,9 @@ export default {
       this.updateRect()
     },
     removeLastPoint() {
-      this.polygonPath.removeSegment(this.polygonPath.segments.length - 1)
+      if (this.polygonPath.segments.length > 1) {
+        this.polygonPath.removeSegment(this.polygonPath.segments.length - 1)
+      }
     },
     handleModifyDefectDialogKeyDown(e) {
       e.stopPropagation()
