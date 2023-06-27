@@ -13,7 +13,7 @@
     placement="right"
   >
     <div
-     :class="[{ 'is-active': selected === 'linepoly' }]"
+     :class="[{ 'is-active': selected === 'linepoly_tool' }]"
      @click="handleClickTool"
      >
 
@@ -44,7 +44,7 @@ export default {
   },
   data() {
     return {
-      name: 'linepoly',
+      name: 'linepoly_tool',
       toolName: '多边线段',
       cursor: 'copy',
       polygonPath: null,
@@ -59,7 +59,7 @@ export default {
   computed: {},
   watch: {
     selected() {
-      if (this.selected === 'linepoly') {
+      if (this.selected === 'linepoly_tool') {
         this.setKeyDownListener()
       }
     }
@@ -130,10 +130,11 @@ export default {
         this.polygonPath.removeSegment(this.polygonPath.segments.length - 1)
       }
     },
-    handleModifyDefectDialogKeyDown(e) {
-      e.stopPropagation()
+    handleKeyDown(e) {
+      console.log('内部事件捕获>>>')
       if (e.keyCode === 13) {
         this.completeLine()
+        e.stopPropagation()
       }
     },
     removePolygonPath() {
@@ -143,6 +144,7 @@ export default {
       }
     },
     completeLine() {
+      if (!this.polygonPath) return
       this.removeLastPoint()
       this.resp.push(this.polygonPath.clone())
       this.removePolygonPath()
@@ -152,7 +154,7 @@ export default {
     setKeyDownListener() {
       window.addEventListener(
         'keydown',
-        (this.handleModifyDefectDialogKeyDown = this.handleModifyDefectDialogKeyDown.bind(this)),
+        this.handleKeyDown,
         {
           capture: true
         }
@@ -162,7 +164,7 @@ export default {
   created() {
   },
   beforeDestroy() {
-    window.removeEventListener('keydown', this.handleModifyDefectDialogKeyDown)
+    window.removeEventListener('keydown', this.handleKeyDown)
   }
 }
 </script>
