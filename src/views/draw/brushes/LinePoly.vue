@@ -131,7 +131,6 @@ export default {
       }
     },
     handleKeyDown(e) {
-      console.log('内部事件捕获>>>')
       if (e.keyCode === 13) {
         this.completeLine()
         e.stopPropagation()

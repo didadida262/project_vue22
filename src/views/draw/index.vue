@@ -135,6 +135,7 @@ export default {
     this.testUrl()
   },
   created() {
+    console.log('test>>>>>>console!!!!')
     this.setKeyDownListener()
   },
 
