@@ -5,27 +5,8 @@
  * @Description:
 -->
 <template>
-  <div class="dashboard">
-    <div class="dashboard-container pd10 flex-cc">
+  <div class="dashboard-st">
       <canvas id="main_canvas" ref="main_canvas" resize class="main_canvas" />
-    </div>
-
-    <!-- name="sqlite_file" -->
-    <el-upload
-      ref="uploadFile"
-      class="upload-demo"
-      action="http://localhost:3000/uploadFile"
-      :before-upload="beforeAvatarUpload"
-      :on-change="handleFileChange"
-      multiple
-      :file-list="fileList">
-      <el-button size="small" type="primary">点击上传</el-button>
-      <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
-    </el-upload>
-    <div style="border: 1px solid red;width: 100px;height: 100px">
-      <i class="fa fa-camera"></i>
-    </div>
-
   </div>
 </template>
 
@@ -278,29 +259,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.dashboard {
-  border: 1px solid gray;
+.dashboard-st {
   width: 100%;
-  // background: black;
-  height: calc(100vh - 250px);
-  padding: 10px;
+  height: 100%;
   display: flex;
   // justify-content: center;
   align-items: center;
   flex-direction: column;
-  &-text {
-    width: 100%;
-    height: 100px;
-    border: 1px solid ghostwhite;
-  }
-  &-container {
-    height: calc(100% - 100px);
-    width: 100%;
-    .main_canvas {
-      width: 90%;
-      height: 90%;
+  .main_canvas {
+      width: 100%;
+      height: 100%;
       background: gray;
     }
-  }
 }
 </style>
