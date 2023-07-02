@@ -8,11 +8,11 @@
   <el-tooltip
     class="item"
     effect="dark"
-    content="rect_brush"
+    content="rect_tool"
     placement="right"
   >
     <div
-     :class="[{ 'is-active': selected === 'rect_brush' }]"
+     :class="[{ 'is-active': selected === 'rect_tool' }]"
      @click="handleClickTool"
      >
      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-textarea-resize" viewBox="0 0 16 16">
@@ -31,7 +31,7 @@ import tools from './tools'
 // 饱和度    saturation: 1,
 // 亮度       brightness: 1
 export default {
-  name: 'rect_brush',
+  name: 'rect_tool',
   mixins: [tools],
   props: {
     selected: {
@@ -41,7 +41,7 @@ export default {
   },
   data() {
     return {
-      name: 'rect_brush',
+      name: 'rect_tool',
       cursor: 'copy',
       selection: null,
       first: null,

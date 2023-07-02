@@ -1,78 +1,44 @@
 <template>
   <div class="draw-container flex-cb">
-    <!-- <i class="fa-line"></i> -->
     <!-- 所有笔刷 -->
-    <!-- <el-button
-      style="width: 80px;height: 100%;"
-      type="primary"
-      @click="handleSwitch">Switch</el-button> -->
     <div class="draw-container-tool">
-      <!-- <el-button>矩形框</el-button>
-      <el-button>线段</el-button> -->
       <SelectTool
+        ref="select_tool"
         class="cursor-pointer"
         :selected="activatedBrush"
         @changeBrush="changeBrush"
       />
-      <!-- <PicSelf
-          class="cursor-pointer"
-          :selected="activatedBrush"
-          @changeBrush="changeBrush"
-        /> -->
       <RectBrush
-          class="cursor-pointer"
-          :selected="activatedBrush"
-          @changeBrush="changeBrush"
+        ref="rect_tool"
+        class="cursor-pointer"
+        :selected="activatedBrush"
+        @changeBrush="changeBrush"
         />
       <Pencil
+        ref="pencil_tool"
         class="cursor-pointer"
         :selected="activatedBrush"
         @changeBrush="changeBrush"
         @submitPath="submitPath"
       />
-      <LineBrush
+      <!-- <LineBrush
+        ref="line_tool"
         class="cursor-pointer"
         :selected="activatedBrush"
         @changeBrush="changeBrush"
-      />
+      /> -->
       <MeasureTool
+        ref="measure_tool"
         class="cursor-pointer"
         :selected="activatedBrush"
         @changeBrush="changeBrush"
       />
       <LinePoly
+        ref="linepoly_tool"
         class="cursor-pointer"
         :selected="activatedBrush"
         @changeBrush="changeBrush"
       />
-        <!--
-
-        <fat-pencil
-          class="cursor-pointer"
-          :selected="activatedBrush"
-          @changeBrush="changeBrush"
-        /> -->
-      <!-- <oldBrush
-        class="cursor-pointer"
-        :selected="activatedBrush"
-        @changeBrush="changeBrush"
-      />
-      <broomBrush
-        class="cursor-pointer"
-        :selected="activatedBrush"
-        @changeBrush="changeBrush"
-      />
-      <killBrush
-        class="cursor-pointer"
-        :selected="activatedBrush"
-        @changeBrush="changeBrush"
-      />
-      <killBrushNew
-        class="cursor-pointer"
-        :selected="activatedBrush"
-        @changeBrush="changeBrush"
-      /> -->
-
     </div>
     <!-- :class="[{'cursorpointerNone-st': activatedBrush !== 'pencil' && activatedBrush !== 'line' && activatedBrush !== 'rect_brush'}]" -->
     <div class="draw-container-annotate flex-ca">
@@ -100,14 +66,12 @@
 </template>
 
 <script>
-import paper from 'paper'
 import Pencil from './brushes/Pencil.vue'
 // import FatPencil from './brushes/FatPencil.vue'
 import RectBrush from './brushes/RectBrush.vue'
 import SelectTool from './brushes/SelectTool.vue'
 // import PicNew from '@/components/PicNew.vue'
 import Category from './Category.vue'
-import PicSelf from './brushes/PicSelf.vue'
 import LineBrush from './brushes/Line.vue'
 import PicMark from '@/components/PicMark.vue'
 import MeasureTool from './brushes/MeasureTool.vue'
@@ -122,7 +86,6 @@ export default {
   name: 'Dashboard',
   components: {
     PicMark,
-    PicSelf,
     MeasureTool,
     Pencil,
     RectBrush,
@@ -130,14 +93,6 @@ export default {
     LineBrush,
     SelectTool, // PaperNew,
     LinePoly
-
-    // FatPencil,
-    // SelectTool,
-    // oldBrush,
-    // killBrush,
-    // broomBrush,
-    // LineBrush,
-    // killBrushNew
 
   },
   data() {
@@ -147,7 +102,6 @@ export default {
       picList: [
         {
           title: 'Surface',
-          // src: 'https://cms-assets.tutsplus.com/uploads/users/1251/posts/26530/image/BenderPaper.jpg'
           src: require('@/assets/bigPic.png'),
           key: 0
         },
@@ -156,25 +110,11 @@ export default {
           src: require('@/assets/bigPic2.png'),
           key: 1
         }
-
-        // {
-        //   title: '3',
-        //   src: require('@/assets/Sam.webp'),
-        //   key: 2
-        // },
-        // {
-        //   title: '4',
-        //   src: require('@/assets/Sam.webp'),
-        //   key: 3
-        // }
       ],
       paperScopePathData: [],
       activateScope: 0,
       url: '@/assets/rick.jpg',
-      activatedBrush: 'select_tool',
-      image: {
-        // url: 'https://cms-assets.tutsplus.com/uploads/users/1251/posts/26530/image/BenderPaper.jpg'
-      }
+      activatedBrush: 'select_tool'
     }
   },
   computed: {
@@ -195,24 +135,52 @@ export default {
     this.testUrl()
   },
   created() {
+    console.log('test>>>>>>console!!!!')
     this.setKeyDownListener()
   },
 
   beforeDestroy() {
-    window.removeEventListener('keydown', this.handleModifyDefectDialogKeyDown)
+    window.removeEventListener('keydown', this.handleKeyDown)
   },
   methods: {
+<<<<<<< HEAD
     handleModifyDefectDialogKeyDown(e) {
       console.log('父组件')
 
+=======
+    handleToolClick(brush) {
+
+    },
+    handleKeyDown(e) {
+      console.log('外部事件捕获>>>')
+      switch (e.key) {
+        case 's':
+          this.$refs['select_tool'].handleClickTool()
+          break
+        case 'r':
+          this.$refs['rect_tool'].handleClickTool()
+          break
+        // case 'l':
+        //   this.$refs['rect_tool'].handleClickTool()
+        //   break
+        case 'p':
+          this.$refs['linepoly_tool'].handleClickTool()
+          break
+        case 'm':
+          this.$refs['measure_tool'].handleClickTool()
+          break
+        default:
+          break
+      }
+>>>>>>> 9ac74845a7f32d40e5e1454651fa6ebf2de88604
     },
     setKeyDownListener() {
+      console.log('setKeyDownListener>>')
       window.addEventListener(
         'keydown',
-        // (this.handleModifyDefectDialogKeyDown = this.handleModifyDefectDialogKeyDown.bind(this)),
-        this.handleModifyDefectDialogKeyDown,
+        this.handleKeyDown,
         {
-          capture: falseL
+          capture: false
         }
       )
     },

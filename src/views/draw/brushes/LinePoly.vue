@@ -13,7 +13,7 @@
     placement="right"
   >
     <div
-     :class="[{ 'is-active': selected === 'linepoly' }]"
+     :class="[{ 'is-active': selected === 'linepoly_tool' }]"
      @click="handleClickTool"
      >
 
@@ -44,7 +44,7 @@ export default {
   },
   data() {
     return {
-      name: 'linepoly',
+      name: 'linepoly_tool',
       toolName: '多边线段',
       cursor: 'copy',
       polygonPath: null,
@@ -59,7 +59,7 @@ export default {
   computed: {},
   watch: {
     selected() {
-      if (this.selected === 'linepoly') {
+      if (this.selected === 'linepoly_tool') {
         this.setKeyDownListener()
       }
     }
@@ -81,9 +81,19 @@ export default {
         this.createPolygon()
       }
       this.polygonPath.add(point)
-      this.polygonPath.add(point)
+      // this.polygonPath.add(point)
     },
     onMouseDrag(e) {
+    },
+    removeLenMetr() {
+      if (this.lenMetr) {
+        this.lenMetr.remove()
+      }
+    },
+    removeRect() {
+      if (this.rect) {
+        this.rect.remove()
+      }
     },
     updateRect() {
       if (this.rect) {
@@ -107,12 +117,6 @@ export default {
         opacity: 0.5
       })
       this.rect.rotate(vector.angle)
-      // this.rect = new paper.Path.Rectangle({
-      //   center: center,
-      //   size: [100, 100],
-      //   fillColor: 'red',
-      //   opacity: 0.5
-      // })
     },
     onMouseMove(e) {
       const point = e.point
@@ -122,13 +126,14 @@ export default {
       this.updateRect()
     },
     removeLastPoint() {
-      this.polygonPath.removeSegment(this.polygonPath.segments.length - 1)
+      if (this.polygonPath.segments.length > 1) {
+        this.polygonPath.removeSegment(this.polygonPath.segments.length - 1)
+      }
     },
-    handleModifyDefectDialogKeyDown(e) {
-      console.log('子组件')
-      e.stopPropagation()
+    handleKeyDown(e) {
       if (e.keyCode === 13) {
         this.completeLine()
+        e.stopPropagation()
       }
     },
     removePolygonPath() {
@@ -138,15 +143,17 @@ export default {
       }
     },
     completeLine() {
+      if (!this.polygonPath) return
       this.removeLastPoint()
       this.resp.push(this.polygonPath.clone())
       this.removePolygonPath()
+      this.removeLenMetr()
+      this.removeRect()
     },
     setKeyDownListener() {
       window.addEventListener(
         'keydown',
-        // (this.handleModifyDefectDialogKeyDown = this.handleModifyDefectDialogKeyDown.bind(this)),
-        this.handleModifyDefectDialogKeyDown,
+        this.handleKeyDown,
         {
           capture: true
         }
@@ -156,7 +163,7 @@ export default {
   created() {
   },
   beforeDestroy() {
-    window.removeEventListener('keydown', this.handleModifyDefectDialogKeyDown)
+    window.removeEventListener('keydown', this.handleKeyDown)
   }
 }
 </script>

@@ -13,7 +13,7 @@
     placement="right"
   >
     <div
-     :class="[{ 'is-active': selected === 'measuretool' }]"
+     :class="[{ 'is-active': selected === 'measure_tool' }]"
      @click="handleClickTool"
      >
      <svg width="16" height="16" fill="currentColor" t="1686218864661" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3661">
@@ -38,7 +38,7 @@ import tools from './tools'
 // 饱和度    saturation: 1,
 // 亮度       brightness: 1
 export default {
-  name: 'measuretool',
+  name: 'measure_tool',
   mixins: [tools],
   props: {
     selected: {
@@ -48,7 +48,7 @@ export default {
   },
   data() {
     return {
-      name: 'measuretool',
+      name: 'measure_tool',
       cursor: 'copy',
       path: null,
       firstPoint: null,

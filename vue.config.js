@@ -47,21 +47,7 @@ module.exports = {
     }
     // before: require('./mock/mock-server.js')
   },
-  //   devServer: {
-  //     // publicPath: Setting.publicPath,
-  //     // 配置前端转发
-  //     open: true,
-  //     proxy: {
-  //         '/api/v1': {
-  //             target: process.env.VUE_APP_BASE_API,
-  //             // target: 'http://192.168.10.12:10801',
-  //             changeOrigin: true
-  //         },
-  //     },
-  //     disableHostCheck: true
-  // },
   configureWebpack: {
-
     // provide the app's title in webpack's name field, so that
     // it can be accessed in index.html to inject the correct title.
     name: name,
@@ -70,74 +56,10 @@ module.exports = {
         '@': resolve('src')
       }
     }
-  // configureWebpack: config => {
-  //   config.module.rules.push({
-  //     test: /\.worker.js$/,
-  //     use: {
-  //       loader: 'worker-loader',
-  //       options: { inline: true, name: 'workerName.[hash].js' }
-  //     }
-  //   })
   },
-  // chainWebpack: config => {
-  //   config.module
-  // .rule('worker')
-  // .test(/\.worker\.js$/)
-  // .use('worker-loader')
-  // .loader('worker-loader')
-  // .options({
-  // inline: 'fallback'
-  // })
-  // // 解决 "window is undefined", 这是因为 worker 线程中不存在 window 对象, 要用 this 代替
-  // config.output.globalObject('this')
-  // },
-  // // 解决打包的时报错
-  // parallel: false,
-  // plugins
-  // plugins: [
-  //   new webpack.ProvidePlugin({
-  //     $: 'jquery',
-  //     jQuery: 'jquery',
-  //     'window.jQuery': 'jquery',
-  //     Popper: ['popper.js', 'default']
-  //   })
-  // ]
-  // },
-  chainWebpack(config) {
-    // config.plugin('prerender-spa-plugin')
-    // .use(new PrerenderSPAPlugin({
-    //   //要求-给的WebPack-输出应用程序的路径预渲染。
-    //   staticDir: path.join(__dirname, 'dist'),
-    //   //必需，要渲染的路线。
-    //   routes: ['/test'],
-    //   //必须，要使用的实际渲染器，没有则不能预编译
-    //   renderer: new Renderer({
-    //       inject: {
-    //           foo: 'bar'
-    //       },
-    //       headless: false, //渲染时显示浏览器窗口。对调试很有用。
-    //       //等待渲染，直到检测到指定元素。
-    //       //例如，在项目入口使用`document.dispatchEvent(new Event('custom-render-trigger'))`
-    //       renderAfterDocumentEvent: 'render-event',
-    //       args: ['--no-sandbox', '--disable-setuid-sandbox']
-    //   })
-    // }))
-    // 预渲染
 
-    // chunk压缩
-    // config.plugin('compression-webpack-plugin')
-    // .use(new CompressionPlugin({
-    //   test: /\.js$|\.html$|\.css/,
-    //   threshold: 10240,
-    //   deleteOriginalAssets: false
-    // }))
-    // config.plugin(new CompressionPlugin(
-    //   {
-    //     test: /\.js$|\.html$|\.css/,
-    //     threshold: 10240,
-    //     deleteOriginalAssets: false
-    // }))
-    // it can improve the speed of the first screen, it is recommended to turn on preload
+  chainWebpack(config) {
+    // node_module分析插件
     config.plugin('webpack-bundle-analyzer')
       .use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin)
     config.plugin('preload').tap(() => [
@@ -216,5 +138,63 @@ module.exports = {
           config.optimization.runtimeChunk('single')
         }
       )
+    // chainWebpack: config => {
+    //   config.module
+    // .rule('worker')
+    // .test(/\.worker\.js$/)
+    // .use('worker-loader')
+    // .loader('worker-loader')
+    // .options({
+    // inline: 'fallback'
+    // })
+    // // 解决 "window is undefined", 这是因为 worker 线程中不存在 window 对象, 要用 this 代替
+    // config.output.globalObject('this')
+    // },
+    // // 解决打包的时报错
+    // parallel: false,
+    // plugins
+    // plugins: [
+    //   new webpack.ProvidePlugin({
+    //     $: 'jquery',
+    //     jQuery: 'jquery',
+    //     'window.jQuery': 'jquery',
+    //     Popper: ['popper.js', 'default']
+    //   })
+    // ]
+    // },
+    // config.plugin('prerender-spa-plugin')
+    // .use(new PrerenderSPAPlugin({
+    //   //要求-给的WebPack-输出应用程序的路径预渲染。
+    //   staticDir: path.join(__dirname, 'dist'),
+    //   //必需，要渲染的路线。
+    //   routes: ['/test'],
+    //   //必须，要使用的实际渲染器，没有则不能预编译
+    //   renderer: new Renderer({
+    //       inject: {
+    //           foo: 'bar'
+    //       },
+    //       headless: false, //渲染时显示浏览器窗口。对调试很有用。
+    //       //等待渲染，直到检测到指定元素。
+    //       //例如，在项目入口使用`document.dispatchEvent(new Event('custom-render-trigger'))`
+    //       renderAfterDocumentEvent: 'render-event',
+    //       args: ['--no-sandbox', '--disable-setuid-sandbox']
+    //   })
+    // }))
+    // 预渲染
+
+    // chunk压缩
+    // config.plugin('compression-webpack-plugin')
+    // .use(new CompressionPlugin({
+    //   test: /\.js$|\.html$|\.css/,
+    //   threshold: 10240,
+    //   deleteOriginalAssets: false
+    // }))
+    // config.plugin(new CompressionPlugin(
+    //   {
+    //     test: /\.js$|\.html$|\.css/,
+    //     threshold: 10240,
+    //     deleteOriginalAssets: false
+    // }))
+    // it can improve the speed of the first screen, it is recommended to turn on preload
   }
 }
