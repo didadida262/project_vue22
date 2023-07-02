@@ -125,6 +125,7 @@ export default {
       this.polygonPath.removeSegment(this.polygonPath.segments.length - 1)
     },
     handleModifyDefectDialogKeyDown(e) {
+      console.log('子组件')
       e.stopPropagation()
       if (e.keyCode === 13) {
         this.completeLine()
@@ -144,7 +145,8 @@ export default {
     setKeyDownListener() {
       window.addEventListener(
         'keydown',
-        (this.handleModifyDefectDialogKeyDown = this.handleModifyDefectDialogKeyDown.bind(this)),
+        // (this.handleModifyDefectDialogKeyDown = this.handleModifyDefectDialogKeyDown.bind(this)),
+        this.handleModifyDefectDialogKeyDown,
         {
           capture: true
         }

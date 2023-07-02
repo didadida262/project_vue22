@@ -203,13 +203,16 @@ export default {
   },
   methods: {
     handleModifyDefectDialogKeyDown(e) {
+      console.log('父组件')
+
     },
     setKeyDownListener() {
       window.addEventListener(
         'keydown',
-        (this.handleModifyDefectDialogKeyDown = this.handleModifyDefectDialogKeyDown.bind(this)),
+        // (this.handleModifyDefectDialogKeyDown = this.handleModifyDefectDialogKeyDown.bind(this)),
+        this.handleModifyDefectDialogKeyDown,
         {
-          capture: false
+          capture: falseL
         }
       )
     },
