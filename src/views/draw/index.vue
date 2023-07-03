@@ -143,11 +143,6 @@ export default {
     window.removeEventListener('keydown', this.handleKeyDown)
   },
   methods: {
-<<<<<<< HEAD
-    handleModifyDefectDialogKeyDown(e) {
-      console.log('父组件')
-
-=======
     handleToolClick(brush) {
 
     },
@@ -172,7 +167,6 @@ export default {
         default:
           break
       }
->>>>>>> 9ac74845a7f32d40e5e1454651fa6ebf2de88604
     },
     setKeyDownListener() {
       console.log('setKeyDownListener>>')

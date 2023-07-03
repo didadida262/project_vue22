@@ -33,11 +33,12 @@
             :key="categories.key"
             type="primary"
             :plain="currentCate.key !== cate.key"
+            size="mini"
             @click="handleChangeModel(cate)"
           >
             {{ cate.key }}
           </el-button>
-          <span class="mgl10">当前类别文件数目: <span style="color: red">{{ videosList.length }}</span></span>
+          <p class="mgl10">当前类别文件数目: <span style="color: red">{{ videosList.length }}</span></p>
         </div>
         <div class="option-container-list">
           <div
@@ -283,12 +284,12 @@ export default {
       height: 100%;
       border: 1px solid gray;
       &-cate {
-        height: 80px;
+        height: 120px;
         width: 100%;
       }
       &-list {
         width: 100%;
-        height: calc(100% - 90px);
+        height: calc(100% - 130px);
         overflow: scroll;
       }
       .video-itemContainer {
