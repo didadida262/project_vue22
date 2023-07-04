@@ -70,7 +70,7 @@ export default {
         fill: true,
         tolerance: 5
       },
-      DOTNUMBER: 10000
+      DOTNUMBER: 10
       // 2000个： update: 62ms. draw: 62ms
       // 10000个: update: 164ms. drag: 164ms
     }
@@ -90,6 +90,7 @@ export default {
 
     this.initWorld()
     this.draw()
+    this.testJSON()
     this.currentProject.view.update()
     console.time('test')
     console.timeEnd('test')
@@ -99,6 +100,22 @@ export default {
   },
 
   methods: {
+    testJSON() {
+      let line = new paper.Path.Line({
+        selected: true
+      })
+      line.add(new paper.Point(100))
+      line.add(new paper.Point(200))
+      line.add(new paper.Point(300))
+      const json = line.exportJSON({
+        asString: false,
+        precision: 6
+      })
+      line.remove()
+      line = null
+      console.log('json>>>', json)
+      const newRec = new paper.Path().importJSON(json)
+    },
     random() {
       return paper.Point.random().multiply(this.WIDTH, this.HEIGHT)
     },
