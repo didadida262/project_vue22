@@ -69,8 +69,10 @@ export default {
         stroke: true,
         fill: true,
         tolerance: 5
-      }
-
+      },
+      DOTNUMBER: 10000
+      // 2000个： update: 62ms. draw: 62ms
+      // 10000个: update: 164ms. drag: 164ms
     }
   },
   created() {
@@ -86,16 +88,11 @@ export default {
 
     console.log('---Dashboard---mounted--->')
 
-    // this.testPostTask()
     this.initWorld()
     this.draw()
+    this.currentProject.view.update()
     console.time('test')
-    // this.testWebSocket()
     console.timeEnd('test')
-    this.$nextTick(() => {
-      this.$refs.uploadFile.$children[0].$refs.input.webkitdirectory = true
-      // console.log(this.$refs.uploadFile.$children[0].$refs.input.webkitdirectory)
-    })
   },
   beforeDestroy() {
     this.currentProject.remove()
@@ -107,7 +104,7 @@ export default {
     },
     draw() {
       console.time('draw')
-      for (let i = 0; i < 10000; i++) {
+      for (let i = 0; i < this.DOTNUMBER; i++) {
         const c = new paper.Path.Circle({
           center: this.random(),
           fillColor: getRandomColor(),
@@ -210,32 +207,20 @@ export default {
     },
 
     initWorld() {
-      this.i = 0
-      // 获取
       const canvas = this.$refs.main_canvas
-
-      // canvas.getContext('2d' [, { [ alpha: true ] [, desynchronized: false ] [, colorSpace: 'srgb'] [, willReadFrequently: false ]} ])
       this.WIDTH = canvas.clientWidth
       this.HEIGHT = canvas.clientHeight
-      // this.snake.x = -Math.floor(canvas.clientWidth / 2)
-      // this.snake.y = -Math.floor(canvas.clientHeight / 2)
       paper.setup(canvas)
       this.paper = paper
       this.paper.project.name = this.title
       // this.paper.view.setCenter(0, 0)
       this.paper.view.onFrame = this.onFrame
-      // this.paper.view.onMouseDown = (e) => { this.onMouseDown(e) }
-      // this.paper.view.onMouseDrag = (e) => { this.onMouseDrag(e) }
+      this.paper.view.autoUpdate = false
+      this.paper.view.onMouseDown = (e) => { this.onMouseDown(e) }
+      this.paper.view.onMouseDrag = (e) => { this.onMouseDrag(e) }
       // this.paper.view.setCenter(0, 0)
       console.log('this.paper', this.paper)
       // console.log('ctx.gggg', ctx.getImageData(this.currentProject.view.bounds))
-      const testLayer = new paper.Layer({
-        name: 'test'
-      })
-      const testLayer2 = new paper.Layer({
-        name: 'test2'
-      })
-      testLayer2.remove()
     },
 
     onFrame(e) {
@@ -248,6 +233,11 @@ export default {
         this.hitResult.set({
           position: e.point
         })
+        // // 重新渲染矩形
+        // this.hitResult.redraw()
+
+        // // 更新视图，进行局部渲染
+        this.currentProject.view.update()
       }
     },
     onMouseDown(e) {
