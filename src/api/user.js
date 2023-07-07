@@ -34,7 +34,7 @@ export default {
     return axios.post('./signIn', params)
   },
   logout() {
-    return axios.post('./logout')
+    return axios.post('./signOut')
   },
   getInfo(params) {
     return axios.get('./getInfo', {token: params})

@@ -91,6 +91,7 @@ export default {
     }
   },
   async created() {
+    this.setKeyDown()
     await this.getCates()
     this.getVideosList(this.page)
   },
@@ -104,6 +105,22 @@ export default {
   beforeDestroy() {
   },
   methods: {
+    handleKeyDown(e) {
+      console.log('asdasdasd')
+      switch(e.keyCode) {
+        case 33:
+          this.switchVideo('left')
+          break
+        case 34:
+          this.switchVideo('right')
+          break
+        default:
+          break
+      }
+    },
+    setKeyDown() {
+      window.addEventListener('keydown', this.handleKeyDown)
+    },
     switchCurrentListState() {
       this.currentListState = this.currentListState === 'show' ? 'hide' : 'show'
     },
