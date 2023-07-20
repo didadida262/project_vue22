@@ -1,6 +1,7 @@
 <template>
   <div class="Channel-container pd10">
-    <span class="label">{{ 'Channel：' + this.info.title  }}</span>
+    <commonTemplate :title="info.title" />
+    <!-- <span class="label">{{ 'Channel：' + this.info.title  }}</span> -->
     <div
      class="Channel-container-content pd10">
       <el-card
@@ -26,9 +27,12 @@
 </template>
 
 <script>
-
+import commonTemplate from '@/components/titleTemplate.vue'
 export default {
   name: 'Channel',
+  components: {
+    commonTemplate
+  },
   props: {
     info: {
       type: Object,
