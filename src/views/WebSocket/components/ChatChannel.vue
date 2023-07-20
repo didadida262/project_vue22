@@ -15,9 +15,12 @@
         </div>
       </el-card>
     </div>
-    <div class="Channel-container-operation">
+    <div class="Channel-container-operation flex-col">
       <el-input v-model="message"></el-input>
-      <el-button @click="sendMessage">Send</el-button>
+      <el-button
+        type="primary"
+       @click="sendMessage"
+       style="width: 100%">Send</el-button>
     </div>
   </div>
 </template>
@@ -96,7 +99,7 @@ export default {
 .Channel-container {
   width: 100%;
   height: 100%;
-  border: 1px solid rgba(118, 118, 122, 0.5);
+  border: 1px solid rgba(118, 118, 122, 0.2);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -104,7 +107,7 @@ export default {
   &-content {
     width: 100%;
     height: 70%;
-    border: 1px solid rgba(118, 118, 122, 0.5);
+    border: 1px solid ghostwhite;
     overflow: scroll;
     &-item {
       display: flex;
@@ -117,7 +120,6 @@ export default {
   &-operation {
     width: 100%;
     height: 25%;
-    border: 1px solid red;
   }
 }
 </style>
