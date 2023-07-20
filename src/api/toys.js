@@ -1,7 +1,7 @@
 /*
  * @Author: Hhvcg
  * @Date: 2022-02-20 15:26:48
- * @LastEditors: -_-
+ * @LastEditors: Hhvcg
  * @Description: dadadad
  */
 import axios from '@/utils/request'
@@ -30,7 +30,6 @@ export default {
     })
   },
 
-
   // music
   getMusicCates() {
     // return axios.get('/songs/list')
@@ -50,11 +49,6 @@ export default {
     })
   },
 
-
-
-
-
-
   getAllChars() {
     return axios.get('/getAllChar')
   },
@@ -63,8 +57,7 @@ export default {
     return axios.get('/getCates')
   },
 
-
-// video
+  // video
   getVideosList(params) {
     return axios.post('/getVideosList', params)
   },
@@ -81,7 +74,8 @@ export default {
   getVideoCyberFont() {
     return axios({
       url: '/getVideoCyberFont',
-      responseType: 'blob',
+      responseType: 'stream',
+      // responseType: 'arraybuffer',
       method: 'get'
     })
   },
