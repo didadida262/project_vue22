@@ -52,13 +52,30 @@ export default {
       return new paper.Point(Math.random() * this.WIDTH, Math.random() * this.HEIGHT)
     },
     draw() {
-      this.raster = new paper.Raster({
-        position: 0,
-        source: require('@/assets/Sam.webp')
-      })
-      this.raster.onLoad = () => {
-        this.raster.fitBounds(this.currentProject.view.bounds, false)
+      const gridNum = 10000
+      const widthNum = Math.sqrt(gridNum)
+      const heightNum = Math.sqrt(gridNum)
+      const gridWidth = this.WIDTH / Math.sqrt(gridNum)
+      const gridHeight = this.HEIGHT / Math.sqrt(gridNum)
+      for (let i = 0; i < 20; i++) {
+        for (let j = 0; j < 20; j++) {
+          const raster = new paper.Raster({
+            position: new paper.Point(25 + i * 100, 25 + j * 25),
+            source: require('@/assets/Sam.webp'),
+            size: [50, 50]
+          })
+          const bounds = new paper.Path.Rectangle({
+            center: raster.position,
+            width: 50,
+            height: 50,
+            selected: true
+          })
+          raster.onLoad = () => {
+            raster.fitBounds(bounds, false)
+          }
+        }
       }
+      console.log(this.paper)
     },
     onFrame() {
     },
@@ -71,10 +88,9 @@ export default {
       this.paper = paper
       this.paper.setup(canvas)
       this.paper.project.name = this.title
-      this.paper.view.setCenter(0, 0)
+      // this.paper.view.setCenter(0, 0)
       this.paper.view.onFrame = this.onFrame
       this.paper.view.onMouseDown = this.onMouseDown
-      console.log('初始化世界!!!', this.paper)
     }
   }
 }
