@@ -70,7 +70,7 @@ export default {
         fill: true,
         tolerance: 5
       },
-      DOTNUMBER: 10
+      DOTNUMBER: 10000
       // 2000个： update: 62ms. draw: 62ms
       // 10000个: update: 164ms. drag: 164ms
     }
