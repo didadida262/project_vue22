@@ -40,9 +40,9 @@ export default {
       Debug.enable = true
       Debug.filter = 'RunTime'
 
-      new RectsCase(this.leafer, 100) // 100万个
+      new RectsCase(this.leafer, 1) // 100万个
 
-      console.log(`创建100万个矩形用时：`, Date.now() - startTime, '毫秒')
+      console.log(`创建用时：`, Date.now() - startTime, '毫秒')
       console.log('this.leafer>>>', this.leafer)
     },
     initLeaf() {

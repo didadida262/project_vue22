@@ -70,7 +70,7 @@ export default {
         fill: true,
         tolerance: 5
       },
-      DOTNUMBER: 10000
+      DOTNUMBER: 170 * 80
       // 2000个： update: 62ms. draw: 62ms
       // 10000个: update: 164ms. drag: 164ms
     }
@@ -125,7 +125,7 @@ export default {
         const c = new paper.Path.Circle({
           center: this.random(),
           fillColor: getRandomColor(),
-          radius: 10
+          radius: 5
         })
       }
       console.timeEnd('draw')

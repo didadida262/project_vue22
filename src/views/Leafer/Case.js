@@ -22,11 +22,12 @@ export class RectsCase {
 
   createRects(group, startX, startY, color) {
     let y, rect
-
-    for (let i = 0; i < 100; i++) {
+    // 列
+    for (let i = 0; i < 170; i++) {
       if (i % 10 === 0) startX += 10
       y = startY
-      for (let j = 0; j < 100; j++) {
+      //   行
+      for (let j = 0; j < 80; j++) {
         if (j % 10 === 0) y += 10
         rect = new Rect()
         rect.x = startX
