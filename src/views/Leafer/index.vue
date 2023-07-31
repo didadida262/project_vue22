@@ -3,7 +3,7 @@
   <div class="LeaferJS-container pd10">
     <commonTemplate title="LeaferJS" />
     <div class="LeaferJS-container-content">
-      <canvas id="canvasLeaf"></canvas>
+      <canvas id="canvasLeaf" ref="canvasLeaf" class="canvas"></canvas>
     </div>
   </div>
 </template>
@@ -11,7 +11,9 @@
 <script>
 import commonTemplate from '@/components/titleTemplate.vue'
 import { Leafer, Debug } from 'leafer-ui'
-import { RectsCase } from './Case.js'
+import { LeafsCase } from './Case.js'
+import { PaperCase } from './Paperversion.js'
+import paper from 'paper'
 
 export default {
   name: 'LeaferJS',
@@ -27,29 +29,28 @@ export default {
   },
   watch: {},
   mounted() {
-    this.initLeaf()
-    this.draw()
+    // this.useLeaf()
+    this.usePaper()
   },
   beforeDestroy() {
 
   },
   methods: {
-    draw() {
-      const startTime = Date.now()
-
-      Debug.enable = true
-      Debug.filter = 'RunTime'
-
-      new RectsCase(this.leafer, 1) // 100万个
-
-      console.log(`创建用时：`, Date.now() - startTime, '毫秒')
-      console.log('this.leafer>>>', this.leafer)
+    usePaper() {
+      console.warn('usePaper>>>')
+      const canvas = this.$refs['canvasLeaf']
+      this.WIDTH = canvas.clientWidth
+      this.HEIGHT = canvas.clientHeight
+      paper.setup(canvas)
+      this.paper = paper
+      new PaperCase(this.paper, 1) // 100万个
     },
-    initLeaf() {
+    useLeaf() {
       this.leafer = new Leafer(
         {
           view: 'canvasLeaf'
         })
+      new LeafsCase(this.leafer, 1) // 100万个
     }
   }
 }
@@ -61,7 +62,11 @@ export default {
   &-content {
     width: 100%;
     height: calc(100% - 80px);
-    border: 1px solid rgba(236, 75, 11, 0.5);
+    .canvas {
+      border: 1px solid black;
+      width: 100%;
+      height: 100%;
+    }
   }
 }
 </style>

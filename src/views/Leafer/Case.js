@@ -3,9 +3,9 @@
  * @Date: 2023-07-31 14:02:05
  * @LastEditors: Hhvcg
  */
-import { Leafer, Group, Rect, Debug } from 'leafer-ui'
+import { Group, Rect, Image } from 'leafer-ui'
 
-export class RectsCase {
+export class LeafsCase {
   constructor(view, num) {
     let group
     const groupSize = 10 * 100 * 1.5
@@ -21,25 +21,29 @@ export class RectsCase {
   }
 
   createRects(group, startX, startY, color) {
+    console.time('leaf')
     let y, rect
     // 列
-    for (let i = 0; i < 170; i++) {
-      if (i % 10 === 0) startX += 10
-      y = startY
+    for (let i = 1; i < 100; i++) {
       //   行
-      for (let j = 0; j < 80; j++) {
-        if (j % 10 === 0) y += 10
-        rect = new Rect()
-        rect.x = startX
-        rect.y = y
-        rect.height = 10
-        rect.width = 10
-        rect.fill = color
-        rect.draggable = true
-        group.add(rect)
-        y += 12
+      for (let j = 1; j < 100; j++) {
+        const image = new Image({
+          url: require('@/assets/Sam.webp'),
+          draggable: true
+        })
+
+        image.x = (i - 1) * 10 + 5
+        image.y = (j - 1) * 10 + 5
+        image.height = 10
+        image.width = 10
+        image.draggable = true
+        group.add(image)
+        image.loaded = () => {
+          if (i === 99 && j === 99) {
+            console.timeEnd('leaf')
+          }
+        }
       }
-      startX += 12
     }
   }
 }

@@ -70,7 +70,7 @@ export default {
         fill: true,
         tolerance: 5
       },
-      DOTNUMBER: 170 * 80
+      DOTNUMBER: 8000
       // 2000个： update: 62ms. draw: 62ms
       // 10000个: update: 164ms. drag: 164ms
     }
@@ -90,10 +90,10 @@ export default {
 
     this.initWorld()
     this.draw()
-    this.testJSON()
-    this.currentProject.view.update()
-    console.time('test')
-    console.timeEnd('test')
+    // this.testJSON()
+    // this.currentProject.view.update()
+    // console.time('test')
+    // console.timeEnd('test')
   },
   beforeDestroy() {
     this.currentProject.remove()
@@ -122,10 +122,18 @@ export default {
     draw() {
       console.time('draw')
       for (let i = 0; i < this.DOTNUMBER; i++) {
-        const c = new paper.Path.Circle({
-          center: this.random(),
-          fillColor: getRandomColor(),
-          radius: 5
+        const p = this.random()
+        const rec = new paper.Rectangle({
+          center: p,
+          width: 10,
+          height: 10
+        })
+        const c = new paper.Raster({
+          position: p,
+          source: require('@/assets/Sam.webp')
+        })
+        c.onLoad(() => {
+          c.fitBounds(rec.bounds, true)
         })
       }
       console.timeEnd('draw')
