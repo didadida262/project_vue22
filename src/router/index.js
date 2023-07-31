@@ -76,6 +76,18 @@ export const constantRoutes = [
       meta: { title: 'Draw', icon: 'el-icon-brush' }
     }]
   },
+  {
+    path: '/leaferJS',
+    component: Layout,
+    children: [
+      {
+        path: 'leaferJS',
+        name: 'leaferJS',
+        component: () => import('@/views/Leafer/index'),
+        meta: { title: 'leaferJS', icon: 'el-icon-brush' }
+      }
+    ]
+  },
   // openLayer
   {
     path: '/openlayer',
