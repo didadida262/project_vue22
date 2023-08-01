@@ -84,16 +84,8 @@ export default {
     })
   },
   mounted() {
-    // this.currentProject.remove()
-
-    console.log('---Dashboard---mounted--->')
-
     this.initWorld()
-    this.draw()
-    // this.testJSON()
-    // this.currentProject.view.update()
-    // console.time('test')
-    // console.timeEnd('test')
+    this.testJSON()
   },
   beforeDestroy() {
     this.currentProject.remove()
@@ -113,30 +105,13 @@ export default {
       })
       line.remove()
       line = null
-      console.log('json>>>', json)
+      // console.log('json>>>', json)
       const newRec = new paper.Path().importJSON(json)
     },
     random() {
       return paper.Point.random().multiply(this.WIDTH, this.HEIGHT)
     },
     draw() {
-      console.time('draw')
-      for (let i = 0; i < this.DOTNUMBER; i++) {
-        const p = this.random()
-        const rec = new paper.Rectangle({
-          center: p,
-          width: 10,
-          height: 10
-        })
-        const c = new paper.Raster({
-          position: p,
-          source: require('@/assets/Sam.webp')
-        })
-        c.onLoad(() => {
-          c.fitBounds(rec.bounds, true)
-        })
-      }
-      console.timeEnd('draw')
     },
     handleTestDrag(e) {
       e.stopPropagation()
@@ -238,14 +213,11 @@ export default {
       paper.setup(canvas)
       this.paper = paper
       this.paper.project.name = this.title
-      // this.paper.view.setCenter(0, 0)
+      this.paper.view.setCenter(0, 0)
       this.paper.view.onFrame = this.onFrame
-      this.paper.view.autoUpdate = false
-      this.paper.view.onMouseDown = (e) => { this.onMouseDown(e) }
+      // this.paper.view.onMouseDown = (e) => { this.onMouseDown(e) }
       this.paper.view.onMouseDrag = (e) => { this.onMouseDrag(e) }
-      // this.paper.view.setCenter(0, 0)
       console.log('this.paper', this.paper)
-      // console.log('ctx.gggg', ctx.getImageData(this.currentProject.view.bounds))
     },
 
     onFrame(e) {
