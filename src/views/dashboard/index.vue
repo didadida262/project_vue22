@@ -6,7 +6,19 @@
 -->
 <template>
   <div class="dashboard-st">
-      <canvas id="main_canvas" ref="main_canvas" resize class="main_canvas" />
+    <el-button @click="() => { dialogflag = !dialogflag}">dialog</el-button>
+      <!-- <canvas id="main_canvas" ref="main_canvas" resize class="main_canvas" /> -->
+      <el-dialog
+        v-dialogDrag
+        title="测试拖拽"
+        :visible="dialogflag"
+        width="30%"
+        >
+        <span>这是一段信息</span>
+        <span slot="footer" class="dialog-footer">
+          <el-button type="primary" @click="() => { dialogflag = !dialogflag}">确 定</el-button>
+        </span>
+      </el-dialog>
   </div>
 </template>
 
@@ -34,6 +46,7 @@ export default {
   },
   data() {
     return {
+      dialogflag: false,
       circleData: require('@/api/circleData'),
       testData: {
         name: 'hhvcg',
@@ -84,8 +97,8 @@ export default {
     })
   },
   mounted() {
-    this.initWorld()
-    this.testJSON()
+    // this.initWorld()
+    // this.testJSON()
   },
   beforeDestroy() {
     this.currentProject.remove()
@@ -246,7 +259,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.floatDiv {
+  width: 500px;
+  height: 500px;
+  border: 1px solid red;
+  position: absolute;
+}
 .dashboard-st {
+  position: relative;
   width: 100%;
   height: 100%;
   display: flex;

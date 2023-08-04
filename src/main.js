@@ -21,6 +21,8 @@ import '@/permission' // permission control
 import _ from 'lodash'
 import BaiduMap from 'vue-baidu-map'
 import 'font-awesome/css/font-awesome.min.css'
+import './utils/dialog'
+
 // 日期处理
 import dayjs from 'dayjs'
 Vue.prototype.$dayjs = dayjs
