@@ -14,6 +14,7 @@
 <script lang="ts">
 import paper from 'paper'
 import commonTemplate from '@/components/titleTemplate.vue'
+import { removeLayer } from '@/utils/weapons'
 // import { getRandomPoint } from '@/utils/paper.ts'
 import tools from './tools'
 
@@ -39,7 +40,10 @@ export default {
   watch: {},
   mounted() {
     this.init()
+    // this.drawXY()
     this.draw()
+    console.log('this.currentProject>>>',this.currentProject)
+
   },
   beforeDestroy() {
     if (this.currentProject) {
@@ -50,6 +54,25 @@ export default {
     }
   },
   methods: {
+    drawXY() {
+      this.currentProject.activate()
+      removeLayer(this.currentProject, 'layerXY')
+      const layerXY = new paper.Layer()
+      layerXY.name = 'layerXY'
+      const currentCenter = this.currentProject.view.center
+      const X = new paper.Path.Line({
+        from: new paper.Point(currentCenter.x - this.WIDTH / 2, currentCenter.y),
+        to: new paper.Point(currentCenter.x + this.WIDTH / 2, currentCenter.y),
+        strokeColor: 'red',
+        strokeWidth: 1,
+      })
+      const Y = new paper.Path.Line({
+        from: new paper.Point(currentCenter.x, currentCenter.y - this.HEIGHT / 2),
+        to: new paper.Point(currentCenter.x, currentCenter.y  + this.HEIGHT / 2),
+        strokeColor: 'red',
+        strokeWidth: 1,
+      })
+    },
     changeZoom(delta, p) {
       const view = this.currentProject.view
       const oldZoom = view.zoom
@@ -74,23 +97,41 @@ export default {
       this.currentProject.view.center = this.currentProject.view.center.add(transform.offset)
     },
     draw() {
+      removeLayer(this.currentProject, 'layerData')
+      const layerData = new paper.Layer()
+      layerData.name = 'layerData'
+      const circle = new paper.Path.Circle({
+        center: 0,
+        radius: 5,
+        fillColor: 'green'
+      })
+      // const circle = new paper.Path.Arc({
+      //   form: new paper.Point(-100, 0),
+      //   to: new paper.Point(100, 0),
+      //   through: new paper.Point(0, 200),
+      //   strokeColor: 'red',
+      //   closed: true
+      // })
     },
     onFrame() {
     },
     onMouseDown(e) {
+      removeLayer(this.currentProject, 'layerXY')
       this.initPoint = e.point
+    },
+    onMouseUp(e) {
+      // this.drawXY()
+      this.initPoint = null
     },
     onMouseDrag(e) {
       if (this.initPoint) {
-        const v = this.initPoint.subtract(e.point)
-        const newC = this.currentProject.view.center.add(v)
-        this.currentProject.view.setCenter(newC)
+        const delta = this.initPoint.subtract(e.point)
+        const newCenter = this.currentProject.view.center.add(delta)
+        this.currentProject.view.setCenter(newCenter)
       }
+
     },
     onMouseMove() {
-    },
-    onMouseUp() {
-      this.initPoint = null
     },
     onKeyDown() {
     },
@@ -103,6 +144,9 @@ export default {
       this.paper.project.name = this.title
       this.paper.view.onFrame = this.onFrame
       this.paper.view.onMouseDown = this.onMouseDown
+      this.paper.view.onMouseUp = this.onMouseUp
+      this.paper.view.setCenter(0)
+      this.paper.view.onMouseDrag = this.onMouseDrag
       console.log('初始化世界!!!')
     }
   }

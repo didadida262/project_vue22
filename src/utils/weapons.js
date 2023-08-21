@@ -97,6 +97,7 @@ export const getCirclePoint = (val, radius) => {
   return Math.sqrt(Math.pow(radius, 2) - Math.pow(Math.abs(val), 2))
 }
 
+
 /*
  * @Author: Hhvcg
  * @Date: 2022-05-26 16:51:11
@@ -166,4 +167,13 @@ export const dealZipDefectsFile = (data) => {
       })
     })
   })
+}
+
+
+export const removeLayer = (currentProject, layerName) => {
+  let target = currentProject.layers.filter((layer) => layer.name === layerName)[0]
+  if (target) {
+    target.remove()
+    target = null
+  }
 }
