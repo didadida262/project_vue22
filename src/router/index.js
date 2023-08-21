@@ -173,6 +173,12 @@ export const constantRoutes = [
       //   meta: { title: 'Draw_version2', icon: 'Raster' }
       // },
       {
+        path: 'arc',
+        name: 'Arc',
+        component: () => import('@/views/paper/Arc/index'),
+        meta: { title: 'Arc', icon: 'Raster' }
+      },
+      {
         path: 'gameworld',
         name: 'gameworld',
         component: () => import('@/views/paper/GameWorld/index'),
