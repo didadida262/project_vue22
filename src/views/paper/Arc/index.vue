@@ -11,10 +11,10 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import paper from 'paper'
 import commonTemplate from '@/components/titleTemplate.vue'
-import { getRandomColor } from '@/utils/weapons'
+// import { getRandomPoint } from '@/utils/paper.ts'
 import tools from './tools'
 
 export default {
@@ -73,12 +73,6 @@ export default {
       this.currentProject.view.zoom = transform.zoom
       this.currentProject.view.center = this.currentProject.view.center.add(transform.offset)
     },
-    random() {
-      return paper.Point.random().multiply(this.WIDTH, this.HEIGHT)
-    },
-    getRandomPoint() {
-      return new paper.Point(Math.random() * this.WIDTH, Math.random() * this.HEIGHT)
-    },
     draw() {
     },
     onFrame() {
@@ -93,12 +87,12 @@ export default {
         this.currentProject.view.setCenter(newC)
       }
     },
-    onMouseMove(e) {
+    onMouseMove() {
     },
-    onMouseUp(e) {
+    onMouseUp() {
       this.initPoint = null
     },
-    onKeyDown(e) {
+    onKeyDown() {
     },
     init() {
       const canvas = this.$refs.canvas
