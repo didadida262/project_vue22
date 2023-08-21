@@ -6,7 +6,19 @@
 -->
 <template>
   <div class="dashboard-st">
-      <canvas id="main_canvas" ref="main_canvas" resize class="main_canvas" />
+    <el-button @click="() => { dialogflag = !dialogflag}">dialog</el-button>
+      <!-- <canvas id="main_canvas" ref="main_canvas" resize class="main_canvas" /> -->
+      <el-dialog
+        v-dialogDrag
+        title="测试拖拽"
+        :visible="dialogflag"
+        width="30%"
+        >
+        <span>这是一段信息</span>
+        <span slot="footer" class="dialog-footer">
+          <el-button type="primary" @click="() => { dialogflag = !dialogflag}">确 定</el-button>
+        </span>
+      </el-dialog>
   </div>
 </template>
 
@@ -34,6 +46,7 @@ export default {
   },
   data() {
     return {
+      dialogflag: false,
       circleData: require('@/api/circleData'),
       testData: {
         name: 'hhvcg',
@@ -69,8 +82,10 @@ export default {
         stroke: true,
         fill: true,
         tolerance: 5
-      }
-
+      },
+      DOTNUMBER: 8000
+      // 2000个： update: 62ms. draw: 62ms
+      // 10000个: update: 164ms. drag: 164ms
     }
   },
   created() {
@@ -82,39 +97,34 @@ export default {
     })
   },
   mounted() {
-    // this.currentProject.remove()
-
-    console.log('---Dashboard---mounted--->')
-
-    // this.testPostTask()
-    this.initWorld()
-    this.draw()
-    console.time('test')
-    // this.testWebSocket()
-    console.timeEnd('test')
-    this.$nextTick(() => {
-      this.$refs.uploadFile.$children[0].$refs.input.webkitdirectory = true
-      // console.log(this.$refs.uploadFile.$children[0].$refs.input.webkitdirectory)
-    })
+    // this.initWorld()
+    // this.testJSON()
   },
   beforeDestroy() {
     this.currentProject.remove()
   },
 
   methods: {
+    testJSON() {
+      let line = new paper.Path.Line({
+        selected: true
+      })
+      line.add(new paper.Point(100))
+      line.add(new paper.Point(200))
+      line.add(new paper.Point(300))
+      const json = line.exportJSON({
+        asString: false,
+        precision: 6
+      })
+      line.remove()
+      line = null
+      // console.log('json>>>', json)
+      const newRec = new paper.Path().importJSON(json)
+    },
     random() {
       return paper.Point.random().multiply(this.WIDTH, this.HEIGHT)
     },
     draw() {
-      console.time('draw')
-      for (let i = 0; i < 10000; i++) {
-        const c = new paper.Path.Circle({
-          center: this.random(),
-          fillColor: getRandomColor(),
-          radius: 10
-        })
-      }
-      console.timeEnd('draw')
     },
     handleTestDrag(e) {
       e.stopPropagation()
@@ -210,32 +220,17 @@ export default {
     },
 
     initWorld() {
-      this.i = 0
-      // 获取
       const canvas = this.$refs.main_canvas
-
-      // canvas.getContext('2d' [, { [ alpha: true ] [, desynchronized: false ] [, colorSpace: 'srgb'] [, willReadFrequently: false ]} ])
       this.WIDTH = canvas.clientWidth
       this.HEIGHT = canvas.clientHeight
-      // this.snake.x = -Math.floor(canvas.clientWidth / 2)
-      // this.snake.y = -Math.floor(canvas.clientHeight / 2)
       paper.setup(canvas)
       this.paper = paper
       this.paper.project.name = this.title
-      // this.paper.view.setCenter(0, 0)
+      this.paper.view.setCenter(0, 0)
       this.paper.view.onFrame = this.onFrame
       // this.paper.view.onMouseDown = (e) => { this.onMouseDown(e) }
-      // this.paper.view.onMouseDrag = (e) => { this.onMouseDrag(e) }
-      // this.paper.view.setCenter(0, 0)
+      this.paper.view.onMouseDrag = (e) => { this.onMouseDrag(e) }
       console.log('this.paper', this.paper)
-      // console.log('ctx.gggg', ctx.getImageData(this.currentProject.view.bounds))
-      const testLayer = new paper.Layer({
-        name: 'test'
-      })
-      const testLayer2 = new paper.Layer({
-        name: 'test2'
-      })
-      testLayer2.remove()
     },
 
     onFrame(e) {
@@ -248,6 +243,11 @@ export default {
         this.hitResult.set({
           position: e.point
         })
+        // // 重新渲染矩形
+        // this.hitResult.redraw()
+
+        // // 更新视图，进行局部渲染
+        this.currentProject.view.update()
       }
     },
     onMouseDown(e) {
@@ -259,7 +259,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.floatDiv {
+  width: 500px;
+  height: 500px;
+  border: 1px solid red;
+  position: absolute;
+}
 .dashboard-st {
+  position: relative;
   width: 100%;
   height: 100%;
   display: flex;

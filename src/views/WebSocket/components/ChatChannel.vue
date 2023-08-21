@@ -1,27 +1,38 @@
 <template>
   <div class="Channel-container pd10">
-    <span class="label">{{  this.info.title  }}</span>
-    <div class="Channel-container-content pd10">
-      <div
-      class="Channel-container-content-item"
-       v-for="(item, index) in infoList"
-       :key="index">
-       <span>{{ item.user }}</span>
-       <span>{{ item.content }}</span>
-      </div>
-      <el-divider />
+    <commonTemplate :title="info.title" />
+    <!-- <span class="label">{{ 'Channel：' + this.info.title  }}</span> -->
+    <div
+     class="Channel-container-content pd10">
+      <el-card
+        v-for="(item, index) in infoList"
+        :key="index"
+        class="mgb10">
+        <div
+          class="Channel-container-content-item"
+        >
+          <span style="font-weight: bold;font-size: 20px;">{{ item.user + ':' }}</span>
+          <span style="font-size: 16px;">{{ item.content }}</span>
+        </div>
+      </el-card>
     </div>
-    <div class="Channel-container-operation">
+    <div class="Channel-container-operation flex-col">
       <el-input v-model="message"></el-input>
-      <el-button @click="sendMessage">Send</el-button>
+      <el-button
+        type="primary"
+       @click="sendMessage"
+       style="width: 100%">Send</el-button>
     </div>
   </div>
 </template>
 
 <script>
-
+import commonTemplate from '@/components/titleTemplate.vue'
 export default {
   name: 'Channel',
+  components: {
+    commonTemplate
+  },
   props: {
     info: {
       type: Object,
@@ -31,10 +42,10 @@ export default {
   data() {
     return {
       infoList: [
-        {
-          user: this.info.title,
-          content: '我们的征途，是星辰大海...'
-        }
+        // {
+        //   user: this.info.title,
+        //   content: '我们的征途，是星辰大海...'
+        // }
       ],
       message: ''
     }
@@ -46,7 +57,6 @@ export default {
     this.connectWebSocket()
   },
   mounted() {
-
   },
   beforeDestroy() {
 
@@ -59,8 +69,7 @@ export default {
       })
     },
     connectWebSocket() {
-      // console.log('http://localhost:3000')
-      const wsuri = 'ws://127.0.0.1:3001'
+      const wsuri = 'ws://127.0.0.1:3002'
       this.websock = new WebSocket(wsuri)
       this.websock.onopen = this.websocketonopen
       this.websock.onmessage = this.websocketonmessage
@@ -68,8 +77,8 @@ export default {
       this.websock.onclose = this.websocketclose
     },
     websocketonopen() { // 连接建立之后执行send方法发送数据
-      const actions = { user: this.info.title, content: '我们的征途，是星辰大海...' }
-      this.websocketsend(JSON.stringify(actions))
+      // const actions = { user: this.info.title, content: '我们的征途，是星辰大海...' }
+      // this.websocketsend(JSON.stringify(actions))
     },
     websocketonerror() { // 连接建立失败重连
       console.log('web---err')
@@ -77,6 +86,7 @@ export default {
     websocketonmessage(e) { // 数据接收
       const data = JSON.parse(e.data)
       if (data.user !== this.info.title) {
+        console.log('data>>>', data)
         this.$set(this.infoList, this.infoList.length, data)
       }
     },
@@ -93,7 +103,7 @@ export default {
 .Channel-container {
   width: 100%;
   height: 100%;
-  border: 1px solid rgba(118, 118, 122, 0.5);
+  border: 1px solid rgba(118, 118, 122, 0.2);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -101,7 +111,8 @@ export default {
   &-content {
     width: 100%;
     height: 70%;
-    border: 1px solid rgba(118, 118, 122, 0.5);
+    border: 1px solid ghostwhite;
+    overflow: scroll;
     &-item {
       display: flex;
       justify-content: space-between;

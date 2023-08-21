@@ -7,8 +7,7 @@
 
 <template>
   <div class="Channel-container pd10">
-    <commonTemplate title="Channel1" />
-    <div class="Channel-container-content flex-cc">
+    <div class="Channel-container-content flex-cb">
       <div
         class="Channel-container-content-item"
         v-for="(channel, index) in channels"
@@ -23,13 +22,11 @@
 </template>
 
 <script>
-import commonTemplate from '@/components/titleTemplate.vue'
 import ChatChannel from './components/ChatChannel.vue'
 
 export default {
   name: 'Channel',
   components: {
-    commonTemplate,
     ChatChannel
   },
   data() {
@@ -37,10 +34,10 @@ export default {
       title: 'WebSocket',
       channels: [
         {
-          title: 'Channel1'
+          title: 'HHvcg'
         },
         {
-          title: 'Channel2'
+          title: '旅途图'
         }
       ]
     }
@@ -66,8 +63,7 @@ export default {
   height: 100%;
   &-content {
     width: 100%;
-    height: calc(100% - 80px);
-    border: 1px solid rgba(118, 118, 122, 0.5);
+    height: 100%;
     &-item {
       width: 49%;
       height: 100%;

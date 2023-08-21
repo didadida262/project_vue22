@@ -76,6 +76,18 @@ export const constantRoutes = [
       meta: { title: 'Draw', icon: 'el-icon-brush' }
     }]
   },
+  {
+    path: '/leaferJS',
+    component: Layout,
+    children: [
+      {
+        path: 'leaferJS',
+        name: 'leaferJS',
+        component: () => import('@/views/Leafer/index'),
+        meta: { title: 'leaferJS', icon: 'el-icon-brush' }
+      }
+    ]
+  },
   // openLayer
   {
     path: '/openlayer',
@@ -160,6 +172,12 @@ export const constantRoutes = [
       //   component: () => import('@/views/drawVersionTwo/index'),
       //   meta: { title: 'Draw_version2', icon: 'Raster' }
       // },
+      {
+        path: 'arc',
+        name: 'Arc',
+        component: () => import('@/views/paper/Arc/index'),
+        meta: { title: 'Arc', icon: 'Raster' }
+      },
       {
         path: 'gameworld',
         name: 'gameworld',

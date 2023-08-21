@@ -50,6 +50,7 @@ export default {
       this.currentProject.remove()
     }
   },
+
   methods: {
     createColors() {
       for (let i = 0; i < 6; i++) {

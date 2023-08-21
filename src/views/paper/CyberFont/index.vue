@@ -1,7 +1,7 @@
 <!--
  * @Author: Hhvcg
  * @Date: 2022-11-27 17:06:23
- * @LastEditors: -_-
+ * @LastEditors: Hhvcg
  * @Description: cyber-font---salute-shell
 -->
 
@@ -11,14 +11,16 @@
 
     <div class="cyberFont-container-content">
       <div class="cyberFont-container-content-video flex-cb">
-        <video
+        <!-- <video
           class="video-st"
           ref="videoContainer"
           controls
           autoplay="autoplay"
           loop>
-          <!-- <source src="./清帝逊位.mp4" type="video/mp4"> -->
           <source :src="videoUrl" type="video/mp4">
+        </video> -->
+        <video id="myVideo" controls>
+          <source src="http://localhost:3000" type="video/mp4">
         </video>
     </div>
       <canvas ref="canvas" resize class="canvas" />
@@ -72,6 +74,11 @@ export default {
     this.drawFont()
     this.addAudio()
     this.addVideo()
+    const video = this.$refs['videoContainer']
+    video.addEventListener('canplay', function() {
+      console.log('>>>>>>>>>>>>')
+      video.play()
+    })
   },
   beforeDestroy() {
     if (this.currentProject) {
@@ -82,6 +89,7 @@ export default {
     async getVideoData(info) {
       console.log('info', info)
       const res = await this.$axios.getVideoCyberFont(info)
+      console.log('res>>>>', res)
       const blob = new Blob([res], { type: 'mp4' })
       const url = URL.createObjectURL(blob)
       this.videoUrl = url

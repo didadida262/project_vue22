@@ -7,7 +7,6 @@
 module.exports = {
   root: true,
   // parserOptions: {
-  //   parser: 'babel-eslint',
   //   sourceType: 'module'
   // },
   env: {
@@ -311,6 +310,6 @@ module.exports = {
     ],
   },
   parserOptions: {
-    parser: 'babel-eslint'
+    parser: '@typescript-eslint/parser',
   }
 }
