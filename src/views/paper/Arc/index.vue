@@ -41,7 +41,6 @@ export default {
     this.init()
     drawXY(this.project)
     this.drawWaferBorder()
-    testPaper(this.project)
 
   },
   beforeDestroy() {
@@ -78,13 +77,7 @@ export default {
 
     drawFlat(directionAngle, length, radius) {
       let layerArc = this.project.layers['layerArc']
-      let existedPath = new paper.Path()
-      if (layerArc) {
-        existedPath = layerArc.children[0].clone() 
-        layerArc.remove()
-      }
-      layerArc = new paper.Layer()
-      layerArc.name = 'layerArc'
+      let existedPath = layerArc.children[0]
       const res = getFlatPoints(directionAngle, length, radius)
       // const th = getThroughPoint(res, radius)
       const through = new paper.Point(0, -radius)
@@ -96,14 +89,15 @@ export default {
         closed: true,
         strokeWidth: 1
       })
-      newPath.name = 'pathArcInner'
-      const ressssss = newPath.intersect(existedPath, {
-            // trace: true,
-            // insert: false
-        })
+      console.log('existedPath>>>>', existedPath)
+      // newPath.name = 'pathArcInner'
+      if (existedPath) {
+        const ressssss = newPath.intersect(existedPath)
         ressssss.selected = true
-        // existedPath.remove()
-        // pp.remove()
+        existedPath.remove()
+        newPath.remove()
+      } 
+      // ressssss.selected = true
 
 
 
@@ -112,18 +106,20 @@ export default {
     //   console.log('seg',segs)
     },
     drawWaferBorder() {
+      console.warn('drawWaferBorder>>>>')
       const radius = 300
       const length = 200
       const directionAngle = 90
-      this.project.activate()
       let layerArc = this.project.layers['layerArc']
       if (layerArc) {
         layerArc.remove()
       }
       layerArc = new paper.Layer()
       layerArc.name = 'layerArc'
-      this.drawFlat(90, length, radius)
-      this.drawFlat(0, length, radius)
+      // this.drawFlat(0, length, radius)
+      // this.drawFlat(90, length, radius)
+      // this.drawFlat(180, length, radius)
+      this.drawFlat(270, length, radius)
     },
     onFrame() {
     },
