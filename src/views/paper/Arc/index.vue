@@ -1,3 +1,4 @@
+
 <template>
   <div class="Arc-container pd10">
     <commonTemplate title="Arc" />
@@ -11,11 +12,12 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import paper from 'paper'
 import commonTemplate from '@/components/titleTemplate.vue'
-import { removeLayer } from '@/utils/weapons'
-// import { getRandomPoint } from '@/utils/paper.ts'
+import { getRandomColor } from '@/utils/weapons'
+import { removeLayer, drawXY, getFlatPoints, getThroughPoint} from '@/utils/paperWeapon.js'
+
 import tools from './tools'
 
 export default {
@@ -33,121 +35,122 @@ export default {
     }
   },
   computed: {
-    currentProject() {
-      return this.paper.projects.filter((_p) => _p.name === this.title)[0]
-    }
   },
   watch: {},
   mounted() {
     this.init()
-    // this.drawXY()
-    this.draw()
-    console.log('this.currentProject>>>',this.currentProject)
-
+    drawXY(this.project)
+    this.drawWaferBorder()
   },
   beforeDestroy() {
-    if (this.currentProject) {
-      this.currentProject.remove()
-    }
-    if (this.paper) {
-      this.paper = null
+    if (this.project) {
+      this.project.remove()
     }
   },
   methods: {
-    drawXY() {
-      this.currentProject.activate()
-      removeLayer(this.currentProject, 'layerXY')
-      const layerXY = new paper.Layer()
-      layerXY.name = 'layerXY'
-      const currentCenter = this.currentProject.view.center
-      const X = new paper.Path.Line({
-        from: new paper.Point(currentCenter.x - this.WIDTH / 2, currentCenter.y),
-        to: new paper.Point(currentCenter.x + this.WIDTH / 2, currentCenter.y),
-        strokeColor: 'red',
-        strokeWidth: 1,
-      })
-      const Y = new paper.Path.Line({
-        from: new paper.Point(currentCenter.x, currentCenter.y - this.HEIGHT / 2),
-        to: new paper.Point(currentCenter.x, currentCenter.y  + this.HEIGHT / 2),
-        strokeColor: 'red',
-        strokeWidth: 1,
-      })
-    },
     changeZoom(delta, p) {
-      const view = this.currentProject.view
+      const view = this.project.view
       const oldZoom = view.zoom
       const c = view.center
       const factor = 0.05 + this.zoom
+
       const zoom = delta < 0 ? oldZoom * factor : oldZoom / factor
       const beta = oldZoom / zoom
       // 计算当前点到当前视图中心点向量指向
       const pc = p.subtract(c)
       // a点目测是换算后的新p点
       const a = p.subtract(pc.multiply(beta)).subtract(c)
-
       return { zoom: zoom, offset: a }
     },
     onwheel(e) {
-      const view = this.currentProject.view
+      const view = this.project.view
       const viewPosition = view.viewToProject(
         new paper.Point(e.offsetX, e.offsetY)
       )
       const transform = this.changeZoom(e.deltaY, viewPosition)
-      this.currentProject.view.zoom = transform.zoom
-      this.currentProject.view.center = this.currentProject.view.center.add(transform.offset)
+      this.project.view.zoom = transform.zoom
+      this.project.view.center = this.project.view.center.add(transform.offset)
     },
-    draw() {
-      removeLayer(this.currentProject, 'layerData')
-      const layerData = new paper.Layer()
-      layerData.name = 'layerData'
-      const circle = new paper.Path.Circle({
-        center: 0,
-        radius: 5,
-        fillColor: 'green'
+    random() {
+      return paper.Point.random().multiply(this.WIDTH, this.HEIGHT)
+    },
+    getRandomPoint() {
+      return new paper.Point(Math.random() * this.WIDTH, Math.random() * this.HEIGHT)
+    },
+    drawFlat(directionAngle, length, radius) {
+      const res = getFlatPoints(directionAngle, length, radius)
+      const th = getThroughPoint(res, radius)
+      const through = new paper.Point(0, -radius)
+      const pp = new paper.Path.Arc({
+        from: res[0],
+        through: through,
+        to: res[1],
+        strokeColor: '#FFDE2C',
+        closed: true,
+        strokeWidth: 1
       })
-      // const circle = new paper.Path.Arc({
-      //   form: new paper.Point(-100, 0),
-      //   to: new paper.Point(100, 0),
-      //   through: new paper.Point(0, 200),
-      //   strokeColor: 'red',
-      //   closed: true
-      // })
+      pp.name = 'pathArcInner'
+      let layerArc = this.project.layers['layerArc']
+      const existedPath = layerArc.children[0]
+      const ressssss = pp.intersect(existedPath, {
+            trace: true,
+            // insert: false
+        })
+        ressssss.selected = true
+        // existedPath.remove()
+        // pp.remove()
+
+
+
+        // 方案二
+    //     const segs =  ressssss.segments.map((seg) => seg.clone())
+    //   console.log('seg',segs)
+    },
+    drawWaferBorder() {
+      const radius = 300
+      const length = 200
+      const directionAngle = 90
+      this.project.activate()
+      let layerArc = this.project.layers['layerArc']
+      if (layerArc) {
+        layerArc.remove()
+      }
+      layerArc = new paper.Layer()
+      layerArc.name = 'layerArc'
+      this.drawFlat(directionAngle, length, radius)
+      this.drawFlat(0, length, radius)
     },
     onFrame() {
     },
     onMouseDown(e) {
-      removeLayer(this.currentProject, 'layerXY')
+      removeLayer(this.project,'layerXY')
       this.initPoint = e.point
-    },
-    onMouseUp(e) {
-      // this.drawXY()
-      this.initPoint = null
     },
     onMouseDrag(e) {
       if (this.initPoint) {
-        const delta = this.initPoint.subtract(e.point)
-        const newCenter = this.currentProject.view.center.add(delta)
-        this.currentProject.view.setCenter(newCenter)
+        const v = this.initPoint.subtract(e.point)
+        const newC = this.project.view.center.add(v)
+        this.project.view.setCenter(newC)
       }
-
     },
-    onMouseMove() {
+    onMouseMove(e) {
     },
-    onKeyDown() {
+    onMouseUp(e) {
+      this.initPoint = null
+      drawXY(this.project)
+    },
+    onKeyDown(e) {
     },
     init() {
       const canvas = this.$refs.canvas
       this.WIDTH = canvas.clientWidth
       this.HEIGHT = canvas.clientHeight
-      this.paper = paper
-      this.paper.setup(canvas)
-      this.paper.project.name = this.title
-      this.paper.view.onFrame = this.onFrame
-      this.paper.view.onMouseDown = this.onMouseDown
-      this.paper.view.onMouseUp = this.onMouseUp
-      this.paper.view.setCenter(0)
-      this.paper.view.onMouseDrag = this.onMouseDrag
-      console.log('初始化世界!!!')
+      paper.setup(canvas)
+      this.project = paper.project
+      this.project.name = this.title
+      this.project.view.onFrame = this.onFrame
+      this.project.view.setCenter(0)
+      console.log('初始化世界!!!', this.project)
     }
   }
 }

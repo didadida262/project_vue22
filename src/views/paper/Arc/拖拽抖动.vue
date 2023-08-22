@@ -1,4 +1,3 @@
-
 <template>
   <div class="Arc-container pd10">
     <commonTemplate title="Arc" />
@@ -12,11 +11,11 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import paper from 'paper'
 import commonTemplate from '@/components/titleTemplate.vue'
-import { getRandomColor } from '@/utils/weapons'
-import { removeLayer } from '@/utils/paperWeapon.js'
+import { removeLayer } from '@/utils/weapons'
+// import { getRandomPoint } from '@/utils/paper.ts'
 import tools from './tools'
 
 export default {
@@ -34,12 +33,15 @@ export default {
     }
   },
   computed: {
+
   },
   watch: {},
   mounted() {
     this.init()
-    this.draw()
-    this.drawXY()
+    // this.drawXY()
+    // this.draw()
+    console.log('this.project>>>',this.project)
+
   },
   beforeDestroy() {
     if (this.project) {
@@ -65,26 +67,19 @@ export default {
         strokeColor: 'red',
         strokeWidth: 1,
       })
-      const coordinateData = new paper.PointText({
-        point: currentCenter.add(2, -5),
-        content: `(${currentCenter.x} , ${currentCenter.y})`,
-        fillColor: 'red',
-        justification: 'left',
-        fontWeight:'bold'
-      })
     },
     changeZoom(delta, p) {
       const view = this.project.view
       const oldZoom = view.zoom
       const c = view.center
       const factor = 0.05 + this.zoom
-
       const zoom = delta < 0 ? oldZoom * factor : oldZoom / factor
       const beta = oldZoom / zoom
       // 计算当前点到当前视图中心点向量指向
       const pc = p.subtract(c)
       // a点目测是换算后的新p点
       const a = p.subtract(pc.multiply(beta)).subtract(c)
+
       return { zoom: zoom, offset: a }
     },
     onwheel(e) {
@@ -96,43 +91,44 @@ export default {
       this.project.view.zoom = transform.zoom
       this.project.view.center = this.project.view.center.add(transform.offset)
     },
-    random() {
-      return paper.Point.random().multiply(this.WIDTH, this.HEIGHT)
-    },
-    getRandomPoint() {
-      return new paper.Point(Math.random() * this.WIDTH, Math.random() * this.HEIGHT)
-    },
     draw() {
-      console.time('timer')
-      for (let i = 0; i < 10; i++) {
-        const c = new paper.Path.Circle({
-          center: this.random(),
-          radius: 10,
-          fillColor: getRandomColor()
-        })
-      }
-      console.timeEnd('timer')
+      removeLayer(this.project, 'layerData')
+      const layerData = new paper.Layer()
+      layerData.name = 'layerData'
+      const circle = new paper.Path.Circle({
+        center: 0,
+        radius: 5,
+        fillColor: 'green'
+      })
+      // const circle = new paper.Path.Arc({
+      //   form: new paper.Point(-100, 0),
+      //   to: new paper.Point(100, 0),
+      //   through: new paper.Point(0, 200),
+      //   strokeColor: 'red',
+      //   closed: true
+      // })
     },
     onFrame() {
     },
     onMouseDown(e) {
-      removeLayer(this.project,'layerXY')
+      // removeLayer(this.project, 'layerXY')
       this.initPoint = e.point
+    },
+    onMouseUp(e) {
+      // this.drawXY()
+      this.initPoint = null
     },
     onMouseDrag(e) {
       if (this.initPoint) {
-        const v = this.initPoint.subtract(e.point)
-        const newC = this.project.view.center.add(v)
-        this.project.view.setCenter(newC)
+        const delta = this.initPoint.subtract(e.point)
+        const newCenter = this.project.view.center.add(delta)
+        this.project.view.setCenter(newCenter)
       }
+
     },
-    onMouseMove(e) {
+    onMouseMove() {
     },
-    onMouseUp(e) {
-      this.initPoint = null
-      this.drawXY()
-    },
-    onKeyDown(e) {
+    onKeyDown() {
     },
     init() {
       const canvas = this.$refs.canvas
@@ -141,9 +137,17 @@ export default {
       paper.setup(canvas)
       this.project = paper.project
       this.project.name = this.title
-      this.project.view.onFrame = this.onFrame
       this.project.view.setCenter(0)
-      console.log('初始化世界!!!')
+      this.project.view.onFrame = this.onFrame
+      this.project.view.onMouseDown = this.onMouseDown
+      this.project.view.onMouseUp = this.onMouseUp
+      this.project.view.onMouseDrag = this.onMouseDrag
+      console.log('初始化世界!!!', this.project)
+            const circle = new paper.Path.Circle({
+        center: 0,
+        radius: 5,
+        fillColor: 'green'
+      })
     }
   }
 }

@@ -74,6 +74,7 @@ export default {
       this.project.view.onMouseDrag = this.onMouseDrag
       this.project.view.onMouseMove = this.onMouseMove
       this.project.view.onMouseUp = this.onMouseUp
+      
       console.log(paper)
     },
     onMouseDown(e) {

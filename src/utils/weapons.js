@@ -170,10 +170,6 @@ export const dealZipDefectsFile = (data) => {
 }
 
 
-export const removeLayer = (currentProject, layerName) => {
-  let target = currentProject.layers.filter((layer) => layer.name === layerName)[0]
-  if (target) {
-    target.remove()
-    target = null
-  }
-}
+
+
+
