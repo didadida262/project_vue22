@@ -66,4 +66,37 @@ export const getLineData = (point, radius) => {
       }
     ]
   }
+
+
+  // 输出圆弧的两个点
+export const getFlatPoints = (directionAngle, length, radius) => {
+    // 默认为0°
+    const y = length / 2
+    const x = getAnotherPoint(y, radius)
+    const leftPoint = new paper.Point(x, y)
+    const rightPoint = new paper.Point(x, -y)
+    return [leftPoint.rotate(directionAngle,new paper.Point(0, 0)), rightPoint.rotate(directionAngle,new paper.Point(0, 0))]
+}
+
+export const getThroughPoint = (points) => {
+    const one = points[0]
+    const two = points[1]
+    const vector = two.subtract(one)
+    // const c1 = new paper.Path.Circle({
+    //     center: one,
+    //     radius: 10,
+    //     fillColor: 'red'
+    // })
+    // const c2 = new paper.Path.Circle({
+    //     center: two,
+    //     radius: 10,
+    //     fillColor: 'blue'
+    // })
+    // const c = new paper.Path.Circle({
+    //     center: vector,
+    //     radius: 10,
+    //     fillColor: 'green'
+    // })
+    
+}
   

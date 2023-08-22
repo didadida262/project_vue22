@@ -16,7 +16,7 @@
 import paper from 'paper'
 import commonTemplate from '@/components/titleTemplate.vue'
 import { getRandomColor } from '@/utils/weapons'
-import { removeLayer, drawXY} from '@/utils/paperWeapon.js'
+import { removeLayer, drawXY, getFlatPoints, getThroughPoint} from '@/utils/paperWeapon.js'
 
 import tools from './tools'
 
@@ -39,8 +39,8 @@ export default {
   watch: {},
   mounted() {
     this.init()
-    this.draw()
     drawXY(this.project)
+    this.drawWaferBorder()
   },
   beforeDestroy() {
     if (this.project) {
@@ -48,7 +48,6 @@ export default {
     }
   },
   methods: {
-
     changeZoom(delta, p) {
       const view = this.project.view
       const oldZoom = view.zoom
@@ -78,19 +77,10 @@ export default {
     getRandomPoint() {
       return new paper.Point(Math.random() * this.WIDTH, Math.random() * this.HEIGHT)
     },
-    drawWaferBorder(direction = 1, length = 45.6) {
-      const innerLength = length * this.ratio
-      this.currentProject.activate()
-      let layerArcInner = this.currentProject.layers['layerArcInner']
-      if (layerArcInner) {
-        layerArcInner.removeChildren()
-        layerArcInner.remove()
-        layerArcInner = null
-      }
-      layerArcInner = new paper.Layer()
-      layerArcInner.name = 'layerArcInner'
-      const res = getFlatPoints(direction, innerLength, this.innerRadius)
-      const through = new paper.Point(0, this.innerRadius * (direction === 2 ? 1 : -1))
+    drawFlat(directionAngle, length, radius) {
+      const res = getFlatPoints(directionAngle, length, radius)
+      const th = getThroughPoint(res, radius)
+      const through = new paper.Point(0, -radius)
       const pp = new paper.Path.Arc({
         from: res[0],
         through: through,
@@ -100,18 +90,35 @@ export default {
         strokeWidth: 1
       })
       pp.name = 'pathArcInner'
+      let layerArc = this.project.layers['layerArc']
+      const existedPath = layerArc.children[0]
+      const ressssss = pp.intersect(existedPath, {
+            trace: true,
+            // insert: false
+        })
+        ressssss.selected = true
+        // existedPath.remove()
+        // pp.remove()
+
+
+
+        // 方案二
+    //     const segs =  ressssss.segments.map((seg) => seg.clone())
+    //   console.log('seg',segs)
     },
-    draw() {
-      console.time('timer')
-      new paper.Path.Arc({
-        from: new paper.Point(-80, 80),
-        to: new paper.Point(80, 80),
-        through: new paper.Point(0, -300),
-        strokeColor: 'green',
-        strokeWidth: 2,
-        closed: true
-      })
-      console.timeEnd('timer')
+    drawWaferBorder() {
+      const radius = 300
+      const length = 200
+      const directionAngle = 90
+      this.project.activate()
+      let layerArc = this.project.layers['layerArc']
+      if (layerArc) {
+        layerArc.remove()
+      }
+      layerArc = new paper.Layer()
+      layerArc.name = 'layerArc'
+      this.drawFlat(directionAngle, length, radius)
+      this.drawFlat(0, length, radius)
     },
     onFrame() {
     },
