@@ -15,7 +15,9 @@
 <script>
 import paper from 'paper'
 import commonTemplate from '@/components/titleTemplate.vue'
-import { getRandomColor, removeLayer } from '@/utils/weapons'
+import { getRandomColor } from '@/utils/weapons'
+import { removeLayer, drawXY} from '@/utils/paperWeapon.js'
+
 import tools from './tools'
 
 export default {
@@ -38,7 +40,7 @@ export default {
   mounted() {
     this.init()
     this.draw()
-    this.drawXY()
+    drawXY(this.project)
   },
   beforeDestroy() {
     if (this.project) {
@@ -46,32 +48,7 @@ export default {
     }
   },
   methods: {
-    drawXY() {
-      this.project.activate()
-      removeLayer(this.project, 'layerXY')
-      const layerXY = new paper.Layer()
-      layerXY.name = 'layerXY'
-      const currentCenter = this.project.view.center
-      const X = new paper.Path.Line({
-        from: new paper.Point(currentCenter.x - this.WIDTH / 2, currentCenter.y),
-        to: new paper.Point(currentCenter.x + this.WIDTH / 2, currentCenter.y),
-        strokeColor: 'red',
-        strokeWidth: 1,
-      })
-      const Y = new paper.Path.Line({
-        from: new paper.Point(currentCenter.x, currentCenter.y - this.HEIGHT / 2),
-        to: new paper.Point(currentCenter.x, currentCenter.y  + this.HEIGHT / 2),
-        strokeColor: 'red',
-        strokeWidth: 1,
-      })
-      const coordinateData = new paper.PointText({
-        point: currentCenter.add(2, -5),
-        content: `(${currentCenter.x} , ${currentCenter.y})`,
-        fillColor: 'red',
-        justification: 'left',
-        fontWeight:'bold'
-      })
-    },
+
     changeZoom(delta, p) {
       const view = this.project.view
       const oldZoom = view.zoom
@@ -101,15 +78,39 @@ export default {
     getRandomPoint() {
       return new paper.Point(Math.random() * this.WIDTH, Math.random() * this.HEIGHT)
     },
+    drawWaferBorder(direction = 1, length = 45.6) {
+      const innerLength = length * this.ratio
+      this.currentProject.activate()
+      let layerArcInner = this.currentProject.layers['layerArcInner']
+      if (layerArcInner) {
+        layerArcInner.removeChildren()
+        layerArcInner.remove()
+        layerArcInner = null
+      }
+      layerArcInner = new paper.Layer()
+      layerArcInner.name = 'layerArcInner'
+      const res = getFlatPoints(direction, innerLength, this.innerRadius)
+      const through = new paper.Point(0, this.innerRadius * (direction === 2 ? 1 : -1))
+      const pp = new paper.Path.Arc({
+        from: res[0],
+        through: through,
+        to: res[1],
+        strokeColor: '#FFDE2C',
+        closed: true,
+        strokeWidth: 1
+      })
+      pp.name = 'pathArcInner'
+    },
     draw() {
       console.time('timer')
-      for (let i = 0; i < 10; i++) {
-        const c = new paper.Path.Circle({
-          center: this.random(),
-          radius: 10,
-          fillColor: getRandomColor()
-        })
-      }
+      new paper.Path.Arc({
+        from: new paper.Point(-80, 80),
+        to: new paper.Point(80, 80),
+        through: new paper.Point(0, -300),
+        strokeColor: 'green',
+        strokeWidth: 2,
+        closed: true
+      })
       console.timeEnd('timer')
     },
     onFrame() {
@@ -129,7 +130,7 @@ export default {
     },
     onMouseUp(e) {
       this.initPoint = null
-      this.drawXY()
+      drawXY(this.project)
     },
     onKeyDown(e) {
     },
@@ -142,7 +143,7 @@ export default {
       this.project.name = this.title
       this.project.view.onFrame = this.onFrame
       this.project.view.setCenter(0)
-      console.log('初始化世界!!!')
+      console.log('初始化世界!!!', this.project)
     }
   }
 }

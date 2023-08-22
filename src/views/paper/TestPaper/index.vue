@@ -15,7 +15,8 @@
 <script>
 import paper from 'paper'
 import commonTemplate from '@/components/titleTemplate.vue'
-import { getRandomColor, removeLayer } from '@/utils/weapons'
+import { getRandomColor } from '@/utils/weapons'
+import { removeLayer } from '@/utils/paperWeapon.js'
 import tools from './tools'
 
 export default {
