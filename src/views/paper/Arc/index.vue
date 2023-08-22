@@ -16,7 +16,7 @@
 import paper from 'paper'
 import commonTemplate from '@/components/titleTemplate.vue'
 import { getRandomColor } from '@/utils/weapons'
-import { removeLayer, drawXY, getFlatPoints, getThroughPoint, getRandomPoint} from '@/utils/paperWeapon.js'
+import { removeLayer, drawXY, getFlatPoints, getThroughPoint, getRandomPoint, testPaper} from '@/utils/paperWeapon.js'
 
 import tools from './tools'
 
@@ -41,6 +41,7 @@ export default {
     this.init()
     drawXY(this.project)
     this.drawWaferBorder()
+    testPaper(this.project)
 
   },
   beforeDestroy() {
@@ -76,10 +77,18 @@ export default {
     },
 
     drawFlat(directionAngle, length, radius) {
+      let layerArc = this.project.layers['layerArc']
+      let existedPath = new paper.Path()
+      if (layerArc) {
+        existedPath = layerArc.children[0].clone() 
+        layerArc.remove()
+      }
+      layerArc = new paper.Layer()
+      layerArc.name = 'layerArc'
       const res = getFlatPoints(directionAngle, length, radius)
-      const th = getThroughPoint(res, radius)
+      // const th = getThroughPoint(res, radius)
       const through = new paper.Point(0, -radius)
-      const pp = new paper.Path.Arc({
+      const newPath = new paper.Path.Arc({
         from: res[0],
         through: through,
         to: res[1],
@@ -87,11 +96,9 @@ export default {
         closed: true,
         strokeWidth: 1
       })
-      pp.name = 'pathArcInner'
-      let layerArc = this.project.layers['layerArc']
-      const existedPath = layerArc.children[0]
-      const ressssss = pp.intersect(existedPath, {
-            trace: true,
+      newPath.name = 'pathArcInner'
+      const ressssss = newPath.intersect(existedPath, {
+            // trace: true,
             // insert: false
         })
         ressssss.selected = true
@@ -115,7 +122,7 @@ export default {
       }
       layerArc = new paper.Layer()
       layerArc.name = 'layerArc'
-      this.drawFlat(directionAngle, length, radius)
+      this.drawFlat(90, length, radius)
       this.drawFlat(0, length, radius)
     },
     onFrame() {

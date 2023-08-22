@@ -118,4 +118,24 @@ export const getRandomPoint = (currentProject) => {
   const stepPoint = new paper.Point(Math.random() * WIDTH, Math.random() * HEIGHT)
   return topLeft.add(stepPoint)
 }
+
+
+// 测试功能函数
+export const testPaper = (currentProject) => {
+  currentProject.activate()
+  const c1 = new paper.Path.Circle({
+    center: new paper.Point(-100, 0),
+    radius: 110,
+    fillColor: 'green'
+  })
+  const c2 = new paper.Path.Circle({
+    center: new paper.Point(100, 0),
+    radius: 110,
+    fillColor: 'red'
+  })
+  const res = c1.intersect(c2)
+  res.selected = true
+  c1.remove()
+  c2.remove()
+}
   
