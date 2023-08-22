@@ -109,4 +109,13 @@ export const getThroughPoint = (points) => {
     // })
     
 }
+// 获取当前视图的随机点
+export const getRandomPoint = (currentProject) => {
+  const bounds = currentProject.view.bounds 
+  const WIDTH = bounds.width
+  const HEIGHT = bounds.height
+  const topLeft = bounds.topLeft
+  const stepPoint = new paper.Point(Math.random() * WIDTH, Math.random() * HEIGHT)
+  return topLeft.add(stepPoint)
+}
   

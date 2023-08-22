@@ -16,7 +16,7 @@
 import paper from 'paper'
 import commonTemplate from '@/components/titleTemplate.vue'
 import { getRandomColor } from '@/utils/weapons'
-import { removeLayer, drawXY, getFlatPoints, getThroughPoint} from '@/utils/paperWeapon.js'
+import { removeLayer, drawXY, getFlatPoints, getThroughPoint, getRandomPoint} from '@/utils/paperWeapon.js'
 
 import tools from './tools'
 
@@ -41,6 +41,7 @@ export default {
     this.init()
     drawXY(this.project)
     this.drawWaferBorder()
+
   },
   beforeDestroy() {
     if (this.project) {
@@ -73,12 +74,7 @@ export default {
       this.project.view.center = this.project.view.center.add(transform.offset)
       drawXY(this.project)
     },
-    random() {
-      return paper.Point.random().multiply(this.WIDTH, this.HEIGHT)
-    },
-    getRandomPoint() {
-      return new paper.Point(Math.random() * this.WIDTH, Math.random() * this.HEIGHT)
-    },
+
     drawFlat(directionAngle, length, radius) {
       const res = getFlatPoints(directionAngle, length, radius)
       const th = getThroughPoint(res, radius)
