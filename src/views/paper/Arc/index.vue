@@ -63,6 +63,7 @@ export default {
       return { zoom: zoom, offset: a }
     },
     onwheel(e) {
+      removeLayer(this.project,'layerXY')
       const view = this.project.view
       const viewPosition = view.viewToProject(
         new paper.Point(e.offsetX, e.offsetY)
@@ -70,6 +71,7 @@ export default {
       const transform = this.changeZoom(e.deltaY, viewPosition)
       this.project.view.zoom = transform.zoom
       this.project.view.center = this.project.view.center.add(transform.offset)
+      drawXY(this.project)
     },
     random() {
       return paper.Point.random().multiply(this.WIDTH, this.HEIGHT)

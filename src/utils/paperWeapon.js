@@ -9,7 +9,16 @@ export const removeLayer = (currentProject, layerName) => {
       target = null
     }
   }
-
+  // 获取视图级别的字体大小
+  export const getViewFontSize = (currentProject) => {
+    const ratio = currentProject.view.zoom
+    return 16 / ratio
+  }
+    // 获取视图级别的线大小
+export const getViewBorderSize = (currentProject) => {
+  const ratio = currentProject.view.zoom
+  return 1 / ratio
+}
 // 指定项目绘制坐标层次
 export const drawXY = (currentProject) => {
     if (!currentProject) {
@@ -26,20 +35,21 @@ export const drawXY = (currentProject) => {
       from: new paper.Point(currentCenter.x - WIDTH / 2, currentCenter.y),
       to: new paper.Point(currentCenter.x + WIDTH / 2, currentCenter.y),
       strokeColor: 'red',
-      strokeWidth: 1,
+      strokeWidth: getViewBorderSize(currentProject),
     })
     const Y = new paper.Path.Line({
       from: new paper.Point(currentCenter.x, currentCenter.y - HEIGHT / 2),
       to: new paper.Point(currentCenter.x, currentCenter.y  + HEIGHT / 2),
       strokeColor: 'red',
-      strokeWidth: 1,
+      strokeWidth: getViewBorderSize(currentProject),
     })
     const coordinateData = new paper.PointText({
       point: currentCenter.add(2, -5),
-      content: `(${currentCenter.x} , ${currentCenter.y})`,
+      content: `(${currentCenter.x.toFixed(2)} , ${currentCenter.y.toFixed(2)})`,
       fillColor: 'red',
       justification: 'left',
-      fontWeight:'bold'
+      fontWeight:'bold',
+      fontSize: getViewFontSize(currentProject)
     })
   }
 
