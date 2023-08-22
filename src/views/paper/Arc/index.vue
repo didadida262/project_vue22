@@ -74,6 +74,31 @@ export default {
       this.project.view.center = this.project.view.center.add(transform.offset)
       drawXY(this.project)
     },
+    drawNotch(directionAngle, length, radius) {
+      let layerArc = this.project.layers['layerArc']
+      let existedPath = layerArc.children[0]
+      const res = getFlatPoints(directionAngle, length, radius)
+      // const th = getThroughPoint(res, radius)
+      const through = new paper.Point(0, -radius)
+      const newPath = new paper.Path.Arc({
+        from: res[0],
+        through: through,
+        to: res[1],
+        strokeColor: '#FFDE2C',
+        closed: false,
+        strokeWidth: 1
+      })
+      newPath.add(new paper.Point(40, 0))
+      newPath.closed = true
+      console.log('existedPath>>>>', existedPath)
+      // newPath.name = 'pathArcInner'
+      if (existedPath) {
+        const ressssss = newPath.intersect(existedPath)
+        ressssss.selected = true
+        existedPath.remove()
+        newPath.remove()
+      } 
+    },
 
     drawFlat(directionAngle, length, radius) {
       let layerArc = this.project.layers['layerArc']
@@ -116,10 +141,9 @@ export default {
       }
       layerArc = new paper.Layer()
       layerArc.name = 'layerArc'
-      // this.drawFlat(0, length, radius)
-      // this.drawFlat(90, length, radius)
-      // this.drawFlat(180, length, radius)
-      this.drawFlat(270, length, radius)
+      this.drawNotch(0, length, radius)
+      this.drawFlat(90, length, radius)
+
     },
     onFrame() {
     },
