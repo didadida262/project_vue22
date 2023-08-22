@@ -102,15 +102,6 @@ export default {
       return new paper.Point(Math.random() * this.WIDTH, Math.random() * this.HEIGHT)
     },
     draw() {
-      console.time('timer')
-      for (let i = 0; i < 10; i++) {
-        const c = new paper.Path.Circle({
-          center: this.random(),
-          radius: 10,
-          fillColor: getRandomColor()
-        })
-      }
-      console.timeEnd('timer')
     },
     onFrame() {
     },
@@ -141,6 +132,7 @@ export default {
       this.project = paper.project
       this.project.name = this.title
       this.project.view.onFrame = this.onFrame
+      this.project.view.setCenter(0)
       console.log('初始化世界!!!')
     }
   }
