@@ -1,5 +1,6 @@
 // paperjs引擎0.1
 import paper from 'paper'
+import { getRandomColor } from './weapons'
 
 // 删除指定project的某一层
 export const removeLayer = (currentProject, layerName) => {
@@ -77,7 +78,10 @@ export const getLineData = (point, radius) => {
     ]
   }
 
-
+export const getMidPoint = (point1, point2) => {
+    const center = point1.add(point2).divide(2)
+    return center    
+}
   // 输出圆弧的两个点
 export const getFlatPoints = (directionAngle, length, radius) => {
     // 默认为0°
@@ -85,30 +89,130 @@ export const getFlatPoints = (directionAngle, length, radius) => {
     const x = getAnotherPoint(y, radius)
     const leftPoint = new paper.Point(x, y)
     const rightPoint = new paper.Point(x, -y)
-    return [leftPoint.rotate(directionAngle,new paper.Point(0, 0)), rightPoint.rotate(directionAngle,new paper.Point(0, 0))]
+    return [leftPoint.rotate(-directionAngle,new paper.Point(0, 0)), rightPoint.rotate(-directionAngle,new paper.Point(0, 0))]
 }
 
-export const getThroughPoint = (points) => {
-    const one = points[0]
-    const two = points[1]
-    const vector = two.subtract(one)
-    // const c1 = new paper.Path.Circle({
-    //     center: one,
-    //     radius: 10,
-    //     fillColor: 'red'
-    // })
-    // const c2 = new paper.Path.Circle({
-    //     center: two,
-    //     radius: 10,
-    //     fillColor: 'blue'
-    // })
-    // const c = new paper.Path.Circle({
-    //     center: vector,
-    //     radius: 10,
-    //     fillColor: 'green'
-    // })
-    
-}
+// 输出凹槽所需的三个点信息
+export const getNotchPoints = (directionAngle, grooveLength, grooveAngle, radius) => {
+    const grooveWidth = grooveLength * Math.sin(grooveAngle / 2 / 180 * Math.PI)
+    const grooveHeight = grooveLength * Math.cos(grooveAngle / 2 / 180 * Math.PI)
+    // 默认为0°
+    const y = grooveWidth
+    const x = getAnotherPoint(y, radius)
+    const leftPoint = new paper.Point(x, y)
+    const rightPoint = new paper.Point(x, -y)
+    const center = getMidPoint(leftPoint, rightPoint)
+    const mid = center.normalize().multiply(center.length - grooveHeight)
+    return [leftPoint.rotate(-directionAngle,new paper.Point(0, 0)),mid.rotate(-directionAngle,new paper.Point(0, 0)), rightPoint.rotate(-directionAngle,new paper.Point(0, 0))]
+  }
+
+
+// 在目标层上绘制带平边的弧，若该层已有path，取两者交集,即：取交集合并式绘制
+export const drawFlat = (currentProject, layerName, directionAngle, length, radius) =>  {
+    currentProject.activate()
+    let layerArc = currentProject.layers[layerName]
+    let existedPath = layerArc.children[0]
+    const flatPoints = getFlatPoints(directionAngle, length, radius)
+    const through = flatPoints[0].rotate(180, 0)
+    const newPath = new paper.Path.Arc({
+      from: flatPoints[0],
+      through: through,
+      to: flatPoints[1],
+      strokeColor: '#FFDE2C',
+      closed: true,
+      strokeWidth: 1
+    })
+    if (existedPath) {
+      const resPath = newPath.intersect(existedPath)
+      resPath.selected = true
+      existedPath.remove()
+      newPath.remove()
+    } else {
+      const resPath = newPath.clone()
+      resPath.selected = true
+      newPath.remove()
+    }
+  }
+
+// 在目标层上绘制带凹槽的弧，若该层已有path，取两者交集,即：取交集合并式绘制
+export const drawNotch = (currentProject, layerName, directionAngle, grooveLength, grooveAngle, radius) =>  {
+    currentProject.activate()
+    let layerArc = currentProject.layers[layerName]
+    let existedPath = layerArc.children[0]
+    const notchPoints = getNotchPoints(directionAngle, grooveLength, grooveAngle, radius)
+
+    const through = notchPoints[0].rotate(180, 0)
+    const currentPath = new paper.Path.Arc({
+      from: notchPoints[0],
+      through: through,
+      to: notchPoints[2],
+      strokeColor: '#FFDE2C',
+      closed: false,
+      strokeWidth: 1
+    })
+    currentPath.add(notchPoints[1])
+    currentPath.closed = true
+    if (existedPath) {
+      const resPath = currentPath.intersect(existedPath)
+      resPath.selected = true
+      existedPath.remove()
+      currentPath.remove()
+    } else {
+      const resPath = currentPath.clone()
+      resPath.selected = true
+      currentPath.remove()
+    }
+  }
+    //   // 凹槽版本
+    //   drawCircleOutVersionTwo(direction = 1, realDepth = 3, angle = 90) {
+    //     const depth = realDepth * this.ratio
+    //     this.currentProject.activate()
+    //     let layerCircleOut = this.currentProject.layers['layerCircleOut']
+    //     if (layerCircleOut) {
+    //       layerCircleOut.removeChildren()
+    //       layerCircleOut.remove()
+    //       layerCircleOut = null
+    //     }
+    //     layerCircleOut = new paper.Layer()
+    //     layerCircleOut.name = 'layerCircleOut'
+    //     const res = getNotchPoints(direction, depth, angle, this.radius)
+    //     if (this.settingFormData.FUNCTION_FLAT_EDGE_DISPLAY_FLAT_EDGE_DISPLAY_SWITCH) {
+    //       const through = new paper.Point(0, this.radius * (direction !== 2 ? -1 : 1))
+    //       const pathArcOut = new paper.Path.Arc({
+    //         from: res[0],
+    //         through: through,
+    //         to: res[2],
+    //         strokeColor: 'rgb(150,150,150)',
+    //         closed: false,
+    //         strokeWidth: 2
+    //       })
+    //       const temp = new paper.Path(
+    //         {
+    //           strokeColor: 'rgb(150,150,150)',
+    //           strokeWidth: 2
+    //         }
+    //       )
+    //       temp.add(res[0], res[1], res[2])
+    //       pathArcOut.name = 'pathArcOut'
+    //     } else {
+    //       const pathArcOut = new paper.Path.Circle({
+    //         center: 0,
+    //         radius: this.radius,
+    //         strokeColor: 'rgb(150,150,150)',
+    //         strokeWidth: 2
+    //       })
+    //       pathArcOut.name = 'pathArcOut'
+    //       const temp = new paper.Path(
+    //         {
+    //           strokeColor: 'rgb(150,150,150)',
+    //           strokeWidth: 2,
+    //           dashArray: [4, 1]
+    //         }
+    //       )
+    //       temp.add(res[0], res[1], res[2])
+    //     }
+    //   },
+
 // 获取当前视图的随机点
 export const getRandomPoint = (currentProject) => {
   const bounds = currentProject.view.bounds 
@@ -137,5 +241,13 @@ export const testPaper = (currentProject) => {
   res.selected = true
   c1.remove()
   c2.remove()
+}
+
+export const showPoint = (point, color) => {
+    const p = new paper.Path.Circle({
+        center: point,
+        radius: 8,
+        fillColor: color
+    })
 }
   

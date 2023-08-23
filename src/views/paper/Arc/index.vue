@@ -16,7 +16,7 @@
 import paper from 'paper'
 import commonTemplate from '@/components/titleTemplate.vue'
 import { getRandomColor } from '@/utils/weapons'
-import { removeLayer, drawXY, getFlatPoints, getThroughPoint, getRandomPoint, testPaper} from '@/utils/paperWeapon.js'
+import { removeLayer, drawXY, getFlatPoints, getThroughPoint, getRandomPoint, testPaper, drawFlat, showPoint, drawNotch} from '@/utils/paperWeapon.js'
 
 import tools from './tools'
 
@@ -74,64 +74,8 @@ export default {
       this.project.view.center = this.project.view.center.add(transform.offset)
       drawXY(this.project)
     },
-    drawNotch(directionAngle, length, radius) {
-      let layerArc = this.project.layers['layerArc']
-      let existedPath = layerArc.children[0]
-      const res = getFlatPoints(directionAngle, length, radius)
-      // const th = getThroughPoint(res, radius)
-      const through = new paper.Point(0, -radius)
-      const newPath = new paper.Path.Arc({
-        from: res[0],
-        through: through,
-        to: res[1],
-        strokeColor: '#FFDE2C',
-        closed: false,
-        strokeWidth: 1
-      })
-      newPath.add(new paper.Point(40, 0))
-      newPath.closed = true
-      console.log('existedPath>>>>', existedPath)
-      // newPath.name = 'pathArcInner'
-      if (existedPath) {
-        const ressssss = newPath.intersect(existedPath)
-        ressssss.selected = true
-        existedPath.remove()
-        newPath.remove()
-      } 
-    },
 
-    drawFlat(directionAngle, length, radius) {
-      let layerArc = this.project.layers['layerArc']
-      let existedPath = layerArc.children[0]
-      const res = getFlatPoints(directionAngle, length, radius)
-      // const th = getThroughPoint(res, radius)
-      const through = new paper.Point(0, -radius)
-      const newPath = new paper.Path.Arc({
-        from: res[0],
-        through: through,
-        to: res[1],
-        strokeColor: '#FFDE2C',
-        closed: true,
-        strokeWidth: 1
-      })
-      console.log('existedPath>>>>', existedPath)
-      // newPath.name = 'pathArcInner'
-      if (existedPath) {
-        const ressssss = newPath.intersect(existedPath)
-        ressssss.selected = true
-        existedPath.remove()
-        newPath.remove()
-      } 
-      // ressssss.selected = true
-
-
-
-        // 方案二
-    //     const segs =  ressssss.segments.map((seg) => seg.clone())
-    //   console.log('seg',segs)
-    },
     drawWaferBorder() {
-      console.warn('drawWaferBorder>>>>')
       const radius = 300
       const length = 200
       const directionAngle = 90
@@ -141,8 +85,17 @@ export default {
       }
       layerArc = new paper.Layer()
       layerArc.name = 'layerArc'
-      this.drawNotch(0, length, radius)
-      this.drawFlat(90, length, radius)
+    //   this.drawNotch(0, length, radius)
+      drawFlat(this.project, 'layerArc', -90, length, radius)
+    //   drawFlat(this.project, 'layerArc', 90, length, radius)
+    //   drawFlat(this.project, 'layerArc', 180, length, radius)
+    //   drawFlat(this.project, 'layerArc', 270, length, radius)
+      drawNotch(this.project, 'layerArc', 0, 30, 90, radius)
+      drawNotch(this.project, 'layerArc', 45, 30, 90, radius)
+      drawNotch(this.project, 'layerArc', 90, 30, 90, radius)
+      drawNotch(this.project, 'layerArc', 135, 30, 90, radius)
+      drawNotch(this.project, 'layerArc', 180, 30, 90, radius)
+
 
     },
     onFrame() {
