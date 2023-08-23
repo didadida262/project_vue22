@@ -3,57 +3,56 @@ import paper from 'paper'
 
 // 删除指定project的某一层
 export const removeLayer = (currentProject: paper.Project, layerName: String) => {
-    let target = currentProject.layers.filter((layer) => layer.name === layerName)[0]
-    if (target) {
-      target.remove()
-      target = null
-    }
+  let target = currentProject.layers.filter((layer) => layer.name === layerName)[0]
+  if (target) {
+    target.remove()
+    target = null
+  }
 }
 // // 指定项目绘制坐标层次
 export const drawXY = (currentProject) => {
-    if (!currentProject) {
-        throw "project null"
-    }
-    const WIDTH = currentProject.view.bounds.width
-    const HEIGHT = currentProject.view.bounds.height
-    currentProject.activate()
-    removeLayer(currentProject, 'layerXY')
-    const layerXY = new paper.Layer()
-    layerXY.name = 'layerXY'
-    const currentCenter = currentProject.view.center
-    const X = new paper.Path.Line({
-      from: new paper.Point(currentCenter.x - WIDTH / 2, currentCenter.y),
-      to: new paper.Point(currentCenter.x + WIDTH / 2, currentCenter.y),
-      strokeColor: 'red',
-      strokeWidth: getViewBorderSize(currentProject),
-    })
-    const Y = new paper.Path.Line({
-      from: new paper.Point(currentCenter.x, currentCenter.y - HEIGHT / 2),
-      to: new paper.Point(currentCenter.x, currentCenter.y  + HEIGHT / 2),
-      strokeColor: 'red',
-      strokeWidth: getViewBorderSize(currentProject),
-    })
-    const coordinateData = new paper.PointText({
-      point: currentCenter.add(2, -5),
-      content: `(${currentCenter.x.toFixed(2)} , ${currentCenter.y.toFixed(2)})`,
-      fillColor: 'red',
-      justification: 'left',
-      fontWeight:'bold',
-      fontSize: getViewFontSize(currentProject)
-    })
+  if (!currentProject) {
+    // throw "project null"
+    return
   }
-  // 获取视图级别的字体大小
-  export const getViewFontSize = (currentProject) => {
-    const ratio = currentProject.view.zoom
-    return 16 / ratio
-  }
+  const WIDTH = currentProject.view.bounds.width
+  const HEIGHT = currentProject.view.bounds.height
+  currentProject.activate()
+  removeLayer(currentProject, 'layerXY')
+  const layerXY = new paper.Layer()
+  layerXY.name = 'layerXY'
+  const currentCenter = currentProject.view.center
+  const X = new paper.Path.Line({
+    from: new paper.Point(currentCenter.x - WIDTH / 2, currentCenter.y),
+    to: new paper.Point(currentCenter.x + WIDTH / 2, currentCenter.y),
+    strokeColor: 'red',
+    strokeWidth: getViewBorderSize(currentProject),
+  })
+  const Y = new paper.Path.Line({
+    from: new paper.Point(currentCenter.x, currentCenter.y - HEIGHT / 2),
+    to: new paper.Point(currentCenter.x, currentCenter.y  + HEIGHT / 2),
+    strokeColor: 'red',
+    strokeWidth: getViewBorderSize(currentProject),
+  })
+  const coordinateData = new paper.PointText({
+    point: currentCenter.add(2, -5),
+    content: `(${currentCenter.x.toFixed(2)} , ${currentCenter.y.toFixed(2)})`,
+    fillColor: 'red',
+    justification: 'left',
+    fontWeight:'bold',
+    fontSize: getViewFontSize(currentProject)
+  })
+}
+// 获取视图级别的字体大小
+export const getViewFontSize = (currentProject) => {
+  const ratio = currentProject.view.zoom
+  return 16 / ratio
+}
 //     // 获取视图级别的线大小
 export const getViewBorderSize = (currentProject) => {
   const ratio = currentProject.view.zoom
   return 1 / ratio
 }
-
-
 // // 中心点在坐标原点的圆，给定一个坐标值及radius，返回另一坐标值
 // export const getAnotherPoint = (val, radius) => {
 //     return Math.sqrt(Math.pow(radius, 2) - Math.pow(Math.abs(val), 2))

@@ -15,9 +15,7 @@
 <script>
 import paper from 'paper'
 import commonTemplate from '@/components/titleTemplate.vue'
-import { getRandomColor } from '@/utils/weapons'
-// import { removeLayer, drawXY} from '@/utils/paperWeapon'
-import { removeLayer, drawXY } from '@/utils/paperWeaponTS'
+import { removeLayer, drawXY, drawFlat, drawNotch } from '@/utils/paperWeaponTS'
 
 import tools from './tools'
 
@@ -42,7 +40,6 @@ export default {
     this.init()
     drawXY(this.project)
     this.drawWaferBorder()
-
   },
   beforeDestroy() {
     if (this.project) {
@@ -79,25 +76,18 @@ export default {
     drawWaferBorder() {
       const radius = 300
       const length = 200
-      const directionAngle = 90
       let layerArc = this.project.layers['layerArc']
       if (layerArc) {
         layerArc.remove()
       }
       layerArc = new paper.Layer()
       layerArc.name = 'layerArc'
-    //   this.drawNotch(0, length, radius)
       drawFlat(this.project, 'layerArc', -90, length, radius)
-    //   drawFlat(this.project, 'layerArc', 90, length, radius)
-    //   drawFlat(this.project, 'layerArc', 180, length, radius)
-    //   drawFlat(this.project, 'layerArc', 270, length, radius)
       drawNotch(this.project, 'layerArc', 0, 30, 90, radius)
       drawNotch(this.project, 'layerArc', 45, 30, 90, radius)
       drawNotch(this.project, 'layerArc', 90, 30, 90, radius)
       drawNotch(this.project, 'layerArc', 135, 30, 90, radius)
       drawNotch(this.project, 'layerArc', 180, 30, 90, radius)
-
-
     },
     onFrame() {
     },
