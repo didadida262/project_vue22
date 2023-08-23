@@ -28,7 +28,7 @@
     </div>
   </div>
 </template>
-<script lang="ts">
+<script>
 
 import songItem from './songItem.vue'
 export default {

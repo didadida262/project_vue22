@@ -48,10 +48,23 @@ module.exports = {
     // before: require('./mock/mock-server.js')
   },
   configureWebpack: {
+    module: {        
+      rules: [    
+        {    
+          test: /\.tsx?$/,    
+          loader: 'ts-loader',    
+          exclude: /node_modules/,    
+          options: {
+            appendTsSuffixTo: [/\.vue$/],    
+          }    
+        }        
+      ]    
+    },
     // provide the app's title in webpack's name field, so that
     // it can be accessed in index.html to inject the correct title.
     name: name,
     resolve: {
+      extensions: [".ts", ".tsx", ".js", ".json"],  
       alias: {
         '@': resolve('src')
       }

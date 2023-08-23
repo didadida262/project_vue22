@@ -13,7 +13,6 @@
 
 export default {
   name: 'SongItem',
-
   props: {
     data: {
       type: Object,

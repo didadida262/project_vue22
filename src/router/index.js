@@ -166,12 +166,6 @@ export const constantRoutes = [
     name: 'paperjs',
     meta: { title: 'PaperJs', icon: 'el-icon-s-help' },
     children: [
-      // {
-      //   path: 'drawVersionTwo',
-      //   name: 'drawVersionTwo',
-      //   component: () => import('@/views/drawVersionTwo/index'),
-      //   meta: { title: 'Draw_version2', icon: 'Raster' }
-      // },
       {
         path: 'arc',
         name: 'Arc',
@@ -336,36 +330,36 @@ export const constantRoutes = [
     ]
   },
   // blog专栏
-  {
-    path: '/blog',
-    redirect: '/blog/main',
-    name: 'Blog',
-    component: Layout,
-    meta: {
-      title: 'Blog',
-      icon: 'blog'
-    },
-    children: [
-      {
-        path: 'main',
-        component: () => import('@/views/Blog/Main/index'),
-        name: 'main',
-        meta: {
-          title: 'Main',
-          icon: 'blog'
-        }
-      },
-      {
-        path: 'list',
-        component: () => import('@/views/Blog/List/index'),
-        name: 'list',
-        meta: {
-          title: 'List',
-          icon: 'blog'
-        }
-      }
-    ]
-  },
+  // {
+  //   path: '/blog',
+  //   redirect: '/blog/main',
+  //   name: 'Blog',
+  //   component: Layout,
+  //   meta: {
+  //     title: 'Blog',
+  //     icon: 'blog'
+  //   },
+  //   children: [
+  //     {
+  //       path: 'main',
+  //       component: () => import('@/views/Blog/Main/index'),
+  //       name: 'main',
+  //       meta: {
+  //         title: 'Main',
+  //         icon: 'blog'
+  //       }
+  //     },
+  //     {
+  //       path: 'list',
+  //       component: () => import('@/views/Blog/List/index'),
+  //       name: 'list',
+  //       meta: {
+  //         title: 'List',
+  //         icon: 'blog'
+  //       }
+  //     }
+  //   ]
+  // },
 
   // all kinds of toys...
   {
@@ -384,12 +378,12 @@ export const constantRoutes = [
         name: 'lifetime',
         meta: { title: 'LifeTime', icon: 'time' }
       },
-      {
-        path: 'music',
-        name: 'Music',
-        component: () => import('@/views/Toys/Music/index'),
-        meta: { title: 'Music', icon: 'el-icon-headset' }
-      },
+      // {
+      //   path: 'music',
+      //   name: 'Music',
+      //   component: () => import('@/views/Toys/Music/index'),
+      //   meta: { title: 'Music', icon: 'el-icon-headset' }
+      // },
       {
         path: 'records',
         component: () => import('@/views/Toys/Records/index'),

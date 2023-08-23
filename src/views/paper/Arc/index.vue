@@ -16,7 +16,8 @@
 import paper from 'paper'
 import commonTemplate from '@/components/titleTemplate.vue'
 import { getRandomColor } from '@/utils/weapons'
-import { removeLayer, drawXY, getFlatPoints, getThroughPoint, getRandomPoint, testPaper, drawFlat, showPoint, drawNotch} from '@/utils/paperWeapon.js'
+import { removeLayer, drawXY} from '@/utils/paperWeapon.js'
+import { getRandomPoint } from '@/utils/paperWeapon'
 
 import tools from './tools'
 

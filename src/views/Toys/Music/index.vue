@@ -106,7 +106,7 @@
     </div>
   </div>
 </template>
-<script lang="ts">
+<script>
 
 // import { _arrayBufferToBase64 } from '@/utils/index'
 import songsList from './components/songsList.vue'
