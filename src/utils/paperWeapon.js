@@ -163,55 +163,6 @@ export const drawNotch = (currentProject, layerName, directionAngle, grooveLengt
       currentPath.remove()
     }
   }
-    //   // 凹槽版本
-    //   drawCircleOutVersionTwo(direction = 1, realDepth = 3, angle = 90) {
-    //     const depth = realDepth * this.ratio
-    //     this.currentProject.activate()
-    //     let layerCircleOut = this.currentProject.layers['layerCircleOut']
-    //     if (layerCircleOut) {
-    //       layerCircleOut.removeChildren()
-    //       layerCircleOut.remove()
-    //       layerCircleOut = null
-    //     }
-    //     layerCircleOut = new paper.Layer()
-    //     layerCircleOut.name = 'layerCircleOut'
-    //     const res = getNotchPoints(direction, depth, angle, this.radius)
-    //     if (this.settingFormData.FUNCTION_FLAT_EDGE_DISPLAY_FLAT_EDGE_DISPLAY_SWITCH) {
-    //       const through = new paper.Point(0, this.radius * (direction !== 2 ? -1 : 1))
-    //       const pathArcOut = new paper.Path.Arc({
-    //         from: res[0],
-    //         through: through,
-    //         to: res[2],
-    //         strokeColor: 'rgb(150,150,150)',
-    //         closed: false,
-    //         strokeWidth: 2
-    //       })
-    //       const temp = new paper.Path(
-    //         {
-    //           strokeColor: 'rgb(150,150,150)',
-    //           strokeWidth: 2
-    //         }
-    //       )
-    //       temp.add(res[0], res[1], res[2])
-    //       pathArcOut.name = 'pathArcOut'
-    //     } else {
-    //       const pathArcOut = new paper.Path.Circle({
-    //         center: 0,
-    //         radius: this.radius,
-    //         strokeColor: 'rgb(150,150,150)',
-    //         strokeWidth: 2
-    //       })
-    //       pathArcOut.name = 'pathArcOut'
-    //       const temp = new paper.Path(
-    //         {
-    //           strokeColor: 'rgb(150,150,150)',
-    //           strokeWidth: 2,
-    //           dashArray: [4, 1]
-    //         }
-    //       )
-    //       temp.add(res[0], res[1], res[2])
-    //     }
-    //   },
 
 // 获取当前视图的随机点
 export const getRandomPoint = (currentProject) => {

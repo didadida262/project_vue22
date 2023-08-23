@@ -16,8 +16,8 @@
 import paper from 'paper'
 import commonTemplate from '@/components/titleTemplate.vue'
 import { getRandomColor } from '@/utils/weapons'
-import { removeLayer, drawXY} from '@/utils/paperWeapon.js'
-import { getRandomPoint } from '@/utils/paperWeapon'
+// import { removeLayer, drawXY} from '@/utils/paperWeapon'
+import { removeLayer, drawXY } from '@/utils/paperWeaponTS'
 
 import tools from './tools'
 
@@ -65,7 +65,7 @@ export default {
       return { zoom: zoom, offset: a }
     },
     onwheel(e) {
-      removeLayer(this.project,'layerXY')
+      removeLayer('asdasd','layerXY')
       const view = this.project.view
       const viewPosition = view.viewToProject(
         new paper.Point(e.offsetX, e.offsetY)
