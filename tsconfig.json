@@ -31,7 +31,7 @@
       "listFiles": true,
       // 移除注释
       "removeComments": true,
-      "suppressImplicitAnyIndexErrors": true,
+      // "suppressImplicitAnyIndexErrors": true,
       // 允许编译javascript文件
       "allowJs": true,
       // 解析非相对模块名的基准目录
