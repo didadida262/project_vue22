@@ -15,7 +15,7 @@
 <script>
 import paper from 'paper'
 import commonTemplate from '@/components/titleTemplate.vue'
-import { removeLayer, drawXY, drawFlat, drawNotch, drawNotchHidden } from '@/utils/paperWeaponTS'
+import { removeLayer, drawXY, drawFlatHidden, drawNotch, drawNotchHidden } from '@/utils/paperWeaponTS'
 
 import tools from './tools'
 
@@ -80,9 +80,12 @@ export default {
       }
       layerArc = new paper.Layer()
       layerArc.name = 'layerArc'
-      // drawFlat(this.project, 'layerArc', -90, length, radius)
-      // drawNotch(this.project, 'layerArc', 0, 30, 90, radius)
-      drawNotchHidden(this.project, 'layerArc', 0, 30, 90, radius)
+      drawFlatHidden(this.project, 'layerArc', -90, length, radius)
+      drawFlatHidden(this.project, 'layerArc', 0, length, radius)
+      drawFlatHidden(this.project, 'layerArc', 90, length, radius)
+      drawNotchHidden(this.project, 'layerArc', 180, 30, 90, radius)
+      // drawNotchHidden(this.project, 'layerArc', 0, 30, 90, radius)
+      // drawNotchHidden(this.project, 'layerArc', 90, 30, 90, radius)
       // drawNotch(this.project, 'layerArc', 45, 30, 90, radius)
       // drawNotch(this.project, 'layerArc', 90, 30, 90, radius)
       // drawNotch(this.project, 'layerArc', 135, 30, 90, radius)
