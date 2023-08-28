@@ -3,6 +3,10 @@ import paper from 'paper'
 
 // 删除指定project的某一层
 export const removeLayer = (currentProject: paper.Project, layerName: string) => {
+  console.warn('removeLayer>>>>')
+  console.log('currentProject>>>>', currentProject)
+  if (!currentProject) return
+  currentProject.activate()
   let target = currentProject.layers.filter((layer) => layer.name === layerName)[0]
   if (target) {
     target.remove()
@@ -15,6 +19,8 @@ export const drawXY = (currentProject, layerName) => {
   const WIDTH = currentProject.view.bounds.width
   const HEIGHT = currentProject.view.bounds.height
   currentProject.activate()
+  console.warn('drawXY>>>>')
+  console.log('currentProject>>>>', currentProject)
   removeLayer(currentProject, layerName)
   const layerXY = new paper.Layer()
   layerXY.name = layerName
@@ -45,7 +51,7 @@ export const getViewFontSize = (currentProject) => {
   const ratio = currentProject.view.zoom
   return 16 / ratio
 }
-//     // 获取视图级别的线大小
+// 获取视图级别的线大小
 export const getViewBorderSize = (currentProject) => {
   const ratio = currentProject.view.zoom
   return 1 / ratio
@@ -88,7 +94,6 @@ export const drawFlat = (currentProject: paper.Project, layerName: string, direc
     newPath.remove()
   } else {
     const resPath = newPath.clone()
-    resPath.selected = true
     newPath.remove()
   }
 }
@@ -156,9 +161,80 @@ export const drawNotch = (currentProject: paper.Project, layerName: string, dire
     currentPath.remove()
   } else {
     const resPath = currentPath.clone()
-    resPath.selected = true
     currentPath.remove()
   }
+}
+
+// Notch隐藏版本
+export const drawNotchHidden = (currentProject: paper.Project, layerName: string, directionAngle: number, grooveLength: number, grooveAngle: number, radius: number) =>  {
+  if (!currentProject) return
+  currentProject.activate()
+  const layerTarget = currentProject.layers.filter((layer) => layer.name === layerName)[0]
+  const existedPath = layerTarget.children[0] as paper.Path
+  const notchPoints = getNotchPoints(directionAngle, grooveLength, grooveAngle, radius)
+
+  const through = notchPoints[0].rotate(180, new paper.Point(0, 0))
+  // const currentPath = new paper.Path.Arc({
+  //   from: notchPoints[0],
+  //   through: through,
+  //   to: notchPoints[2],
+  //   strokeColor: '#FFDE2C',
+  //   closed: false,
+  //   strokeWidth: 1
+  // })
+  // currentPath.add(notchPoints[1])
+  // const currentPath = new paper.Group({
+  //   children: [
+  //     new paper.Path.Circle(
+  //       {
+  //         center: new paper.Point(0, 0),
+  //         radius: radius,
+  //         selected: true
+  //         // fillColor: 'green'
+
+  //       }
+  //     ),
+  //     new paper.Path(
+  //       {
+  //         selected: true,
+  //         segements: [
+  //           new paper.Segment(notchPoints[0]),
+  //           new paper.Segment(notchPoints[1]),
+  //           new paper.Segment(notchPoints[2])
+  //         ]
+  //       })
+  //   ]
+  // })
+  const currentPath = new paper.Group()
+  const circle = new paper.Path.Circle(
+        {
+          center: new paper.Point(0, 0),
+          radius: radius,
+          strokeColor: '#FFDE2C'
+        }
+      )
+  const path = new paper.Path({
+    strokeColor: '#FFDE2C',
+    dashArray: [2],
+    // closed: true
+  })
+  path.add(notchPoints[0])
+  path.add(notchPoints[1])
+  path.add(notchPoints[2])
+  currentPath.addChild(circle.clone())
+  currentPath.addChild(path.clone())
+  circle.remove()
+  path.remove()
+  currentPath.name = 'notchHidden'
+  // if (existedPath) {
+  //   const resPath = currentPath.intersect(existedPath)
+  //   // resPath.selected = true
+  //   existedPath.remove()
+  //   currentPath.remove()
+  // } else {
+  //   const resPath = currentPath.clone()
+  //   currentPath.remove()
+  // }
 }
 
 // 获取当前视图的随机点

@@ -15,7 +15,7 @@
 <script>
 import paper from 'paper'
 import commonTemplate from '@/components/titleTemplate.vue'
-import { removeLayer, drawXY, drawFlat, drawNotch } from '@/utils/paperWeaponTS'
+import { removeLayer, drawXY, drawFlat, drawNotch, drawNotchHidden } from '@/utils/paperWeaponTS'
 
 import tools from './tools'
 
@@ -62,7 +62,6 @@ export default {
       return { zoom: zoom, offset: a }
     },
     onwheel(e) {
-      removeLayer('asdasd','layerXY')
       const view = this.project.view
       const viewPosition = view.viewToProject(
         new paper.Point(e.offsetX, e.offsetY)
@@ -81,12 +80,13 @@ export default {
       }
       layerArc = new paper.Layer()
       layerArc.name = 'layerArc'
-      drawFlat(this.project, 'layerArc', -90, length, radius)
-      drawNotch(this.project, 'layerArc', 0, 30, 90, radius)
-      drawNotch(this.project, 'layerArc', 45, 30, 90, radius)
-      drawNotch(this.project, 'layerArc', 90, 30, 90, radius)
-      drawNotch(this.project, 'layerArc', 135, 30, 90, radius)
-      drawNotch(this.project, 'layerArc', 180, 30, 90, radius)
+      // drawFlat(this.project, 'layerArc', -90, length, radius)
+      // drawNotch(this.project, 'layerArc', 0, 30, 90, radius)
+      drawNotchHidden(this.project, 'layerArc', 0, 30, 90, radius)
+      // drawNotch(this.project, 'layerArc', 45, 30, 90, radius)
+      // drawNotch(this.project, 'layerArc', 90, 30, 90, radius)
+      // drawNotch(this.project, 'layerArc', 135, 30, 90, radius)
+      // drawNotch(this.project, 'layerArc', 180, 30, 90, radius)
     },
     onFrame() {
     },
