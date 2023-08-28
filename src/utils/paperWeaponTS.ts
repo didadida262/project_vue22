@@ -94,7 +94,7 @@ export const drawFlat = (currentProject: paper.Project, layerName: string, direc
   }
 }
 
-// // 平边隐藏版本
+// // 平边隐藏版本。注意： 合并时只会合并非closed的path，最终输出的是一个group
 export const drawFlatHidden = (currentProject: paper.Project, layerName: string, directionAngle: number, length: number, radius: number) =>  {
   if (!currentProject) return
   currentProject.activate()
