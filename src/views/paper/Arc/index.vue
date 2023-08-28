@@ -38,7 +38,7 @@ export default {
   watch: {},
   mounted() {
     this.init()
-    drawXY(this.project)
+    drawXY(this.project, 'layerXY')
     this.drawWaferBorder()
   },
   beforeDestroy() {
@@ -70,9 +70,8 @@ export default {
       const transform = this.changeZoom(e.deltaY, viewPosition)
       this.project.view.zoom = transform.zoom
       this.project.view.center = this.project.view.center.add(transform.offset)
-      drawXY(this.project)
+      drawXY(this.project, 'layerXY')
     },
-
     drawWaferBorder() {
       const radius = 300
       const length = 200
@@ -106,7 +105,7 @@ export default {
     },
     onMouseUp(e) {
       this.initPoint = null
-      drawXY(this.project)
+      drawXY(this.project, 'layerXY')
     },
     onKeyDown(e) {
     },
