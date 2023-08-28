@@ -172,12 +172,12 @@ export const constantRoutes = [
         component: () => import('@/views/paper/Arc/index'),
         meta: { title: 'Arc', icon: 'Raster' }
       },
-      {
-        path: 'gameworld',
-        name: 'gameworld',
-        component: () => import('@/views/paper/GameWorld/index'),
-        meta: { title: 'Game_World', icon: 'earth' }
-      },
+      // {
+      //   path: 'gameworld',
+      //   name: 'gameworld',
+      //   component: () => import('@/views/paper/GameWorld/index'),
+      //   meta: { title: 'Game_World', icon: 'earth' }
+      // },
       {
         path: 'runningway',
         name: 'runningway',
@@ -238,12 +238,12 @@ export const constantRoutes = [
         component: () => import('@/views/paper/DarkBall/index'),
         meta: { title: 'DarkBall', icon: 'tadpole' }
       },
-      {
-        path: 'tadpole',
-        name: 'tadpole',
-        component: () => import('@/views/paper/Tadpole/index'),
-        meta: { title: 'Tadpole', icon: 'tadpole' }
-      },
+      // {
+      //   path: 'tadpole',
+      //   name: 'tadpole',
+      //   component: () => import('@/views/paper/Tadpole/index'),
+      //   meta: { title: 'Tadpole', icon: 'tadpole' }
+      // },
       {
         path: 'tank',
         name: 'Tank',

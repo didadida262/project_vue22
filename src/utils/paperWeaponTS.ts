@@ -57,7 +57,7 @@ export const getAnotherPoint = (val: number, radius: number) => {
   return Math.sqrt(Math.pow(radius, 2) - Math.pow(Math.abs(val), 2))
 }
 
-// 输出圆弧的两个点
+// 输出画平边圆弧的两个点
 export const getFlatPoints = (directionAngle: number, length: number, radius: number) => {
   // 默认为0°
   const y = length / 2
@@ -164,7 +164,6 @@ export const drawNotch = (currentProject: paper.Project, layerName: string, dire
   currentPath.closed = true
   if (existedPath) {
     const resPath = currentPath.intersect(existedPath)
-    resPath.selected = true
     existedPath.remove()
     currentPath.remove()
   } else {
@@ -233,13 +232,17 @@ export const getLineData = (point: paper.Point, radius: number) => {
   return [
     // 横轴
     {
-      one: [-X, point.y],
-      two: [X, point.y]
+      leftPointX: -X,
+      leftPointY: point.y,
+      rightPointX: X,
+      rightPointY: point.y
     },
     // 纵轴
     {
-      one: [point.x, -Y],
-      two: [point.x, Y]
+      leftPointX: point.x,
+      leftPointY: -Y,
+      rightPointX: point.x,
+      rightPointY: Y
     }
   ]
 }
@@ -257,8 +260,6 @@ export const getNotchPoints = (directionAngle: number, grooveLength: number, gro
   const mid = center.normalize().multiply(center.length - grooveHeight)
   return [leftPoint.rotate(-directionAngle,new paper.Point(0, 0)),mid.rotate(-directionAngle,new paper.Point(0, 0)), rightPoint.rotate(-directionAngle,new paper.Point(0, 0))]
 }
-
-
 
 // 获取当前视图的随机点
 export const getRandomPoint = (currentProject: paper.Project) => {
@@ -295,4 +296,35 @@ export const showPoint = (point: paper.Point, color: string) => {
     radius: 8,
     fillColor: color
   })
+}
+
+// 在给定path中，不越界的绘制格子
+export const drawGrid = (currentProject: paper.Project, layerName, path: paper.Path, size: any, radius: number) => {
+  if (!currentProject) return
+  currentProject.activate
+  removeLayer(currentProject, layerName)
+  const layer = new paper.Layer()
+  layer.name = layerName
+  console.warn('drawGrid>>>')
+  console.log('path>>>', path)
+  const gridWidth = size[0]
+  const gridHeight = size[1]
+  for (let i = 0; i < radius; i++) {
+    for (let j = 0; j < radius; j++) {
+      const currentPointData = [i + gridWidth / 2, j]
+      const currentPoint = new paper.Point(currentPointData[0], currentPointData[1])
+      const curretLineData = getLineData(currentPoint, radius)
+      const YData = curretLineData[1]
+      const YStartPoint = new paper.Point(YData.leftPointX, YData.leftPointY)
+      const YEndPoint = new paper.Point(YData.rightPointX, YData.rightPointY)
+      const path = new paper.Path.Line({
+        form: YStartPoint,
+        to: YEndPoint,
+        strokeColor: 'white',
+        strokeWidth: 5
+      })
+      layer.addChild(path.clone())
+      path.remove()
+    }
+  }
 }
