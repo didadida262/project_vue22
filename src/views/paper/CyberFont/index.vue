@@ -19,7 +19,8 @@
           loop>
           <source :src="videoUrl" type="video/mp4">
         </video> -->
-        <video id="myVideo" controls>
+        <video
+         id="myVideo" controls>
           <source src="http://localhost:3000/testVideo" type="video/mp4">
         </video>
     </div>

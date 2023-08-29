@@ -19,6 +19,7 @@
          autoplay="autoplay"
          :src="currentUrl"
          >
+
           <source :src="url" type="video/mp4">
         </video>
         <div>
@@ -101,6 +102,12 @@ export default {
   mounted() {
     const elevideo = document.getElementById('videoContainer')
     console.log('elevideo', elevideo)
+    // // 11、seeked：查找结束。当用户已经移动/跳跃到视频中新的位置时触发
+    elevideo.addEventListener('seeked', (e) => {
+      console.log('进度条已经移动到了新的位置')
+      console.log(e)
+    })
+
     elevideo.addEventListener('ended', () => { // 结束
       this.handleVideoEnded()
     }, false)
@@ -108,8 +115,13 @@ export default {
   beforeDestroy() {
   },
   methods: {
+    onseeked() {
+      console.log('onseeking>>>>')
+    },
+    onseeking() {
+      console.log('onseeking>>>>')
+    },
     handleKeyDown(e) {
-      console.log('asdasdasd')
       switch(e.keyCode) {
         case 33:
           this.switchVideo('left')
@@ -251,12 +263,15 @@ export default {
       }
       console.log('目标视频信息', info)
       this.currentUrl = 'http://localhost:3000/getStreamVideo/?id=' + info.id
+
+
+// 就方案
       // const res = await this.$axios.getVideo(info)
       // const blob = new Blob([res], { type: 'mp4' })
       // const url = URL.createObjectURL(blob)
       // this.url = url
       // const videoContainer = this.$refs['videoContainer']
-      // // videoContainer.src = url
+      // videoContainer.src = url
       // console.log('当前url--->', this.url)
     },
     // 获取目标目录下的所有文件
