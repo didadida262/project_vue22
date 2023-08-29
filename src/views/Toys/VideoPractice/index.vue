@@ -16,7 +16,9 @@
          controls
          style="width: 100%;height: 90%"
          controlslist="nodownload"
-         autoplay="autoplay">
+         autoplay="autoplay"
+         :src="currentUrl"
+         >
           <source :src="url" type="video/mp4">
         </video>
         <div>
@@ -68,6 +70,7 @@ export default {
   },
   data() {
     return {
+      currentUrl:'http://localhost:3000/getStreamVideo/',
       currentVideoInfo: {},
       currentListState: 'show',
       currentPlayWay: 'random',
@@ -247,13 +250,14 @@ export default {
         ...info
       }
       console.log('目标视频信息', info)
-      const res = await this.$axios.getVideo(info)
-      const blob = new Blob([res], { type: 'mp4' })
-      const url = URL.createObjectURL(blob)
-      this.url = url
-      const videoContainer = this.$refs['videoContainer']
-      videoContainer.src = url
-      console.log('当前url--->', this.url)
+      this.currentUrl = 'http://localhost:3000/getStreamVideo/?id=' + info.id
+      // const res = await this.$axios.getVideo(info)
+      // const blob = new Blob([res], { type: 'mp4' })
+      // const url = URL.createObjectURL(blob)
+      // this.url = url
+      // const videoContainer = this.$refs['videoContainer']
+      // // videoContainer.src = url
+      // console.log('当前url--->', this.url)
     },
     // 获取目标目录下的所有文件
     async getVideosList(info) {

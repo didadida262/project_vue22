@@ -20,7 +20,7 @@
           <source :src="videoUrl" type="video/mp4">
         </video> -->
         <video id="myVideo" controls>
-          <source src="http://localhost:3000" type="video/mp4">
+          <source src="http://localhost:3000/testVideo" type="video/mp4">
         </video>
     </div>
       <canvas ref="canvas" resize class="canvas" />
@@ -75,10 +75,10 @@ export default {
     this.addAudio()
     this.addVideo()
     const video = this.$refs['videoContainer']
-    video.addEventListener('canplay', function() {
-      console.log('>>>>>>>>>>>>')
-      video.play()
-    })
+    // video.addEventListener('canplay', function() {
+    //   console.log('>>>>>>>>>>>>')
+    //   video.play()
+    // })
   },
   beforeDestroy() {
     if (this.currentProject) {
