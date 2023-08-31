@@ -11,18 +11,18 @@
 
     <div class="cyberFont-container-content">
       <div class="cyberFont-container-content-video flex-cb">
-        <!-- <video
+        <video
           class="video-st"
           ref="videoContainer"
           controls
           autoplay="autoplay"
           loop>
           <source :src="videoUrl" type="video/mp4">
-        </video> -->
-        <video
+        </video>
+        <!-- <video
          id="myVideo" controls>
           <source src="http://localhost:3000/testVideo" type="video/mp4">
-        </video>
+        </video> -->
     </div>
       <canvas ref="canvas" resize class="canvas" />
     </div>
@@ -46,6 +46,7 @@ import commonTemplate from '@/components/titleTemplate.vue'
 import { getRandomColor } from '@/utils/weapons'
 import { CyberFont } from './cyberfont'
 import words from './words.json'
+import fetch from 'whatwg-fetch'
 
 export default {
   name: 'cyberFont',
@@ -71,10 +72,11 @@ export default {
   watch: {},
   mounted() {
     this.init()
-    this.getVideoData()
-    this.drawFont()
+    // this.getVideoData()
+    // this.drawFont()
     this.addAudio()
     this.addVideo()
+    this.getVideoFetch()
     const video = this.$refs['videoContainer']
     // video.addEventListener('canplay', function() {
     //   console.log('>>>>>>>>>>>>')
@@ -97,6 +99,14 @@ export default {
       const videoContainer = this.$refs['videoContainer']
       videoContainer.src = url
       console.log('当前url--->', this.videoUrl)
+    },
+    getVideoFetch(info) {
+      console.log('fetch',fetch)
+      // fetch("http://localhost:3000/testVideo")
+      // fetch("https://fetch.spec.whatwg.org/")
+      //   .then((response) => 
+      //   console.log(response))
+        // .then((data) => console.log('testVideo',data));
     },
     // 创建背景音乐
     addAudio() {
