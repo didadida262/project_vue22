@@ -72,7 +72,7 @@ export default {
       drawXY(this.project, 'layerXY')
     },
     drawWaferBorder() {
-      const radius = 300
+      const radius = 200
       const length = 200
       let layerArc = this.project.layers['layerArc']
       if (layerArc) {
@@ -81,19 +81,18 @@ export default {
       layerArc = new paper.Layer()
       layerArc.name = 'layerArc'
       // drawFlatHidden(this.project, 'layerArc', -90, length, radius)
-      // drawFlatHidden(this.project, 'layerArc', 0, length, radius)
-      // drawFlatHidden(this.project, 'layerArc', 90, length, radius)
-      // drawNotchHidden(this.project, 'layerArc', 180, 30, 90, radius)
-      // drawNotchHidden(this.project, 'layerArc', 0, 30, 90, radius)
-      // drawNotchHidden(this.project, 'layerArc', 90, 30, 90, radius)
+      drawNotchHidden(this.project, 'layerArc', 0, 60, 90, radius)
+      drawNotchHidden(this.project, 'layerArc', 90, 60, 90, radius)
+      drawNotchHidden(this.project, 'layerArc', 180, 60, 90, radius)
+      drawNotchHidden(this.project, 'layerArc', 270, 60, 90, radius)
 
-      drawFlat(this.project, 'layerArc', -90, length, radius)
+      // drawFlat(this.project, 'layerArc', -90, length, radius)
       // drawFlat(this.project, 'layerArc', 90, length, radius)
-      drawNotch(this.project, 'layerArc', 180, 30, 90, radius)
-      drawNotch(this.project, 'layerArc', 90, 30, 90, radius)
-      drawNotch(this.project, 'layerArc', 0, 30, 90, radius)
-      const path = this.project.layers['layerArc'].children[0]
-      drawGrid(this.project, 'layerGrid', path, [3, 3])
+      // drawNotch(this.project, 'layerArc', 180, 30, 90, radius)
+      // drawNotch(this.project, 'layerArc', 90, 30, 90, radius)
+      // drawNotch(this.project, 'layerArc', 0, 30, 90, radius)
+      // const path = this.project.layers['layerArc'].children[0]
+      // drawGrid(this.project, 'layerGrid', path, [3, 3])
     },
     onFrame() {
     },
@@ -102,13 +101,21 @@ export default {
       this.initPoint = e.point
     },
     onMouseDrag(e) {
-      if (this.initPoint) {
-        const v = this.initPoint.subtract(e.point)
-        const newC = this.project.view.center.add(v)
-        this.project.view.setCenter(newC)
-      }
+      // if (this.initPoint) {
+      //   const v = this.initPoint.subtract(e.point)
+      //   const newC = this.project.view.center.add(v)
+      //   this.project.view.setCenter(newC)
+      // }
     },
     onMouseMove(e) {
+      console.warn('onMouseMove>>>1')
+      console.log('onMouseMove>>>2')
+      const center = new paper.Point(0)
+      const v = center.subtract(e.point)
+      const newC = this.project.view.center.add(v)
+      this.project.view.setCenter(newC)
+      drawXY(this.project, 'layerXY')
+
     },
     onMouseUp(e) {
       this.initPoint = null
