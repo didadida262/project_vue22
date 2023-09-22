@@ -116,7 +116,8 @@ export default {
     onFrame() {
     },
     onMouseDown(e) {
-      removeLayer(this.project,'layerXY')
+      console.log('down:', e.point)
+      removeLayer(this.project, 'layerXY')
       this.initPoint = e.point
     },
     onMouseDrag(e) {

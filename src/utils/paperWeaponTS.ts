@@ -297,6 +297,26 @@ export const showPoint = (point: paper.Point, color: string) => {
     fillColor: color
   })
 }
+export const showText = (point: paper.Point, text: string) => {
+  const p = new paper.PointText({
+    point: point,
+    content: text,
+    fontSize: 20,
+    justification: 'center',
+    fillColor: 'green',
+    fontWeight: 'bold'
+  })
+  // p.rotate( 180, point)
+  p.rotate(180)
+  p.scaling = new paper.Point(-1, 1)
+}
+export const showPic = (point: paper.Point, img: string) => {
+  // const container = new paper.Rectangle(point, new paper.Size(100, 100))
+  // const raster = new paper.Raster(img)
+  // raster.onLoad = () => {
+  //   raster.fitBounds(container.bounds, false)
+  // }
+}
 
 // 在给定path中，不越界的绘制格子
 export const drawGrid = (currentProject: paper.Project, layerName, path: paper.Path, size: any, radius: number) => {
@@ -327,4 +347,19 @@ export const drawGrid = (currentProject: paper.Project, layerName, path: paper.P
       path.remove()
     }
   }
+}
+
+
+// 纠正由于坐标系翻转导致文本的镜像效果
+export const modifyDirection = (path: any) => {
+  path.rotate(180)
+  path.scaling = new paper.Point(-1, 1)
+}
+
+export const setProjectZoom = (pro, zoom) => {
+  const currentZoom = pro.view.matrix.a
+  const matrix1 = new paper.Matrix().scale(1 / currentZoom, 1 / currentZoom)
+  const matrix2 = new paper.Matrix().scale(zoom, zoom)
+  pro.view.transform(matrix1)
+  pro.view.transform(matrix2)
 }

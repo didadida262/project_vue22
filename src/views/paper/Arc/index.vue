@@ -15,7 +15,7 @@
 <script>
 import paper from 'paper'
 import commonTemplate from '@/components/titleTemplate.vue'
-import { removeLayer, drawXY, drawFlatHidden, drawNotch, drawNotchHidden, drawFlat, drawGrid } from '@/utils/paperWeaponTS'
+import { showPic, showText, showPoint, removeLayer, drawXY, drawFlatHidden, drawNotch, drawNotchHidden, drawFlat, drawGrid } from '@/utils/paperWeaponTS'
 
 import tools from './tools'
 
@@ -81,10 +81,10 @@ export default {
       layerArc = new paper.Layer()
       layerArc.name = 'layerArc'
       // drawFlatHidden(this.project, 'layerArc', -90, length, radius)
-      drawNotchHidden(this.project, 'layerArc', 0, 60, 90, radius)
-      drawNotchHidden(this.project, 'layerArc', 90, 60, 90, radius)
-      drawNotchHidden(this.project, 'layerArc', 180, 60, 90, radius)
-      drawNotchHidden(this.project, 'layerArc', 270, 60, 90, radius)
+      // drawNotchHidden(this.project, 'layerArc', 0, 60, 90, radius)
+      // drawNotchHidden(this.project, 'layerArc', 90, 60, 90, radius)
+      // drawNotchHidden(this.project, 'layerArc', 180, 60, 90, radius)
+      // drawNotchHidden(this.project, 'layerArc', 270, 60, 90, radius)
 
       // drawFlat(this.project, 'layerArc', -90, length, radius)
       // drawFlat(this.project, 'layerArc', 90, length, radius)
@@ -97,8 +97,9 @@ export default {
     onFrame() {
     },
     onMouseDown(e) {
-      removeLayer(this.project,'layerXY')
-      this.initPoint = e.point
+      console.log(e.point)
+      // removeLayer(this.project,'layerXY')
+      // this.initPoint = e.point
     },
     onMouseDrag(e) {
       // if (this.initPoint) {
@@ -108,18 +109,15 @@ export default {
       // }
     },
     onMouseMove(e) {
-      console.warn('onMouseMove>>>1')
-      console.log('onMouseMove>>>2')
-      const center = new paper.Point(0)
-      const v = center.subtract(e.point)
-      const newC = this.project.view.center.add(v)
-      this.project.view.setCenter(newC)
-      drawXY(this.project, 'layerXY')
-
+      // const center = new paper.Point(0)
+      // const v = center.subtract(e.point)
+      // const newC = this.project.view.center.add(v)
+      // this.project.view.setCenter(newC)
+      // drawXY(this.project, 'layerXY')
     },
     onMouseUp(e) {
       this.initPoint = null
-      drawXY(this.project, 'layerXY')
+      // drawXY(this.project, 'layerXY')
     },
     onKeyDown(e) {
     },
@@ -131,8 +129,22 @@ export default {
       this.project = paper.project
       this.project.name = this.title
       this.project.view.onFrame = this.onFrame
+      const matrix1 = new paper.Matrix().scale(2, -2)
+      // 还原
+      const matrix = new paper.Matrix().scale(1, 1)
+      // const matrix2 = new paper.Matrix().scale(1, 2)
+      this.project.view.transform(matrix1)
+      this.project.view.transform(matrix)
       this.project.view.setCenter(0)
-      console.log('初始化世界!!!', this.project)
+      console.log('初始化世界!!!', paper)
+      // showPoint(new paper.Point(100, 100), 'green')
+      showText(new paper.Point(100, 100), '测试文本')
+      // showPic(new paper.Point(100, 100), 'https://cms-assets.tutsplus.com/uploads/users/1251/posts/26530/image/BenderPaper.jpg')
+      new paper.Path.Line({
+        form: new paper.Point(10, 10),
+        to: new paper.Point(20, 20),
+        strokeColor: 'orange'
+      })
     }
   }
 }
