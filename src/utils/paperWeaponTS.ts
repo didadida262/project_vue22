@@ -309,7 +309,6 @@ export const showImg = (point: paper.Point, Img: string) => {
   })
   raster.onLoad = () => {
     raster.fitBounds(container.bounds, false)
-    // modifyDirection(raster)
     modifyDirectionPic(raster)
   }
 }
@@ -330,6 +329,8 @@ export const showText = (point: paper.Point, text: string) => {
     fillColor: 'green',
     fontWeight: 'bold'
   })
+  // p.scaling = new paper.Point(-1, 1)
+  // p.rotate(180)
   modifyDirection(p)
 }
 
@@ -372,9 +373,9 @@ export const modifyDirection = (path: any) => {
 }
 // 纠正由于坐标系翻转导致文本的镜像效果
 export const modifyDirectionPic = (raster: any) => {
-  // 创建一个矩阵进行水平翻转
-  // 应用矩阵翻转
-  raster.transform(new paper.Matrix().scale(1, 1))
+  raster.rotate(180)
+  const newScaling = new paper.Point(-raster.scaling.x, raster.scaling.y)
+  raster.scaling = newScaling
 }
 
 export const setProjectZoom = (pro, zoom) => {

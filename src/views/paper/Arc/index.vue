@@ -139,7 +139,7 @@ export default {
       this.project = initPaperCanvae(canvas)
       this.project.name = this.title
       this.project.view.onFrame = this.onFrame
-      // this.project.view.matrix = new paper.Matrix().scale(1, -1)
+      this.project.view.matrix = new paper.Matrix().scale(1, -1)
       this.project.view.setCenter(0)
       console.log('初始化世界!!!', paper)
     }
