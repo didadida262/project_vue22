@@ -309,7 +309,6 @@ export const showImg = (point: paper.Point, Img: string) => {
   })
   raster.onLoad = () => {
     raster.fitBounds(container.bounds, false)
-    modifyDirectionPic(raster)
   }
 }
 export const showRect = (point: paper.Point) => {
@@ -329,9 +328,6 @@ export const showText = (point: paper.Point, text: string) => {
     fillColor: 'green',
     fontWeight: 'bold'
   })
-  // p.scaling = new paper.Point(-1, 1)
-  // p.rotate(180)
-  modifyDirection(p)
 }
 
 // 在给定path中，不越界的绘制格子

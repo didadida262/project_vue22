@@ -110,7 +110,7 @@ export default {
     },
     onMouseDown(e) {
       console.log(e.point)
-      removeLayer(this.project,'layerXY')
+      removeLayer(this.project, 'layerXY')
       this.initPoint = e.point
     },
     onMouseDrag(e) {
@@ -139,7 +139,6 @@ export default {
       this.project = initPaperCanvae(canvas)
       this.project.name = this.title
       this.project.view.onFrame = this.onFrame
-      this.project.view.matrix = new paper.Matrix().scale(1, -1)
       this.project.view.setCenter(0)
       console.log('初始化世界!!!', paper)
     }
