@@ -65,29 +65,29 @@ export const constantRoutes = [
       meta: { title: 'Dashboard', icon: 'dashboard' }
     }]
   },
-  // {
-  //   path: '/draw',
-  //   component: Layout,
-  //   redirect: '/draw',
-  //   children: [{
-  //     path: 'draw',
-  //     name: 'draw',
-  //     component: () => import('@/views/draw/index'),
-  //     meta: { title: 'Draw', icon: 'el-icon-brush' }
-  //   }]
-  // },
-  // {
-  //   path: '/leaferJS',
-  //   component: Layout,
-  //   children: [
-  //     {
-  //       path: 'leaferJS',
-  //       name: 'leaferJS',
-  //       component: () => import('@/views/Leafer/index'),
-  //       meta: { title: 'leaferJS', icon: 'el-icon-brush' }
-  //     }
-  //   ]
-  // },
+  {
+    path: '/draw',
+    component: Layout,
+    redirect: '/draw',
+    children: [{
+      path: 'draw',
+      name: 'draw',
+      component: () => import('@/views/draw/index'),
+      meta: { title: 'Draw', icon: 'el-icon-brush' }
+    }]
+  },
+  {
+    path: '/leaferJS',
+    component: Layout,
+    children: [
+      {
+        path: 'leaferJS',
+        name: 'leaferJS',
+        component: () => import('@/views/Leafer/index'),
+        meta: { title: 'leaferJS', icon: 'el-icon-brush' }
+      }
+    ]
+  },
   // openLayer
   // {
   //   path: '/openlayer',

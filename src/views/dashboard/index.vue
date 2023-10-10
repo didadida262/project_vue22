@@ -6,9 +6,8 @@
 -->
 <template>
   <div class="dashboard-st">
-    <el-button @click="() => { dialogflag = !dialogflag}">dialog</el-button>
-      <!-- <canvas id="main_canvas" ref="main_canvas" resize class="main_canvas" /> -->
-      <el-dialog
+      <canvas id="main_canvas" ref="main_canvas" resize class="main_canvas" />
+      <!-- <el-dialog
         v-dialogDrag
         title="测试拖拽"
         :visible="dialogflag"
@@ -18,7 +17,7 @@
         <span slot="footer" class="dialog-footer">
           <el-button type="primary" @click="() => { dialogflag = !dialogflag}">确 定</el-button>
         </span>
-      </el-dialog>
+      </el-dialog> -->
   </div>
 </template>
 
@@ -97,8 +96,8 @@ export default {
     })
   },
   mounted() {
-    // this.initWorld()
-    // this.testJSON()
+    this.initWorld()
+    this.testJSON()
   },
   beforeDestroy() {
     this.currentProject.remove()

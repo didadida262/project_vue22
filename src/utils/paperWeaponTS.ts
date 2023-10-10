@@ -305,7 +305,9 @@ export const showImg = (point: paper.Point, Img: string) => {
     size: new paper.Size(200, 400)
   })
   const raster = new paper.Raster({
-    source: require('@/assets/Sam.webp')
+    source: require('@/assets/Sam.webp'),
+    // strokeWidth: 10,
+    // strokeColor: 'red'
   })
   raster.onLoad = () => {
     raster.fitBounds(container.bounds, false)
