@@ -302,16 +302,18 @@ export const showPoint = (point: paper.Point, color: string) => {
 export const showImg = (point: paper.Point, Img: string) => {
   const container = new paper.Path.Rectangle({
     position: point,
-    size: new paper.Size(200, 400)
+    size: new paper.Size(200, 200),
+    strokeWidth: 1,
+    strokeColor: 'red'
   })
   const raster = new paper.Raster({
-    source: require('@/assets/Sam.webp'),
-    // strokeWidth: 10,
-    // strokeColor: 'red'
+    source: require('@/assets/Sam.webp')
   })
   raster.onLoad = () => {
-    raster.fitBounds(container.bounds, false)
+    raster.fitBounds(container.bounds, true)
+    modifyDirectionPic(raster)
   }
+  console.log('raster', raster)
 }
 export const showRect = (point: paper.Point) => {
   const container = new paper.Path.Rectangle({
@@ -371,8 +373,8 @@ export const modifyDirection = (path: any) => {
 }
 // 纠正由于坐标系翻转导致文本的镜像效果
 export const modifyDirectionPic = (raster: any) => {
-  raster.rotate(180)
-  const newScaling = new paper.Point(-raster.scaling.x, raster.scaling.y)
+  // raster.rotate(180)
+  const newScaling = new paper.Point(raster.scaling.x, -raster.scaling.y)
   raster.scaling = newScaling
 }
 
