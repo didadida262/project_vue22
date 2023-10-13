@@ -76,6 +76,7 @@ export const constantRoutes = [
       meta: { title: 'Draw', icon: 'el-icon-brush' }
     }]
   },
+
   {
     path: '/leaferJS',
     component: Layout,
@@ -172,6 +173,12 @@ export const constantRoutes = [
         component: () => import('@/views/paper/Arc/index'),
         meta: { title: 'Arc', icon: 'Raster' }
       },
+      // {
+      //   path: 'detectionMore/main/:taskId/:status',
+      //   name: 'detectionMore',
+      //   component: () => import('@/views/paper/detectionMore/index'),
+      //   meta: { title: 'Arc', icon: 'Raster' }
+      // },
       // {
       //   path: 'gameworld',
       //   name: 'gameworld',
