@@ -365,7 +365,6 @@ export const drawGrid = (currentProject: paper.Project, layerName, path: paper.P
   }
 }
 
-
 // 纠正由于坐标系翻转导致文本的镜像效果
 export const modifyDirection = (path: any) => {
   path.rotate(180)
