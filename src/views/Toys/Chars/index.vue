@@ -12,6 +12,7 @@
 
 <script>
 import CommonTemplate from '@/components/titleTemplate.vue'
+import { getAllChar } from '@/utils/common_weapons.ts'
 export default {
   name: 'Chars',
   components: {
@@ -31,9 +32,9 @@ export default {
   },
   methods: {
     async getData() {
-      const res = await this.$axios.getAllChars()
-      console.log('res>>>', res)
-      this.chars = res.data
+      // const res = await this.$axios.getAllChars()
+      this.chars = getAllChar('any', 70000, 80000)
+      console.log('this.chars>', this.chars)
     }
   }
 }
