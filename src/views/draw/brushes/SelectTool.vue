@@ -1,7 +1,7 @@
 <!--
  * @Author: Hhvcg
  * @Date: 2022-06-12 21:17:03
- * @LastEditors: Hhvcg
+ * @LastEditors: hhvcg 719713496@qq.com
  * @Description:
 -->
 <template>
@@ -94,8 +94,14 @@ export default {
     },
 
     onMouseDown(e) {
-      console.log('onMouseDown')
+      console.log('onMouseDown', e)
       this.initPoint = e.point
+      const activateProject = paper.project
+      let hitResult = activateProject.hitTest(
+        e.point,
+        this.hitOptions
+      )
+      console.log('hitResult>>', hitResult)
     },
     onMouseDrag(e) {
       console.log('onMouseDrag')

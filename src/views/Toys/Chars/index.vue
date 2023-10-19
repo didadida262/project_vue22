@@ -3,8 +3,7 @@
   <div class="Chars-st pd10">
     <commonTemplate title="Chars" />
     <div class="content">
-      <span v-for="(char, index) in chars">
-        <!-- <span>{{ index }}>>> </span> -->
+      <span v-for="(char, index) in chars" :key="index">
         <span>{{ char }}</span>
       </span>
     </div>
@@ -33,6 +32,7 @@ export default {
   methods: {
     async getData() {
       const res = await this.$axios.getAllChars()
+      console.log('res>>>', res)
       this.chars = res.data
     }
   }

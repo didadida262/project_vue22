@@ -391,3 +391,4 @@ export const initPaperCanvae = (canvas) => {
   const project = paper.project
   return project
 }
+
