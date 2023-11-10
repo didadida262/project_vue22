@@ -57,3 +57,17 @@ export class Timer {
     requestAnimationFrame(this.that.run)
   }
 }
+
+export const formatTime = (name, time) => {
+  return time / 1000 + 's'
+}
+
+/**
+ * @description: 比特转换器
+ * @param {*} name 名称
+ * @param {*} bytes 比特值大小
+ * @return {*} MB单位值
+ */
+export const formatBytes = (name, bytes) => {
+  return name + ': ' + (bytes / 1024 / 1024).toFixed(2) + ' MB '
+}
