@@ -104,10 +104,13 @@ export default {
       console.log('hitResult>>', hitResult)
     },
     onMouseDrag(e) {
+      // 打点
       console.log('onMouseDrag')
       if (this.hitResult) {
+        console.log('this.hitResult>>>', this.hitResult)
         this.removeCursorPoint()
         const segment = this.hitResult.segment
+        console.log('drawCursorPoint>>>', segment)
         const previous = segment.previous
         const next = segment.next
         if (segment.index === 1 || segment.index === 3) {

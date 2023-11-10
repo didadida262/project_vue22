@@ -1,7 +1,7 @@
 <!--
  * @Author: Hhvcg
  * @Date: 2022-06-12 21:17:03
- * @LastEditors: Hhvcg
+ * @LastEditors: hhvcg 719713496@qq.com
  * @Description:
 -->
 <template>
@@ -25,7 +25,7 @@
 
 <script>
 import paper from 'paper'
-import { getRandomColor } from '@/utils/weapons.js'
+import { getRandomColor } from '@/utils/common_weapons.ts'
 import tools from './tools'
 // 色调         hue: Math.random() * 360,
 // 饱和度    saturation: 1,
@@ -93,7 +93,7 @@ export default {
           point: right,
           fontSize: 5
         })
-        this.removeSelection()
+        // this.removeSelection()
       }
     },
 
