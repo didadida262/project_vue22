@@ -57,12 +57,12 @@ export const constantRoutes = [
   {
     path: '/',
     component: Layout,
-    redirect: '/dashboard',
+    redirect: '/PathGenarator',
     children: [{
-      path: 'dashboard',
-      name: 'Dashboard',
-      component: () => import('@/views/dashboard/index'),
-      meta: { title: 'Dashboard', icon: 'dashboard' }
+      path: 'PathGenarator',
+      name: 'PathGenarator',
+      component: () => import('@/views/PathGenarator/index'),
+      meta: { title: 'PathGenarator', icon: 'dashboard' }
     }]
   },
   {
