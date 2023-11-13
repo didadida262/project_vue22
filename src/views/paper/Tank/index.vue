@@ -1,6 +1,6 @@
 <template>
   <div class="page-container">
-    <h1>Tank</h1>
+    <commonTemplate title="Tank" />
     <div class="view">
       <div class="operation flex-col">
         <div class="operation-info pd5">
@@ -24,9 +24,12 @@ import paper from 'paper'
 // import { Bomb } from './Bomb'
 import { Tank } from './Tank'
 import tools from './tools'
-import { getRandomColor } from '@/utils/weapons'
+import commonTemplate from '@/components/titleTemplate.vue'
 export default {
   mixins: [tools],
+  components: {
+    commonTemplate
+  },
   data() {
     return {
       url: require('@/assets/tank_laiyin.jpg'),
@@ -194,14 +197,18 @@ export default {
 </script>
 <style scoped lang="scss">
 .page-container {
+  width: 100%;
+  height: 100%;
   .view {
+    width: 100%;
+    height: calc(100% - 80px);
     display: flex;
     justify-content: space-around;
     align-items: center;
     .operation {
       padding: 10px;
-      height: 80vh;
-      width: 10vw;
+      height: 100%;
+      width: 250px;
       border: 1px solid gray;
       &-info {
         height: calc(100% - 110px);
@@ -215,7 +222,7 @@ export default {
     .tank {
       background: black;
       height: 80vh;
-      width: 80vw;
+      width: calc(100% - 260px);
     }
   }
 

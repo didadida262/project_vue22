@@ -12,9 +12,8 @@
 
 <script>
 import paper from 'paper'
-import { getRandomColor, removeLayer } from '@/utils/weapons'
 import tools from './tools'
-
+import { showText } from '@/utils/paperWeaponTS.ts'
 export default {
   mixins: [tools],
   name: 'Mapping',
@@ -25,7 +24,8 @@ export default {
       title: 'Mapping',
       WIDTH: null,
       HEIGHT: null,
-      zoom: 1
+      zoom: 1,
+      project: null
     }
   },
   computed: {
@@ -33,8 +33,7 @@ export default {
   watch: {},
   mounted() {
     this.init()
-    this.draw()
-    this.drawXY()
+    showText(new paper.Point(0), '测试')
   },
   beforeDestroy() {
     if (this.project) {
@@ -42,32 +41,6 @@ export default {
     }
   },
   methods: {
-    drawXY() {
-      this.project.activate()
-      removeLayer(this.project, 'layerXY')
-      const layerXY = new paper.Layer()
-      layerXY.name = 'layerXY'
-      const currentCenter = this.project.view.center
-      const X = new paper.Path.Line({
-        from: new paper.Point(currentCenter.x - this.WIDTH / 2, currentCenter.y),
-        to: new paper.Point(currentCenter.x + this.WIDTH / 2, currentCenter.y),
-        strokeColor: 'red',
-        strokeWidth: 1,
-      })
-      const Y = new paper.Path.Line({
-        from: new paper.Point(currentCenter.x, currentCenter.y - this.HEIGHT / 2),
-        to: new paper.Point(currentCenter.x, currentCenter.y  + this.HEIGHT / 2),
-        strokeColor: 'red',
-        strokeWidth: 1,
-      })
-      const coordinateData = new paper.PointText({
-        point: currentCenter.add(2, -5),
-        content: `(${currentCenter.x} , ${currentCenter.y})`,
-        fillColor: 'red',
-        justification: 'left',
-        fontWeight:'bold'
-      })
-    },
     changeZoom(delta, p) {
       const view = this.project.view
       const oldZoom = view.zoom
@@ -91,27 +64,9 @@ export default {
       this.project.view.zoom = transform.zoom
       this.project.view.center = this.project.view.center.add(transform.offset)
     },
-    random() {
-      return paper.Point.random().multiply(this.WIDTH, this.HEIGHT)
-    },
-    getRandomPoint() {
-      return new paper.Point(Math.random() * this.WIDTH, Math.random() * this.HEIGHT)
-    },
-    draw() {
-      console.time('timer')
-      for (let i = 0; i < 10; i++) {
-        const c = new paper.Path.Circle({
-          center: this.random(),
-          radius: 10,
-          fillColor: getRandomColor()
-        })
-      }
-      console.timeEnd('timer')
-    },
     onFrame() {
     },
     onMouseDown(e) {
-      removeLayer(this.project,'layerXY')
       this.initPoint = e.point
     },
     onMouseDrag(e) {
@@ -125,7 +80,6 @@ export default {
     },
     onMouseUp(e) {
       this.initPoint = null
-      this.drawXY()
     },
     onKeyDown(e) {
     },
@@ -138,7 +92,6 @@ export default {
       this.project.name = this.title
       this.project.view.onFrame = this.onFrame
       this.project.view.setCenter(0)
-      console.log('初始化世界!!!')
     }
   }
 }
