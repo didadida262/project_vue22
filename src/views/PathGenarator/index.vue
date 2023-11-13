@@ -1,3 +1,4 @@
+<!-- path生成器，尚不支持导出功能... -->
 <template>
   <div class="draw-container flex-cb">
     <div class="draw-container-tool">
