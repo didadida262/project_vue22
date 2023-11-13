@@ -305,6 +305,13 @@ export const constantRoutes = [
         component: () => import('@/views/paper/PictureWall/index'),
         meta: { title: 'Picturewall', icon: 'table' }
       },
+      // Zombie
+      {
+        path: 'Zombie',
+        name: 'Zombie',
+        component: () => import('@/views/paper/Zombie/index'),
+        meta: { title: 'Zombie', icon: 'man' }
+      },
       {
         path: 'testpaper',
         name: 'testpaper',
