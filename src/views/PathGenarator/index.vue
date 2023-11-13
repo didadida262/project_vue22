@@ -55,7 +55,8 @@ export default {
   data() {
     return {
       cursorPointor: 'default',
-      activatedBrush: 'select_tool'
+      activatedBrush: 'select_tool',
+      zoom: 1
     }
   },
   methods: {
@@ -70,6 +71,21 @@ export default {
       const transform = this.changeZoom(e.deltaY, viewPosition)
       this.project.view.zoom = transform.zoom
       this.project.view.center = this.project.view.center.add(transform.offset)
+    },
+    changeZoom(delta, p) {
+      const view = this.project.view
+      const oldZoom = view.zoom
+      const c = view.center
+      const factor = 0.05 + this.zoom
+
+      const zoom = delta < 0 ? oldZoom * factor : oldZoom / factor
+      const beta = oldZoom / zoom
+      // 计算当前点到当前视图中心点向量指向
+      const pc = p.subtract(c)
+      // a点目测是换算后的新p点
+      const a = p.subtract(pc.multiply(beta)).subtract(c)
+
+      return { zoom: zoom, offset: a }
     },
     handleToolClick(brush) {
 
