@@ -25,6 +25,8 @@ import paper from 'paper'
 import { Tank } from './Tank'
 import tools from './tools'
 import titleTemplate from '@/components/titleTemplate.vue'
+import { getRandomPoint } from '@/utils/paperWeaponTS.ts'
+
 export default {
   mixins: [tools],
   components: {
@@ -67,7 +69,7 @@ export default {
     },
     initEnemy() {
       for (let i = 0; i < 6; i++) {
-        const position = this.random()
+        const position = getRandomPoint(this.currentProject)
         const end = new paper.Point(position.x, position.y - 50)
         const direction = this.tank.path.position.subtract(position).normalize(50)
         // this.enemies.push(new Tank(position, getRandomColor(), direction))
@@ -75,7 +77,7 @@ export default {
       }
     },
     initRole() {
-      const position = new paper.Point(this.WIDTH / 2, this.HEIGHT / 2)
+      const position = getRandomPoint(this.currentProject)
       const end = new paper.Point(position.x, position.y - 50)
       const direction = end.subtract(position)
       this.tank = new Tank(position, 'white', direction)

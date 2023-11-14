@@ -1,11 +1,12 @@
 /*
  * @Author: Hhvcg
  * @Date: 2023-03-01 14:11:32
- * @LastEditors: -_-
+ * @LastEditors: hhvcg 719713496@qq.com
  * @Description: 坦克类
  */
 import paper from 'paper'
 import { Ammunition } from './AmmunitionDepo'
+import { getRandomPoint } from '@/utils/paperWeaponTS.ts'
 // import { getRandomColor } from '@/utils/weapons'
 const SIZE = 50
 export class Tank {
@@ -41,20 +42,22 @@ export class Tank {
   init() {
     this.path = new paper.Group({
       children: [
+        // 炮身
         new paper.Path.Rectangle({
           name: 'base',
           center: this.position,
           size: new paper.Size(SIZE),
           strokeColor: this.color
         }),
+        // 炮管
         new paper.Path({
           name: 'turret',
           segments: [this.position, this.position.add(this.direction)],
           strokeWidth: 5,
           strokeColor: this.color,
           strokeCap: 'round'
-
         }),
+        // 炮塔
         new paper.Path.Circle({
           radius: SIZE / 4,
           center: this.position,
