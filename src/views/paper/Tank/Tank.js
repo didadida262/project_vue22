@@ -6,18 +6,18 @@
  */
 import paper from 'paper'
 import { Ammunition } from './AmmunitionDepo'
-import { getRandomPoint } from '@/utils/paperWeaponTS.ts'
-// import { getRandomColor } from '@/utils/weapons'
+import { getRandomDirection } from '@/utils/paperWeaponTS.ts'
 const SIZE = 50
 export class Tank {
   constructor(position, color, direction) {
     this.color = color
-    this.direction = direction
     this.path = null
     this.position = position
     this.AmmunitionDepo = []
     this.ammunitionSize = 5
     this.step = 10
+    // this.direction = direction || getRandomDirection(position, 30)
+    this.direction = direction
     this.init()
   }
   autoRun(position) {
@@ -40,6 +40,7 @@ export class Tank {
     this.path.position = this.path.position.add(this.direction.normalize()).clone()
   }
   init() {
+    console.log('初始化坐标数据>>>', this.position, this.direction)
     this.path = new paper.Group({
       children: [
         // 炮身

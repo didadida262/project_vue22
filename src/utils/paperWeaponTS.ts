@@ -391,3 +391,12 @@ export const initPaperCanvae = (canvas) => {
   return project
 }
 
+export const getRandomDirection = (position: paper.Point, range: number) => {
+  const newX = position.x - range / 2 + range
+  const newY = position.y - range / 2 + range
+  const newPoint =  new paper.Point(newX, newY)
+  console.log('position>>>', position)
+  console.log('newPoint>>>', newPoint)
+  return newPoint
+}
+
