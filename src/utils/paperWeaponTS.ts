@@ -41,6 +41,7 @@ export const drawXY = (currentProject, layerName) => {
     fontWeight: 'bold',
     fontSize: getViewFontSize(currentProject)
   })
+  // modifyDirection(coordinateData)
 }
 // 获取视图级别的字体大小
 export const getViewFontSize = (currentProject) => {
@@ -298,6 +299,41 @@ export const showPoint = (point: paper.Point, color: string) => {
   })
 }
 
+export const showImg = (point: paper.Point, Img: string) => {
+  const container = new paper.Path.Rectangle({
+    position: point,
+    size: new paper.Size(200, 200),
+    strokeWidth: 1,
+    strokeColor: 'red'
+  })
+  const raster = new paper.Raster({
+    source: require('@/assets/Sam.webp')
+  })
+  raster.onLoad = () => {
+    raster.fitBounds(container.bounds, true)
+    modifyDirectionPic(raster)
+  }
+  console.log('raster', raster)
+}
+export const showRect = (point: paper.Point) => {
+  const container = new paper.Path.Rectangle({
+    position: point,
+    size: new paper.Size(100, 300),
+    strokeColor: 'white',
+    strokeWidth: 5
+  })
+}
+export const showText = (point: paper.Point, text: string) => {
+  const p = new paper.PointText({
+    point: point,
+    content: text,
+    fontSize: 20,
+    justification: 'center',
+    fillColor: 'green',
+    fontWeight: 'bold'
+  })
+}
+
 // 在给定path中，不越界的绘制格子
 export const drawGrid = (currentProject: paper.Project, layerName, path: paper.Path, size: any, radius: number) => {
   if (!currentProject) return
@@ -328,3 +364,39 @@ export const drawGrid = (currentProject: paper.Project, layerName, path: paper.P
     }
   }
 }
+
+// 纠正由于坐标系翻转导致文本的镜像效果
+export const modifyDirection = (path: any) => {
+  path.rotate(180)
+  path.scaling = new paper.Point(-1, 1)
+}
+// 纠正由于坐标系翻转导致文本的镜像效果
+export const modifyDirectionPic = (raster: any) => {
+  // raster.rotate(180)
+  const newScaling = new paper.Point(raster.scaling.x, -raster.scaling.y)
+  raster.scaling = newScaling
+}
+
+export const setProjectZoom = (pro, zoom) => {
+  const currentZoom = pro.view.matrix.a
+  const matrix1 = new paper.Matrix().scale(1 / currentZoom, 1 / currentZoom)
+  const matrix2 = new paper.Matrix().scale(zoom, zoom)
+  pro.view.transform(matrix1)
+  pro.view.transform(matrix2)
+}
+
+export const initPaperCanvae = (canvas) => {
+  paper.setup(canvas)
+  const project = paper.project
+  return project
+}
+
+export const getRandomDirection = (position: paper.Point, range: number) => {
+  const newX = position.x - range / 2 + range
+  const newY = position.y - range / 2 + range
+  const newPoint =  new paper.Point(newX, newY)
+  console.log('position>>>', position)
+  console.log('newPoint>>>', newPoint)
+  return newPoint
+}
+

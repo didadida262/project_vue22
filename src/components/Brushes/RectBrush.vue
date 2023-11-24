@@ -1,9 +1,3 @@
-<!--
- * @Author: Hhvcg
- * @Date: 2022-06-12 21:17:03
- * @LastEditors: hhvcg 719713496@qq.com
- * @Description:
--->
 <template>
   <el-tooltip
     class="item"

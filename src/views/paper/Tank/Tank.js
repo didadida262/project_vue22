@@ -1,22 +1,23 @@
 /*
  * @Author: Hhvcg
  * @Date: 2023-03-01 14:11:32
- * @LastEditors: -_-
+ * @LastEditors: hhvcg 719713496@qq.com
  * @Description: 坦克类
  */
 import paper from 'paper'
 import { Ammunition } from './AmmunitionDepo'
-// import { getRandomColor } from '@/utils/weapons'
+import { getRandomDirection } from '@/utils/paperWeaponTS.ts'
 const SIZE = 50
 export class Tank {
   constructor(position, color, direction) {
     this.color = color
-    this.direction = direction
     this.path = null
     this.position = position
     this.AmmunitionDepo = []
     this.ammunitionSize = 5
     this.step = 10
+    // this.direction = direction || getRandomDirection(position, 30)
+    this.direction = direction
     this.init()
   }
   autoRun(position) {
@@ -39,22 +40,25 @@ export class Tank {
     this.path.position = this.path.position.add(this.direction.normalize()).clone()
   }
   init() {
+    console.log('初始化坐标数据>>>', this.position, this.direction)
     this.path = new paper.Group({
       children: [
+        // 炮身
         new paper.Path.Rectangle({
           name: 'base',
           center: this.position,
           size: new paper.Size(SIZE),
           strokeColor: this.color
         }),
+        // 炮管
         new paper.Path({
           name: 'turret',
           segments: [this.position, this.position.add(this.direction)],
           strokeWidth: 5,
           strokeColor: this.color,
           strokeCap: 'round'
-
         }),
+        // 炮塔
         new paper.Path.Circle({
           radius: SIZE / 4,
           center: this.position,

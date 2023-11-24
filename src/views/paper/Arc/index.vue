@@ -15,7 +15,7 @@
 <script>
 import paper from 'paper'
 import commonTemplate from '@/components/titleTemplate.vue'
-import { removeLayer, drawXY, drawFlatHidden, drawNotch, drawNotchHidden, drawFlat, drawGrid } from '@/utils/paperWeaponTS'
+import { showRect, showImg, setProjectZoom, initPaperCanvae, showText, showPoint, removeLayer, drawXY, drawFlatHidden, drawNotch, drawNotchHidden, drawFlat, drawGrid } from '@/utils/paperWeaponTS'
 
 import tools from './tools'
 
@@ -38,8 +38,11 @@ export default {
   watch: {},
   mounted() {
     this.init()
+    showImg(new paper.Point(-200, -200), '@/assets/Sam.webp')
+    showText(new paper.Point(200, -200), '测试')
+    showRect(new paper.Point(-200, 200))
     drawXY(this.project, 'layerXY')
-    this.drawWaferBorder()
+    // this.drawWaferBorder()
   },
   beforeDestroy() {
     if (this.project) {
@@ -47,9 +50,16 @@ export default {
     }
   },
   methods: {
+    test() {
+      new paper.Path.Line({
+        form: new paper.Point(10, 10),
+        to: new paper.Point(20, 20),
+        strokeColor: 'orange'
+      })
+    },
     changeZoom(delta, p) {
       const view = this.project.view
-      const oldZoom = view.zoom
+      const oldZoom = view.matrix.a
       const c = view.center
       const factor = 0.05 + this.zoom
 
@@ -62,12 +72,14 @@ export default {
       return { zoom: zoom, offset: a }
     },
     onwheel(e) {
+      console.log('view',this.project.view)
       const view = this.project.view
       const viewPosition = view.viewToProject(
         new paper.Point(e.offsetX, e.offsetY)
       )
       const transform = this.changeZoom(e.deltaY, viewPosition)
-      this.project.view.zoom = transform.zoom
+      // this.project.view.zoom = transform.zoom
+      setProjectZoom(this.project, transform.zoom)
       this.project.view.center = this.project.view.center.add(transform.offset)
       drawXY(this.project, 'layerXY')
     },
@@ -81,10 +93,10 @@ export default {
       layerArc = new paper.Layer()
       layerArc.name = 'layerArc'
       // drawFlatHidden(this.project, 'layerArc', -90, length, radius)
-      drawNotchHidden(this.project, 'layerArc', 0, 60, 90, radius)
-      drawNotchHidden(this.project, 'layerArc', 90, 60, 90, radius)
-      drawNotchHidden(this.project, 'layerArc', 180, 60, 90, radius)
-      drawNotchHidden(this.project, 'layerArc', 270, 60, 90, radius)
+      // drawNotchHidden(this.project, 'layerArc', 0, 60, 90, radius)
+      // drawNotchHidden(this.project, 'layerArc', 90, 60, 90, radius)
+      // drawNotchHidden(this.project, 'layerArc', 180, 60, 90, radius)
+      // drawNotchHidden(this.project, 'layerArc', 270, 60, 90, radius)
 
       // drawFlat(this.project, 'layerArc', -90, length, radius)
       // drawFlat(this.project, 'layerArc', 90, length, radius)
@@ -97,25 +109,22 @@ export default {
     onFrame() {
     },
     onMouseDown(e) {
-      removeLayer(this.project,'layerXY')
+      console.log(e.point)
+      removeLayer(this.project, 'layerXY')
       this.initPoint = e.point
     },
     onMouseDrag(e) {
-      // if (this.initPoint) {
-      //   const v = this.initPoint.subtract(e.point)
-      //   const newC = this.project.view.center.add(v)
-      //   this.project.view.setCenter(newC)
-      // }
+      if (this.initPoint) {
+        const v = this.initPoint.subtract(e.point)
+        const newC = this.project.view.center.add(v)
+        this.project.view.setCenter(newC)
+      }
     },
     onMouseMove(e) {
-      console.warn('onMouseMove>>>1')
-      console.log('onMouseMove>>>2')
-      const center = new paper.Point(0)
-      const v = center.subtract(e.point)
-      const newC = this.project.view.center.add(v)
-      this.project.view.setCenter(newC)
-      drawXY(this.project, 'layerXY')
-
+      // const center = new paper.Point(0)
+      // const v = center.subtract(e.point)
+      // const newC = this.project.view.center.add(v)
+      // this.project.view.setCenter(newC)
     },
     onMouseUp(e) {
       this.initPoint = null
@@ -127,12 +136,11 @@ export default {
       const canvas = this.$refs.canvas
       this.WIDTH = canvas.clientWidth
       this.HEIGHT = canvas.clientHeight
-      paper.setup(canvas)
-      this.project = paper.project
+      this.project = initPaperCanvae(canvas)
       this.project.name = this.title
       this.project.view.onFrame = this.onFrame
       this.project.view.setCenter(0)
-      console.log('初始化世界!!!', this.project)
+      console.log('初始化世界!!!', paper)
     }
   }
 }

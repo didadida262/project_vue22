@@ -46,7 +46,6 @@ import commonTemplate from '@/components/titleTemplate.vue'
 import { getRandomColor } from '@/utils/weapons'
 import { CyberFont } from './cyberfont'
 import words from './words.json'
-import fetch from 'whatwg-fetch'
 
 export default {
   name: 'cyberFont',

@@ -71,7 +71,7 @@ export default {
   },
   data() {
     return {
-      currentUrl:'http://localhost:3000/getStreamVideo/',
+      currentUrl:'http://localhost:3001/getStreamVideo/',
       currentVideoInfo: {},
       currentListState: 'show',
       currentPlayWay: 'random',
@@ -262,7 +262,7 @@ export default {
         ...info
       }
       console.log('目标视频信息', info)
-      this.currentUrl = 'http://localhost:3000/getStreamVideo/?id=' + info.id
+      this.currentUrl = 'http://localhost:3001/getStreamVideo/?id=' + info.id
 
 
 // 就方案

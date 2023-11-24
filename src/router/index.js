@@ -57,37 +57,38 @@ export const constantRoutes = [
   {
     path: '/',
     component: Layout,
-    redirect: '/dashboard',
+    redirect: '/PathGenarator',
     children: [{
-      path: 'dashboard',
-      name: 'Dashboard',
-      component: () => import('@/views/dashboard/index'),
-      meta: { title: 'Dashboard', icon: 'dashboard' }
+      path: 'PathGenarator',
+      name: 'PathGenarator',
+      component: () => import('@/views/PathGenarator/index'),
+      meta: { title: 'PathGenarator', icon: 'dashboard' }
     }]
   },
-  // {
-  //   path: '/draw',
-  //   component: Layout,
-  //   redirect: '/draw',
-  //   children: [{
-  //     path: 'draw',
-  //     name: 'draw',
-  //     component: () => import('@/views/draw/index'),
-  //     meta: { title: 'Draw', icon: 'el-icon-brush' }
-  //   }]
-  // },
-  // {
-  //   path: '/leaferJS',
-  //   component: Layout,
-  //   children: [
-  //     {
-  //       path: 'leaferJS',
-  //       name: 'leaferJS',
-  //       component: () => import('@/views/Leafer/index'),
-  //       meta: { title: 'leaferJS', icon: 'el-icon-brush' }
-  //     }
-  //   ]
-  // },
+  {
+    path: '/draw',
+    component: Layout,
+    redirect: '/draw',
+    children: [{
+      path: 'draw',
+      name: 'draw',
+      component: () => import('@/views/draw/index'),
+      meta: { title: 'Draw', icon: 'el-icon-brush' }
+    }]
+  },
+
+  {
+    path: '/leaferJS',
+    component: Layout,
+    children: [
+      {
+        path: 'leaferJS',
+        name: 'leaferJS',
+        component: () => import('@/views/Leafer/index'),
+        meta: { title: 'leaferJS', icon: 'el-icon-brush' }
+      }
+    ]
+  },
   // openLayer
   // {
   //   path: '/openlayer',
@@ -172,6 +173,12 @@ export const constantRoutes = [
         component: () => import('@/views/paper/Arc/index'),
         meta: { title: 'Arc', icon: 'Raster' }
       },
+      // {
+      //   path: 'detectionMore/main/:taskId/:status',
+      //   name: 'detectionMore',
+      //   component: () => import('@/views/paper/detectionMore/index'),
+      //   meta: { title: 'Arc', icon: 'Raster' }
+      // },
       // {
       //   path: 'gameworld',
       //   name: 'gameworld',
@@ -297,6 +304,13 @@ export const constantRoutes = [
         name: 'Picturewall',
         component: () => import('@/views/paper/PictureWall/index'),
         meta: { title: 'Picturewall', icon: 'table' }
+      },
+      // Zombie
+      {
+        path: 'Zombie',
+        name: 'Zombie',
+        component: () => import('@/views/paper/Zombie/index'),
+        meta: { title: 'Zombie', icon: 'man' }
       },
       {
         path: 'testpaper',

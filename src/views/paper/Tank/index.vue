@@ -1,11 +1,11 @@
 <template>
   <div class="page-container">
-    <h1>Tank</h1>
+    <titleTemplate title="Tank" />
     <div class="view">
       <div class="operation flex-col">
         <div class="operation-info pd5">
           <p><strong>Some Informations</strong></p>
-          <p>Role: 朱永灵</p>
+          <p>Role: 旅途图</p>
           <p>Old: 27</p>
           <p>血槽: 100</p>
         </div>
@@ -24,9 +24,14 @@ import paper from 'paper'
 // import { Bomb } from './Bomb'
 import { Tank } from './Tank'
 import tools from './tools'
-import { getRandomColor } from '@/utils/weapons'
+import titleTemplate from '@/components/titleTemplate.vue'
+import { getRandomPoint, getRandomDirection } from '@/utils/paperWeaponTS.ts'
+
 export default {
   mixins: [tools],
+  components: {
+    titleTemplate
+  },
   data() {
     return {
       url: require('@/assets/tank_laiyin.jpg'),
@@ -63,17 +68,15 @@ export default {
       return paper.Point.random().multiply(this.WIDTH, this.HEIGHT)
     },
     initEnemy() {
-      for (let i = 0; i < 10; i++) {
-        const position = this.random()
-        const end = new paper.Point(position.x, position.y - 50)
-        const direction = this.tank.path.position.subtract(position).normalize(50)
-        // this.enemies.push(new Tank(position, getRandomColor(), direction))
-        this.enemies.push(new Tank(position, 'red', direction))
+      for (let i = 0; i < 6; i++) {
+        const position = getRandomPoint(this.currentProject)
+        // const end = new paper.Point(position.x, position.y - 50)
+        this.enemies.push(new Tank(position, 'red'))
       }
     },
     initRole() {
-      const position = new paper.Point(this.WIDTH / 2, this.HEIGHT / 2)
-      const end = new paper.Point(position.x, position.y - 50)
+      const position = getRandomPoint(this.currentProject)
+      const end = getRandomDirection(position, 50)
       const direction = end.subtract(position)
       this.tank = new Tank(position, 'white', direction)
     },
@@ -194,28 +197,34 @@ export default {
 </script>
 <style scoped lang="scss">
 .page-container {
+  width: 100%;
+  height: 100%;
   .view {
+    width: 100%;
+    height: calc(100% - 80px);
     display: flex;
     justify-content: space-around;
     align-items: center;
     .operation {
       padding: 10px;
-      height: 80vh;
-      width: 10vw;
-      border: 1px solid gray;
+      height: 100%;
+      width: 250px;
+      border: 1px solid ghostwhite;
       &-info {
         height: calc(100% - 110px);
-        border: 1px solid gray;
+        border: 1px solid ghostwhite;
+        box-shadow: 0px 0px 5px #888888;
+        border-radius: 5px;
       }
       &-btn {
         height: 50px;
-        border: 1px solid gray;
+        border: 1px solid ghostwhite;
       }
     }
     .tank {
       background: black;
       height: 80vh;
-      width: 80vw;
+      width: calc(100% - 260px);
     }
   }
 
