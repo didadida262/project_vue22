@@ -34,7 +34,7 @@
 import commonTemplate from '@/components/titleTemplate.vue'
 import ReviewCircle from './components/ReviewCircle.vue'
 import sliderComp from './components/sliderComp.vue'
-import myWorker from './myWorker'
+// import myWorker from './myWorker'
 export default {
   name: 'Circlle',
   components: {

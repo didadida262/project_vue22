@@ -191,22 +191,6 @@ export default {
           // fillColor: this.classColors[item.class_id]
           fillColor: 'black'
         })
-        // p.set({
-        //   fillColor: {
-        //     red: p.fillColor.red,
-        //     green: p.fillColor.green,
-        //     blue: p.fillColor.blue
-        //     // alpha: item.class_id === 'unclassified' ? 1 : 0.1
-        //     // alpha: this.newData[item.class_id] / this.defectList.length
-        //     // alpha: p.alpha
-        //     // gradient: {
-        //     //   stops: [['black', 0.4], ['white', 0.5]],
-        //     //   radial: true
-        //     // },
-        //     // origin: p.bounds.center,
-        //     // destination: p.bounds.bottomRight
-        //   }
-        // })
         p.class_id = item.class_id
         p.data_id = item.id
         p.channel = item.channel
@@ -214,7 +198,6 @@ export default {
           console.log('点击')
         }
       })
-      console.timeEnd('draw')
 
     },
     onClickDot(e) {
@@ -541,7 +524,7 @@ export default {
     this.drawDot()
     this.drawOtherLayers()
     console.log('circel-paperscope--->', this.paper)
-    this.worker = new Worker('../views/paper/Circle/worker.js')
+    this.worker = new Worker('./myWorker.js')
     this.worker.addEventListener('message', (e) => {
       console.log('主线程接收消息', e.data)
     })

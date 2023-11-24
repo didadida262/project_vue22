@@ -15,47 +15,35 @@
     <!-- <link rel="stylesheet" href="<%= BASE_URL %>all.css"/> -->
     <!-- <title><%= webpackConfig.name %></title> -->
     <title>test</title>
+    <style>
+      .par {
+        width: 1000px;
+        height: 500px;
+        border: 1px solid red;
+        /* background-color: red; */
+        display: grid;
+        justify-content: center;
+        align-items: center;
+      }
+      .main {
+        width: 0px;
+        height: 0px;
+        border-color: transparent transparent transparent red;
+        border-style: solid;
+        border-width: 100px;
+      }
+
+
+    </style>
   </head>
   <body id="body">
-    <div id="div">
-    </div>
-    <video src=""></video>
     <!-- built files will be auto injected -->
+    <div class="par">
+      <div class="main">今天的天气真tm不错啊是不是啊</div>
+    </div>
   </body>
   <script>
-    window.onload = function() {
-      const div = document.getElementById('div')
-      console.log('div>>>', div)
-      // const root = div.webkitCreateShadowRoot()
-      const root = div.attachShadow({ mode: 'open' });
-      // const root = div.createShadowRoot()
-      const img = document.createElement('img')
-      img.width = '100'
-      img.height = '100'
-      img.src = './bigPic.png'
-      root.appendChild(img)
-      const shadowDiv = document.createElement('div')
-      shadowDiv.innerHTML = 'this is shadow'
-      root.appendChild(shadowDiv)
-      
 
 
-
-      // 事件捕获冒泡
-      // const body = document.getElementById('body')
-      // body.addEventListener('click', (event) => {
-      //   console.log('body')
-      // })
-      // const div = document.getElementById('div')
-      // div.addEventListener('click', (event) => {
-      //   console.log('div')
-      // }, true)
-      // const img = document.getElementById('img')
-      // img.addEventListener('click', (event) => {
-      //   console.log('img')
-      //   event.stopPropagation()
-      // })
-
-    }
   </script>
 </html>
